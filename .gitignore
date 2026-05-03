@@ -1,0 +1,72 @@
+# Keil uVision
+*.uvguix.*
+*.uvopt*
+*.uvproj*
+*.uvprojx*
+*.builds*
+*.dat
+*.lst
+*.map
+*.hex
+*.bin
+*.axf
+*.elf
+
+# Objects
+*.o
+*.obj
+*.d
+
+# Libraries
+*.lib
+
+# Listings
+*.lst
+*.m51
+*.m66
+
+# Preprocessor
+*.i
+
+# Debug
+*.pdb
+*.uvg
+*.ulg
+
+# System
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# Temp
+*.tmp
+*.bak
+*~
+
+# SDK 
+source/
+*.crf
+*.d
+*.inc
+*.lst
+*_tmph.map
+
+LQ_MSPM0GX_8LIGHT/
+MSPM0G3507_Project_oled/
+MSPM0G3507_Project_speed_pid/
+MSPM0G3507_Project_H/
+MSPM0G3507_Project_xunji_pid/
+docs/
+docs/chinese/
+docs/english/
+Contest/
+examples/
+source/
+tools/
+kernel/
+
+*.mak
+*.log
+*.html
+*.txt
+*.exe

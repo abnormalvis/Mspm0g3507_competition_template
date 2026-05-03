@@ -51,6 +51,7 @@ source/
 *.lst
 *_tmph.map
 
+# Project folders
 LQ_MSPM0GX_8LIGHT/
 MSPM0G3507_Project_oled/
 MSPM0G3507_Project_speed_pid/
@@ -64,9 +65,12 @@ examples/
 source/
 tools/
 kernel/
+# Reference projects
+vofa*/
 
 *.mak
 *.log
 *.html
 *.txt
 *.exe
+

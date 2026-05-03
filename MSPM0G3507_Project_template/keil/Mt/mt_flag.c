@@ -1,16 +1,17 @@
 /*******************************************************************************
-  * @作者      ： wangming
-  * @wechat    :DeepCoderMing
-  * @qq      ： 3201935299
-  * @日期      ： 2025年05月01日
-  * @版权声明  ： 仅供参考学习，未经允许禁止商用
+  * @brief     : Flag and parameter definitions
+  * @author   : wangming
+  * @wechat   : DeepCoderMing
+  * @qq       : 3201935299
+  * @date     : 2025-05-01
+  * @copyright: Confidential - for demo purposes only
 ********************************************************************************/
 #include "mt_flag.h"
 #include "hal_encode.h"
 #include "mt_test.h"
 #include "2024DS_Duty.h"
-Param_InitTypeDef Param;//定义了要用的参数结构体
-Flag_InitTypeDef  Flag;//定义了要用的标志位结构体 
+Param_InitTypeDef Param;//锟斤拷锟斤拷锟斤拷要锟矫的诧拷锟斤拷锟结构锟斤拷
+Flag_InitTypeDef  Flag;//锟斤拷锟斤拷锟斤拷要锟矫的憋拷志位锟结构锟斤拷 
 extern float	speed_integral[2],speed_output[2];
 extern float position_output;
 extern float yaw_out[2];
@@ -23,7 +24,7 @@ void Flag_Init(void)
 	
 		Flag.Start_Car  = 0;
 		Flag.Stop_Car = 0;
-		Flag.Start_Car= 0;//开始发车
+		Flag.Start_Car= 0;//锟斤拷始锟斤拷锟斤拷
 		Flag.Stop_Car= 0;
 		
 		Flag.Start_duty_1= 0;

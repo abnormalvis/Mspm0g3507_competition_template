@@ -160,6 +160,22 @@ extern "C" {
 #define UART_2_BAUD_RATE                                                (115200)
 #define UART_2_IBRD_80_MHZ_115200_BAUD                                      (43)
 #define UART_2_FBRD_80_MHZ_115200_BAUD                                      (26)
+/* Defines for UART_3 */
+#define UART_3_INST                                                        UART1
+#define UART_3_INST_FREQUENCY                                           40000000
+#define UART_3_INST_IRQHandler                                  UART1_IRQHandler
+#define UART_3_INST_INT_IRQN                                      UART1_INT_IRQn
+#define GPIO_UART_3_RX_PORT                                                GPIOA
+#define GPIO_UART_3_TX_PORT                                                GPIOB
+#define GPIO_UART_3_RX_PIN                                        DL_GPIO_PIN_18
+#define GPIO_UART_3_TX_PIN                                         DL_GPIO_PIN_4
+#define GPIO_UART_3_IOMUX_RX                                     (IOMUX_PINCM40)
+#define GPIO_UART_3_IOMUX_TX                                     (IOMUX_PINCM17)
+#define GPIO_UART_3_IOMUX_RX_FUNC                      IOMUX_PINCM40_PF_UART1_RX
+#define GPIO_UART_3_IOMUX_TX_FUNC                      IOMUX_PINCM17_PF_UART1_TX
+#define UART_3_BAUD_RATE                                                (115200)
+#define UART_3_IBRD_40_MHZ_115200_BAUD                                      (21)
+#define UART_3_FBRD_40_MHZ_115200_BAUD                                      (45)
 
 
 
@@ -320,27 +336,6 @@ extern "C" {
 /* Defines for TB6612_PIN_22: GPIOA.22 with pinCMx 47 on package pin 18 */
 #define GPIO_TB6612_TB6612_PIN_22_PIN                           (DL_GPIO_PIN_22)
 #define GPIO_TB6612_TB6612_PIN_22_IOMUX                          (IOMUX_PINCM47)
-/* Port definition for Pin Group GPIO_GREY6 */
-#define GPIO_GREY6_PORT                                                  (GPIOB)
-
-/* Defines for GREY_PIN_5: GPIOB.5 with pinCMx 18 on package pin 53 */
-#define GPIO_GREY6_GREY_PIN_5_PIN                                (DL_GPIO_PIN_5)
-#define GPIO_GREY6_GREY_PIN_5_IOMUX                              (IOMUX_PINCM18)
-/* Defines for GREY_PIN_6: GPIOB.6 with pinCMx 23 on package pin 58 */
-#define GPIO_GREY6_GREY_PIN_6_PIN                                (DL_GPIO_PIN_6)
-#define GPIO_GREY6_GREY_PIN_6_IOMUX                              (IOMUX_PINCM23)
-/* Defines for GREY_PIN_9: GPIOB.9 with pinCMx 26 on package pin 61 */
-#define GPIO_GREY6_GREY_PIN_9_PIN                                (DL_GPIO_PIN_9)
-#define GPIO_GREY6_GREY_PIN_9_IOMUX                              (IOMUX_PINCM26)
-/* Defines for GREY_PIN_8: GPIOB.8 with pinCMx 25 on package pin 60 */
-#define GPIO_GREY6_GREY_PIN_8_PIN                                (DL_GPIO_PIN_8)
-#define GPIO_GREY6_GREY_PIN_8_IOMUX                              (IOMUX_PINCM25)
-/* Defines for GREY_PIN_4: GPIOB.4 with pinCMx 17 on package pin 52 */
-#define GPIO_GREY6_GREY_PIN_4_PIN                                (DL_GPIO_PIN_4)
-#define GPIO_GREY6_GREY_PIN_4_IOMUX                              (IOMUX_PINCM17)
-/* Defines for GREY_PIN_7: GPIOB.7 with pinCMx 24 on package pin 59 */
-#define GPIO_GREY6_GREY_PIN_7_PIN                                (DL_GPIO_PIN_7)
-#define GPIO_GREY6_GREY_PIN_7_IOMUX                              (IOMUX_PINCM24)
 /* Port definition for Pin Group GPIO */
 #define GPIO_PORT                                                        (GPIOA)
 
@@ -377,6 +372,7 @@ void SYSCFG_DL_TIMER_1_init(void);
 void SYSCFG_DL_TIMER_2_init(void);
 void SYSCFG_DL_UART_1_init(void);
 void SYSCFG_DL_UART_2_init(void);
+void SYSCFG_DL_UART_3_init(void);
 void SYSCFG_DL_SPI_0_init(void);
 void SYSCFG_DL_SPI_FOR_IMU_init(void);
 void SYSCFG_DL_ADC12_0_init(void);

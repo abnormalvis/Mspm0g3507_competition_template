@@ -1,9 +1,10 @@
 /*******************************************************************************
-  * @×÷Õß      £º wangming
-  * @wechat    :DeepCoderMing
-  * @qq      £º 3201935299
-  * @ÈÕÆÚ      £º 2025Äê05ÔÂ01ÈÕ
-  * @°æÈ¨ÉùÃ÷  £º ½ö¹©²Î¿¼Ñ§Ï°£¬Î´¾­ÔÊÐí½ûÖ¹ÉÌÓÃ
+  * @brief     : Main application entry
+  * @author   : wangming
+  * @wechat   : DeepCoderMing
+  * @qq       : 3201935299
+  * @date     : 2025-05-01
+  * @copyright: Confidential - for demo purposes only
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "drv_oled.h"
@@ -34,36 +35,36 @@
 int keynum = 0;
 float test_eepro = 0.f;
 unsigned char send_buff[] ={"hello,world!"};
-uint8_t     debug_uart_buffer[64];           // Êý¾Ý´æ·ÅÊý×é
+uint8_t     debug_uart_buffer[64];           // ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int main(void)
 {
-	SYSCFG_DL_init();//Ð¾Æ¬×ÊÔ´³õÊ¼»¯,ÓÉSysConfigÅäÖÃÈí¼þ×Ô¶¯Éú³É
-	hal_CPUInit();	//¶¨Ê±Æ÷7³õÊ¼»¯ ÓÃÓÚÈÎÎñµ÷¶È
-	OS_TaskInit();	//ÈÎÎñ³õÊ¼»¯
-	oled_init();	//oledÏÔÊ¾ÆÁ³õÊ¼»¯
-	ctrl_params_init();//Ñ­¼£¡¢ËÙ¶È»·PID¿ØÖÆÆ÷²ÎÊý³õÊ¼»¯
-	hal_Encoder_Init();	//Íâ²¿ÖÐ¶Ï²É¼¯±àÂëÆ÷Âö³å
-	//hal_uart1_Init();	//´®¿Ú1³õÊ¼»¯ PA10 PA11 ¡ª¡ªzigbee
-	//fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);	//zigbeeÖð·É´®¿Úµ÷ÊÔÖúÊÖ
-	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_0_INDEX);	//¿ªÆôËÄÂ·PWM
+	SYSCFG_DL_init();//Ð¾Æ¬ï¿½ï¿½Ô´ï¿½ï¿½Ê¼ï¿½ï¿½,ï¿½ï¿½SysConfigï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
+	hal_CPUInit();	//ï¿½ï¿½Ê±ï¿½ï¿½7ï¿½ï¿½Ê¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	OS_TaskInit();	//ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+	oled_init();	//oledï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+	ctrl_params_init();//Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È»ï¿½PIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+	hal_Encoder_Init();	//ï¿½â²¿ï¿½Ð¶Ï²É¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//hal_uart1_Init();	//ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½Ê¼ï¿½ï¿½ PA10 PA11 ï¿½ï¿½ï¿½ï¿½zigbee
+	//fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);	//zigbeeï¿½ï¿½É´ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_0_INDEX);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·PWM
   	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_1_INDEX);	
 	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_2_INDEX);	
 	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_3_INDEX);	
 
 
-	TIMG0_Init();	//¶¨Ê±Æ÷ÖÐ¶Ï¡ª¡ª»ñÈ¡Âö³åÖµ 5ms
-	TIMG6_Init(); //¶¨Ê±Æ÷ÖÐ¶Ï¡ª¡ªÊµÊ±Ê±¼ä 5ms	
+	TIMG0_Init();	//ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð¶Ï¡ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Öµ 5ms
+	TIMG6_Init(); //ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð¶Ï¡ï¿½ï¿½ï¿½ÊµÊ±Ê±ï¿½ï¿½ 5ms	
 
-	move_filter_init(&left_speed_cmps);	//±àÂëÆ÷ËÙ¶ÈÖµÂË²¨
-	move_filter_init(&right_speed_cmps);	//±àÂëÆ÷ËÙ¶ÈÖµÂË²¨
+	move_filter_init(&left_speed_cmps);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Öµï¿½Ë²ï¿½
+	move_filter_init(&right_speed_cmps);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Öµï¿½Ë²ï¿½
 
 	AppInit();
 	Flag_Init();
 
-	OS_CreatTask(OS_TASK1,hal_KeyProc,1,OS_RUN);  //ÈÎÎñ1£ºÎåÏò°´¼üÉ¨Ãè
+	OS_CreatTask(OS_TASK1,hal_KeyProc,1,OS_RUN);  //ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ò°´¼ï¿½É¨ï¿½ï¿½
 		
-	OS_CreatTask(OS_TASK2,AppProc,1,OS_RUN); //ÈÎÎñ2£º¶à¼¶²Ëµ¥
+	OS_CreatTask(OS_TASK2,AppProc,1,OS_RUN); //ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½à¼¶ï¿½Ëµï¿½
 	
-	OS_Start(); //Ö÷Ñ­»·ÔÚÕâÀï Ç°Ãæ¶¼ÊÇ³õÊ¼»¯	
+	OS_Start(); //ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç°ï¿½æ¶¼ï¿½Ç³ï¿½Ê¼ï¿½ï¿½	
 }
 

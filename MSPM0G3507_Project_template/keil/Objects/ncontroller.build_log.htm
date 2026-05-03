@@ -43,140 +43,15 @@ Generating Code (ncontroller.syscfg)...
 Unchanged D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\MSPM0G3507_Project_template\ti_msp_dl_config.c...
 Unchanged D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\MSPM0G3507_Project_template\ti_msp_dl_config.h...
 Unchanged D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\MSPM0G3507_Project_template\Event.dot...
-compiling drv_spi.c...
-compiling drv_oled.c...
-compiling ssd1306.c...
-compiling hal_encode.c...
-compiling hal_key.c...
-compiling hal_uart.c...
-Hal/hal_gray.c(31): error: use of undeclared identifier 'Tracking_S0_PORT'; did you mean 'Tracking_IO_Set'?
-   31 |     if(s0) DL_GPIO_setPins(Tracking_S0_PORT, Tracking_S0_PIN);
-      |                            ^~~~~~~~~~~~~~~~
-      |                            Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(31): error: use of undeclared identifier 'Tracking_S0_PIN'; did you mean 'Tracking_IO_Set'?
-   31 |     if(s0) DL_GPIO_setPins(Tracking_S0_PORT, Tracking_S0_PIN);
-      |                                              ^~~~~~~~~~~~~~~
-      |                                              Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(32): error: use of undeclared identifier 'Tracking_S0_PORT'; did you mean 'Tracking_IO_Set'?
-   32 |     else DL_GPIO_clearPins(Tracking_S0_PORT, Tracking_S0_PIN);
-      |                            ^~~~~~~~~~~~~~~~
-      |                            Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(32): error: use of undeclared identifier 'Tracking_S0_PIN'; did you mean 'Tracking_IO_Set'?
-   32 |     else DL_GPIO_clearPins(Tracking_S0_PORT, Tracking_S0_PIN);
-      |                                              ^~~~~~~~~~~~~~~
-      |                                              Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(34): error: use of undeclared identifier 'Tracking_S1_PORT'; did you mean 'Tracking_IO_Set'?
-   34 |     if(s1) DL_GPIO_setPins(Tracking_S1_PORT, Tracking_S1_PIN);
-      |                            ^~~~~~~~~~~~~~~~
-      |                            Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(34): error: use of undeclared identifier 'Tracking_S1_PIN'; did you mean 'Tracking_IO_Set'?
-   34 |     if(s1) DL_GPIO_setPins(Tracking_S1_PORT, Tracking_S1_PIN);
-      |                                              ^~~~~~~~~~~~~~~
-      |                                              Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(35): error: use of undeclared identifier 'Tracking_S1_PORT'; did you mean 'Tracking_IO_Set'?
-   35 |     else DL_GPIO_clearPins(Tracking_S1_PORT, Tracking_S1_PIN);
-      |                            ^~~~~~~~~~~~~~~~
-      |                            Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(35): error: use of undeclared identifier 'Tracking_S1_PIN'; did you mean 'Tracking_IO_Set'?
-   35 |     else DL_GPIO_clearPins(Tracking_S1_PORT, Tracking_S1_PIN);
-      |                                              ^~~~~~~~~~~~~~~
-      |                                              Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(37): error: use of undeclared identifier 'Tracking_S2_PORT'; did you mean 'Tracking_IO_Set'?
-   37 |     if(s2) DL_GPIO_setPins(Tracking_S2_PORT, Tracking_S2_PIN);
-      |                            ^~~~~~~~~~~~~~~~
-      |                            Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(37): error: use of undeclared identifier 'Tracking_S2_PIN'; did you mean 'Tracking_IO_Set'?
-   37 |     if(s2) DL_GPIO_setPins(Tracking_S2_PORT, Tracking_S2_PIN);
-      |                                              ^~~~~~~~~~~~~~~
-      |                                              Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(38): error: use of undeclared identifier 'Tracking_S2_PORT'; did you mean 'Tracking_IO_Set'?
-   38 |     else DL_GPIO_clearPins(Tracking_S2_PORT, Tracking_S2_PIN);
-      |                            ^~~~~~~~~~~~~~~~
-      |                            Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(38): error: use of undeclared identifier 'Tracking_S2_PIN'; did you mean 'Tracking_IO_Set'?
-   38 |     else DL_GPIO_clearPins(Tracking_S2_PORT, Tracking_S2_PIN);
-      |                                              ^~~~~~~~~~~~~~~
-      |                                              Tracking_IO_Set
-Hal/hal_gray.c(29): note: 'Tracking_IO_Set' declared here
-   29 | void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
-      |      ^
-Hal/hal_gray.c(50): error: use of undeclared identifier 'ADC_Tracking_INST'
-   50 |         LQ_Tracking_Value[i] = DL_ADC12_getMemResult(ADC_Tracking_INST, ADC_Tracking_ADCMEM_ADC0_CH0);
-      |                                                      ^
-Hal/hal_gray.c(50): error: use of undeclared identifier 'ADC_Tracking_ADCMEM_ADC0_CH0'
-   50 |         LQ_Tracking_Value[i] = DL_ADC12_getMemResult(ADC_Tracking_INST, ADC_Tracking_ADCMEM_ADC0_CH0);
-      |                                                                         ^
-Hal/hal_gray.c(75): error: duplicate case value '12'
-   75 |         case 0x000C: gray_status = 6; gray_status_worse /= 2; break;
-      |              ^
-Hal/hal_gray.c(71): note: previous case defined here
-   71 |         case 0x000C: gray_status = 10; gray_status_worse /= 2; break;
-      |              ^
-Hal/hal_gray.c(77): error: duplicate case value '24'
-   77 |         case 0x0018: gray_status = 4; gray_status_worse /= 2; break;
-      |              ^
-Hal/hal_gray.c(72): note: previous case defined here
-   72 |         case 0x0018: gray_status = 8; gray_status_worse /= 2; break;
-      |              ^
-16 errors generated.
-compiling hal_gray.c...
-compiling hal_jy62.c...
-compiling hal_at24c02.c...
-Mt/user_interrupt.c(112): error: call to undeclared function 'gray_12data_read'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  112 |                 gray_12data_read();
-      |                 ^
-Mt/user_interrupt.c(112): note: did you mean 'gray_8data_read'?
-./Hal\hal_gray.h(40): note: 'gray_8data_read' declared here
-   40 | void gray_8data_read(void);
-      |      ^
-1 error generated.
 compiling user_interrupt.c...
-compiling main.c...
-compiling mt_test.c...
-compiling seekfree_assistant.c...
-compiling ti_msp_dl_config.c...
-compiling app.c...
-compiling seekfree_uart.c...
-compiling 2024DS_Duty.c...
-compiling cpu.c...
-compiling zf_device_imu_interface.c...
-compiling zf_device_imu660ra.c...
-compiling zf_common_debug.c...
-compiling imu_filter.c...
-".\Objects\ncontroller.axf" - 17 Error(s), 0 Warning(s).
+compiling hal_key.c...
+linking...
+.\Objects\ncontroller.axf: Error: L6218E: Undefined symbol error_openmv (referred from mt_test.o).
+.\Objects\ncontroller.axf: Error: L6218E: Undefined symbol vofa_rx_byte (referred from user_interrupt.o).
+Not enough information to list image symbols.
+Not enough information to list load addresses in the image map.
+Finished: 2 information, 0 warning and 2 error messages.
+".\Objects\ncontroller.axf" - 2 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -189,7 +64,7 @@ Package Vendor: TexasInstruments
 
 <h2>Collection of Component Files used:</h2>
 Target not created.
-Build Time Elapsed:  00:00:10
+Build Time Elapsed:  00:00:06
 </pre>
 </body>
 </html>

@@ -1,9 +1,10 @@
 /*******************************************************************************
-  * @×÷Õß      £º wangming
-  * @wechat    :DeepCoderMing
-  * @qq      £º 3201935299
-  * @ÈÕÆÚ      £º 2025Äê05ÔÂ01ÈÕ
-  * @°æÈ¨ÉùÃ÷  £º ½ö¹©²Î¿¼Ñ§Ï°£¬Î´¾­ÔÊÐí½ûÖ¹ÉÌÓÃ
+  * @brief     : 2024 DianSai competition task
+  * @author   : wangming
+  * @wechat   : DeepCoderMing
+  * @qq       : 3201935299
+  * @date     : 2025-05-01
+  * @copyright: Confidential - for demo purposes only
 ********************************************************************************/
 #include "2024DS_Duty.h"
 #include "mt_flag.h"
@@ -20,10 +21,10 @@
 float L = 100,target_theta;
 
 
-void DS2024_duty1(void)//ÈÎÎñ×´Ì¬»ú
+void DS2024_duty1(void)//ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½
 {
 	
-		switch (Param.Send1_Step)//Ò»²½Ò»²½£¬²»»áÖØ¸´
+		switch (Param.Send1_Step)//Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
 		{
 			case 0:
 						Flag.Start_duty_1 = 1;
@@ -37,7 +38,7 @@ void DS2024_duty1(void)//ÈÎÎñ×´Ì¬»ú
 							task_num = 0;
 						}						
 				break;
-			case 1:			//Éù¹âÌáÊ¾
+			case 1:			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
 
 					break;
 		}
@@ -45,9 +46,9 @@ void DS2024_duty1(void)//ÈÎÎñ×´Ì¬»ú
 	
 }
 
-void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
+void DS2024_duty2(void)//ï¿½ï¿½Ä¿2×´Ì¬ï¿½ï¿½
 {
-		switch (Param.Send2_Step)//Ò»²½Ò»²½£¬²»»áÖØ¸´
+		switch (Param.Send2_Step)//Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
 		{
 			case 0:
 						Flag.Start_duty2_1 = 1;			
@@ -59,7 +60,7 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 						}						
 				break;
 			case 6:			
-						Flag.Start_duty2_7 = 1;// C -> D 30s  µÈ´ý200ms
+						Flag.Start_duty2_7 = 1;// C -> D 30s  ï¿½È´ï¿½200ms
 		
 						if(Flag.Success_duty2_7 == 1) 
 						{
@@ -69,7 +70,7 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 						}
 					break;						
 			case 1:			
-						Flag.Start_duty2_2 = 1;//Ñ­¼£
+						Flag.Start_duty2_2 = 1;//Ñ­ï¿½ï¿½
 			
 						if(Flag.Success_duty2_2 == 1)
 						{
@@ -79,7 +80,7 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 						}
 					break;
 			case 2:			
-						Flag.Start_duty2_3 = 1;//ÔÚCµãÐ£×¼½Ç¶È
+						Flag.Start_duty2_3 = 1;//ï¿½ï¿½Cï¿½ï¿½Ð£×¼ï¿½Ç¶ï¿½
 			
 						if(Flag.Success_duty2_3 == 1)
 						{
@@ -89,7 +90,7 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 						}
 					break;						
 			case 3:			
-						Flag.Start_duty2_4 = 1;// C -> D 30s  ÖÇÄÜÑ­¼£
+						Flag.Start_duty2_4 = 1;// C -> D 30s  ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 		
 						if(Flag.Success_duty2_4 == 1) 
 						{
@@ -99,7 +100,7 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 						}
 					break;
 			case 5:			
-						Flag.Start_duty2_6 = 1;// C -> D 30s  µÈ´ý200ms
+						Flag.Start_duty2_6 = 1;// C -> D 30s  ï¿½È´ï¿½200ms
 		
 						if(Flag.Success_duty2_6 == 1) 
 						{
@@ -109,7 +110,7 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 						}
 					break;						
 			case 4:			
-						Flag.Start_duty2_5 = 1;// D -> A 30s Ñ­¼£
+						Flag.Start_duty2_5 = 1;// D -> A 30s Ñ­ï¿½ï¿½
 		
 						if(Flag.Success_duty2_5 == 1) 
 						{
@@ -126,8 +127,8 @@ void DS2024_duty2(void)//ÌâÄ¿2×´Ì¬»ú
 	
 }
 
-//Æ«º½½Ç½Ç¶È»·  Ê¹ÓÃjy62
-float yaw_feedback = 0,yaw_error = 0,yaw = 0,target_yaw = 0,yaw_out[2]={0,0};//½Ç¶È»· £¨ºÍËÙ¶ÈÎ»ÖÃ´®¼¶PidÒ»ÖÂ£©
+//Æ«ï¿½ï¿½ï¿½Ç½Ç¶È»ï¿½  Ê¹ï¿½ï¿½jy62
+float yaw_feedback = 0,yaw_error = 0,yaw = 0,target_yaw = 0,yaw_out[2]={0,0};//ï¿½Ç¶È»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Î»ï¿½Ã´ï¿½ï¿½ï¿½PidÒ»ï¿½Â£ï¿½
 float yaw_track_kp = -0.9f;
 float yaw_track_ki = 0;
 float yaw_track_kd = -0.232;
@@ -184,14 +185,14 @@ void Yaw_auto_track(float target)
 //	v_target_r = yaw_out[1];
 }
 
-float position_error,position_feedback,position_output;//Î»ÖÃÎó²î Î»ÖÃËÙ¶È ·´À¡Î»ÖÃ
+float position_error,position_feedback,position_output;//Î»ï¿½ï¿½ï¿½ï¿½ï¿½ Î»ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 float pos_track_kp = 6.0;
 float pos_track_ki = 0;
 float pos_track_kd = 0.3;
 float pos_out_limH  = 70;
 float pos_out_limL  = 40;
 float pos_boudary = 40;
-float pos_auto_track(float L)//Âö³åËÙ¶ÈÎ»ÖÃ
+float pos_auto_track(float L)//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Î»ï¿½ï¿½
 {
 	static float err_l,err_last_l,err_r,err_last_r,err_sum_l,err_sum_r;
 	
@@ -202,11 +203,11 @@ float pos_auto_track(float L)//Âö³åËÙ¶ÈÎ»ÖÃ
 	{
 		position_output = 0;
 	}
-	else//Î»ÖÃ»·¿ØÖÆ PID 
+	else//Î»ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ PID 
 	{	
 		err_sum_l  += err_l;
-		err_sum_l = Xianfu_float(err_sum_l,60); //»ý·ÖÏÞ·ù
-		position_output = pos_track_kp*err_l+ position_kd*(err_l-err_last_l);//Î»ÖÃ»·Êä³ö
+		err_sum_l = Xianfu_float(err_sum_l,60); //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½
+		position_output = pos_track_kp*err_l+ position_kd*(err_l-err_last_l);//Î»ï¿½Ã»ï¿½ï¿½ï¿½ï¿½
 		if(ABS(err_r)<4 && ABS(err_r)>0.8)
 		{
 			position_output =  (position_output/ABS(position_output))*10 + position_output;
@@ -214,13 +215,13 @@ float pos_auto_track(float L)//Âö³åËÙ¶ÈÎ»ÖÃ
 		err_last_l = err_l;
 		
 //		if(L >pos_boudary)
-//			position_output = Xianfu_float(position_output,pos_out_limH);//50ÊÇÄ¿±êËÙ¶È ¶ÔÎ»ÖÃÊä³ö½øÐÐÏÞ·ù
+//			position_output = Xianfu_float(position_output,pos_out_limH);//50ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½
 //		else
 		
 		if(task_num == 4)
-				position_output = Xianfu_float(position_output,pos_out_limH);//50ÊÇÄ¿±êËÙ¶È ¶ÔÎ»ÖÃÊä³ö½øÐÐÏÞ·ù
+				position_output = Xianfu_float(position_output,pos_out_limH);//50ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½
 		else
-				position_output = Xianfu_float(position_output,30);//50ÊÇÄ¿±êËÙ¶È ¶ÔÎ»ÖÃÊä³ö½øÐÐÏÞ·ù
+				position_output = Xianfu_float(position_output,30);//50ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½
 	}
 	return position_output;
 
@@ -235,9 +236,9 @@ void auto_track(float *a,float *b)
 
 void DS2024_duty3(void)
 {
-	switch (Param.Send3_Step)//Ò»²½Ò»²½£¬²»»áÖØ¸´
+	switch (Param.Send3_Step)//Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
 		{
-			case -1://×Ô¶¯Ñ­¼£Ç°µ÷Õû³µÎ»
+			case -1://ï¿½Ô¶ï¿½Ñ­ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 						Flag.Start_duty3_0 = 1;				
 						if(Flag.Success_duty3_0 == 1)
 						{
@@ -258,7 +259,7 @@ void DS2024_duty3(void)
 							Param.Send3_Step=4;	
 						}						
 				break;
-			case 4:			//Cµã×Ô×ªÕÒºÚÏß
+			case 4:			//Cï¿½ï¿½ï¿½ï¿½×ªï¿½Òºï¿½ï¿½ï¿½
 						Flag.Start_duty3_5 = 1;//
 		
 						if(Flag.Success_duty3_5 == 1) 
@@ -268,17 +269,17 @@ void DS2024_duty3(void)
 							Param.Send3_Step=7;			
 						}
 					break;							
-			case 7:			//ÕÒµ½ºÚÏßÍ£Ò»Í£
+			case 7:			//ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½Í£Ò»Í£
 						Flag.Start_duty3_8 = 1;//
 		
 						if(Flag.Success_duty3_8 == 1) 
 						{
 							Flag.Start_duty3_8 =0;
 							Flag.Success_duty3_8 = 0;
-							Param.Send3_Step=1;			//È¥Ñ­¼£
+							Param.Send3_Step=1;			//È¥Ñ­ï¿½ï¿½
 						}
 					break;				
-			case 1:	//Ñ­¼£
+			case 1:	//Ñ­ï¿½ï¿½
 						Flag.Start_duty3_2 = 1;
 			
 						if(Flag.Success_duty3_2 == 1)
@@ -288,7 +289,7 @@ void DS2024_duty3(void)
 							Param.Send3_Step=6;								
 						}
 					break;
-			case 6://ÖÇÄÜÑ­¼£Ç°µ÷Õû³µÎ»
+			case 6://ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 						Flag.Start_duty3_7 = 1;				
 						if(Flag.Success_duty3_7 == 1)
 						{
@@ -308,7 +309,7 @@ void DS2024_duty3(void)
 							Param.Send3_Step=5;								 
 						}
 					break;	
-				case 5:	//×Ô×ªÕÒºÚÏß ÏÂÒ»²½Ñ­¼£ 
+				case 5:	//ï¿½ï¿½×ªï¿½Òºï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ­ï¿½ï¿½ 
 						Flag.Start_duty3_6 = 1;
 			
 						if(Flag.Success_duty3_6 == 1)
@@ -318,7 +319,7 @@ void DS2024_duty3(void)
 							Param.Send3_Step=8;								 
 						}
 					break;		
-				case 8:	//ÕÒµ½ºÚÏßÍ£Ò»Í£ ÏÂÒ»²½Ñ­¼£ 
+				case 8:	//ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½Í£Ò»Í£ ï¿½ï¿½Ò»ï¿½ï¿½Ñ­ï¿½ï¿½ 
 						Flag.Start_duty3_9 = 1;
 			
 						if(Flag.Success_duty3_9 == 1)
@@ -329,7 +330,7 @@ void DS2024_duty3(void)
 						}
 					break;						
 			case 3:			
-						Flag.Start_duty3_4 = 1;//Ñ­¼£
+						Flag.Start_duty3_4 = 1;//Ñ­ï¿½ï¿½
 		
 						if(Flag.Success_duty3_4 == 1) 
 						{
@@ -346,9 +347,9 @@ void DS2024_duty3(void)
 char num_of_turn = 0;
 void DS2024_duty4(void)
 {
-	switch (Param.Send3_Step)//Ò»²½Ò»²½£¬²»»áÖØ¸´
+	switch (Param.Send3_Step)//Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
 		{
-			case -1://×Ô¶¯Ñ­¼£Ç°µ÷Õû³µÎ»
+			case -1://ï¿½Ô¶ï¿½Ñ­ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 						Flag.Start_duty3_0 = 1;				
 						if(Flag.Success_duty3_0 == 1)
 						{
@@ -370,7 +371,7 @@ void DS2024_duty4(void)
 						}						
 				break;
 			
-			case 1:	//Ñ­¼£
+			case 1:	//Ñ­ï¿½ï¿½
 						Flag.Start_duty3_2 = 1;
 			
 						if(Flag.Success_duty3_2 == 1)
@@ -380,7 +381,7 @@ void DS2024_duty4(void)
 							Param.Send3_Step=6;								
 						}
 					break;
-			case 6://ÖÇÄÜÑ­¼£Ç°µ÷Õû³µÎ»
+			case 6://ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 						Flag.Start_duty3_7 = 1;				
 						if(Flag.Success_duty3_7 == 1)
 						{
@@ -402,7 +403,7 @@ void DS2024_duty4(void)
 					break;	
 			
 			case 3:			
-						Flag.Start_duty3_4 = 1;//Ñ­¼£
+						Flag.Start_duty3_4 = 1;//Ñ­ï¿½ï¿½
 		
 						if(Flag.Success_duty3_4 == 1) 
 						{
@@ -410,7 +411,7 @@ void DS2024_duty4(void)
 							num_of_turn++;
 							if(num_of_turn < 4)
 							{
-								//num_of_turn = 0;//²»ÄÜ¼Ó
+								//num_of_turn = 0;//ï¿½ï¿½ï¿½Ü¼ï¿½
 								Flag.task_start = 2;
 							}
 							else

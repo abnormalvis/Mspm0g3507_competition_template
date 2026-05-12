@@ -1,190 +1,31 @@
 /*******************************************************************************
-  * @brief     : VOFA+ protocol implementation (send/receive)
-  * @author   : wangming
-  * @wechat   : DeepCoderMing
-  * @qq       : 3201935299
-  * @date     : 2025-05-01
-  * @copyright: Confidential - for demo purposes only
+  * @×÷Õß      £º wangming
+  * @wechat    :DeepCoderMing
+  * @qq      £º 3201935299
+  * @ÈÕÆÚ      £º 2025Äê05ÔÂ01ÈÕ
+  * @°æÈ¨ÉùÃ÷  £º ½ö¹©²Î¿¼Ñ§Ï°£¬Î´¾­ÔÊĞí½ûÖ¹ÉÌÓÃ
 ********************************************************************************/
 #include "hal_vofa.h"
 #include "hal_uart.h"
 
-#define VOFA_RX_BUFFER_SIZE  64
+static uint8_t vofa_buffer[VOFA_FLOAT_NUM*4+4];
+static uint16_t cnt = 0;
 
-/* æ¥æ”¶ç¼“å†²åŒº */
-static uint8_t vofa_rx_buffer[VOFA_RX_BUFFER_SIZE];
-static uint16_t vofa_tx_cnt = 0;
-
-/* åè®®çŠ¶æ€æœº */
-typedef enum {
-    RX_IDLE = 0,
-    RX_WAIT_HASH,
-    RX_WAIT_P,
-    RX_WAIT_ID,
-    RX_WAIT_EQUAL,
-    RX_DATA
-} vofa_rx_state_t;
-
-static volatile vofa_rx_state_t rx_state = RX_IDLE;
-static uint8_t rx_index = 0;
-static volatile uint8_t vofa_rx_flag = 0;
-
-/* PIDå‚æ•°å­˜å‚¨ (å¯é€šè¿‡VOFAåŠ¨æ€è°ƒæ•´) */
-float vofa_param[16] = {0};
-
-/* åè®®è§£æ: #P<id>=<value>! */
-void vofa_rx_parse(uint8_t byte)
-{
-    switch(rx_state)
-    {
-        case RX_IDLE:
-            if(byte == '#')
-                rx_state = RX_WAIT_HASH;
-            break;
-
-        case RX_WAIT_HASH:
-            if(byte == 'P')
-                rx_state = RX_WAIT_P;
-            else
-                rx_state = RX_IDLE;
-            break;
-
-        case RX_WAIT_P:
-            if(byte >= '0' && byte <= '9')
-            {
-                rx_index = byte - '0';
-                rx_state = RX_WAIT_ID;
-            }
-            else
-                rx_state = RX_IDLE;
-            break;
-
-        case RX_WAIT_ID:
-            if(byte == '=')
-                rx_state = RX_WAIT_EQUAL;
-            else
-                rx_state = RX_IDLE;
-            break;
-
-        case RX_WAIT_EQUAL:
-            if(byte == '!')
-            {
-                vofa_rx_buffer[rx_index] = '\0';
-                rx_index = 0;
-                rx_state = RX_IDLE;
-                vofa_rx_flag = 1;
-            }
-            else
-            {
-                if(rx_index < VOFA_RX_BUFFER_SIZE - 1)
-                    vofa_rx_buffer[rx_index++] = byte;
-                else
-                    rx_state = RX_IDLE;
-            }
-            break;
-
-        default:
-            rx_state = RX_IDLE;
-            break;
-    }
-}
-
-/* å°†å­—ç¬¦ä¸²è½¬æ¢ä¸ºæµ®ç‚¹æ•° */
-static float vofa_str_to_float(uint8_t *str)
-{
-    float result = 0.0f;
-    float sign = 1.0f;
-    float decimal = 0.1f;
-    uint8_t has_dot = 0;
-    uint8_t i = 0;
-
-    if(str[0] == '-')
-    {
-        sign = -1.0f;
-        i = 1;
-    }
-
-    while(str[i])
-    {
-        if(str[i] == '.')
-        {
-            has_dot = 1;
-            i++;
-            continue;
-        }
-        if(str[i] >= '0' && str[i] <= '9')
-        {
-            if(has_dot)
-            {
-                result += (str[i] - '0') * decimal;
-                decimal *= 0.1f;
-            }
-            else
-            {
-                result = result * 10.0f + (str[i] - '0');
-            }
-        }
-        i++;
-    }
-
-    return result * sign;
-}
-
-/* å¤„ç†æ¥æ”¶åˆ°çš„å‚æ•° */
-void vofa_param_update(void)
-{
-    if(vofa_rx_flag)
-    {
-        vofa_rx_flag = 0;
-        uint8_t id = vofa_rx_buffer[0] - '0';
-        float value = vofa_str_to_float(&vofa_rx_buffer[1]);
-
-        if(id < 16)
-            vofa_param[id] = value;
-
-        /* æ¸…ç©ºç¼“å†²åŒº */
-        for(uint8_t i = 0; i < VOFA_RX_BUFFER_SIZE; i++)
-            vofa_rx_buffer[i] = 0;
-    }
-}
-
-/* è·å–å‚æ•° */
-float vofa_get_param(uint8_t id)
-{
-    if(id < 16)
-        return vofa_param[id];
-    return 0;
-}
-
-/* æ˜¯å¦æœ‰æ–°æ•°æ® */
-uint8_t vofa_new_data(void)
-{
-    return vofa_rx_flag;
-}
-
-/* æ·»åŠ å‘é€æ•°æ® */
 void vofa_add_data(float data)
 {
-    vofa_rx_buffer[vofa_tx_cnt ++] = *((uint8_t *)(&data));
-    vofa_rx_buffer[vofa_tx_cnt ++] = *((uint8_t *)(&data)+1);
-    vofa_rx_buffer[vofa_tx_cnt ++] = *((uint8_t *)(&data)+2);
-    vofa_rx_buffer[vofa_tx_cnt ++] = *((uint8_t *)(&data)+3);
+    vofa_buffer[cnt ++] = *((uint8_t *)(&data));
+    vofa_buffer[cnt ++] = *((uint8_t *)(&data)+1);
+    vofa_buffer[cnt ++] = *((uint8_t *)(&data)+2);
+    vofa_buffer[cnt ++] = *((uint8_t *)(&data)+3);
 }
 
-/* å‘é€æ•°æ® */
-void vofa_send(void)
+void vofa_send()
 {
-    vofa_rx_buffer[vofa_tx_cnt ++] = 0x00;
-    vofa_rx_buffer[vofa_tx_cnt ++] = 0x00;
-    vofa_rx_buffer[vofa_tx_cnt ++] = 0x80;
-    vofa_rx_buffer[vofa_tx_cnt ++] = 0x7f;
+    vofa_buffer[cnt ++] = 0x00;
+    vofa_buffer[cnt ++] = 0x00;
+    vofa_buffer[cnt ++] = 0x80;
+    vofa_buffer[cnt ++] = 0x7f;
 
-    UART1_send(vofa_rx_buffer, vofa_tx_cnt);
-    vofa_tx_cnt = 0;
-}
-
-/* æ¥æ”¶ä¸€å­—èŠ‚å¤„ç† (ä¾›ä¸­æ–­è°ƒç”¨) */
-void vofa_rx_byte(uint8_t byte)
-{
-    vofa_rx_parse(byte);
+    UART0_send(vofa_buffer, cnt);
+    cnt = 0;
 }

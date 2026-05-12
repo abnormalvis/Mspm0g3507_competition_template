@@ -1,10 +1,9 @@
 /*******************************************************************************
-  * @brief     : Application layer
-  * @author   : wangming
-  * @wechat   : DeepCoderMing
-  * @qq       : 3201935299
-  * @date     : 2025-05-01
-  * @copyright: Confidential - for demo purposes only
+  * @×÷Õß      £º wangming
+  * @wechat    :DeepCoderMing
+  * @qq      £º 3201935299
+  * @ÈÕÆÚ      £º 2025Äê05ÔÂ01ÈÕ
+  * @°æÈ¨ÉùÃ÷  £º ½ö¹©²Î¿¼Ñ§Ï°£¬Î´¾­ÔÊÐí½ûÖ¹ÉÌÓÃ
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "OS_System.h"
@@ -68,7 +67,7 @@ static void stg3Menu_Para5CBS(void);
 static void stg3Menu_Para6CBS(void);
 static void stg3Menu_Para7CBS(void);
 static void stg3Menu_Para8CBS(void);
-stu_mode_menu *pModeMenu;		//ÏµÍ³ï¿½ï¿½Ç°Ö´ï¿½Ð²Ëµï¿½ï¿½Ä½á¹¹ï¿½ï¿½Ö¸ï¿½ï¿½ 
+stu_mode_menu *pModeMenu;		//ÏµÍ³µ±Ç°Ö´ÐÐ²Ëµ¥µÄ½á¹¹ÌåÖ¸Õë 
 
 static void hal_Oled_Clear(void)
 {
@@ -81,29 +80,29 @@ static void hal_Oled_Clear(void)
 	LCD_clear_L(0,7);
 }
 
-/***ï¿½ï¿½ï¿½ï¿½**/
-//ï¿½Ëµï¿½Î¨Ò»IDï¿½ï¿½
-//ï¿½ï¿½Ç°ï¿½Ëµï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ï¢
-//Ö¸ï¿½ï¿½Ç°Ä£Ê½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½Ç°Ä£Ê½ï¿½Âµï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
-//Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
-//Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½Öµ,0xFFï¿½ï¿½ï¿½ï¿½ï¿½Þ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-//Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-//Ö¸ï¿½ò¸¸¼ï¿½ï¿½Ëµï¿½
-//Ö¸ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½Ëµï¿½
+/***²ÎÊý**/
+//²Ëµ¥Î¨Ò»IDºÅ
+//µ±Ç°²Ëµ¥µÄÎ»ÖÃÐÅÏ¢
+//Ö¸Ïòµ±Ç°Ä£Ê½ÀàÐÍ
+//µ±Ç°Ä£Ê½ÏÂµÄÏìÓ¦º¯Êý
+//Ë¢ÐÂÆÁÏÔÊ¾ÃüÁî
+//Ô¤Áô£¬·½±ã²ÎÊý´«µÝ
+//°´¼üÖµ,0xFF´ú±íÎÞ°´¼ü´¥·¢
+//Ö¸ÏòÉÏÒ»¸öÑ¡Ïî
+//Ö¸ÏòÏÂÒ»¸öÑ¡Ïî
+//Ö¸Ïò¸¸¼¶²Ëµ¥
+//Ö¸Ïò×Ó¼¶²Ëµ¥
  
-//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ ï¿½ï¿½Í¨Ä£Ê½ï¿½Ëµï¿½
-stu_mode_menu generalModeMenu[GNL_MENU_SUM] = //ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½ï¿½é£¬ï¿½ï¿½ï¿½Ò½ï¿½ï¿½Ð³ï¿½Ê¼ï¿½ï¿½ 
+//³õÊ¼»¯×ÀÃæ²Ëµ¥£¨Ò»¼¶²Ëµ¥£© ÆÕÍ¨Ä£Ê½²Ëµ¥
+stu_mode_menu generalModeMenu[GNL_MENU_SUM] = //¶¨Òå½á¹¹ÌåÊý×é£¬²¢ÇÒ½øÐÐ³õÊ¼»¯ 
 {
 	{GNL_MENU_DESKTOP1,DESKTOP_MENU_POS,"Desktop1",gnlMenu_Desktop1CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},
 	{GNL_MENU_DESKTOP2,DESKTOP_MENU_POS,"Desktop2",gnlMenu_Desktop2CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},
 	{GNL_MENU_DESKTOP3,DESKTOP_MENU_POS,"Desktop3",gnlMenu_Desktop3CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
-	//ï¿½Ëµï¿½Î¨Ò»IDï¿½ï¿½  ï¿½Ëµï¿½Î»ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½Ù±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½Ö¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½       
+	//²Ëµ¥Î¨Ò»IDºÅ  ²Ëµ¥Î»ÖÃÐÅÏ¢£¨ÊÇÃ¶¾Ù±äÁ¿£©×Ö·ûÖ¸Õë ×ÀÃæ²Ëµ¥µÄ´¦Àíº¯Êý       
 };	
 
-//ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+//£¨1£©³õÊ¼»¯ÉèÖÃ²Ëµ¥£¨Ò»¼¶²Ëµ¥£© ½á¹¹ÌåÊý×é ÉèÖÃ²Ëµ¥°üº¬ÁËËùÓÐÁÐ±í
 stu_mode_menu settingModeMenu1[STG1_MENU_SUM] = 
 {
 	{STG1_MENU_MAIN_SETTING,STG_MENU_POS,"Main Menu1",stg1Menu_MainMenuCBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
@@ -118,20 +117,20 @@ stu_mode_menu settingModeMenu1[STG1_MENU_SUM] =
 	{STG1_MENU_PARA9,STG_SUB_2_MENU_POS,"9. yaw_track_kd ",stg1Menu_Para9CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 };
 
-//ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+//£¨2£©³õÊ¼»¯ÉèÖÃ²Ëµ¥£¨Ò»¼¶²Ëµ¥£© ½á¹¹ÌåÊý×é ÉèÖÃ²Ëµ¥°üº¬ÁËËùÓÐÁÐ±í
 stu_mode_menu settingModeMenu2[STG2_MENU_SUM] = 
 {
 	{STG2_MENU_MAIN_SETTING,STG_MENU_POS,"Main Menu2",stg2Menu_MainMenuCBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
-	{STG2_MENU_PARA1,STG_SUB_2_MENU_POS,"1. task1",stg2Menu_Para1CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
-	{STG2_MENU_PARA2,STG_SUB_2_MENU_POS,"2. task2",stg2Menu_Para2CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//ï¿½ï¿½Ç¦ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½Ë³Ê±ï¿½ï¿½Ò»ï¿½ï¿½
-	{STG2_MENU_PARA3,STG_SUB_2_MENU_POS,"3. task3",stg2Menu_Para3CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0}, //ï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³Ê±ï¿½ï¿½Ò»ï¿½ï¿½
+	{STG2_MENU_PARA1,STG_SUB_2_MENU_POS,"1. task1",stg2Menu_Para1CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//¸´Î»ÈÎÎñ
+	{STG2_MENU_PARA2,STG_SUB_2_MENU_POS,"2. task2",stg2Menu_Para2CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//ÑØÇ¦±Ê¿ò±ßÏßË³Ê±ÕëÒ»ÖÜ
+	{STG2_MENU_PARA3,STG_SUB_2_MENU_POS,"3. task3",stg2Menu_Para3CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0}, //ÑØ½º²¼±ßÏßË³Ê±ÕëÒ»ÖÜ
 	{STG2_MENU_PARA4,STG_SUB_2_MENU_POS,"4. task4 ",stg2Menu_Para4CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 	{STG2_MENU_PARA5,STG_SUB_2_MENU_POS,"5. Dire ",stg2Menu_Para5CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 	{STG2_MENU_PARA5,STG_SUB_2_MENU_POS,"6. Clear ",stg2Menu_Para6CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},
 	{STG2_MENU_PARA5,STG_SUB_2_MENU_POS,"7. Orignal ",stg2Menu_Para7CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 };
 
-//ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+//£¨2£©³õÊ¼»¯ÉèÖÃ²Ëµ¥£¨Ò»¼¶²Ëµ¥£© ½á¹¹ÌåÊý×é ÉèÖÃ²Ëµ¥°üº¬ÁËËùÓÐÁÐ±í
 stu_mode_menu settingModeMenu3[STG3_MENU_SUM] = 
 {
 	{STG3_MENU_MAIN_SETTING,STG_MENU_POS,"Main Menu3",stg3Menu_MainMenuCBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
@@ -149,24 +148,24 @@ stu_mode_menu settingModeMenu3[STG3_MENU_SUM] =
 
 void AppInit(void)
 {
-	menuInit();    //ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	menuInit();    //±ØÐëÒª³õÊ¼»¯£¬²ÅÄÜ½«²Ëµ¥ÏÔÊ¾Îª×ÀÃæ²Ëµ¥
 
 	hal_KeyScanCBSRegister(KeyEventHandle);
 
 }
 
-//ï¿½Ëµï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Êµï¿½Ö²Ëµï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//²Ëµ¥³õÊ¼»¯º¯Êý ÊµÏÖ²Ëµ¥Ë«ÏòÁ´±í¹¦ÄÜ
 static void menuInit(void)
 {
 	unsigned char i;
-	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
-	//ï¿½ÑµÚ¶ï¿½ï¿½ï¿½ï¿½Ó²Ëµï¿½ï¿½Ð±ï¿½ï¿½Î³ï¿½Ñ­ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
-	settingModeMenu1[1].pLase = &settingModeMenu1[STG1_MENU_SUM-1];	//settingModeMenu1[1].pLaseï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-	settingModeMenu1[1].pNext = &settingModeMenu1[2];	//settingModeMenu1[1].pNextï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-	settingModeMenu1[1].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParentï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	/*£¡£¡£¡ÒÔÏÂ´úÂëË³Ðò²»ÄÜµ÷»»£¡£¡£¡*/
+	//°ÑµÚ¶þ¼¶×Ó²Ëµ¥ÁÐ±íÐÎ³ÉÑ­»·Ë«ÏòÁ´±íÐÎÊ½£¬·½±ãµ÷ÓÃ
+	//ÌØÊâµÄÍ·ºÍÎ²½øÐÐÁ¬½Ó 
+	settingModeMenu1[1].pLase = &settingModeMenu1[STG1_MENU_SUM-1];	//settingModeMenu1[1].pLaseµÄÉÏÒ»¸öÑ¡Ïî
+	settingModeMenu1[1].pNext = &settingModeMenu1[2];	//settingModeMenu1[1].pNextµÄÏÂÒ»¸öÑ¡Ïî
+	settingModeMenu1[1].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParentµÄ¸¸¼¶²Ëµ¥
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ÄµÚ¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ò³ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	//´ÓÉèÖÃ²Ëµ¥µÄµÚ¶þ¸ö¿ªÊ¼Á¬½Ó µÚÒ»¸öÊÇÖ÷²Ëµ¥Ò³Ãæ ÉÏÒ»¸öÑ¡Ïî ÏÂÒ»¸öÑ¡Ïî ¸¸¼¶²Ëµ¥
 	for(i=2; i<STG1_MENU_SUM-1; i++)
 	{
 		settingModeMenu1[i].pLase = &settingModeMenu1[i-1];
@@ -174,21 +173,21 @@ static void menuInit(void)
 		settingModeMenu1[i].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];
 	}	
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	//ÌØÊâµÄÎ²ºÍÍ·½øÐÐÁ¬½Ó ÉèÖÃ²Ëµ¥µÄ×îºóÒ»¸öÑ¡Ïî µÄÉÏÒ»¸öÑ¡Ïî ÏÂÒ»¸öÑ¡Ïî ¸¸¼¶²Ëµ¥
 	settingModeMenu1[STG1_MENU_SUM-1].pLase = &settingModeMenu1[i-1];
 	settingModeMenu1[STG1_MENU_SUM-1].pNext = &settingModeMenu1[1];
 	settingModeMenu1[STG1_MENU_SUM-1].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];	
-	//ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Êµï¿½ï¿½Ñ­ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
-	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+	//ÒÔÉÏ´úÂëÊµÏÖÑ­»·Ë«ÏòÁ´±í,Ë³Ðò²»ÄÜµ÷»»£¡£¡£¡£¡£¡	
+	/*£¡£¡£¡ÒÔÉÏ´úÂëË³Ðò²»ÄÜµ÷»»£¡£¡£¡*/
 
-	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
-	//ï¿½ÑµÚ¶ï¿½ï¿½ï¿½ï¿½Ó²Ëµï¿½ï¿½Ð±ï¿½ï¿½Î³ï¿½Ñ­ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
-	settingModeMenu2[1].pLase = &settingModeMenu2[STG2_MENU_SUM-1];	//settingModeMenu1[1].pLaseï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-	settingModeMenu2[1].pNext = &settingModeMenu2[2];	//settingModeMenu1[1].pNextï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-	settingModeMenu2[1].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParentï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	/*£¡£¡£¡ÒÔÏÂ´úÂëË³Ðò²»ÄÜµ÷»»£¡£¡£¡*/
+	//°ÑµÚ¶þ¼¶×Ó²Ëµ¥ÁÐ±íÐÎ³ÉÑ­»·Ë«ÏòÁ´±íÐÎÊ½£¬·½±ãµ÷ÓÃ
+	//ÌØÊâµÄÍ·ºÍÎ²½øÐÐÁ¬½Ó 
+	settingModeMenu2[1].pLase = &settingModeMenu2[STG2_MENU_SUM-1];	//settingModeMenu1[1].pLaseµÄÉÏÒ»¸öÑ¡Ïî
+	settingModeMenu2[1].pNext = &settingModeMenu2[2];	//settingModeMenu1[1].pNextµÄÏÂÒ»¸öÑ¡Ïî
+	settingModeMenu2[1].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParentµÄ¸¸¼¶²Ëµ¥
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ÄµÚ¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ò³ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	//´ÓÉèÖÃ²Ëµ¥µÄµÚ¶þ¸ö¿ªÊ¼Á¬½Ó µÚÒ»¸öÊÇÖ÷²Ëµ¥Ò³Ãæ ÉÏÒ»¸öÑ¡Ïî ÏÂÒ»¸öÑ¡Ïî ¸¸¼¶²Ëµ¥
 	for(i=2; i<STG2_MENU_SUM-1; i++)
 	{
 		settingModeMenu2[i].pLase = &settingModeMenu2[i-1];
@@ -196,21 +195,21 @@ static void menuInit(void)
 		settingModeMenu2[i].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];
 	}	
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	//ÌØÊâµÄÎ²ºÍÍ·½øÐÐÁ¬½Ó ÉèÖÃ²Ëµ¥µÄ×îºóÒ»¸öÑ¡Ïî µÄÉÏÒ»¸öÑ¡Ïî ÏÂÒ»¸öÑ¡Ïî ¸¸¼¶²Ëµ¥
 	settingModeMenu2[STG2_MENU_SUM-1].pLase = &settingModeMenu2[i-1];
 	settingModeMenu2[STG2_MENU_SUM-1].pNext = &settingModeMenu2[1];
 	settingModeMenu2[STG2_MENU_SUM-1].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];	
-	//ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Êµï¿½ï¿½Ñ­ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
-	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+	//ÒÔÉÏ´úÂëÊµÏÖÑ­»·Ë«ÏòÁ´±í,Ë³Ðò²»ÄÜµ÷»»£¡£¡£¡£¡£¡	
+	/*£¡£¡£¡ÒÔÉÏ´úÂëË³Ðò²»ÄÜµ÷»»£¡£¡£¡*/
 	
-	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
-	//ï¿½ÑµÚ¶ï¿½ï¿½ï¿½ï¿½Ó²Ëµï¿½ï¿½Ð±ï¿½ï¿½Î³ï¿½Ñ­ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
-	settingModeMenu3[1].pLase = &settingModeMenu3[STG3_MENU_SUM-1];	//settingModeMenu1[1].pLaseï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-	settingModeMenu3[1].pNext = &settingModeMenu3[2];	//settingModeMenu1[1].pNextï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
-	settingModeMenu3[1].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParentï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	/*£¡£¡£¡ÒÔÏÂ´úÂëË³Ðò²»ÄÜµ÷»»£¡£¡£¡*/
+	//°ÑµÚ¶þ¼¶×Ó²Ëµ¥ÁÐ±íÐÎ³ÉÑ­»·Ë«ÏòÁ´±íÐÎÊ½£¬·½±ãµ÷ÓÃ
+	//ÌØÊâµÄÍ·ºÍÎ²½øÐÐÁ¬½Ó 
+	settingModeMenu3[1].pLase = &settingModeMenu3[STG3_MENU_SUM-1];	//settingModeMenu1[1].pLaseµÄÉÏÒ»¸öÑ¡Ïî
+	settingModeMenu3[1].pNext = &settingModeMenu3[2];	//settingModeMenu1[1].pNextµÄÏÂÒ»¸öÑ¡Ïî
+	settingModeMenu3[1].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParentµÄ¸¸¼¶²Ëµ¥
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ÄµÚ¶ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ò³ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	//´ÓÉèÖÃ²Ëµ¥µÄµÚ¶þ¸ö¿ªÊ¼Á¬½Ó µÚÒ»¸öÊÇÖ÷²Ëµ¥Ò³Ãæ ÉÏÒ»¸öÑ¡Ïî ÏÂÒ»¸öÑ¡Ïî ¸¸¼¶²Ëµ¥
 	for(i=2; i<STG3_MENU_SUM-1; i++)
 	{
 		settingModeMenu3[i].pLase = &settingModeMenu3[i-1];
@@ -218,38 +217,38 @@ static void menuInit(void)
 		settingModeMenu3[i].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];
 	}	
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+	//ÌØÊâµÄÎ²ºÍÍ·½øÐÐÁ¬½Ó ÉèÖÃ²Ëµ¥µÄ×îºóÒ»¸öÑ¡Ïî µÄÉÏÒ»¸öÑ¡Ïî ÏÂÒ»¸öÑ¡Ïî ¸¸¼¶²Ëµ¥
 	settingModeMenu3[STG3_MENU_SUM-1].pLase = &settingModeMenu3[i-1];
 	settingModeMenu3[STG3_MENU_SUM-1].pNext = &settingModeMenu3[1];
 	settingModeMenu3[STG3_MENU_SUM-1].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];	
-	//ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Êµï¿½ï¿½Ñ­ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
-	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/	
+	//ÒÔÉÏ´úÂëÊµÏÖÑ­»·Ë«ÏòÁ´±í,Ë³Ðò²»ÄÜµ÷»»£¡£¡£¡£¡£¡	
+	/*£¡£¡£¡ÒÔÉÏ´úÂëË³Ðò²»ÄÜµ÷»»£¡£¡£¡*/	
 	
 	
-	//ÏµÍ³ï¿½ï¿½Ç°Ö´ï¿½Ð²Ëµï¿½ï¿½Ä½á¹¹ï¿½ï¿½Ö¸ï¿½ï¿½Ö¸ï¿½ï¿½ ï¿½ï¿½Í¨Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ È»ï¿½ï¿½Í¿ï¿½ï¿½Ô¸Ä±ï¿½ï¿½ï¿½Í¨Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
-	pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];	//ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½Ê¾ï¿½Ä²Ëµï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
-	pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;	//ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½Â½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½UI
-	//ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ê±ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Îªï¿½ï¿½SCREEN_CMD_RESET
+	//ÏµÍ³µ±Ç°Ö´ÐÐ²Ëµ¥µÄ½á¹¹ÌåÖ¸ÕëÖ¸Ïò ÆÕÍ¨Ä£Ê½µÄ×ÀÃæ²Ëµ¥ È»ºó¾Í¿ÉÒÔ¸Ä±äÆÕÍ¨Ä£Ê½µÄ×ÀÃæ²Ëµ¥ÀïµÄ²ÎÊý
+	pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];	//ÉèÖÃÉÏµçÏÔÊ¾µÄ²Ëµ¥½çÃæÎª×ÀÃæÏÔÊ¾
+	pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;	//¸üÐÂË¢ÐÂ½çÃæ±êÖ¾£¬½øÈë½çÃæºóË¢ÐÂÈ«½çÃæUI
+	//ÉÏÐÐ´úÂëÆäÊµ²»Ð´ÔÚÕâ¸ö³õÊ¼»¯º¯ÊýÖÐÒ²ÊÇÕâ¸öÖµ£¬ÒòÎª¶¨ÒåÆÕÍ¨Ä£Ê½µÄ×ÀÃæ²Ëµ¥Ê±¾ÍÒÑ¾­½«Ëü³õÊ¼»¯ÎªÁËSCREEN_CMD_RESET
 }
 
 
-int key_count;    //ï¿½ï¿½ï¿½ï¿½Öµ
+int key_count;    //°´¼üÖµ
 int task_num = 0;
 char stop_task = 0;
 
-float pwm_x0 = 1950,pwm_y0 = 1050;	//ï¿½ï¿½Î»Î»ï¿½Ãµï¿½pwm
-float pwm_x1 = 1950,pwm_y1 = 1050;	//ï¿½Ü±ï¿½ï¿½ï¿½ï¿½Ï½Çµï¿½ï¿½pwm
-float pwm_x2 = 1950,pwm_y2 = 1050;	//ï¿½Ü±ï¿½ï¿½ï¿½ï¿½Â½Çµï¿½ï¿½pwm
+float pwm_x0 = 1950,pwm_y0 = 1050;	//¸´Î»Î»ÖÃµÄpwm
+float pwm_x1 = 1950,pwm_y1 = 1050;	//ÖÜ±ß×óÉÏ½ÇµãµÄpwm
+float pwm_x2 = 1950,pwm_y2 = 1050;	//ÖÜ±ßÓÒÏÂ½ÇµãµÄpwm
 char Beep_toggle_flag = 0;
-//ï¿½ï¿½ï¿½ï¿½1ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//×ÀÃæ1²Ëµ¥·þÎñº¯Êý
 static void gnlMenu_Desktop1CBS(void)
 {
 	unsigned char keys;
 	static uint8_t gray_display_state = 1;
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//×´Ì¬ÎªË¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//×´Ì¬ÎªË¢ÐÂÊ±Âú×ãÌõ¼þ
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//ï¿½Â´Î²ï¿½Ë¢ï¿½ï¿½ï¿½Ë£ï¿½Ë¢ï¿½ï¿½Ò»ï¿½ï¿½
-		pModeMenu->keyVal = 0xFF;//ï¿½ï¿½Ê¼ï¿½ï¿½ÎªÃ»ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//ÏÂ´Î²»Ë¢ÐÂÁË£¬Ë¢ÐÂÒ»´Î
+		pModeMenu->keyVal = 0xFF;//³õÊ¼»¯ÎªÃ»ÓÐ°´¼ü°´ÏÂ
 		 
 		hal_Oled_Clear();
 		//display_6_8_string(110,0,"M1");
@@ -260,7 +259,7 @@ static void gnlMenu_Desktop1CBS(void)
 		case 1:
 			gray_display_state++;
 			LCD_clear_L(0,1);
-			display_6_8_string(0,1,"cmps:");			  //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½   
+			display_6_8_string(0,1,"cmps:");			  //ÀåÃ×/Ãë   
 			display_6_8_number(40,1,smartcar_imu.left_motor_speed_cmps);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(85,1,smartcar_imu.right_motor_speed_cmps); 		
 	
@@ -269,7 +268,7 @@ static void gnlMenu_Desktop1CBS(void)
 			gray_display_state++;
 			LCD_clear_L(0,2);
 		//distance_l
-			display_6_8_string(0,2,"dtas:");			  //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½   
+			display_6_8_string(0,2,"dtas:");			  //ÀåÃ×/Ãë   
 			display_6_8_number(30,2,distance_inter);  
 			//display_6_8_number(80,2,distance_r); 			
 //			display_6_8_string(0,2,"p_x1:");				         
@@ -338,30 +337,30 @@ static void gnlMenu_Desktop1CBS(void)
 		default:
 			gray_display_state = 1;
 	}
-	//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Â³ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	if(pModeMenu->keyVal != 0xff)//ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÒÔÏÂ´úÂëÔÚ×ÀÃæ²Ëµ¥·þÎñº¯ÊýÖÐ£¬±íÊ¾ÔÚ×ÀÃæ²Ëµ¥ÏÂ³¤°´ÖÐ¼ü²Å»á½øÈëÖ÷½çÃæ
+	if(pModeMenu->keyVal != 0xff)//ÓÐ°´¼ü´¥·¢
 	{
-		keys = pModeMenu->keyVal; //keysï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+		keys = pModeMenu->keyVal; //keysÊÇÕâ¸öº¯ÊýÀïµÄÁÙÊ±±äÁ¿
 
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ keysï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ keysÖÐÓÐÖµÁË
 		switch(keys)
 		{
 			case KEY5_CLICK_RELEASE:
-				pModeMenu = &settingModeMenu1[0];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+				pModeMenu = &settingModeMenu1[0];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY4_CLICK_RELEASE:	//ï¿½Ò¼ï¿½
-				pModeMenu = &generalModeMenu[1];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½
+			case KEY4_CLICK_RELEASE:	//ÓÒ¼ü
+				pModeMenu = &generalModeMenu[1];	//Ìø×ªµ½×ÀÃæÉãÏñÍ·½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½
-				pModeMenu = &generalModeMenu[2];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü
+				pModeMenu = &generalModeMenu[2];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:	//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY1_CLICK_RELEASE:	//ÉÏ¼ü Æô¶¯·¢³µ
 						Flag.Start_Car = 1;
 			break;				
-			case KEY2_CLICK_RELEASE:	//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY2_CLICK_RELEASE:	//ÉÏ¼ü Æô¶¯·¢³µ
 						Flag.Start_Car = 0;			
 			break;				
 		}
@@ -369,14 +368,14 @@ static void gnlMenu_Desktop1CBS(void)
 	
 }
 
-//ï¿½ï¿½ï¿½ï¿½2ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//×ÀÃæ2²Ëµ¥·þÎñº¯Êý
 static void gnlMenu_Desktop2CBS(void)
 {
 	unsigned char keys;
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//×´Ì¬ÎªË¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//×´Ì¬ÎªË¢ÐÂÊ±Âú×ãÌõ¼þ
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//ï¿½Â´Î²ï¿½Ë¢ï¿½ï¿½ï¿½Ë£ï¿½Ë¢ï¿½ï¿½Ò»ï¿½ï¿½
-		pModeMenu->keyVal = 0xFF;//ï¿½ï¿½Ê¼ï¿½ï¿½ÎªÃ»ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//ÏÂ´Î²»Ë¢ÐÂÁË£¬Ë¢ÐÂÒ»´Î
+		pModeMenu->keyVal = 0xFF;//³õÊ¼»¯ÎªÃ»ÓÐ°´¼ü°´ÏÂ
 		 
 		hal_Oled_Clear();
 		//display_6_8_string(110,0,"M2");
@@ -384,28 +383,28 @@ static void gnlMenu_Desktop2CBS(void)
 		
 	}
 	display_6_8_string(50,4,"TASK");
-	//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Â³ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	if(pModeMenu->keyVal != 0xff)//ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÒÔÏÂ´úÂëÔÚ×ÀÃæ²Ëµ¥·þÎñº¯ÊýÖÐ£¬±íÊ¾ÔÚ×ÀÃæ²Ëµ¥ÏÂ³¤°´ÖÐ¼ü²Å»á½øÈëÖ÷½çÃæ
+	if(pModeMenu->keyVal != 0xff)//ÓÐ°´¼ü´¥·¢
 	{
-		keys = pModeMenu->keyVal; //keysï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+		keys = pModeMenu->keyVal; //keysÊÇÕâ¸öº¯ÊýÀïµÄÁÙÊ±±äÁ¿
 
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ keysï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ keysÖÐÓÐÖµÁË
 		switch(keys)
 		{
 			case KEY5_CLICK_RELEASE:
-				pModeMenu = &settingModeMenu2[0];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+				pModeMenu = &settingModeMenu2[0];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 				
 			break;
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½
-				pModeMenu = &generalModeMenu[0];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü
+				pModeMenu = &generalModeMenu[0];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY4_CLICK_RELEASE:	//ï¿½Ò¼ï¿½
-				pModeMenu = &generalModeMenu[2];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY4_CLICK_RELEASE:	//ÓÒ¼ü
+				pModeMenu = &generalModeMenu[2];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:	//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY1_CLICK_RELEASE:	//ÉÏ¼ü Æô¶¯·¢³µ
 						
 			break;			
 			
@@ -414,15 +413,15 @@ static void gnlMenu_Desktop2CBS(void)
 	
 }
 
-//ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½Æ²Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//×ÀÃæ3¿ØÖÆ²Ëµ¥·þÎñº¯Êý
 static void gnlMenu_Desktop3CBS(void)
 {
 	unsigned char keys;
 	static uint8_t gray_display_state = 1;
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//×´Ì¬ÎªË¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//×´Ì¬ÎªË¢ÐÂÊ±Âú×ãÌõ¼þ
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//ï¿½Â´Î²ï¿½Ë¢ï¿½ï¿½ï¿½Ë£ï¿½Ë¢ï¿½ï¿½Ò»ï¿½ï¿½
-		pModeMenu->keyVal = 0xFF;//ï¿½ï¿½Ê¼ï¿½ï¿½ÎªÃ»ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//ÏÂ´Î²»Ë¢ÐÂÁË£¬Ë¢ÐÂÒ»´Î
+		pModeMenu->keyVal = 0xFF;//³õÊ¼»¯ÎªÃ»ÓÐ°´¼ü°´ÏÂ
 		 
 		hal_Oled_Clear();
 	//	display_6_8_string(110,0,"M3");
@@ -433,7 +432,7 @@ static void gnlMenu_Desktop3CBS(void)
 		case 1:
 			gray_display_state++;
 			LCD_clear_L(0,1);
-			display_6_8_string(0,1,"pointA:");			  //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½   
+			display_6_8_string(0,1,"pointA:");			  //ÀåÃ×/Ãë   
 			display_6_8_number(40,1,point_A[0]);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(80,1,point_A[1]); 		
 	
@@ -480,24 +479,24 @@ static void gnlMenu_Desktop3CBS(void)
 		default:
 			gray_display_state = 1;
 	}	
-	//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Â³ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½Å»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	if(pModeMenu->keyVal != 0xff)//ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÒÔÏÂ´úÂëÔÚ×ÀÃæ²Ëµ¥·þÎñº¯ÊýÖÐ£¬±íÊ¾ÔÚ×ÀÃæ²Ëµ¥ÏÂ³¤°´ÖÐ¼ü²Å»á½øÈëÖ÷½çÃæ
+	if(pModeMenu->keyVal != 0xff)//ÓÐ°´¼ü´¥·¢
 	{
-		keys = pModeMenu->keyVal; //keysï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
+		keys = pModeMenu->keyVal; //keysÊÇÕâ¸öº¯ÊýÀïµÄÁÙÊ±±äÁ¿
 
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ keysï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ keysÖÐÓÐÖµÁË
 		switch(keys)
 		{
 			case KEY5_CLICK_RELEASE:
-				pModeMenu = &settingModeMenu3[0];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+				pModeMenu = &settingModeMenu3[0];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½
-				pModeMenu = &generalModeMenu[1];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü
+				pModeMenu = &generalModeMenu[1];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY4_CLICK_RELEASE:	//ï¿½Ò¼ï¿½
-				pModeMenu = &generalModeMenu[0];	//ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY4_CLICK_RELEASE:	//ÓÒ¼ü
+				pModeMenu = &generalModeMenu[0];	//Ìø×ªµ½ÉèÖÃ²Ëµ¥½çÃæ
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 		}
@@ -505,49 +504,49 @@ static void gnlMenu_Desktop3CBS(void)
 	
 }
 
-//ï¿½ï¿½ï¿½Ëµï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//Ö÷²Ëµ¥1´¦Àíº¯Êý
 static void stg1Menu_MainMenuCBS(void)
 {
-	//pMenu  MHead  MTailï¿½Ç¶ï¿½ï¿½ï¿½ï¿½Ä½á¹¹ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´
-	//staticï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½Ù»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	unsigned char keys;//ï¿½ï¿½Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
-	unsigned char i;//ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½
-	unsigned char ClrScreenFlag;//Òªï¿½ï¿½ÒªÈ¥Ë¢ï¿½ï¿½ï¿½Ä±ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½
-	static stu_mode_menu *pMenu;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµ±Ç°Ñ¡ï¿½ÐµÄ²Ëµï¿½
-	static stu_mode_menu *bpMenu=0;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î²Ëµï¿½Ñ¡ï¿½î£¬ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½pMenuï¿½ï¿½= bpMenuÊ±ï¿½ï¿½Ë¢ï¿½ï¿½
-	static unsigned char stgMainMenuSelectedPos=0;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ç°Ñ¡ï¿½Ð²Ëµï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ñ¡ï¿½Ð²Ëµï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ä¬ï¿½Ïµï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½Óµï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¼
-	static stu_mode_menu *MHead,*MTail;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Ëµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//ï¿½ï¿½ÒªË¢ï¿½ï¿½ï¿½ï¿½Ä»
+	//pMenu  MHead  MTailÊÇ¶ÀÁ¢µÄ½á¹¹ÌåÖ¸Õë£¬·ÖÅäÁË¶ÀÁ¢µÄ×ÊÔ´
+	//static¶¨ÒåµÄ±äÁ¿£¬ÏÂ´ÎÔÙ»Øµ½Õâ¸öº¯ÊýÖÐ£¬±äÁ¿µÄÖµ±£³ÖÉÏÒ»¸ö²»±ä
+	unsigned char keys;//¼üÖµÁÙÊ±´¢´æµÄ±äÁ¿
+	unsigned char i;//ÓÃÓÚforÑ­»·
+	unsigned char ClrScreenFlag;//Òª²»ÒªÈ¥Ë¢ÆÁµÄ±êÖ¾Î»£¬·­Ò³µÄÊ±ºòË¢ÆÁ£¬Çå³þÁÐ±íÇøÓòµÄÏÔÊ¾£¬ÖØÐÂÏÔÊ¾£¬²»·­Ò³µÄ»°²»ÓÃË¢ÆÁ
+	static stu_mode_menu *pMenu;		//ÓÃÀ´±£´æµ±Ç°Ñ¡ÖÐµÄ²Ëµ¥
+	static stu_mode_menu *bpMenu=0;		//ÓÃÀ´±¸·ÝÉÏÒ»´Î²Ëµ¥Ñ¡Ïî£¬Ö÷ÒªÓÃÓÚË¢ÆÁÅÐ¶Ï£¬µ±pMenu£¡= bpMenuÊ±£¬Ë¢ÆÁ
+	static unsigned char stgMainMenuSelectedPos=0;	//ÓÃÀ´¼ÇÂ¼µ±Ç°Ñ¡ÖÐ²Ëµ¥µÄÎ»ÖÃ£¬Ñ¡ÔñÁÐ±íÖÐÑ¡ÖÐ²Ëµ¥µÄÎ»ÖÃ£¬Ä¬ÈÏµÈÓÚ1£¬´ÓµÚÒ»¸ö²Ëµ¥¿ªÊ¼
+	static stu_mode_menu *MHead,*MTail;		//ÕâÁ½¸ö½á¹¹ÌåÖ¸ÕëÊÇÎªÁËÉÏÏÂÇÐ»»²Ëµ¥Ê±×ö·­Ò³´¦Àí
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//ÐèÒªË¢ÐÂÆÁÄ»
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//ï¿½Â´Î½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ë£ï¿½Ö»Ë¢ï¿½ï¿½Ò»ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ë¢ï¿½ï¿½Ò»ï¿½ï¿½
-		pMenu = &settingModeMenu1[0];//Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
-		hal_Oled_Clear();//Ë¢ï¿½ï¿½
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//ÏÂ´Î½øÀ´Õâ¸öº¯Êý²»Ë¢ÐÂÁË£¬Ö»Ë¢ÐÂÒ»´Î£¬³¤°´ÖÐ¼üºó¼ÓÈëÖ÷Ò³ÃæË¢ÐÂÒ»´Î
+		pMenu = &settingModeMenu1[0];//Ö´ÐÐÖ÷²Ëµ¥
+		hal_Oled_Clear();//Ë¢ÆÁ
 		
-		//display_6_8_string(10,0,pMenu->pModeType);//ï¿½ï¿½Òªï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½oledï¿½ï¿½ï¿½æ£¬oledï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ë¢ï¿½ï¿½
+		//display_6_8_string(10,0,pMenu->pModeType);//½«ÒªÏÔÊ¾µÄÊý¾ÝÐ´Èëoled»º´æ£¬oled»¹²»»á¸üÐÂÏÔÊ¾£¬ÒªÔËÐÐÏÂÒ»²½Ë¢ÐÂ
 
 		
-	//Ë¢ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê±ï¿½ä£¬Ö»ï¿½Ð¼ï¿½Öµï¿½Ä±ï¿½ï¿½Ê±ï¿½ï¿½Å½ï¿½ï¿½ï¿½
+	//Ë¢ÆÁºÍ¸üÐÂÏÔÊ¾·ÑÊ±¼ä£¬Ö»ÓÐ¼üÖµ¸Ä±äµÄÊ±ºò²Å½øÐÐ
 		
-		pMenu = &settingModeMenu1[1];	//ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½Ð±ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+		pMenu = &settingModeMenu1[1];	//ÉèÖÃ²Ëµ¥ÁÐ±íµÄµÚÒ»¸öÑ¡Ïî
 		
-		MHead = pMenu;			//ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½
-		MTail = pMenu+6;		//ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½,Ò»Ò³ï¿½ï¿½Ê¾4ï¿½ï¿½Ñ¡ï¿½î£¬ï¿½ï¿½5ï¿½ï¿½Ñ¡ï¿½ï¿½
-		bpMenu = 0;	//bpMenuï¿½ï¿½pMenuï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½uiï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+		MHead = pMenu;			//¼ÇÂ¼µ±Ç°ÉèÖÃ²Ëµ¥µÚÒ»Ïî
+		MTail = pMenu+6;		//¼ÇÂ¼µ±Ç°ÉèÖÃ²Ëµ¥×îºóÒ»Ïî,Ò»Ò³ÏÔÊ¾4¸öÑ¡Ïî£¬¹²5¸öÑ¡Ïî
+		bpMenu = 0;	//bpMenuÓëpMenu²»ÏàµÈ£¬½øÈëÏÂÃæµÄuiÏÔÊ¾³ÌÐò
  
-		ClrScreenFlag = 1;	//Ð´ï¿½ï¿½1ï¿½ï¿½Ê¹ï¿½Ãµï¿½Ò»ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ñ²Ëµï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		ClrScreenFlag = 1;	//Ð´³É1£¬Ê¹µÃµÚÒ»´Î½øÈëÏÂÃæµÄÏÔÊ¾³ÌÐòÊ±£¬°Ñ²Ëµ¥ÁÐ±íÏÔÊ¾³öÀ´£¬·ñÔòÑ¡ÔñÁÐ±íÏÔÊ¾²»³öÀ´
 		stgMainMenuSelectedPos = 1;
 		keys = 0xFF;
  
 	}
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
+	//°´¼ü²Ù×÷²Ëµ¥ °üÀ¨·­Ò³²Ù×÷
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY1_CLICK_RELEASE:		//ï¿½ï¿½
+			case KEY1_CLICK_RELEASE:		//ÉÏ
 				
 				if(stgMainMenuSelectedPos ==1)
 				{
@@ -558,34 +557,34 @@ static void stg1Menu_MainMenuCBS(void)
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ï¿½ï¿½Ñ¡ï¿½Ð±ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ÏûÑ¡ÖÐ±¾²Ëµ¥ÏÔÊ¾
 					pMenu = pMenu->pLase;
 					stgMainMenuSelectedPos--;
 				}
 			break;
-			case KEY2_CLICK_RELEASE:		//ï¿½ï¿½
-				if(stgMainMenuSelectedPos == 7)///ï¿½ï¿½Ò³ï¿½ï¿½Ñ¡ï¿½Ðµï¿½4ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ê±
+			case KEY2_CLICK_RELEASE:		//ÏÂ
+				if(stgMainMenuSelectedPos == 7)///·­Ò³£ºÑ¡ÖÐµÚ4¸ö²Ëµ¥°´ÏÂ¼üÊ±
 				{
 					MHead = MHead->pNext;	
 					pMenu = pMenu->pNext;
 					MTail = pMenu;
-					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPosï¿½ï¿½ï¿½ï¿½ï¿½4
+					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos×î´óÊÇ4
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ï¿½ï¿½Ñ¡ï¿½Ð±ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾
-					pMenu = pMenu->pNext;																			//ï¿½Ð»ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ÏûÑ¡ÖÐ±¾²Ëµ¥ÏÔÊ¾
+					pMenu = pMenu->pNext;																			//ÇÐ»»ÏÂÒ»¸öÑ¡Ïî
 					stgMainMenuSelectedPos++;
 				}
 
 			break;
 			
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 			
-			case KEY4_CLICK_RELEASE:	//ï¿½Ò¼ï¿½ È·ï¿½ï¿½
+			case KEY4_CLICK_RELEASE:	//ÓÒ¼ü È·¶¨
 				pModeMenu->pChild = pMenu;
 				pModeMenu = pModeMenu->pChild;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;		
@@ -594,78 +593,78 @@ static void stg1Menu_MainMenuCBS(void)
 		}
 	}
 	
-	//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ò³ï¿½ï¿½Ä²Ëµï¿½ï¿½Ð±ï¿½
-	if(bpMenu != pMenu)//ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ò»ï¿½Â£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½Ç¿ï¿½Æµï¿½Ö·ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
+	//ÒÔÏÂ´úÂëÓÃÓÚUIÏÔÊ¾£¬ÏÔÊ¾Ö÷Ò³ÃæµÄ²Ëµ¥ÁÐ±í
+	if(bpMenu != pMenu)//Èç¹ûÖ¸ÏòµØÖ·²»Ò»ÖÂ£¬ÐèÒª¸üÐÂÏÔÊ¾£¬ÉÏÃæÒÑ¾­Ç¿ÖÆµØÖ·²»Ò»ÖÂÁË
 	{
-		bpMenu = pMenu;//bpMenuï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ú²Ëµï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½pMenuï¿½Ä±ä£¬ï¿½ï¿½bpMenu != pMenuï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½Ê¾
-		if(ClrScreenFlag)//Ë¢ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+		bpMenu = pMenu;//bpMenu¸üÐÂÎªÏÖÔÚ²Ëµ¥×´Ì¬£¬ÈôpMenu¸Ä±ä£¬ÔòbpMenu != pMenu£¬±íÊ¾ÓÐ°´¼ü°´ÏÂ£¬Òª¸üÐÂÆÁÄ»ÏÔÊ¾
+		if(ClrScreenFlag)//Ë¢ÆÁ±êÖ¾Î»£¬·­Ò³µÄÊ±ºòÆð×÷ÓÃ£¬·­Ò³µÄÊ±ºòÒªÇåÆÁ
 		{
 			
 			ClrScreenFlag = 0;
 			pMenu = MHead;
-			hal_Oled_Clear();		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½
+			hal_Oled_Clear();		//ÇåÆÁ Çå³ýÁÐ±íµÄÄÇ¿éÇøÓò
 
-			for(i=1; i<8; i++)	//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½i<5ï¿½ï¿½ï¿½ï¿½ÎªÒ»Ò³Ö»ï¿½ï¿½ï¿½ï¿½Ê¾4ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ð±ï¿½
+			for(i=1; i<8; i++)	//ÕâÀïÒ»¶¨ÊÇi<5£¬ÒòÎªÒ»Ò³Ö»ÄÜÏÔÊ¾4¸ö²Ëµ¥ÁÐ±í
 			{
-				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Ñ­ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ëµï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Ñ­»·ÏÔÊ¾²Ëµ¥ÁÐ±íµÄÃû×Ö
 
-				pMenu = pMenu->pNext;//ï¿½ï¿½Ò»ï¿½ï¿½
+				pMenu = pMenu->pNext;//ÏÂÒ»¸ö
 			} 
-			pMenu = bpMenu;//ï¿½ï¿½pMenuÖ¸ï¿½ï¿½&settingModeMenu1[1];Ö¸ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ç°ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½pMenu = pMenu->pNext;pMenuÒ»Ö±ï¿½ä»¯
-			//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Î»ï¿½ï¿½
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//ï¿½ï¿½É«ï¿½ï¿½Ê¾
+			pMenu = bpMenu;//½«pMenuÖ¸Ïò&settingModeMenu1[1];Ö¸ÏòµÚÒ»¸ö²Ëµ¥£¬Ç°ÃæforÑ­»·ÖÐpMenu = pMenu->pNext;pMenuÒ»Ö±±ä»¯
+			//ÒÔÏÂ´úÂëÎª¹â±êÏÔÊ¾µÄÎ»ÖÃ
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//·´É«ÏÔÊ¾
 		 
-		}else//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½
+		}else//²»ÐèÒªÇåÆÁ£¬²»·­Ò³µÄÊ±ºò
 		{ 
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//ï¿½ï¿½É«ï¿½ï¿½Ê¾
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//·´É«ÏÔÊ¾
 
 		}	
 			
 				 
 	}
 }
-//ï¿½ï¿½ï¿½Ëµï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//Ö÷²Ëµ¥2´¦Àíº¯Êý
 static void stg2Menu_MainMenuCBS(void)
 {
-	//pMenu  MHead  MTailï¿½Ç¶ï¿½ï¿½ï¿½ï¿½Ä½á¹¹ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´
-	//staticï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½Ù»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	unsigned char keys;//ï¿½ï¿½Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
-	unsigned char i;//ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½
-	unsigned char ClrScreenFlag;//Òªï¿½ï¿½ÒªÈ¥Ë¢ï¿½ï¿½ï¿½Ä±ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½
-	static stu_mode_menu *pMenu;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµ±Ç°Ñ¡ï¿½ÐµÄ²Ëµï¿½
-	static stu_mode_menu *bpMenu=0;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î²Ëµï¿½Ñ¡ï¿½î£¬ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½pMenuï¿½ï¿½= bpMenuÊ±ï¿½ï¿½Ë¢ï¿½ï¿½
-	static unsigned char stgMainMenuSelectedPos=0;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ç°Ñ¡ï¿½Ð²Ëµï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ñ¡ï¿½Ð²Ëµï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ä¬ï¿½Ïµï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½Óµï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¼
-	static stu_mode_menu *MHead,*MTail;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Ëµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//ï¿½ï¿½ÒªË¢ï¿½ï¿½ï¿½ï¿½Ä»
+	//pMenu  MHead  MTailÊÇ¶ÀÁ¢µÄ½á¹¹ÌåÖ¸Õë£¬·ÖÅäÁË¶ÀÁ¢µÄ×ÊÔ´
+	//static¶¨ÒåµÄ±äÁ¿£¬ÏÂ´ÎÔÙ»Øµ½Õâ¸öº¯ÊýÖÐ£¬±äÁ¿µÄÖµ±£³ÖÉÏÒ»¸ö²»±ä
+	unsigned char keys;//¼üÖµÁÙÊ±´¢´æµÄ±äÁ¿
+	unsigned char i;//ÓÃÓÚforÑ­»·
+	unsigned char ClrScreenFlag;//Òª²»ÒªÈ¥Ë¢ÆÁµÄ±êÖ¾Î»£¬·­Ò³µÄÊ±ºòË¢ÆÁ£¬Çå³þÁÐ±íÇøÓòµÄÏÔÊ¾£¬ÖØÐÂÏÔÊ¾£¬²»·­Ò³µÄ»°²»ÓÃË¢ÆÁ
+	static stu_mode_menu *pMenu;		//ÓÃÀ´±£´æµ±Ç°Ñ¡ÖÐµÄ²Ëµ¥
+	static stu_mode_menu *bpMenu=0;		//ÓÃÀ´±¸·ÝÉÏÒ»´Î²Ëµ¥Ñ¡Ïî£¬Ö÷ÒªÓÃÓÚË¢ÆÁÅÐ¶Ï£¬µ±pMenu£¡= bpMenuÊ±£¬Ë¢ÆÁ
+	static unsigned char stgMainMenuSelectedPos=0;	//ÓÃÀ´¼ÇÂ¼µ±Ç°Ñ¡ÖÐ²Ëµ¥µÄÎ»ÖÃ£¬Ñ¡ÔñÁÐ±íÖÐÑ¡ÖÐ²Ëµ¥µÄÎ»ÖÃ£¬Ä¬ÈÏµÈÓÚ1£¬´ÓµÚÒ»¸ö²Ëµ¥¿ªÊ¼
+	static stu_mode_menu *MHead,*MTail;		//ÕâÁ½¸ö½á¹¹ÌåÖ¸ÕëÊÇÎªÁËÉÏÏÂÇÐ»»²Ëµ¥Ê±×ö·­Ò³´¦Àí
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//ÐèÒªË¢ÐÂÆÁÄ»
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//ï¿½Â´Î½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ë£ï¿½Ö»Ë¢ï¿½ï¿½Ò»ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ë¢ï¿½ï¿½Ò»ï¿½ï¿½
-		pMenu = &settingModeMenu2[0];//Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
-		hal_Oled_Clear();//Ë¢ï¿½ï¿½
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//ÏÂ´Î½øÀ´Õâ¸öº¯Êý²»Ë¢ÐÂÁË£¬Ö»Ë¢ÐÂÒ»´Î£¬³¤°´ÖÐ¼üºó¼ÓÈëÖ÷Ò³ÃæË¢ÐÂÒ»´Î
+		pMenu = &settingModeMenu2[0];//Ö´ÐÐÖ÷²Ëµ¥
+		hal_Oled_Clear();//Ë¢ÆÁ
 		
-		//display_6_8_string(37,0,pMenu->pModeType);//ï¿½ï¿½Òªï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½oledï¿½ï¿½ï¿½æ£¬oledï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ë¢ï¿½ï¿½
+		//display_6_8_string(37,0,pMenu->pModeType);//½«ÒªÏÔÊ¾µÄÊý¾ÝÐ´Èëoled»º´æ£¬oled»¹²»»á¸üÐÂÏÔÊ¾£¬ÒªÔËÐÐÏÂÒ»²½Ë¢ÐÂ
 		
-	//Ë¢ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê±ï¿½ä£¬Ö»ï¿½Ð¼ï¿½Öµï¿½Ä±ï¿½ï¿½Ê±ï¿½ï¿½Å½ï¿½ï¿½ï¿½
+	//Ë¢ÆÁºÍ¸üÐÂÏÔÊ¾·ÑÊ±¼ä£¬Ö»ÓÐ¼üÖµ¸Ä±äµÄÊ±ºò²Å½øÐÐ
 		
-		pMenu = &settingModeMenu2[1];	//ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½Ð±ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+		pMenu = &settingModeMenu2[1];	//ÉèÖÃ²Ëµ¥ÁÐ±íµÄµÚÒ»¸öÑ¡Ïî
 		
-		MHead = pMenu;			//ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½
-		MTail = pMenu+6;		//ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½,Ò»Ò³ï¿½ï¿½Ê¾4ï¿½ï¿½Ñ¡ï¿½î£¬ï¿½ï¿½5ï¿½ï¿½Ñ¡ï¿½ï¿½
-		bpMenu = 0;	//bpMenuï¿½ï¿½pMenuï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½uiï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+		MHead = pMenu;			//¼ÇÂ¼µ±Ç°ÉèÖÃ²Ëµ¥µÚÒ»Ïî
+		MTail = pMenu+6;		//¼ÇÂ¼µ±Ç°ÉèÖÃ²Ëµ¥×îºóÒ»Ïî,Ò»Ò³ÏÔÊ¾4¸öÑ¡Ïî£¬¹²5¸öÑ¡Ïî
+		bpMenu = 0;	//bpMenuÓëpMenu²»ÏàµÈ£¬½øÈëÏÂÃæµÄuiÏÔÊ¾³ÌÐò
  
-		ClrScreenFlag = 1;	//Ð´ï¿½ï¿½1ï¿½ï¿½Ê¹ï¿½Ãµï¿½Ò»ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ñ²Ëµï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		ClrScreenFlag = 1;	//Ð´³É1£¬Ê¹µÃµÚÒ»´Î½øÈëÏÂÃæµÄÏÔÊ¾³ÌÐòÊ±£¬°Ñ²Ëµ¥ÁÐ±íÏÔÊ¾³öÀ´£¬·ñÔòÑ¡ÔñÁÐ±íÏÔÊ¾²»³öÀ´
 		stgMainMenuSelectedPos = 1;
 		keys = 0xFF;
  
 	}
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
+	//°´¼ü²Ù×÷²Ëµ¥ °üÀ¨·­Ò³²Ù×÷
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY1_CLICK_RELEASE:		//ï¿½ï¿½
+			case KEY1_CLICK_RELEASE:		//ÉÏ
 				
 				if(stgMainMenuSelectedPos ==1)
 				{
@@ -676,39 +675,39 @@ static void stg2Menu_MainMenuCBS(void)
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ï¿½ï¿½Ñ¡ï¿½Ð±ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ÏûÑ¡ÖÐ±¾²Ëµ¥ÏÔÊ¾
 					pMenu = pMenu->pLase;
 					stgMainMenuSelectedPos--;
 				}
 			break;
-			case KEY2_CLICK_RELEASE:		//ï¿½ï¿½
-				if(stgMainMenuSelectedPos == 7)///ï¿½ï¿½Ò³ï¿½ï¿½Ñ¡ï¿½Ðµï¿½4ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ê±
+			case KEY2_CLICK_RELEASE:		//ÏÂ
+				if(stgMainMenuSelectedPos == 7)///·­Ò³£ºÑ¡ÖÐµÚ4¸ö²Ëµ¥°´ÏÂ¼üÊ±
 				{
 					MHead = MHead->pNext;	
 					pMenu = pMenu->pNext;
 					MTail = pMenu;
-					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPosï¿½ï¿½ï¿½ï¿½ï¿½4
+					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos×î´óÊÇ4
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ï¿½ï¿½Ñ¡ï¿½Ð±ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾
-					pMenu = pMenu->pNext;																			//ï¿½Ð»ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ÏûÑ¡ÖÐ±¾²Ëµ¥ÏÔÊ¾
+					pMenu = pMenu->pNext;																			//ÇÐ»»ÏÂÒ»¸öÑ¡Ïî
 					stgMainMenuSelectedPos++;
 				}
 
 			break;
 			
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 			
-			case KEY4_CLICK_RELEASE:	//ï¿½Ò¼ï¿½ È·ï¿½ï¿½
+			case KEY4_CLICK_RELEASE:	//ÓÒ¼ü È·¶¨
 				pModeMenu->pChild = pMenu;
 				pModeMenu = pModeMenu->pChild;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;		
 			break;			
-			case KEY5_CLICK_RELEASE:	//ï¿½Ð¼ï¿½ È·ï¿½ï¿½
+			case KEY5_CLICK_RELEASE:	//ÖÐ¼ü È·¶¨
 					if(stgMainMenuSelectedPos < 5)
 					{
 						task_num = (stgMainMenuSelectedPos-1)%5 + 1;
@@ -731,74 +730,74 @@ static void stg2Menu_MainMenuCBS(void)
 		}
 	}
 	
-	//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ò³ï¿½ï¿½Ä²Ëµï¿½ï¿½Ð±ï¿½
-	if(bpMenu != pMenu)//ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ò»ï¿½Â£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½Ç¿ï¿½Æµï¿½Ö·ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
+	//ÒÔÏÂ´úÂëÓÃÓÚUIÏÔÊ¾£¬ÏÔÊ¾Ö÷Ò³ÃæµÄ²Ëµ¥ÁÐ±í
+	if(bpMenu != pMenu)//Èç¹ûÖ¸ÏòµØÖ·²»Ò»ÖÂ£¬ÐèÒª¸üÐÂÏÔÊ¾£¬ÉÏÃæÒÑ¾­Ç¿ÖÆµØÖ·²»Ò»ÖÂÁË
 	{
-		bpMenu = pMenu;//bpMenuï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ú²Ëµï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½pMenuï¿½Ä±ä£¬ï¿½ï¿½bpMenu != pMenuï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½Ê¾
-		if(ClrScreenFlag)//Ë¢ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+		bpMenu = pMenu;//bpMenu¸üÐÂÎªÏÖÔÚ²Ëµ¥×´Ì¬£¬ÈôpMenu¸Ä±ä£¬ÔòbpMenu != pMenu£¬±íÊ¾ÓÐ°´¼ü°´ÏÂ£¬Òª¸üÐÂÆÁÄ»ÏÔÊ¾
+		if(ClrScreenFlag)//Ë¢ÆÁ±êÖ¾Î»£¬·­Ò³µÄÊ±ºòÆð×÷ÓÃ£¬·­Ò³µÄÊ±ºòÒªÇåÆÁ
 		{
 			
 			ClrScreenFlag = 0;
 			pMenu = MHead;
-			hal_Oled_Clear();		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½
-			for(i=1; i<8; i++)	//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½i<5ï¿½ï¿½ï¿½ï¿½ÎªÒ»Ò³Ö»ï¿½ï¿½ï¿½ï¿½Ê¾4ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ð±ï¿½
+			hal_Oled_Clear();		//ÇåÆÁ Çå³ýÁÐ±íµÄÄÇ¿éÇøÓò
+			for(i=1; i<8; i++)	//ÕâÀïÒ»¶¨ÊÇi<5£¬ÒòÎªÒ»Ò³Ö»ÄÜÏÔÊ¾4¸ö²Ëµ¥ÁÐ±í
 			{
-				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Ñ­ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ëµï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				pMenu = pMenu->pNext;//ï¿½ï¿½Ò»ï¿½ï¿½
+				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Ñ­»·ÏÔÊ¾²Ëµ¥ÁÐ±íµÄÃû×Ö
+				pMenu = pMenu->pNext;//ÏÂÒ»¸ö
 			} 
-			pMenu = bpMenu;//ï¿½ï¿½pMenuÖ¸ï¿½ï¿½&settingModeMenu1[1];Ö¸ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ç°ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½pMenu = pMenu->pNext;pMenuÒ»Ö±ï¿½ä»¯
-			//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Î»ï¿½ï¿½
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//ï¿½ï¿½É«ï¿½ï¿½Ê¾
-		}else//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½
+			pMenu = bpMenu;//½«pMenuÖ¸Ïò&settingModeMenu1[1];Ö¸ÏòµÚÒ»¸ö²Ëµ¥£¬Ç°ÃæforÑ­»·ÖÐpMenu = pMenu->pNext;pMenuÒ»Ö±±ä»¯
+			//ÒÔÏÂ´úÂëÎª¹â±êÏÔÊ¾µÄÎ»ÖÃ
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//·´É«ÏÔÊ¾
+		}else//²»ÐèÒªÇåÆÁ£¬²»·­Ò³µÄÊ±ºò
 		{ 
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//ï¿½ï¿½É«ï¿½ï¿½Ê¾
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//·´É«ÏÔÊ¾
 		}	
 			
 				 
 	}
 }
-//ï¿½ï¿½ï¿½Ëµï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//Ö÷²Ëµ¥3´¦Àíº¯Êý
 static void stg3Menu_MainMenuCBS(void)
 {
-	//pMenu  MHead  MTailï¿½Ç¶ï¿½ï¿½ï¿½ï¿½Ä½á¹¹ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´
-	//staticï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½Ù»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	unsigned char keys;//ï¿½ï¿½Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½
-	unsigned char i;//ï¿½ï¿½ï¿½ï¿½forÑ­ï¿½ï¿½
-	unsigned char ClrScreenFlag;//Òªï¿½ï¿½ÒªÈ¥Ë¢ï¿½ï¿½ï¿½Ä±ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½
-	static stu_mode_menu *pMenu;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµ±Ç°Ñ¡ï¿½ÐµÄ²Ëµï¿½
-	static stu_mode_menu *bpMenu=0;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î²Ëµï¿½Ñ¡ï¿½î£¬ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½pMenuï¿½ï¿½= bpMenuÊ±ï¿½ï¿½Ë¢ï¿½ï¿½
-	static unsigned char stgMainMenuSelectedPos=0;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ç°Ñ¡ï¿½Ð²Ëµï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ñ¡ï¿½Ð²Ëµï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ä¬ï¿½Ïµï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½Óµï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¼
-	static stu_mode_menu *MHead,*MTail;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½Ëµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//ï¿½ï¿½ÒªË¢ï¿½ï¿½ï¿½ï¿½Ä»
+	//pMenu  MHead  MTailÊÇ¶ÀÁ¢µÄ½á¹¹ÌåÖ¸Õë£¬·ÖÅäÁË¶ÀÁ¢µÄ×ÊÔ´
+	//static¶¨ÒåµÄ±äÁ¿£¬ÏÂ´ÎÔÙ»Øµ½Õâ¸öº¯ÊýÖÐ£¬±äÁ¿µÄÖµ±£³ÖÉÏÒ»¸ö²»±ä
+	unsigned char keys;//¼üÖµÁÙÊ±´¢´æµÄ±äÁ¿
+	unsigned char i;//ÓÃÓÚforÑ­»·
+	unsigned char ClrScreenFlag;//Òª²»ÒªÈ¥Ë¢ÆÁµÄ±êÖ¾Î»£¬·­Ò³µÄÊ±ºòË¢ÆÁ£¬Çå³þÁÐ±íÇøÓòµÄÏÔÊ¾£¬ÖØÐÂÏÔÊ¾£¬²»·­Ò³µÄ»°²»ÓÃË¢ÆÁ
+	static stu_mode_menu *pMenu;		//ÓÃÀ´±£´æµ±Ç°Ñ¡ÖÐµÄ²Ëµ¥
+	static stu_mode_menu *bpMenu=0;		//ÓÃÀ´±¸·ÝÉÏÒ»´Î²Ëµ¥Ñ¡Ïî£¬Ö÷ÒªÓÃÓÚË¢ÆÁÅÐ¶Ï£¬µ±pMenu£¡= bpMenuÊ±£¬Ë¢ÆÁ
+	static unsigned char stgMainMenuSelectedPos=0;	//ÓÃÀ´¼ÇÂ¼µ±Ç°Ñ¡ÖÐ²Ëµ¥µÄÎ»ÖÃ£¬Ñ¡ÔñÁÐ±íÖÐÑ¡ÖÐ²Ëµ¥µÄÎ»ÖÃ£¬Ä¬ÈÏµÈÓÚ1£¬´ÓµÚÒ»¸ö²Ëµ¥¿ªÊ¼
+	static stu_mode_menu *MHead,*MTail;		//ÕâÁ½¸ö½á¹¹ÌåÖ¸ÕëÊÇÎªÁËÉÏÏÂÇÐ»»²Ëµ¥Ê±×ö·­Ò³´¦Àí
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//ÐèÒªË¢ÐÂÆÁÄ»
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//ï¿½Â´Î½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¢ï¿½ï¿½ï¿½Ë£ï¿½Ö»Ë¢ï¿½ï¿½Ò»ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ë¢ï¿½ï¿½Ò»ï¿½ï¿½
-		pMenu = &settingModeMenu3[0];//Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
-		hal_Oled_Clear();//Ë¢ï¿½ï¿½
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//ÏÂ´Î½øÀ´Õâ¸öº¯Êý²»Ë¢ÐÂÁË£¬Ö»Ë¢ÐÂÒ»´Î£¬³¤°´ÖÐ¼üºó¼ÓÈëÖ÷Ò³ÃæË¢ÐÂÒ»´Î
+		pMenu = &settingModeMenu3[0];//Ö´ÐÐÖ÷²Ëµ¥
+		hal_Oled_Clear();//Ë¢ÆÁ
 		
-		//display_6_8_string(37,0,pMenu->pModeType);//ï¿½ï¿½Òªï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½oledï¿½ï¿½ï¿½æ£¬oledï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ë¢ï¿½ï¿½
+		//display_6_8_string(37,0,pMenu->pModeType);//½«ÒªÏÔÊ¾µÄÊý¾ÝÐ´Èëoled»º´æ£¬oled»¹²»»á¸üÐÂÏÔÊ¾£¬ÒªÔËÐÐÏÂÒ»²½Ë¢ÐÂ
 		
-	//Ë¢ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê±ï¿½ä£¬Ö»ï¿½Ð¼ï¿½Öµï¿½Ä±ï¿½ï¿½Ê±ï¿½ï¿½Å½ï¿½ï¿½ï¿½
+	//Ë¢ÆÁºÍ¸üÐÂÏÔÊ¾·ÑÊ±¼ä£¬Ö»ÓÐ¼üÖµ¸Ä±äµÄÊ±ºò²Å½øÐÐ
 		
-		pMenu = &settingModeMenu3[1];	//ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½Ð±ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+		pMenu = &settingModeMenu3[1];	//ÉèÖÃ²Ëµ¥ÁÐ±íµÄµÚÒ»¸öÑ¡Ïî
 		
-		MHead = pMenu;			//ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½Ò»ï¿½ï¿½
-		MTail = pMenu+6;		//ï¿½ï¿½Â¼ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ã²Ëµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½,Ò»Ò³ï¿½ï¿½Ê¾4ï¿½ï¿½Ñ¡ï¿½î£¬ï¿½ï¿½5ï¿½ï¿½Ñ¡ï¿½ï¿½		ï¿½ï¿½ï¿½ï¿½ï¿½Öµ3ï¿½ï¿½Ê²Ã´ï¿½Ã£ï¿½ï¿½ï¿½
-		bpMenu = 0;	//bpMenuï¿½ï¿½pMenuï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½uiï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+		MHead = pMenu;			//¼ÇÂ¼µ±Ç°ÉèÖÃ²Ëµ¥µÚÒ»Ïî
+		MTail = pMenu+6;		//¼ÇÂ¼µ±Ç°ÉèÖÃ²Ëµ¥×îºóÒ»Ïî,Ò»Ò³ÏÔÊ¾4¸öÑ¡Ïî£¬¹²5¸öÑ¡Ïî		Õâ¸ö¼ÓÖµ3ÓÐÊ²Ã´ÓÃ£¿£¿
+		bpMenu = 0;	//bpMenuÓëpMenu²»ÏàµÈ£¬½øÈëÏÂÃæµÄuiÏÔÊ¾³ÌÐò
  
-		ClrScreenFlag = 1;	//Ð´ï¿½ï¿½1ï¿½ï¿½Ê¹ï¿½Ãµï¿½Ò»ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ñ²Ëµï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		ClrScreenFlag = 1;	//Ð´³É1£¬Ê¹µÃµÚÒ»´Î½øÈëÏÂÃæµÄÏÔÊ¾³ÌÐòÊ±£¬°Ñ²Ëµ¥ÁÐ±íÏÔÊ¾³öÀ´£¬·ñÔòÑ¡ÔñÁÐ±íÏÔÊ¾²»³öÀ´
 		stgMainMenuSelectedPos = 1;
 		keys = 0xFF;
  
 	}
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
+	//°´¼ü²Ù×÷²Ëµ¥ °üÀ¨·­Ò³²Ù×÷
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY1_CLICK_RELEASE:		//ï¿½ï¿½
+			case KEY1_CLICK_RELEASE:		//ÉÏ
 				
 				if(stgMainMenuSelectedPos ==1)
 				{
@@ -809,34 +808,34 @@ static void stg3Menu_MainMenuCBS(void)
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ï¿½ï¿½Ñ¡ï¿½Ð±ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ÏûÑ¡ÖÐ±¾²Ëµ¥ÏÔÊ¾
 					pMenu = pMenu->pLase;
 					stgMainMenuSelectedPos--;
 				}
 			break;
-			case KEY2_CLICK_RELEASE:		//ï¿½ï¿½
-				if(stgMainMenuSelectedPos == 7)///ï¿½ï¿½Ò³ï¿½ï¿½Ñ¡ï¿½Ðµï¿½4ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Â¼ï¿½Ê±
+			case KEY2_CLICK_RELEASE:		//ÏÂ
+				if(stgMainMenuSelectedPos == 7)///·­Ò³£ºÑ¡ÖÐµÚ4¸ö²Ëµ¥°´ÏÂ¼üÊ±
 				{
 					MHead = MHead->pNext;	
 					pMenu = pMenu->pNext;
 					MTail = pMenu;
-					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPosï¿½ï¿½ï¿½ï¿½ï¿½4
+					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos×î´óÊÇ4
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ï¿½ï¿½Ñ¡ï¿½Ð±ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ê¾
-					pMenu = pMenu->pNext;																			//ï¿½Ð»ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//È¡ÏûÑ¡ÖÐ±¾²Ëµ¥ÏÔÊ¾
+					pMenu = pMenu->pNext;																			//ÇÐ»»ÏÂÒ»¸öÑ¡Ïî
 					stgMainMenuSelectedPos++;
 				}
 
 			break;
 			
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 			
-			case KEY4_CLICK_RELEASE:	//ï¿½Ò¼ï¿½ È·ï¿½ï¿½
+			case KEY4_CLICK_RELEASE:	//ÓÒ¼ü È·¶¨
 				pModeMenu->pChild = pMenu;
 				pModeMenu = pModeMenu->pChild;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;		
@@ -845,27 +844,27 @@ static void stg3Menu_MainMenuCBS(void)
 		}
 	}
 	
-	//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ò³ï¿½ï¿½Ä²Ëµï¿½ï¿½Ð±ï¿½
-	if(bpMenu != pMenu)//ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ò»ï¿½Â£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½Ç¿ï¿½Æµï¿½Ö·ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
+	//ÒÔÏÂ´úÂëÓÃÓÚUIÏÔÊ¾£¬ÏÔÊ¾Ö÷Ò³ÃæµÄ²Ëµ¥ÁÐ±í
+	if(bpMenu != pMenu)//Èç¹ûÖ¸ÏòµØÖ·²»Ò»ÖÂ£¬ÐèÒª¸üÐÂÏÔÊ¾£¬ÉÏÃæÒÑ¾­Ç¿ÖÆµØÖ·²»Ò»ÖÂÁË
 	{
-		bpMenu = pMenu;//bpMenuï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ú²Ëµï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½pMenuï¿½Ä±ä£¬ï¿½ï¿½bpMenu != pMenuï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½Ê¾
-		if(ClrScreenFlag)//Ë¢ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+		bpMenu = pMenu;//bpMenu¸üÐÂÎªÏÖÔÚ²Ëµ¥×´Ì¬£¬ÈôpMenu¸Ä±ä£¬ÔòbpMenu != pMenu£¬±íÊ¾ÓÐ°´¼ü°´ÏÂ£¬Òª¸üÐÂÆÁÄ»ÏÔÊ¾
+		if(ClrScreenFlag)//Ë¢ÆÁ±êÖ¾Î»£¬·­Ò³µÄÊ±ºòÆð×÷ÓÃ£¬·­Ò³µÄÊ±ºòÒªÇåÆÁ
 		{
 			
 			ClrScreenFlag = 0;
 			pMenu = MHead;
-			hal_Oled_Clear();		//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½
-			for(i=1; i<8; i++)	//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½i<5ï¿½ï¿½ï¿½ï¿½ÎªÒ»Ò³Ö»ï¿½ï¿½ï¿½ï¿½Ê¾4ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ð±ï¿½
+			hal_Oled_Clear();		//ÇåÆÁ Çå³ýÁÐ±íµÄÄÇ¿éÇøÓò
+			for(i=1; i<8; i++)	//ÕâÀïÒ»¶¨ÊÇi<5£¬ÒòÎªÒ»Ò³Ö»ÄÜÏÔÊ¾4¸ö²Ëµ¥ÁÐ±í
 			{
-				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Ñ­ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ëµï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				pMenu = pMenu->pNext;//ï¿½ï¿½Ò»ï¿½ï¿½
+				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Ñ­»·ÏÔÊ¾²Ëµ¥ÁÐ±íµÄÃû×Ö
+				pMenu = pMenu->pNext;//ÏÂÒ»¸ö
 			} 
-			pMenu = bpMenu;//ï¿½ï¿½pMenuÖ¸ï¿½ï¿½&settingModeMenu1[1];Ö¸ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½Ç°ï¿½ï¿½forÑ­ï¿½ï¿½ï¿½ï¿½pMenu = pMenu->pNext;pMenuÒ»Ö±ï¿½ä»¯
-			//ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Î»ï¿½ï¿½
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//ï¿½ï¿½É«ï¿½ï¿½Ê¾
-		}else//ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ê±ï¿½ï¿½
+			pMenu = bpMenu;//½«pMenuÖ¸Ïò&settingModeMenu1[1];Ö¸ÏòµÚÒ»¸ö²Ëµ¥£¬Ç°ÃæforÑ­»·ÖÐpMenu = pMenu->pNext;pMenuÒ»Ö±±ä»¯
+			//ÒÔÏÂ´úÂëÎª¹â±êÏÔÊ¾µÄÎ»ÖÃ
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//·´É«ÏÔÊ¾
+		}else//²»ÐèÒªÇåÆÁ£¬²»·­Ò³µÄÊ±ºò
 		{ 
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//ï¿½ï¿½É«ï¿½ï¿½Ê¾
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//·´É«ÏÔÊ¾
 		}	
 			
 				 
@@ -879,7 +878,7 @@ static void stg1Menu_Para1CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		//hal_Oled_ShowString(20,0,"1. Inductance",12,1);
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
@@ -893,22 +892,22 @@ static void stg1Menu_Para1CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				pos_out_limH+=5;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				pos_out_limH-=5;
 
 			break;			
@@ -926,7 +925,7 @@ static void stg1Menu_Para2CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -939,22 +938,22 @@ static void stg1Menu_Para2CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				pos_out_limL+=5;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				pos_out_limL-=5;
 
 			break;			
@@ -973,7 +972,7 @@ static void stg1Menu_Para3CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -985,23 +984,23 @@ static void stg1Menu_Para3CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				speed_adjust+=1;
 				if(speed_adjust > 50)
 					speed_adjust = 50;
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				speed_adjust-=1;
 				if(speed_adjust < 1)
 					speed_adjust = 1;
@@ -1020,7 +1019,7 @@ static void stg1Menu_Para4CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1033,22 +1032,22 @@ static void stg1Menu_Para4CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				tar_theta_limit+=1;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				tar_theta_limit-=1;
 
 			break;			
@@ -1067,7 +1066,7 @@ static void stg1Menu_Para5CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1080,22 +1079,22 @@ static void stg1Menu_Para5CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				pos_boudary+=1;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				pos_boudary-=1;
 
 			break;			
@@ -1112,7 +1111,7 @@ static void stg1Menu_Para6CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1125,22 +1124,22 @@ static void stg1Menu_Para6CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				turn_kp+=0.2;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				turn_kp-=0.2;
 
 			break;			
@@ -1158,7 +1157,7 @@ static void stg1Menu_Para7CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -1170,22 +1169,22 @@ static void stg1Menu_Para7CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				sleep_time+=5;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				sleep_time-=5;
 
 			break;			
@@ -1203,7 +1202,7 @@ static void stg1Menu_Para8CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -1215,30 +1214,30 @@ static void stg1Menu_Para8CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				yaw_track_kp+=0.01;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				yaw_track_kp-=0.01;
 
 			break;	//
-			case KEY1_LONG_PRESS_CONTINUOUS:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_LONG_PRESS_CONTINUOUS:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				yaw_track_kp+=0.01;
 	
 			break;			
-			case KEY2_LONG_PRESS_CONTINUOUS:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_LONG_PRESS_CONTINUOUS:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				yaw_track_kp-=0.01;
 
 			break;			
@@ -1255,7 +1254,7 @@ static void stg1Menu_Para9CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -1267,30 +1266,30 @@ static void stg1Menu_Para9CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				yaw_track_kd+=0.01;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				yaw_track_kd-=0.01;
 
 			break;	//
-			case KEY1_LONG_PRESS_CONTINUOUS:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_LONG_PRESS_CONTINUOUS:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				yaw_track_kd+=0.01;
 	
 			break;			
-			case KEY2_LONG_PRESS_CONTINUOUS:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_LONG_PRESS_CONTINUOUS:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				yaw_track_kd-=0.01;
 
 			break;			
@@ -1307,7 +1306,7 @@ static void stg2Menu_Para1CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,2,"TASK1:");
@@ -1318,25 +1317,25 @@ static void stg2Menu_Para1CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				
 			break;
-			case KEY5_CLICK_RELEASE: //ï¿½Ð¼ï¿½ï¿½Ì°ï¿½
-//				Time0A_init(5,USER_INT0);   //ï¿½ï¿½ï¿½ï¿½È·PWMÊ±ï¿½ò£¬´ò¿ª¶ï¿½ï¿½
+			case KEY5_CLICK_RELEASE: //ÖÐ¼ü¶Ì°´
+//				Time0A_init(5,USER_INT0);   //ÓÐÕýÈ·PWMÊ±ºò£¬´ò¿ª¶æ»ú
 //				display_6_8_string(5,4,"Reset Action!");
 
 			break;			
@@ -1351,7 +1350,7 @@ static void stg2Menu_Para2CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,2,"TASK2:");
@@ -1366,24 +1365,24 @@ static void stg2Menu_Para2CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				
 			break;
-			case KEY5_CLICK_RELEASE: //ï¿½Ð¼ï¿½ï¿½Ì°ï¿½
+			case KEY5_CLICK_RELEASE: //ÖÐ¼ü¶Ì°´
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;			
@@ -1400,7 +1399,7 @@ static void stg2Menu_Para3CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,2,"stg2Para3:");
@@ -1412,24 +1411,24 @@ static void stg2Menu_Para3CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 //				kp4++;
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 //				kp4--;
 			break;
-			case KEY5_CLICK_RELEASE: //ï¿½Ð¼ï¿½ï¿½Ì°ï¿½
+			case KEY5_CLICK_RELEASE: //ÖÐ¼ü¶Ì°´
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1443,7 +1442,7 @@ static void stg2Menu_Para4CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,0,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,28,"stg2Para4:");
@@ -1452,24 +1451,24 @@ static void stg2Menu_Para4CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-//			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 //				kp2++;
 //			break;			
-//			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 //				kp2--;
 //			break;
-			case KEY5_CLICK_RELEASE: //ï¿½Ð¼ï¿½ï¿½Ì°ï¿½
+			case KEY5_CLICK_RELEASE: //ÖÐ¼ü¶Ì°´
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1485,7 +1484,7 @@ static void stg2Menu_Para5CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		//display_6_8_string(0,2,"stg2Para5:");
@@ -1493,7 +1492,7 @@ static void stg2Menu_Para5CBS(void)
 	}	
 	Flag.Start_Car = 0;
 	
-			display_6_8_string(0,2,"A:");			  //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½   
+			display_6_8_string(0,2,"A:");			  //ÀåÃ×/Ãë   
 			display_6_8_number(40,2,point_A[0]);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(80,2,point_A[1]); 		
 
@@ -1533,30 +1532,30 @@ static void stg2Menu_Para5CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				if(key_value < 3)
 				key_value++;
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				if(key_value > 0)
 					key_value--;
 			break;
-//			case KEY4_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY4_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 //				point_C[0] = point_actual[0];
 //				point_C[1] = point_actual[1];
 //			break;			
-			case KEY5_CLICK_RELEASE:		//ï¿½Ð¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY5_CLICK_RELEASE:		//ÖÐ¼ü ¼õÐ¡²ÎÊýÖµ
 
 			switch(key_value)
 			{
@@ -1615,7 +1614,7 @@ static void stg2Menu_Para6CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,0,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,28,"stg2Para6:");
@@ -1624,24 +1623,24 @@ static void stg2Menu_Para6CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-//			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 //				kp2++;
 //			break;			
-//			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 //				kp2--;
 //			break;
-			case KEY5_CLICK_RELEASE: //ï¿½Ð¼ï¿½ï¿½Ì°ï¿½
+			case KEY5_CLICK_RELEASE: //ÖÐ¼ü¶Ì°´
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1655,7 +1654,7 @@ static void stg2Menu_Para7CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,0,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,28,"stg2Para6:");
@@ -1664,24 +1663,24 @@ static void stg2Menu_Para7CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-//			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 //				kp2++;
 //			break;			
-//			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 //				kp2--;
 //			break;
-			case KEY5_CLICK_RELEASE: //ï¿½Ð¼ï¿½ï¿½Ì°ï¿½
+			case KEY5_CLICK_RELEASE: //ÖÐ¼ü¶Ì°´
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1700,7 +1699,7 @@ static void stg3Menu_Para1CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1729,31 +1728,31 @@ static void stg3Menu_Para1CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_A[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_A[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
 			break;
-//			case KEY4_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY4_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 //				point_C[0] = point_actual[0];
 //				point_C[1] = point_actual[1];
 //			break;			
-//			case KEY5_CLICK_RELEASE:		//ï¿½Ð¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+//			case KEY5_CLICK_RELEASE:		//ÖÐ¼ü ¼õÐ¡²ÎÊýÖµ
 //				point_D[0] = point_actual[0];
 //				point_D[1] = point_actual[1];
 ////				data_test.value = point_actual[0];
@@ -1778,14 +1777,14 @@ static void stg3Menu_Para2CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);		
 		
 		keys = 0xFF;
 		 
 	}	
-//			display_6_8_string(0,2,"A:");			  //ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½   
+//			display_6_8_string(0,2,"A:");			  //ÀåÃ×/Ãë   
 			display_6_8_number(40,2,point_A[1]);  //smartcar_imu.left_motor_speed_cmps EncoderA
 //			display_6_8_number(80,1,point_A[1]); 		
 
@@ -1807,22 +1806,22 @@ static void stg3Menu_Para2CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_A[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_A[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -1840,7 +1839,7 @@ static void stg3Menu_Para3CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);		
 		
@@ -1868,22 +1867,22 @@ static void stg3Menu_Para3CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_B[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_B[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -1901,7 +1900,7 @@ static void stg3Menu_Para4CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 //		display_6_8_string(0,2,"stg3Para4:");
@@ -1928,22 +1927,22 @@ static void stg3Menu_Para4CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_B[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_B[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -1962,7 +1961,7 @@ static void stg3Menu_Para5CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 //		display_6_8_string(0,2,"stg3Para5:");
@@ -1989,22 +1988,22 @@ static void stg3Menu_Para5CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_C[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_C[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2020,7 +2019,7 @@ static void stg3Menu_Para6CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				 
@@ -2046,22 +2045,22 @@ static void stg3Menu_Para6CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_C[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_C[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2077,7 +2076,7 @@ static void stg3Menu_Para7CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 //		display_6_8_string(0,2,"stg3Para5:");
@@ -2104,22 +2103,22 @@ static void stg3Menu_Para7CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_D[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_D[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2136,7 +2135,7 @@ static void stg3Menu_Para8CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//ï¿½ï¿½ï¿½ï¿½
+		hal_Oled_Clear();	//ÇåÆÁ
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				 
@@ -2162,22 +2161,22 @@ static void stg3Menu_Para8CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//ï¿½Ö¸ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+		pModeMenu->keyVal = 0xFF;	//»Ö¸´²Ëµ¥°´¼üÖµ
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//ï¿½ï¿½ï¿½ È¡ï¿½ï¿½
+			case KEY3_CLICK_RELEASE:	//×ó¼ü È¡Ïû
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			case KEY3_LONG_PRESS_RELEASE:		//×ó¼ü ·µ»Ø×ÀÃæ
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//ï¿½Ï¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY1_CLICK_RELEASE:		//ÉÏ¼ü Ôö´ó²ÎÊýÖµ
 				point_D[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//ï¿½Â¼ï¿½ ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
+			case KEY2_CLICK_RELEASE:		//ÏÂ¼ü ¼õÐ¡²ÎÊýÖµ
 				point_D[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2189,15 +2188,15 @@ static void stg3Menu_Para8CBS(void)
 }
 void AppProc(void)
 {
-	pModeMenu->action();//Ö´ï¿½Ðµï¿½Ç°ï¿½Ëµï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
-	//ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½Úµï¿½Ç°ï¿½Ëµï¿½ï¿½ï¿½Î»ï¿½Ãµï¿½Í¬ï¿½ï¿½gnlMenu_Desktop1CBS();
+	pModeMenu->action();//Ö´ÐÐµ±Ç°²Ëµ¥µÄ·þÎñº¯Êý£¬²»¶ÏÑ­»·
+	//ÉÏÐÐ´úÂëÔÚµ±Ç°²Ëµ¥µÄÎ»ÖÃµÈÍ¬ÓÚgnlMenu_Desktop1CBS();
 }
-//-----------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½------------------------
+//-----------------Çý¶¯²ã»Øµ÷´¦Àíº¯Êý------------------------
 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+//°´¼ü»Øµ÷º¯Êý
 static void KeyEventHandle(KEY_VALUE_TYPEDEF keys)
 {
-	pModeMenu->keyVal = keys;//ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ëµï¿½ï¿½Ä¼ï¿½Öµ
+	pModeMenu->keyVal = keys;//½«¼üÖµ¸³Öµ¸øµ±Ç°²Ëµ¥µÄ¼üÖµ
 	
 }

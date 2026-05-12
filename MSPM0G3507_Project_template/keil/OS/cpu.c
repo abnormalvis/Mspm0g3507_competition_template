@@ -1,10 +1,9 @@
 /*******************************************************************************
-  * @brief     : CPU initialization
-  * @author   : wangming
-  * @wechat   : DeepCoderMing
-  * @qq       : 3201935299
-  * @date     : 2025-05-01
-  * @copyright: Confidential - for demo purposes only
+  * @作者      ： wangming
+  * @wechat    :DeepCoderMing
+  * @qq      ： 3201935299
+  * @日期      ： 2025年05月01日
+  * @版权声明  ： 仅供参考学习，未经允许禁止商用
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "OS_System.h" 

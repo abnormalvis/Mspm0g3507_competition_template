@@ -1,10 +1,9 @@
 /*******************************************************************************
-  * @brief     : 8-channel grayscale sensor driver
-  * @author   : wangming
-  * @wechat   : DeepCoderMing
-  * @qq       : 3201935299
-  * @date     : 2025-05-01
-  * @copyright: Confidential - for demo purposes only
+  * @�ļ�      �� wangming
+  * @wechat    :DeepCoderMing
+  * @qq      �� 3201935299
+  * @���?      �� 2025��05��01��
+  * @��Ȩ����  �� �����ο�ѧϰ��δ��������ֹ����
 ********************************************************************************/
 #include "hal_gray.h"
 #include "ti_msp_dl_config.h"
@@ -12,22 +11,22 @@
 #include "ti/driverlib/dl_adc12.h"
 #include "mt_flag.h"
 
-/* 8路灰度传感器的ADC值 (0-100) */
+/* 8·���Ҷȵ�ADCֵ */
 uint16_t LQ_Tracking_Value[8] = {0};
 
-/* 阈值设置 (0-100范围,默认50) */
-uint16_t gray_threshold[8] = {50, 50, 50, 50, 50, 50, 50, 50};
+/* ��λ�ж� threshold ���ã�С��Ϊѽ����? */
+uint16_t gray_threshold[8] = {1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500};
 
-/* 12路灰度传感器的信息
- * 注意: 共用8路ADC+3路IO
- * 用S2,S1,S0选通通道
+/* 12·���Ҷȵ���Ϣ��
+ * ע��: ��Ϊ8·ADC+3·IO
+ * ��S2,S1,S0ѡ��ͨ��
  */
 _gray_state gray_state;
 float gray_status = 0, gray_status_backup = 0;
 uint32_t gray_status_worse = 0;
 char stop_flag = 0;
 
-/* 用S2,S1,S0选通通道(S2,S1,S0)=(0,0,0)~(1,1,1) 对应通道1~8 */
+/* ��S2,S1,S0ѡ��ͨ��(S2,S1,S0)=(0,0,0)~(1,1,1) ��Ӧͨ��1~8 */
 void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
 {
     if(s0) DL_GPIO_setPins(Tracking_SO_PORT, Tracking_SO_PIN);
@@ -40,37 +39,19 @@ void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
     else DL_GPIO_clearPins(Tracking_S2_PORT, Tracking_S2_PIN);
 }
 
-/* 读取8路灰度传感器的ADC值 (与LQ一致: 5次采样,去3取2,转换为0-100) */
+/* ��ȡ8·���Ҷȵ��ADCֵ */
 void gray_8data_read(void)
 {
-    unsigned char i, j;
-    uint16_t sum = 0;
-    uint16_t data = 0;
-
+    unsigned char i;
     for(i = 0; i < 8; i++)
     {
-        Tracking_IO_Set(i >> 2, (i >> 1) & 0x01, i & 0x01);  //选通通道 i
-
-        /* 5次采样,去掉前3次,取后2次均值 (与LQ一致) */
-        sum = 0;
-        for(j = 0; j < 5; j++)
-        {
-            /* 延时等待ADC稳定 */
-            for(volatile uint16_t d = 0; d < 50; d++);
-            data = DL_ADC12_getMemResult(ADC12_0_INST, ADC12_0_ADCMEM_0);
-
-            /* 转换为0-100百分比 (与LQ一致) */
-            data = data * 0.02442;
-            if(data > 100) data = 100;
-
-            /* 去掉前3次,只累加后2次 */
-            if(j >= 3)
-                sum += data;
-        }
-        LQ_Tracking_Value[i] = sum / 2;
+        Tracking_IO_Set(i >> 2, (i >> 1) & 0x01, i & 0x01);  //ѡ��ͨ�� i
+        /* �ӳٶ�ȡADCֵ */
+        for(volatile unsigned short j = 0; j < 100; j++);
+        LQ_Tracking_Value[i] = DL_ADC12_getMemResult(ADC12_0_INST, ADC12_0_ADCMEM_0);
     }
 
-    /* 灰度读取状态 */
+    /* ��λȡ״̬ */
     gray_state.gray.bit1 = LQ_Tracking_Value[0] < gray_threshold[0] ? 1 : 0;
     gray_state.gray.bit2 = LQ_Tracking_Value[1] < gray_threshold[1] ? 1 : 0;
     gray_state.gray.bit3 = LQ_Tracking_Value[2] < gray_threshold[2] ? 1 : 0;
@@ -80,7 +61,7 @@ void gray_8data_read(void)
     gray_state.gray.bit7 = LQ_Tracking_Value[6] < gray_threshold[6] ? 1 : 0;
     gray_state.gray.bit8 = LQ_Tracking_Value[7] < gray_threshold[7] ? 1 : 0;
 
-    /* 计算当前状态为位置量 */
+    /* ����ǰ������Ϊλ�� */
     gray_status_backup = gray_status;
     switch(gray_state.state)
     {
@@ -116,7 +97,7 @@ void gray_8data_read(void)
     }
 }
 
-/* 设置灰度的阈值 */
+/* ��ʼ���õĲ�ѹ��ֵ */
 void gray_set_threshold(uint16_t* threshold)
 {
     uint8_t i;

@@ -21,5 +21,10 @@ void uart2_send_char(char ch);
 void u0_printf(const char *fmt, ...);
 void u1_printf(const char *fmt, ...);
 void UsartProc(void);
+
+/* UART receive callback type */
+typedef void (*uart_rx_callback_t)(uint8_t byte);
+void uart1_rx_register(uart_rx_callback_t callback);
+
 #endif
 

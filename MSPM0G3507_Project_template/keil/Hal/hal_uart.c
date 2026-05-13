@@ -7,13 +7,14 @@
 #include <stdarg.h>
 #include "hal_encode.h"
 
-//PA8 PA9
-//void hal_uart0_Init(void)
-//{
-//    NVIC_ClearPendingIRQ(UART_0_INST_INT_IRQN);
-//    NVIC_EnableIRQ(UART_0_INST_INT_IRQN);
+/* UART1 receive callback pointer */
+static uart_rx_callback_t uart1_rx_cb = NULL;
 
-//}
+void uart1_rx_register(uart_rx_callback_t callback)
+{
+    uart1_rx_cb = callback;
+}
+
 //PA10 PA11
 void hal_uart1_Init(void)
 {
@@ -21,18 +22,11 @@ void hal_uart1_Init(void)
     NVIC_EnableIRQ(UART_1_INST_INT_IRQN);
 
 }
-//PB2 PB3
-void hal_uart2_Init(void)
-{
-    NVIC_ClearPendingIRQ(UART_2_INST_INT_IRQN);
-    NVIC_EnableIRQ(UART_2_INST_INT_IRQN);
-
-}
 void UART0_send(unsigned char *buff,int len)
 {
     while(len--)
     {
-        DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);    // ·¢ËÍ×Ö·û´®£¨×èÈû£©
+        DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);    // ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         buff++;
     }
 }
@@ -41,7 +35,7 @@ void UART1_send(const unsigned char *buff,int len)
 	while(len--)
 	{
 	
-	  DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);	//·¢ËÍ×Ö·û´®
+	  DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);	//ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
   	buff++;	
 	}
 }
@@ -50,38 +44,38 @@ void UART2_send(unsigned char *buff,int len)
 	while(len--)
 	{
 	
-	  DL_UART_Main_transmitDataBlocking(UART_2_INST, *buff);	//·¢ËÍ×Ö·û´®
+	  DL_UART_Main_transmitDataBlocking(UART_2_INST, *buff);	//ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
   	buff++;	
 	}
 }
 
-//´®¿Ú·¢ËÍµ¥¸ö×Ö·û
+//ï¿½ï¿½ï¿½Ú·ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 void uart0_send_char(char ch)
 {
     while( DL_UART_isBusy(UART_1_INST) == true );
     DL_UART_Main_transmitData(UART_1_INST, ch);
 }
-//´®¿Ú·¢ËÍµ¥¸ö×Ö·û
+//ï¿½ï¿½ï¿½Ú·ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 void uart1_send_char(char ch)
 {
-    //µ±´®¿Ú0Ã¦µÄÊ±ºòµÈ´ý£¬²»Ã¦µÄÊ±ºòÔÙ·¢ËÍ´«½øÀ´µÄ×Ö·û
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0Ã¦ï¿½ï¿½Ê±ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ù·ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
     while( DL_UART_isBusy(UART_1_INST) == true );
-    //·¢ËÍµ¥¸ö×Ö·û
+    //ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
     DL_UART_Main_transmitData(UART_1_INST, ch);
 }
-//´®¿Ú·¢ËÍµ¥¸ö×Ö·û
+//ï¿½ï¿½ï¿½Ú·ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 void uart2_send_char(char ch)
 {
-    //µ±´®¿Ú0Ã¦µÄÊ±ºòµÈ´ý£¬²»Ã¦µÄÊ±ºòÔÙ·¢ËÍ´«½øÀ´µÄ×Ö·û
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0Ã¦ï¿½ï¿½Ê±ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ù·ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
     while( DL_UART_isBusy(UART_2_INST) == true );
-    //·¢ËÍµ¥¸ö×Ö·û
+    //ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
     DL_UART_Main_transmitData(UART_2_INST, ch);
 }
-//Ê¹ÓÃ°¸Àý£ºu3_printf("ÊÕµ½%c",UART3_recevie);
+//Ê¹ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½u3_printf("ï¿½Õµï¿½%c",UART3_recevie);
 //void u0_printf(const char *fmt, ...) {
 //    int i;
 //    int len;
-//    char buffer[128]; //×ã¹»ÈÝÄÉ²Å¿ÉÒÔ£¬¿ÉÒÔ¸ã´óµã
+//    char buffer[128]; //ï¿½ã¹»ï¿½ï¿½ï¿½É²Å¿ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½
 //    va_list args;
 //    va_start(args, fmt);
 //    vsprintf(buffer, fmt, args); 
@@ -92,9 +86,9 @@ void uart2_send_char(char ch)
 //		UART0_send((unsigned char*)buffer,len);
 ////    for (i = 0; i < len; i++) {
 ////			//uart0_send_char(buffer[i]);
-////				//µ±´®¿Ú0Ã¦µÄÊ±ºòµÈ´ý£¬²»Ã¦µÄÊ±ºòÔÙ·¢ËÍ´«½øÀ´µÄ×Ö·û
+////				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0Ã¦ï¿½ï¿½Ê±ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ù·ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 //////				while( DL_UART_isBusy(UART_0_INST) == true );
-//////				//·¢ËÍµ¥¸ö×Ö·û
+//////				//ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 ////				DL_UART_Main_transmitData(UART_0_INST, buffer[i]);			
 
 ////    }
@@ -102,7 +96,7 @@ void uart2_send_char(char ch)
 void u1_printf(const char *fmt, ...) {
     int i;
     int len;
-    char buffer[128]; //×ã¹»ÈÝÄÉ²Å¿ÉÒÔ£¬¿ÉÒÔ¸ã´óµã
+    char buffer[128]; //ï¿½ã¹»ï¿½ï¿½ï¿½É²Å¿ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½
     va_list args;
     va_start(args, fmt);
     vsprintf(buffer, fmt, args); 
@@ -112,25 +106,25 @@ void u1_printf(const char *fmt, ...) {
 
     for (i = 0; i < len; i++) {
 			uart1_send_char(buffer[i]);
-				//µ±´®¿Ú0Ã¦µÄÊ±ºòµÈ´ý£¬²»Ã¦µÄÊ±ºòÔÙ·¢ËÍ´«½øÀ´µÄ×Ö·û
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0Ã¦ï¿½ï¿½Ê±ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Ã¦ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ù·ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 //				while( DL_UART_isBusy(UART_0_INST) == true );
-//				//·¢ËÍµ¥¸ö×Ö·û
+//				//ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 //				DL_UART_Main_transmitData(UART_0_INST, buffer[i]);			
 
     }
 }
 
 #if !defined(__MICROLIB)
-//²»Ê¹ÓÃÎ¢¿âµÄ»°¾ÍÐèÒªÌí¼ÓÏÂÃæµÄº¯Êý
+//ï¿½ï¿½Ê¹ï¿½ï¿½Î¢ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½
 #if (__ARMCLIB_VERSION <= 6000000)
-//Èç¹û±àÒëÆ÷ÊÇAC5  ¾Í¶¨ÒåÏÂÃæÕâ¸ö½á¹¹Ìå
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AC5  ï¿½Í¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½
 struct __FILE
 {
         int handle;
 };
 #endif
 FILE __stdout;
-//¶¨Òå_sys_exit()ÒÔ±ÜÃâÊ¹ÓÃ°ëÖ÷»úÄ£Ê½
+//ï¿½ï¿½ï¿½ï¿½_sys_exit()ï¿½Ô±ï¿½ï¿½ï¿½Ê¹ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 void _sys_exit(int x)
 {
         x = x;
@@ -151,7 +145,7 @@ int fputc(int ch, FILE *stream)
 //{
 //	//u0_printf("%f,%f\n",smartcar_imu.left_motor_speed_cmps,2.f);
 //	printf("%d\n",50);
-//	//u0_printf("abc");//²âÊÔ´®¿Ú0
+//	//u0_printf("abc");//ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½0
 //}
 
 

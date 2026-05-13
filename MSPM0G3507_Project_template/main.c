@@ -15,6 +15,7 @@
 #include "hal_encode.h"
 #include "hal_tb6612.h"
 #include "hal_uart.h"
+#include "hal_vofa.h"
 #include "string.h"
 #include "CPU.h"
 #include "OS_System.h"
@@ -54,6 +55,8 @@ int main(void)
 
 	move_filter_init(&left_speed_cmps);	//编码器速度值滤波
 	move_filter_init(&right_speed_cmps);	//编码器速度值滤波
+	hal_uart1_Init();
+	vofa_param_init();
 
 	AppInit();
 	Flag_Init();

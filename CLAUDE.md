@@ -8,7 +8,7 @@ This repository contains TI MSPM0G3507 project templates for the 2027 TI Cup com
 
 - **MSPM0G3507_Project_template** - Main template (base project with OLED, VOFA, PID, TB6612, AT24C02 modules)
 - **MSPM0G3507_Project_xunji_pid** - Line-following PID template
-- **MSPM0G3507_Project_H** - 2024 H�? reference implementation
+- **MSPM0G3507_Project_H** - 2024 H reference implementation
 - **MSPM0G3507_Project_speed_pid** - Speed loop PID template
 
 ## Build
@@ -34,12 +34,27 @@ source/     - TI driverlib source files
 ```
 
 Key modules in Hal/:
-- hal_vofa.c/h - VOFA+上位机调�?
-- hal_pid.c/h - PID控制�?
-- hal_tb6612.c/h - 双H桥电机驱�?
-- hal_at24c02.c/h - EEPROM存储
-- hal_encode.c/h - 编码器�?�取
-- drv_oled.c/h, ssd1306.c - OLED显示屏驱�?
+- hal_vofa.c/h - VOFA+ upper-computer parameter tuning
+- hal_pid.c/h - PID controller
+- hal_tb6612.c/h - TB6612 motor driver
+- hal_at24c02.c/h - EEPROM storage
+- hal_encode.c/h - Encoder readout
+- drv_oled.c/h, ssd1306.c - OLED display driver
+
+## File Encoding
+
+This project uses GB2312/GBK encoding for source files. When modifying code:
+- **Do not change comments** - they contain Chinese characters in GB2312 encoding
+- Use Edit tool with exact string replacement, not write
+- Avoid pattern matching that spans GB2312 encoded characters
+
+## .claude/settings.json
+
+When modifying Claude Code settings:
+- **Read first before edit** - always read existing file content
+- **Preserve existing arrays** - merge rather than replace permission/hook arrays
+- **Validate JSON** - ensure syntax is correct after changes
+- Invalid JSON will silently disable all settings
 
 ## Common Issues
 

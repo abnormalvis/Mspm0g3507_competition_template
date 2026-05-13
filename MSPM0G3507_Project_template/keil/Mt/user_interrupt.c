@@ -1,9 +1,9 @@
 /*******************************************************************************
-  * @×÷Õß      £º wangming
+  * @ï¿½ï¿½ï¿½ï¿½      ï¿½ï¿½ wangming
   * @wechat    :DeepCoderMing
-  * @qq      £º 3201935299
-  * @ÈÕÆÚ      £º 2025Äê05ÔÂ01ÈÕ
-  * @°æÈ¨ÉùÃ÷  £º ½ö¹©²Î¿¼Ñ§Ï°£¬Î´¾­ÔÊÐí½ûÖ¹ÉÌÓÃ
+  * @qq      ï¿½ï¿½ 3201935299
+  * @ï¿½ï¿½ï¿½ï¿½      ï¿½ï¿½ 2025ï¿½ï¿½05ï¿½ï¿½01ï¿½ï¿½
+  * @ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½Ñ§Ï°ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 ********************************************************************************/
 #include "user_interrupt.h"
 #include "hal_uart.h"
@@ -17,11 +17,12 @@
 #include "hal_math.h"
 #include "hal_encode.h"
 #include "imu_filter.h"                  // Device header
+#include "hal_vofa.h"
 //volatile uint8_t UART0_recevie;
 int16_t error_openmv = 0,error_polarity = 0;  
 //void UART_0_INST_IRQHandler(void)
 //{
-//		static int16_t date_openmv[4];	//ÉãÏñÍ·¶Ë·¢ËÍ¼¸¸öÊý¾Ý¾ÍÊÇ¼¸£¬´Ë´¦ÉãÏñÍ·¶Ë·¢ËÍ6¸öÊý¾Ý
+//		static int16_t date_openmv[4];	//ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ë·ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¾ï¿½ï¿½Ç¼ï¿½ï¿½ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ë·ï¿½ï¿½ï¿½6ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		static int i = 0;	
 //	
 //		hal_BeepON();
@@ -29,10 +30,10 @@ int16_t error_openmv = 0,error_polarity = 0;
 //    switch (DL_UART_Main_getPendingInterrupt(UART_0_INST)) {
 //        case DL_UART_MAIN_IIDX_RX:
 //		
-//				date_openmv[i++]=DL_UART_Main_receiveData(UART_0_INST); //½ÓÊÕÊý¾Ý
-//				if(date_openmv[0]!=0xfe) i=0;             		  //ÅÐ¶ÏÖ¡Í·
-//				if((i==4)&&(date_openmv[3]!=0xff)) i=0;    		//ÅÐ¶ÏÖ¡Î² 
-//				if(i==4)                           			//´ú±íÒ»×éÊý¾Ý´«ÊäÍê±Ï
+//				date_openmv[i++]=DL_UART_Main_receiveData(UART_0_INST); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//				if(date_openmv[0]!=0xfe) i=0;             		  //ï¿½Ð¶ï¿½Ö¡Í·
+//				if((i==4)&&(date_openmv[3]!=0xff)) i=0;    		//ï¿½Ð¶ï¿½Ö¡Î² 
+//				if(i==4)                           			//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //				{
 //					 i=0;
 //					
@@ -71,7 +72,7 @@ int16_t error_openmv = 0,error_polarity = 0;
 uint8_t  UART1_recevie;
 uint8_t   debug_uart_data;
 
-void UART_1_INST_IRQHandler(void) //Öð·É´®¿Úµ÷ÊÔÖúÊÖ
+void UART_1_INST_IRQHandler(void) //ï¿½ï¿½É´ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 {
 
     switch (DL_UART_Main_getPendingInterrupt(UART_1_INST)) {
@@ -79,17 +80,17 @@ void UART_1_INST_IRQHandler(void) //Öð·É´®¿Úµ÷ÊÔÖúÊÖ
 //            DL_GPIO_togglePins(RGB_GPIO,
 //                RGB_Red_Pin);
            UART1_recevie = DL_UART_Main_receiveData(UART_1_INST); 
-        fifo_write_buffer(&debug_uart_fifo, &UART1_recevie, 1);               // ´æÈë FIFO	
+        fifo_write_buffer(&debug_uart_fifo, &UART1_recevie, 1);               // ï¿½ï¿½ï¿½ï¿½ FIFO	
 				
 					//DL_UART_Main_transmitData(UART_1_INST, UART1_recevie);
-//				date_openmv[i++]=DL_UART_Main_receiveData(UART_1_INST)&0xff; //½ÓÊÕÊý¾Ý
+//				date_openmv[i++]=DL_UART_Main_receiveData(UART_1_INST)&0xff; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		//data =  USART_ReceiveData(USART3)&0xff;
-//				if(date_openmv[0]!=0xfe) i=0;             		  //ÅÐ¶ÏÖ¡Í·
-//				if((i==6)&&(date_openmv[5]!=0xff)) i=0;    		//ÅÐ¶ÏÖ¡Î²
-//				if(i==6)                           			//´ú±íÒ»×éÊý¾Ý´«ÊäÍê±Ï
+//				if(date_openmv[0]!=0xfe) i=0;             		  //ï¿½Ð¶ï¿½Ö¡Í·
+//				if((i==6)&&(date_openmv[5]!=0xff)) i=0;    		//ï¿½Ð¶ï¿½Ö¡Î²
+//				if(i==6)                           			//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //				{
 //					 i=0;
-//					 //Usart3_Send_function(10,data0);        //Ð´ÄãÒª²Ù×÷µÄÊÂÇé
+//					 //Usart3_Send_function(10,data0);        //Ð´ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		//			l_error_data = date_openmv[1];
 //		//			r_error_data = date_openmv[2];
 //		//			ul_error_data = date_openmv[3];
@@ -107,11 +108,11 @@ void UART_1_INST_IRQHandler(void) //Öð·É´®¿Úµ÷ÊÔÖúÊÖ
 
 uint16_t Num1 = 0,Num2 = 0;
 static uint16_t beep_on_cnt = 0,task_start_cnt = 0;
-void TIMG6_IRQHandler(void)//5ms Ñ­¼£
+void TIMG6_IRQHandler(void)//5ms Ñ­ï¿½ï¿½
 {
 		gray_8data_read();
 		// Num1++;
-			if(Flag.beep_on == 1)//·äÃùÆ÷ÃùÏì1Ãë
+			if(Flag.beep_on == 1)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½
 			{
 				
 				beep_on_cnt++;
@@ -132,7 +133,7 @@ void TIMG6_IRQHandler(void)//5ms Ñ­¼£
 		// 	Num1=0;
 		// 	//DL_GPIO_togglePins(RGB_GPIO,RGB_Red_Pin);
 
-		// 	if(Flag.task_start == 1) //ÓÃÖÐ¶Ï¼ÆÊ±ÇÐ»»ÈÎÎñ×´Ì¬
+		// 	if(Flag.task_start == 1) //ï¿½ï¿½ï¿½Ð¶Ï¼ï¿½Ê±ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 		// 	{
 		// 			task_start_cnt++;
 		// 		if(task_start_cnt > 1)

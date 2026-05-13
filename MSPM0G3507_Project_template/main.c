@@ -7,6 +7,7 @@
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "drv_oled.h"
+#include "ndrivers/LCD/lcd_init.h"
 #include "hal_led.h"
 #include "hal_key.h"
 #include "hal_beep.h"
@@ -41,16 +42,13 @@ int main(void)
 	hal_CPUInit();	//定时器7初始化 用于任务调度
 	OS_TaskInit();	//任务初始化
 	oled_init();	//oled显示屏初始化
+	LCD_Init();	// 移植的 LCD 初始化
+	OLED_CLS();	// LCD 全屏清屏，避免启动残影和花屏
+	hal_KeyInit();	// 按键状态机初始化
 	ctrl_params_init();//循迹、速度环PID控制器参数初始化
 	hal_Encoder_Init();	//外部中断采集编码器脉冲
 	//hal_uart1_Init();	//串口1初始化 PA10 PA11 ——zigbee
 	//fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);	//zigbee逐飞串口调试助手
-	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_0_INDEX);	//开启四路PWM
-  	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_1_INDEX);	
-	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_2_INDEX);	
-	DL_TimerG_setCaptureCompareValue(TIMA0,99,DL_TIMER_CC_3_INDEX);	
-
-
 	TIMG0_Init();	//定时器中断——获取脉冲值 5ms
 	TIMG6_Init(); //定时器中断——实时时间 5ms	
 

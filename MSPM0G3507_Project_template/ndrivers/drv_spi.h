@@ -1,7 +1,8 @@
 #ifndef drv_spi_h
 #define drv_spi_h
 
-
+#include "ti_msp_dl_config.h"
+#include <ti/driverlib/dl_gpio.h>
 
 #define OLED_RST_Clr() DL_GPIO_clearPins(PORTB_PORT, PORTB_RST_PIN)
 #define OLED_RST_Set() DL_GPIO_setPins(PORTB_PORT, PORTB_RST_PIN)

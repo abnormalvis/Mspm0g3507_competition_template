@@ -2,6 +2,8 @@
 #define _HAL_TB6612_H
 
 #include "stdint.h"
+#include "ti_msp_dl_config.h"
+#include <ti/driverlib/dl_gpio.h>
 void Motor_Foreward_Left(uint16_t PWM_Hight);
 void Motor_Backward_Left(uint16_t PWM_Hight);
 void Motor_Foreward_Right(uint16_t PWM_Hight);

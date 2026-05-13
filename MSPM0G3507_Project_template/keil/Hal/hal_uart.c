@@ -28,15 +28,14 @@ void hal_uart2_Init(void)
     NVIC_EnableIRQ(UART_2_INST_INT_IRQN);
 
 }
-//void UART0_send(unsigned char *buff,int len)
-//{
-//	while(len--)
-//	{
-//	
-//	  DL_UART_Main_transmitDataBlocking(UART_0_INST, *buff);	//发送字符串
-//  	buff++;	
-//	}
-//}
+void UART0_send(unsigned char *buff,int len)
+{
+    while(len--)
+    {
+        DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);    // 发送字符串（阻塞）
+        buff++;
+    }
+}
 void UART1_send(const unsigned char *buff,int len)
 {
 	while(len--)
@@ -57,13 +56,11 @@ void UART2_send(unsigned char *buff,int len)
 }
 
 //串口发送单个字符
-//void uart0_send_char(char ch)
-//{
-//    //当串口0忙的时候等待，不忙的时候再发送传进来的字符
-//    while( DL_UART_isBusy(UART_0_INST) == true );
-//    //发送单个字符
-//    DL_UART_Main_transmitData(UART_0_INST, ch);
-//}
+void uart0_send_char(char ch)
+{
+    while( DL_UART_isBusy(UART_1_INST) == true );
+    DL_UART_Main_transmitData(UART_1_INST, ch);
+}
 //串口发送单个字符
 void uart1_send_char(char ch)
 {

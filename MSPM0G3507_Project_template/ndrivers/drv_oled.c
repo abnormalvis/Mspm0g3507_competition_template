@@ -1,8 +1,8 @@
 #include "ti_msp_dl_config.h"
 #include "drv_i2c.h"
 #include "drv_spi.h"
-#include "ssd1306.h"
 #include "drv_oled.h"
+#include "LCD/lcd.h"
 
 
 #define ABS(X)  (((X)>0)?(X):-(X))
@@ -181,12 +181,12 @@ const unsigned char NC_Logo[1024] =
 
 
 
-/*********************OLED写数据************************************/ 
+/*********************OLED写数�?************************************/ 
 void OLED_WrDat(unsigned char IIC_Data)
 {
 	SPI_LCD_WrDat(IIC_Data);
 }
-/*********************OLED写命令************************************/
+/*********************OLED写命�?************************************/
 void OLED_WrCmd(unsigned char IIC_Command)
 {
 	SPI_LCD_WrCmd(IIC_Command);
@@ -219,47 +219,21 @@ void OLED_Fill(unsigned char bmp_dat)
 /*********************OLED��λ************************************/
 void OLED_CLS(void)
 {
-  unsigned char y,x;
-  for(y=0;y<8;y++)
-  {
-    OLED_WrCmd(0xb0+y);
-    OLED_WrCmd(0x01);
-    OLED_WrCmd(0x10);
-    for(x=0;x<X_WIDTH;x++)
-      OLED_WrDat(0);
-  }
+  LCD_Fill(0, 0, 240, 240, BLACK);
 }
 /************************************************************************/
 void LCD_P6x8Str(unsigned char x,unsigned char  y,char ch[])
 {
-  unsigned char c=0,i=0,j=0;
-  while (ch[j]!='\0')
-  {
-    c =ch[j]-32;
-    if(x>126){x=0;y++;}
-    OLED_Set_Pos(x,y);
-    for(i=0;i<6;i++)
-      OLED_WrDat(F6x8[c][i]);
-    x+=6;
-    j++;
-  }
+  LCD_ShowString(x, y * 16, (const unsigned char *)ch, WHITE, BLACK, 12, 0);
 }
 
 
 void LCD_P6x8Char(unsigned char x,unsigned char  y,unsigned char ucData)
 {
-  unsigned char i, ucDataTmp;
-  ucDataTmp = ucData-32;
-  if(x > 126)
-  {
-    x= 0;
-    y++;
-  }
-  OLED_Set_Pos(x, y);
-  for(i = 0; i < 6; i++)
-  {
-    OLED_WrDat(F6x8[ucDataTmp][i]);
-  }
+  unsigned char text[2];
+  text[0] = ucData;
+  text[1] = '\0';
+  LCD_ShowString(x, y * 16, text, WHITE, BLACK, 12, 0);
 }
 
 
@@ -410,14 +384,14 @@ void write_6_8_number(unsigned char x,unsigned char y, float number)
 
 void LCD_clear_L(unsigned char x,unsigned char y)
 {
-	OLED_WrCmd(0xb0+y);
-	OLED_WrCmd(0x01);
-	OLED_WrCmd(0x10);
-	OLED_Set_Pos(x,y);
-	for(;x<X_WIDTH;x++)
-	{
-		OLED_WrDat(0);
-	}
+  unsigned char blank[22];
+  unsigned char i;
+  for(i = 0; i < sizeof(blank) - 1; i++)
+  {
+    blank[i] = ' ';
+  }
+  blank[sizeof(blank) - 1] = '\0';
+  LCD_ShowString(x, y * 16, blank, BLACK, BLACK, 12, 0);
 }
 
 void Draw_Logo(void)
@@ -434,20 +408,10 @@ void Draw_Logo(void)
     }
   }   
 }
-/*********************OLED初始化************************************/
+/*********************OLED初�?�化************************************/
 void oled_init(void)
 {
-	OLED_RST_Clr();
-	delay_ms(100);
-	OLED_RST_Set();
-	delay_ms(50);
-
-
-  delay_ms(100);
-	ssd1306_begin(SSD1306_SWITCHCAPVCC);  
-	Draw_Logo();
-	delay_ms(200);
-	OLED_Fill(0x00);
+  // LCD project does not use the OLED controller; keep as a no-op to avoid bus conflicts.
 } 
 
 

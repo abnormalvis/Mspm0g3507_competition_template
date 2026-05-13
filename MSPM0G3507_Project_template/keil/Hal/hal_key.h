@@ -117,6 +117,7 @@ typedef void (*KeyEvent_CallBack_t)(KEY_VALUE_TYPEDEF keys);
 
 void hal_KeyProc(void);
 void hal_KeyScanCBSRegister(KeyEvent_CallBack_t pCBS);
+void hal_KeyInit(void);
 
 #endif
 

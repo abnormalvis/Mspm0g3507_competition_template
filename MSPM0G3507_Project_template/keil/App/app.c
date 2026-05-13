@@ -260,6 +260,7 @@ static void gnlMenu_Desktop1CBS(void)
 			gray_display_state++;
 			LCD_clear_L(0,1);
 			display_6_8_string(0,1,"cmps:");			  //ภๅรื/ร๋   
+				display_6_8_number(30,5,gray_status);
 			display_6_8_number(40,1,smartcar_imu.left_motor_speed_cmps);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(85,1,smartcar_imu.right_motor_speed_cmps); 		
 	
@@ -308,6 +309,7 @@ static void gnlMenu_Desktop1CBS(void)
 //			display_6_8_number(60,5,speed_setup);// 
 		display_6_8_number(60,5,Flag.Start_duty_1);
 		display_6_8_number(80,5,Param.Send2_Step);
+				display_6_8_number(50,5,gray_threshold[0]);
 		display_6_8_number(100,5,Flag.Start_Car); 
 		//	display_6_8_number(60,5,Storage_ReadFloatNum(7).value); 
 			break;
@@ -315,6 +317,7 @@ static void gnlMenu_Desktop1CBS(void)
 			gray_display_state++;
 			LCD_clear_L(0,6);
 			LCD_clear_L(50,6);
+				display_6_8_number(30,5,gray_status);
 
 			break;
 		case 7:

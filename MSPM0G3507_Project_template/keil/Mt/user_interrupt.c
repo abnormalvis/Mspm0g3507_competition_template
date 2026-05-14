@@ -33,7 +33,7 @@ int16_t error_openmv = 0,error_polarity = 0;
 //				date_openmv[i++]=DL_UART_Main_receiveData(UART_0_INST); //��������
 //				if(date_openmv[0]!=0xfe) i=0;             		  //�ж�֡ͷ
 //				if((i==4)&&(date_openmv[3]!=0xff)) i=0;    		//�ж�֡β 
-//				if(i==4)                           			//����һ�����ݴ������
+//				if(i==4)                           			//����һ�����ݴ������?
 //				{
 //					 i=0;
 //					
@@ -72,7 +72,7 @@ int16_t error_openmv = 0,error_polarity = 0;
 uint8_t  UART1_recevie;
 uint8_t   debug_uart_data;
 
-void UART_1_INST_IRQHandler(void) //��ɴ��ڵ�������
+void UART_1_INST_IRQHandler(void) //��ɴ��ڵ�������?
 {
 
     switch (DL_UART_Main_getPendingInterrupt(UART_1_INST)) {
@@ -87,7 +87,7 @@ void UART_1_INST_IRQHandler(void) //��ɴ��ڵ�������
 //		//data =  USART_ReceiveData(USART3)&0xff;
 //				if(date_openmv[0]!=0xfe) i=0;             		  //�ж�֡ͷ
 //				if((i==6)&&(date_openmv[5]!=0xff)) i=0;    		//�ж�֡β
-//				if(i==6)                           			//����һ�����ݴ������
+//				if(i==6)                           			//����һ�����ݴ������?
 //				{
 //					 i=0;
 //					 //Usart3_Send_function(10,data0);        //д��Ҫ����������
@@ -108,9 +108,11 @@ void UART_1_INST_IRQHandler(void) //��ɴ��ڵ�������
 
 uint16_t Num1 = 0,Num2 = 0;
 static uint16_t beep_on_cnt = 0,task_start_cnt = 0;
+static uint16_t vofa_send_cnt = 0;
+volatile uint8_t gray_sample_req = 0;
 void TIMG6_IRQHandler(void)//5ms ѭ��
 {
-		gray_8data_read();
+		gray_sample_req = 1;
 		// Num1++;
 			if(Flag.beep_on == 1)//����������1��
 			{

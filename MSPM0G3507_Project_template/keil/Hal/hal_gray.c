@@ -43,11 +43,12 @@ void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
 void gray_8data_read(void)
 {
     unsigned char i;
+    DL_ADC12_startConversion(ADC12_0_INST);
     for(i = 0; i < 8; i++)
     {
         Tracking_IO_Set(i >> 2, (i >> 1) & 0x01, i & 0x01);  //ѡ��ͨ�� i
         /* �ӳٶ�ȡADCֵ */
-        for(volatile unsigned short j = 0; j < 100; j++);
+        for(volatile unsigned short j = 0; j < 500; j++);
         LQ_Tracking_Value[i] = DL_ADC12_getMemResult(ADC12_0_INST, ADC12_0_ADCMEM_0);
     }
 

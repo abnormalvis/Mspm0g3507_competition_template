@@ -25,6 +25,7 @@
 #include "hal_delay.h"
 #include "mt_flag.h"
 #include "user_interrupt.h"
+#include "hal_vofa.h"
 #include "math.h"
 #include "2024DS_Duty.h"
 #include "imu_filter.h"                  // Device header
@@ -235,6 +236,7 @@ static void menuInit(void)
 int key_count;    //按键值
 int task_num = 0;
 char stop_task = 0;
+static uint16_t gray_vofa_send_cnt = 0;
 
 float pwm_x0 = 1950,pwm_y0 = 1050;	//复位位置的pwm
 float pwm_x1 = 1950,pwm_y1 = 1050;	//周边左上角点的pwm
@@ -2191,6 +2193,26 @@ static void stg3Menu_Para8CBS(void)
 }
 void AppProc(void)
 {
+	if(gray_sample_req)
+	{
+		gray_sample_req = 0;
+		gray_8data_read();
+		gray_vofa_send_cnt++;
+		if(gray_vofa_send_cnt >= 10)
+		{
+			gray_vofa_send_cnt = 0;
+			vofa_add_data(gray_status);
+			vofa_add_data((float)LQ_Tracking_Value[0]);
+			vofa_add_data((float)LQ_Tracking_Value[1]);
+			vofa_add_data((float)LQ_Tracking_Value[2]);
+			vofa_add_data((float)LQ_Tracking_Value[3]);
+			vofa_add_data((float)LQ_Tracking_Value[4]);
+			vofa_add_data((float)LQ_Tracking_Value[5]);
+			vofa_add_data((float)LQ_Tracking_Value[6]);
+			vofa_add_data((float)LQ_Tracking_Value[7]);
+			vofa_send();
+		}
+	}
 	pModeMenu->action();//执行当前菜单的服务函数，不断循环
 	//上行代码在当前菜单的位置等同于gnlMenu_Desktop1CBS();
 }

@@ -61,6 +61,8 @@ const mux8       = system.clockTree["HSCLKMUX"];
 mux8.inputSelect = "HSCLKMUX_SYSPLL0";
 
 ADC121.$name                      = "ADC12_0";
+ADC121.sampClkDiv                 = "DL_ADC12_CLOCK_DIVIDE_8";
+ADC121.repeatMode                 = true;
 ADC121.peripheral.adcPin0.$assign = "PA27";
 ADC121.adcPin0Config.$name        = "ti_driverlib_gpio_GPIOPinGeneric15";
 

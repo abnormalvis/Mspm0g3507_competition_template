@@ -3,25 +3,25 @@
 #include "stdint.h"
 
 typedef struct{
-	float kp;					//比例参数
-	float ki;					//积分参数
-	float	kd;					//微分参数
-	float error;			//偏差值
-	float	expect;			//期望值
-	float	feedback;		//反馈值
-	float	last_error;	//上次偏差
-	float dis_error;	//微分项
-	float	integral;		//积分控制器输出
-	float output;			//当前控制器输出
-	float last_output;//上次控制器输出
-	float error_backup[20];			    //历史偏差值
+	float kp;					//Proportional gain
+	float ki;					//Integral gain
+	float	kd;					//Derivative gain
+	float error;			//Error value
+	float	expect;			//Expected value
+	float	feedback;		//Feedback value
+	float	last_error;	//Last error
+	float dis_error;	//Derivative term
+	float	integral;		//Integral controller output
+	float output;			//Current controller output
+	float last_output;//Last controller output
+	float error_backup[20];			    //Historical error values
 	uint8_t dis_error_gap_cnt;
-  uint8_t error_limit_flag;				//偏差限幅标志位
-	float error_limit_max;					//最大偏差限幅值
-	uint8_t integral_separate_flag;	//积分分离标志位
-	float integral_separate_limit;	//积分分离偏差值
-	float integral_limit_max;				//最大积分限幅值
-	float output_limit_max;             //控制器总输出限幅值
+  uint8_t error_limit_flag;				//Error limit flag
+	float error_limit_max;					//Max error limit value
+	uint8_t integral_separate_flag;	//Integral separation flag
+	float integral_separate_limit;	//Integral separation error threshold
+	float integral_limit_max;				//Integral limit max value
+	float output_limit_max;             //Controller total output limit value
 	uint8_t init_flag;
 	float dis_error_lpf;
 //	lpf_param lpf_params;

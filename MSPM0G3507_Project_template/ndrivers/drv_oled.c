@@ -181,12 +181,12 @@ const unsigned char NC_Logo[1024] =
 
 
 
-/*********************OLEDÂÜôÊï∞Êç?************************************/ 
+/*********************OLED write data************************************/ 
 void OLED_WrDat(unsigned char IIC_Data)
 {
 	SPI_LCD_WrDat(IIC_Data);
 }
-/*********************OLEDÂÜôÂëΩ‰ª?************************************/
+/*********************OLED write command************************************/
 void OLED_WrCmd(unsigned char IIC_Command)
 {
 	SPI_LCD_WrCmd(IIC_Command);
@@ -216,7 +216,7 @@ void OLED_Fill(unsigned char bmp_dat)
 
 
 
-/*********************OLEDÔøΩÔøΩŒª************************************/
+/*********************OLED full screen fill************************************/
 void OLED_CLS(void)
 {
   LCD_Fill(0, 0, 240, 240, BLACK);
@@ -408,7 +408,7 @@ void Draw_Logo(void)
     }
   }   
 }
-/*********************OLEDÂàùÂ?ãÂåñ************************************/
+/*********************OLED initialization************************************/
 void oled_init(void)
 {
   // LCD project does not use the OLED controller; keep as a no-op to avoid bus conflicts.

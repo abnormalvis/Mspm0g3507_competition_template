@@ -28,10 +28,10 @@
 #include "hal_beep.h"
 #include "app.h"
 
-static float speed_error[2] = {0, 0}, speed_expect[2] = {speed_expect_default, speed_expect_default}, speed_feedback[2] = {0, 0}; // �ٶ����? �����ٶ� �����ٶ�
+static float speed_error[2] = {0, 0}, speed_expect[2] = {speed_expect_default, speed_expect_default}, speed_feedback[2] = {0, 0}; // Speed error, expected speed, feedback speed
 static float speed_error_last[2] = {0, 0};
 // static float position_kp = position_kp_default,position_ki = position_ki_default,position_kd = position_kd_default;
-// ��ɫ��
+	// Gray track
 // float speed_kp_l=0.5f,speed_ki_l=0.12f,speed_kd=speed_kd_default;
 // float speed_kp_r=0.64f,speed_ki_r=0.15f;
 float speed_kp_l = 0.9f, speed_ki_l = 0.2f, speed_kd = speed_kd_default;
@@ -44,29 +44,29 @@ float position_kd = 0.3;
 float yaw_kp = 0.6;
 float yaw_ki = 0;
 float yaw_kd = 0.5;
-// �ڳ�
+	// Black car
 // float speed_kp_l=1.1f,speed_ki_l=0.2f;
 // float speed_kp_r=0.9f,speed_ki_r=0.23f;
 // float speed_kp=speed_kp_default,speed_ki=speed_ki_default,speed_kd=speed_kd_default;
-static float position_error[2] = {0, 0}, position_feedback[2] = {0, 0}, position_output[2] = {0, 0}, yaw_out[2] = {0, 0}; // λ�����? λ���ٶ� ����λ��
-static float yaw_feedback = 0, yaw_error = 0, yaw = 0, target_yaw = 0;													  // �ǶȻ� �����ٶ�λ�ô���Pidһ�£�
+static float position_error[2] = {0, 0}, position_feedback[2] = {0, 0}, position_output[2] = {0, 0}, yaw_out[2] = {0, 0}; // Position error, position feedback, position output
+static float yaw_feedback = 0, yaw_error = 0, yaw = 0, target_yaw = 0; // Yaw feedback, yaw error (same as position PID structure)
 
-float v_target_l = 0, v_target_r = 0; // ��λcm/s ��ʼ���ٶȻ�Ŀ���ٶ�
+float v_target_l = 0, v_target_r = 0; // cm/s, initial speed loop target
 float p_target_l = 100, p_target_r = 100;
 float speed_integral[2] = {0, 0}, speed_output[2] = {0, 0};
-float left_pwm, right_pwm; // ���ҵ�����յ����ֵ
+float left_pwm, right_pwm; // Left/right motor final output PWM
 
-float turn_output = 0, turn_output_last = 0; // ����������?
-controller seektrack_ctrl[2];				 // ����Ѱ���������ṹ��,seektrack_ctrl[0]�Ҷȹ�ѭ��;seektrack_ctrl[1]OpenMVѭ��
-float turn_ctrl_pwm = 0;					 // ת��������
-// float	turn_scale=turn_scale_default;//ת����Ʋ���ϵ��?  0.15 ת����������ת����������������ʱ������ת��ϵ��
-float turn_scale = 0.06;				   // ת����Ʋ���ϵ��?  0.15 ת����������ת����������������ʱ������ת��ϵ��
-float speed_setup = 70, speed_adjust = 35; // �ٶ��趨ֵ  �ٶ�Ŀ��ֵ���������ʽ������?
+float turn_output = 0, turn_output_last = 0; // Turn control output
+controller seektrack_ctrl[2]; // Dual seektrack controllers: [0]=gray sensor, [1]=OpenMV
+float turn_ctrl_pwm = 0; // Turn control PWM
+	// float turn_scale=turn_scale_default; // Turn control scale factor 0.15, amplifies turn amount for speed difference
+float turn_scale = 0.06; // Turn control scale factor, multiplied by turn amount for final speed difference
+float speed_setup = 70, speed_adjust = 35; // Base speed and adjustable speed target
 float yaw_target = 0;
-/*�ٶȻ� λ�û� ���� �ǶȻ�*/
+/* Speed loop, Position loop, Tracking, Yaw loop */
 // void speed_control(void)
 //{
-//	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps;//��ȡ����ʵ��ֵ
+	//	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps; // Get left wheel actual speed
 //	speed_error[0]=v_target_l-speed_feedback[0];
 //	speed_error[0]=Xianfu_float(speed_error[0],speed_err_max);
 //	speed_integral[0]+=speed_ki_l*speed_error[0];
@@ -74,14 +74,14 @@ float yaw_target = 0;
 //	speed_output[0]=speed_integral[0]+speed_kp_l*speed_error[0];
 //	speed_output[0]=Xianfu_float(speed_output[0],speed_ctrl_output_max);
 //
-//	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps;//����
-//	speed_error[1]=v_target_r-speed_feedback[1];//�����ٶȼ�ȥʵ���ٶȵõ��ٶ����?
+	//	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps; // Get right wheel actual speed
+	//	speed_error[1]=v_target_r-speed_feedback[1]; // Target minus actual = speed error
 //
-//	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max);//���ٶ������Լ��?
-//	speed_integral[1]+=speed_ki_r*speed_error[1]; //�ٶȻ���
-//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max);//�Եõ����ٶȻ�����Լ��
-//	speed_output[1]=speed_integral[1]+speed_kp_r*speed_error[1];//pid�õ����?
-//	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max);//�������Լ��?
+	//	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max); // Limit speed error
+	//	speed_integral[1]+=speed_ki_r*speed_error[1]; // Speed integral
+	//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max); // Limit integral
+	//	speed_output[1]=speed_integral[1]+speed_kp_r*speed_error[1]; // PID output
+	//	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max); // Limit output
 //
 // }
 float add_limit[2] = {};
@@ -89,7 +89,7 @@ float speed_theta = 0;
 void speed_control(void)
 {
 
-	speed_feedback[0] = smartcar_imu.left_motor_speed_cmps; // ��ȡ����ʵ��ֵ
+		speed_feedback[0] = smartcar_imu.left_motor_speed_cmps; // Get left wheel actual speed
 	speed_error[0] = v_target_l - speed_feedback[0];
 	speed_error[0] = Xianfu_float(speed_error[0], speed_err_max);
 	speed_integral[0] = speed_ki_l * speed_error[0];
@@ -100,15 +100,15 @@ void speed_control(void)
 	speed_output[0] = Xianfu_float(speed_output[0], speed_ctrl_output_max);
 	speed_error_last[0] = speed_error[0];
 
-	speed_feedback[1] = smartcar_imu.right_motor_speed_cmps;	  // ����
-	speed_error[1] = v_target_r - speed_feedback[1];			  // �����ٶȼ�ȥʵ���ٶȵõ��ٶ����?
-	speed_error[1] = Xianfu_float(speed_error[1], speed_err_max); // ���ٶ������Լ��?
-	speed_integral[1] = speed_ki_r * speed_error[1];			  // �ٶȻ���
-	//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max);//�Եõ����ٶȻ�����Լ��
+		speed_feedback[1] = smartcar_imu.right_motor_speed_cmps; // Right wheel
+		speed_error[1] = v_target_r - speed_feedback[1]; // Target minus actual = speed error
+		speed_error[1] = Xianfu_float(speed_error[1], speed_err_max); // Limit speed error
+		speed_integral[1] = speed_ki_r * speed_error[1]; // Speed integral
+	//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max); // Limit integral
 	add_limit[1] = speed_integral[1] + speed_kp_r * (speed_error[1] - speed_error_last[1]);
 	if (ABS(add_limit[1]) > 0.5)
-		speed_output[1] += add_limit[1];									// pid�õ����?
-	speed_output[1] = Xianfu_float(speed_output[1], speed_ctrl_output_max); // �������Լ��?
+			speed_output[1] += add_limit[1]; // PID output
+		speed_output[1] = Xianfu_float(speed_output[1], speed_ctrl_output_max); // Limit output
 	speed_error_last[1] = speed_error[1];
 
 	/* Update speed PID from VOFA and send feedback */
@@ -151,7 +151,7 @@ void speed_control(void)
 	}
 }
 
-void position_control(void) // �����ٶ�λ�ô���PID
+void position_control(void) // Cascaded speed-position PID
 {
 	static float err_l, err_last_l, err_r, err_last_r, err_sum_l, err_sum_r;
 
@@ -162,18 +162,18 @@ void position_control(void) // �����ٶ�λ�ô���PID
 	{
 		position_output[0] = 0;
 	}
-	else // λ�û����� PID
+		else // Position loop PID
 	{
 		err_sum_l += err_l;
-		err_sum_l = Xianfu_float(err_sum_l, 60);																 // �����޷�
-		position_output[0] = position_kp * err_l + position_ki * err_sum_l + position_kd * (err_l - err_last_l); // λ�û����?
+			err_sum_l = Xianfu_float(err_sum_l, 60); // Limit integral
+			position_output[0] = position_kp * err_l + position_ki * err_sum_l + position_kd * (err_l - err_last_l); // Position loop PID output
 		if (ABS(err_r) < 4 && ABS(err_r) > 0.8)
 		{
 			position_output[0] = (position_output[0] / ABS(position_output[0])) * 10 + position_output[0];
 		}
 		err_last_l = err_l;
 
-		position_output[0] = Xianfu_float(position_output[0], 30); // 50��Ŀ���ٶ� ��λ����������޷�?
+			position_output[0] = Xianfu_float(position_output[0], 30); // Limit position loop output (max target speed)
 	}
 	v_target_l = position_output[0];
 
@@ -186,19 +186,19 @@ void position_control(void) // �����ٶ�λ�ô���PID
 	else
 	{
 		err_sum_r += err_r;
-		err_sum_r = Xianfu_float(err_sum_r, 60);																 // �����޷�
-		position_output[1] = position_kp * err_r + position_ki * err_sum_r + position_kd * (err_r - err_last_r); // λ�û����?
+			err_sum_r = Xianfu_float(err_sum_r, 60); // Limit integral
+			position_output[1] = position_kp * err_r + position_ki * err_sum_r + position_kd * (err_r - err_last_r); // Position loop PID output
 		if (ABS(err_r) < 4 && ABS(err_r) > 0.8)
 		{
 			position_output[1] = (position_output[1] / ABS(position_output[1])) * 10 + position_output[1];
 		}
 		err_last_r = err_r;
-		position_output[1] = Xianfu_float(position_output[1], 30); // 50��Ŀ���ٶ� ��λ����������޷�?
+			position_output[1] = Xianfu_float(position_output[1], 30); // Limit position loop output
 	}
 	v_target_r = position_output[1];
 }
 
-// ƫ���ǽǶȻ�  ʹ��jy62
+	// Yaw/angle loop using JY62 IMU
 void Yaw_control(float target)
 {
 	static float err, err_last, err_sum;
@@ -235,30 +235,30 @@ void Yaw_control(float target)
 	v_target_r = yaw_out[1];
 }
 
-// �Ҷ�ѭ��
+	// Gray sensor tracking
 void ctrl_params_init(void)
 {
-	pid_control_init(&seektrack_ctrl[0], // ����ʼ���������ṹ�壬�Ҷȹ�ѭ��
-					 turn_kp_default1,	 // ��������
-					 turn_ki_default1,	 // ���ֲ���
-					 turn_kd_default1,	 // ΢�ֲ���
-					 20,				 // ƫ���޷�ֵ
-					 0,					 // �����޷�ֵ
-					 500,				 // ����������޷��?
-					 1,					 // ƫ���޷���־λ
-					 0, 0,				 // ���ַ����־λ��������ֿ���ʱ���޷�ֵ
-					 6);				 // ΢�ּ��ʱ��?
+		pid_control_init(&seektrack_ctrl[0], // Initialize PID controller, gray sensor tracking
+						 turn_kp_default1,	 // Proportional gain
+						 turn_ki_default1,	 // Integral gain
+						 turn_kd_default1,	 // Derivative gain
+						 20,				 // Error limit
+					 0,						 // Integral limit
+						 500,				 // Output limit
+					 1,						 // Error limit flag
+						 0, 0,				 // Integral separation flag and error threshold
+						 6);				 // Derivative interval time
 
-	//	pid_control_init(&seektrack_ctrl[1],//����ʼ���������ṹ�壬OpenMVѭ��
-	//										turn_kp_default2,//��������
-	//										turn_ki_default2,//���ֲ���
-	//										turn_kd_default2,//΢�ֲ���
-	//										20, //ƫ���޷�ֵ
-	//										0,  //�����޷�ֵ
-	//										500,//����������޷��?
-	//										1,	//ƫ���޷���־λ
-	//										0,0,//���ַ����־λ��������ֿ���ʱ���޷�ֵ
-	//										1); //΢�ּ��ʱ��?
+		//	pid_control_init(&seektrack_ctrl[1], // Initialize PID controller, OpenMV tracking
+		//							turn_kp_default2, // Proportional gain
+		//							turn_ki_default2, // Integral gain
+		//							turn_kd_default2, // Derivative gain
+		//							20, // Error limit
+		//							0,  // Integral limit
+		//							500, // Output limit
+		//							1,  // Error limit flag
+		//							0,0, // Integral separation flag and error threshold
+		//							1); // Derivative interval
 }
 // float turn_kp	=		20.0f ;
 // float turn_ki	=		0.0f	;
@@ -307,49 +307,49 @@ void gray_turn_control_200hz(float *output) // 200HZ=5ms
 	pid_control_run(&seektrack_ctrl[0]);
 	turn_output = seektrack_ctrl[0].output;
 
-	//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone ֵΪ50
+		//	if(turn_output>0) turn_output+=steer_deadzone; // Dead zone compensation, value=50
 	//	if(turn_output<0) turn_output-=steer_deadzone;
 	turn_output = Xianfu_float(turn_output, 70);
 
 	*output = 0.75f * turn_output + 0.25f * turn_output_last;
 }
-float cam_turn_kp = 0.f;  // KP	 λ�ÿ�����
-float cam_turn_ki = 0.0f; // ���ں���Թ�ʶ��켣ʱ,����Ѱ����λ�ÿ��������ֲ���KI
+	float cam_turn_kp = 0.f;  // Camera position tracking proportional gain
+	float cam_turn_ki = 0.0f; // Integral only active at forks, for camera seektrack position loop KI
 float cam_turn_kd = 0.0f; //
 void openmv_openmv_duty_run(float *output)
 {
-	pid_control_init(&seektrack_ctrl[1], // ����ʼ���������ṹ�壬�Ҷȹ�ѭ��
-					 cam_turn_kp,		 // ��������
-					 cam_turn_ki,		 // ���ֲ���
-					 cam_turn_kd,		 // ΢�ֲ���
-					 10,				 // ƫ���޷�ֵ
-					 0,					 // �����޷�ֵ
-					 50,				 // ����������޷��?
-					 1,					 // ƫ���޷���־λ
-					 0, 0,				 // ���ַ����־λ��������ֿ���ʱ���޷�ֵ
-					 6);				 // ΢�ּ��ʱ��?
+		pid_control_init(&seektrack_ctrl[1], // Initialize PID controller, camera tracking
+						 cam_turn_kp,		 // Proportional gain
+						 cam_turn_ki,		 // Integral gain
+						 cam_turn_kd,		 // Derivative gain
+						 10,				 // Error limit
+						 0,					 // Integral limit
+						 50,				 // Output limit
+						 1,					 // Error limit flag
+						 0, 0,				 // Integral separation flag and error threshold
+						 6);				 // Derivative interval time
 
-	// �����ϴο��������?
+		// Save previous control output
 	turn_output_last = turn_output;
-	// ת��PD����������������ʵʱ��Ҫ��ߣ��������I��ʹ������Ӧ�ͺ�
-	seektrack_ctrl[1].expect = 0;			   // ����   seektrack��ѭ������˼
-	seektrack_ctrl[1].feedback = error_openmv; // ���� gray_status[0]������Ԫ��״ֵ̬-11~11
-	pid_control_run(&seektrack_ctrl[1]);	   // ����������
+		// Steering PD control, no I term for camera position to avoid response lag
+		seektrack_ctrl[1].expect = 0; // Expected value for seektrack loop
+		seektrack_ctrl[1].feedback = error_openmv; // Feedback: OpenMV error (-11~11 range like gray sensor)
+		pid_control_run(&seektrack_ctrl[1]);  // Run PID controller
 	turn_output = seektrack_ctrl[1].output;
-	// ������������  ������ͼ�������?
-	//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzoneת������ ֵΪ50
+		// Turn dead zone compensation to reduce jitter
+	//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone dead zone = 50
 	//	if(turn_output<0) turn_output-=steer_deadzone;
-	// ����޷�?
-	turn_output = Xianfu_float(turn_output, 50); // ת�����turn_ctrl_pwm����޷�?
+		// Output limit
+		turn_output = Xianfu_float(turn_output, 50); // Limit turn control PWM
 
-	*output = 0.75f * turn_output + 0.25f * turn_output_last; // ����?ǰ�����μ���ľ��?
+		*output = 0.75f * turn_output + 0.25f * turn_output_last; // Weighted blend of current and previous output
 }
 void openmv_duty_run(void)
 {
 	openmv_openmv_duty_run(&turn_ctrl_pwm);
-	v_target_l = speed_setup + turn_ctrl_pwm; //*turn_scale;//��������ٶ�����?  �����������turn_ctrl_pwm*turn_scale
-	v_target_r = speed_setup - turn_ctrl_pwm; //*turn_scale;//�ұ������ٶ�����  ����turn_ctrl_pwm*turn_scale�϶�������Ԫ���й�
-	speed_control();						  // �������õ��ɼ���ʵ��������
+		v_target_l = speed_setup + turn_ctrl_pwm; //*turn_scale; // Left wheel target speed with turn adjustment
+		v_target_r = speed_setup - turn_ctrl_pwm; //*turn_scale; // Right wheel target speed with turn adjustment
+		speed_control();   // Speed loop
 }
 
 void sdk_duty_run(float *a, float *b)
@@ -358,8 +358,8 @@ void sdk_duty_run(float *a, float *b)
 	float detla_x = (x2 - x1);
 	float leng = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 
-	// 2022��7�·�ʡ��С��������ʻϵͳ����,����Ȧ����ѭ����
-	gray_turn_control_200hz(&turn_ctrl_pwm); // ���ڻҶȶԹܵ�ת����ƣ�gray_turn_control_200hz������PID���������㣩���������ֵ����turn_ctrl_pwm
+		// 2022 July provincial competition driving system, two seektrack switches per lap
+		gray_turn_control_200hz(&turn_ctrl_pwm); // Gray sensor turn control (includes PID calculation), result in turn_ctrl_pwm
 
 	if (task_num == 4)
 	{
@@ -369,9 +369,9 @@ void sdk_duty_run(float *a, float *b)
 	else
 		speed_setup = 30;
 
-	// �����ٶ�
-	v_target_l = speed_setup + turn_ctrl_pwm; //*turn_scale;//��������ٶ�����?  �����������turn_ctrl_pwm*turn_scale
-	v_target_r = speed_setup - turn_ctrl_pwm; //*turn_scale;//�ұ������ٶ�����  ����turn_ctrl_pwm*turn_scale�϶�������Ԫ���й�
+		// Set speed
+		v_target_l = speed_setup + turn_ctrl_pwm; //*turn_scale; // Left wheel target speed with turn adjustment
+		v_target_r = speed_setup - turn_ctrl_pwm; //*turn_scale; // Right wheel target speed with turn adjustment
 }
 
 void nmotor_output(void)
@@ -379,12 +379,12 @@ void nmotor_output(void)
 	if (Flag.Start_Car == 1)
 	{
 		if (speed_output[1])
-			right_pwm = speed_output[1] + 4 * (speed_output[1] > 0 ? 1 : -1); // 死区补偿
+				right_pwm = speed_output[1] + 4 * (speed_output[1] > 0 ? 1 : -1); // Dead zone compensation
 		else
 			right_pwm = 0;
 
 		if (speed_output[0])
-			left_pwm = speed_output[0] + 4 * (speed_output[0] > 0 ? 1 : -1); // 死区补偿
+				left_pwm = speed_output[0] + 4 * (speed_output[0] > 0 ? 1 : -1); // Dead zone compensation
 		else
 			left_pwm = 0;
 
@@ -428,11 +428,11 @@ float yaw_angle = 0;
 void TIMG0_IRQHandler(void) // 10ms
 {
 
-	if (Flag.Start_duty_1) //(1) A -> B 15s  λ�ýǶȱջ�100cm
+		if (Flag.Start_duty_1) //(1) A -> B 15s, position-angle closed loop 100cm
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty_1 = 0;
-		// auto_track(point_actual,point_B);//�Զ�ѭ��
+			// auto_track(point_actual,point_B); // Auto tracking
 		if (gray_state.state) // L < distance||
 		{
 			gray_cnt++;
@@ -452,7 +452,7 @@ void TIMG0_IRQHandler(void) // 10ms
 				v_target_r = 15;
 			}
 		}
-	} /*�����ǵڶ���*/
+		} /* End of stage 1 */
 	else if (Flag.Start_duty2_1) //(2) A -> B 30s
 	{
 
@@ -478,26 +478,26 @@ void TIMG0_IRQHandler(void) // 10ms
 			}
 		}
 	}
-	else if (Flag.Start_duty2_7 == 1) // ��2�� ֹͣ
+		else if (Flag.Start_duty2_7 == 1) // Stage 2: Stop
 	{
 		// Flag.Start_Car  = 1;
 		Flag.Success_duty2_7 = 0;
 		v_target_l = 0;
 		v_target_r = 0;
 		duty3_8_cnt++;
-		if (duty3_8_cnt > sleep_time) // ʶ�𵽺��� ��ͣס200ms
+			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
 		{
 			duty3_8_cnt = 0;
 			Flag.Start_duty2_7 = 0;
 			Flag.Success_duty2_7 = 1;
 		}
 	}
-	else if (Flag.Start_duty2_2 == 1) //(2) B -> C 30s ѭ��
+		else if (Flag.Start_duty2_2 == 1) //(2) B -> C 30s tracking
 	{
 		// speed_setup = 70;
 		Flag.Start_Car = 1;
 		Flag.Success_duty2_2 = 0;
-		sdk_duty_run(point_actual, point_A);																																												// �õ��ٶ�Ŀ��ֵ
+			sdk_duty_run(point_actual, point_A); // Get speed target values
 		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0])) < distance) //||sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0]))<distance
 		{
 			Flag.beep_on = 1;
@@ -507,7 +507,7 @@ void TIMG0_IRQHandler(void) // 10ms
 			Flag.Success_duty2_2 = 1;
 		}
 	}
-	else if (Flag.Start_duty2_3) //(2) ��C��У׼�Ƕ�
+		else if (Flag.Start_duty2_3) //(2) Calibrate angle at point C
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty2_3 = 0;
@@ -551,26 +551,26 @@ void TIMG0_IRQHandler(void) // 10ms
 			}
 		}
 	}
-	else if (Flag.Start_duty2_6 == 1) // ��2�� ֹͣ
+		else if (Flag.Start_duty2_6 == 1) // Stage 2: Stop
 	{
 		// Flag.Start_Car  = 1;
 		Flag.Success_duty2_6 = 0;
 		v_target_l = 0;
 		v_target_r = 0;
 		duty3_8_cnt++;
-		if (duty3_8_cnt > sleep_time) // ʶ�𵽺��� ��ͣס200ms
+			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
 		{
 			duty3_8_cnt = 0;
 			Flag.Start_duty2_6 = 0;
 			Flag.Success_duty2_6 = 1;
 		}
 	}
-	else if (Flag.Start_duty2_5) // ��2�� D -> A 30s
+		else if (Flag.Start_duty2_5) // Stage 2: D -> A 30s
 	{
 		// speed_setup = 70;
 		Flag.Start_Car = 1;
 		Flag.Success_duty2_5 = 0;
-		sdk_duty_run(point_actual, point_A);																																												// �õ��ٶ�Ŀ��ֵ
+			sdk_duty_run(point_actual, point_A); // Get speed target values
 		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0])) < distance) //||sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
 		{
 			v_target_l = 0;
@@ -582,8 +582,8 @@ void TIMG0_IRQHandler(void) // 10ms
 			Flag.Start_duty2_5 = 0;
 			Flag.Success_duty2_5 = 1;
 		}
-	} /*�����ǵ�����*/
-	else if (Flag.Start_duty3_0 == 1) //(3)   Send3_Step = -1
+		} /* End of stage 2 */
+		else if (Flag.Start_duty3_0 == 1) //(3) Send3_Step = -1
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_0 = 0;
@@ -599,14 +599,14 @@ void TIMG0_IRQHandler(void) // 10ms
 			Flag.Success_duty3_0 = 1;
 		}
 	}
-	else if (Flag.Start_duty3_1 == 1) // ��3�� A -> C 40s  Send3_Step = 0
+		else if (Flag.Start_duty3_1 == 1) // Stage 3: A -> C 40s, Send3_Step = 0
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_1 = 0;
 		auto_track(point_actual, point_C);
 		//		if(L < distance || ABS(gray_status) <= 10)
 		//	if(L < distance ||Flag.gray_worse == 0)
-		if (gray_state.state && ((Num2 - Start_duty3_3_cnt) > 1)) // ʶ�𵽺��� ��ͣס
+			if (gray_state.state && ((Num2 - Start_duty3_3_cnt) > 1)) // Detected horizontal line, stop
 		{
 			gray_cnt++;
 			if (L < distance && gray_cnt > 2)
@@ -646,7 +646,7 @@ void TIMG0_IRQHandler(void) // 10ms
 			}
 		}
 	}
-	else if (Flag.Start_duty3_5 == 1) //(3)C��ѭ��ǰ  Send3_Step = 4
+		else if (Flag.Start_duty3_5 == 1) //(3) Before tracking at point C, Send3_Step = 4
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_5 = 0;
@@ -666,14 +666,14 @@ void TIMG0_IRQHandler(void) // 10ms
 			Flag.Success_duty3_5 = 1;
 		}
 	}
-	// ����C����ͣס 500ms
-	else if (Flag.Start_duty3_8 == 1) // ��3�� A -> C 40s  Send3_Step = 7
+		// Stop at point C for 500ms
+		else if (Flag.Start_duty3_8 == 1) // Stage 3: A -> C 40s, Send3_Step = 7
 	{
 		Flag.Success_duty3_8 = 0;
 		v_target_l = 0;
 		v_target_r = 0;
 		duty3_8_cnt++;
-		if (duty3_8_cnt > sleep_time) // ʶ�𵽺��� ��ͣס200ms
+			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
 		{
 			gray_cnt = 0;
 
@@ -687,7 +687,7 @@ void TIMG0_IRQHandler(void) // 10ms
 		// speed_setup = 70;
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_2 = 0;
-		sdk_duty_run(point_actual, point_B); // �õ��ٶ�Ŀ��ֵ
+			sdk_duty_run(point_actual, point_B); // Get speed target values
 		//		if( distance_inter >= 105 + distance_point)
 		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && (sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0])) < distance)) //||sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0]))<distance
 		{
@@ -706,7 +706,7 @@ void TIMG0_IRQHandler(void) // 10ms
 		//				v_target_r = -5;
 		//			}
 	}
-	else if (Flag.Start_duty3_7 == 1) //(3)����ѭ��ǰ ������λ Send3_Step = 6
+		else if (Flag.Start_duty3_7 == 1) //(3) Before right-angle tracking, align chassis, Send3_Step = 6
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_7 = 0;
@@ -729,7 +729,7 @@ void TIMG0_IRQHandler(void) // 10ms
 		Flag.Success_duty3_3 = 0;
 		auto_track(point_actual, point_D);
 
-		if ((Num2 - Start_duty3_3_cnt) > 1 && gray_state.state) // ��D || L <distance(gray_state.state <10 && gray_state.state!= 0))
+			if ((Num2 - Start_duty3_3_cnt) > 1 && gray_state.state) // Detected point D or horizontal line
 		{
 			gray_cnt++;
 			if (L < distance && gray_cnt > 2)
@@ -771,7 +771,7 @@ void TIMG0_IRQHandler(void) // 10ms
 			}
 		}
 	}
-	else if (Flag.Start_duty3_6 == 1) //(3)D��ѭ��ǰ Send3_Step = 2
+		else if (Flag.Start_duty3_6 == 1) //(3) Before tracking at point D, Send3_Step = 2
 	{
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_6 = 0;
@@ -790,13 +790,13 @@ void TIMG0_IRQHandler(void) // 10ms
 			Flag.Success_duty3_6 = 1;
 		}
 	}
-	else if (Flag.Start_duty3_9 == 1) // ��3�� A -> C 40s  Send3_Step = 5
+		else if (Flag.Start_duty3_9 == 1) // Stage 3: A -> C 40s, Send3_Step = 5
 	{
 		Flag.Success_duty3_9 = 0;
 		v_target_l = 0;
 		v_target_r = 0;
 		duty3_8_cnt++;
-		if (duty3_8_cnt > sleep_time) // ʶ�𵽺��� ��ͣס200ms
+			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
 		{
 			gray_cnt = 0;
 
@@ -811,7 +811,7 @@ void TIMG0_IRQHandler(void) // 10ms
 		// speed_setup = 70;
 		Flag.Start_Car = 1;
 		Flag.Success_duty3_4 = 0;
-		sdk_duty_run(point_actual, point_A); // �õ��ٶ�Ŀ��ֵ
+			sdk_duty_run(point_actual, point_A); // Get speed target values
 		//		if( distance_inter >= 105 + distance_point)
 		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1)) // &&sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
 		{
@@ -827,34 +827,34 @@ void TIMG0_IRQHandler(void) // 10ms
 		}
 	}
 
-	get_wheel_speed(); // ��ȡ�ٶ�
-	speed_control();   // �ٶȻ�
-	nmotor_output();   // ������
+		get_wheel_speed(); // Get wheel speed
+	speed_control();   // Speed loop
+	nmotor_output();   // Motor output
 
-	/*�ٶȻ�*/
-	//	get_wheel_speed();
-	//	speed_control();
+		/* Speed loop */
+		get_wheel_speed(); // Get wheel speed
+		//	speed_control();     // Speed loop
 	//	nmotor_output();
 
-	/*�ٶ�λ�ô���*/
-	//	get_wheel_speed();
-	//	position_control();  //�õ��ٶ�Ŀ��ֵ
-	//	speed_control();     //�ٶȻ�
+		/* Cascaded speed-position */
+		get_wheel_speed(); // Get wheel speed
+		//	position_control();  // Get speed target values
+		//	speed_control();     // Speed loop
 	//	nmotor_output();
 
-	/*�ǶȻ�*/
+		/* Yaw/angle loop */
 	//	Yaw_control(yaw_target);
-	//	get_wheel_speed();
-	//	speed_control();
+		get_wheel_speed(); // Get wheel speed
+		//	speed_control();     // Speed loop
 	//	nmotor_output();
 
-	/*�Ҷ�Ѳ��С��*/
-	//	  get_wheel_speed();
+		/* Gray sensor tracking car */
+		get_wheel_speed(); // Get wheel speed
 	//		sdk_duty_run();
 	//		nmotor_output();
 
-	/*����ͷѭ��С��*/
-	//	  get_wheel_speed();
+		/* Camera tracking car */
+		get_wheel_speed(); // Get wheel speed
 	//		//sdk_duty_run();
 	//		openmv_duty_run();
 	//		nmotor_output();

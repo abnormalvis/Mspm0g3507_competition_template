@@ -13,8 +13,8 @@ float wheel_radius_cm = 2.3f;
 
 void hal_Encoder_Init(void)
 {
-	  NVIC_EnableIRQ(GPIOA_INT_IRQn);	//ʹ���ⲿ�ж�
-	  NVIC_EnableIRQ(GPIOB_INT_IRQn);
+	  NVIC_EnableIRQ(GPIOA_INT_IRQn);	// Enable external interrupt GPIOA
+	  NVIC_EnableIRQ(GPIOB_INT_IRQn);	// Enable external interrupt GPIOB
 }
 
 
@@ -60,10 +60,10 @@ void GROUP1_IRQHandler(void)
 static float get_left_motor_speed(void)
 {
 	NEncoder.left_motor_cnt = enc_cnt[1];
-	//���ٶ�ת����תÿ����
+		// Convert pulse count to RPM
 	NEncoder.left_motor_speed_rpm = 60.0f*(NEncoder.left_motor_cnt/pulse_num_per_circle) 
 																/(left_motor_period_ms*0.001f);	
-	//���ٶ�ת����תÿ��
+		// Convert RPM to cm/s
 	NEncoder.left_motor_speed_cmps=2.0f*3.14f*wheel_radius_cm*(NEncoder.left_motor_speed_rpm/60.0f);	 
 	move_filter_calc(&left_speed_cmps,NEncoder.left_motor_speed_cmps);	
 	
@@ -75,21 +75,21 @@ static float get_left_motor_speed(void)
 
 }
 /***************************************
-������:	void get_right_motor_speed(void)
-˵��: ��ȡ�ұ�����ʵ���ٶ�ֵ
-���:	��
-����:	��
-��ע:	����λʱ���ڵ�������,ת����rpm��cm/s
-����:	��������
+Function:   float get_right_motor_speed(void)
+Description: Get actual speed of right wheel
+Input:      None
+Output:     None
+Note:       Count pulses per unit time, convert to rpm and cm/s
+Author:     FJTI
 ***************************************/
 static float get_right_motor_speed(void)
 {
 	NEncoder.right_motor_cnt = enc_cnt[0];
 
-	//���ٶ�ת����תÿ����
+		// Convert pulse count to RPM
 	NEncoder.right_motor_speed_rpm = 60.0f*(NEncoder.right_motor_cnt/pulse_num_per_circle)
 																/(right_motor_period_ms*0.001f);	
-	//���ٶ�ת����תÿ��
+		// Convert RPM to cm/s
 	NEncoder.right_motor_speed_cmps=2.0f*3.14f*wheel_radius_cm*(NEncoder.right_motor_speed_rpm/60.0f);	
 	move_filter_calc(&right_speed_cmps,NEncoder.right_motor_speed_cmps);	
 	enc_cnt[0] = 0;
@@ -108,19 +108,19 @@ void get_wheel_speed(void)
 	smartcar_imu.right_motor_speed_cmps=get_right_motor_speed();	
 	
 	
-	//��������ƽ���ٶ�
+		// Two-wheel average speed
 	smartcar_imu.state_estimation.speed=0.5f*(smartcar_imu.left_motor_speed_cmps+smartcar_imu.right_motor_speed_cmps);
 	
 	point_actual[0] += smartcar_imu.state_estimation.speed*cos(pi/180*imu.yaw)*0.01f;
 	point_actual[1] += smartcar_imu.state_estimation.speed*sin(pi/180*imu.yaw)*0.01f;
 	
-	//ƽ���ٶ�ֱ�ӻ����ܾ���
-	smartcar_imu.state_estimation.distance+=(int)(smartcar_imu.state_estimation.speed*5);//�ٶȳ���5����5ms
+		// Average speed integrates directly to total distance
+		smartcar_imu.state_estimation.distance+=(int)(smartcar_imu.state_estimation.speed*5);// Speed * 5ms period
 	//distance_inter = smartcar_imu.state_estimation.distance/1000;
 
-	actual_position_l+=(int)(smartcar_imu.left_motor_speed_cmps*10);//10�ǲ�������10ms
-	actual_position_r+=(int)(smartcar_imu.right_motor_speed_cmps*10);//10�ǲ�������10ms
-	distance_l = actual_position_l/1000;//ֱ�Ӵ�ӡactual_position_l = actual_position_l/1000;��actual_position_l����ӡ��������Ҫ��һ��ý��
+		actual_position_l+=(int)(smartcar_imu.left_motor_speed_cmps*10);// 10ms sampling period
+		actual_position_r+=(int)(smartcar_imu.right_motor_speed_cmps*10);// 10ms sampling period
+		distance_l = actual_position_l/1000;// Use intermediate variable for distance_l
 	distance_r = actual_position_r/1000;	
 
 	

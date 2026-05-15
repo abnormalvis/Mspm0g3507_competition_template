@@ -4,38 +4,38 @@
 void AppInit(void);
 void AppProc(void);
 
-//----菜单相关声明区域
+//---- Menu-related macro definitions ----
 typedef enum
 {
-	SCREEN_CMD_NULL,		//无用命令 0
-	SCREEN_CMD_RESET,		//重置屏显示 1
-	SCREEN_CMD_RECOVER,		//恢复原来显示 2
-	SCREEN_CMD_UPDATE,		//更新原来显示 3
-}SCREEN_CMD;		//刷新屏显示标志
+	SCREEN_CMD_NULL,		// Null command 0
+	SCREEN_CMD_RESET,		// Set command display 1
+	SCREEN_CMD_RECOVER,		// Restore original display 2
+	SCREEN_CMD_UPDATE,		// Update original display 3
+}SCREEN_CMD;		// Refresh screen display flag
 
 
 
-//定义当前菜单的位置，主要用于超时退出判断，有的菜单超时就退出
+// Define current menu position, mainly for timeout exit judgment
 typedef enum
 {
-	DESKTOP_MENU_POS,	//桌面  1
-	STG_MENU_POS,//主菜单     2
-//	STG_WIFI_MENU_POS,//wifi菜单
-	STG_SUB_2_MENU_POS,//二级菜单 3
-	STG_SUB_3_MENU_POS,//三级菜单 4
-	STG_SUB_4_MENU_POS,//四级菜单 5
+	DESKTOP_MENU_POS,	// Desktop  1
+	STG_MENU_POS,// Level-1 menu     2
+//	STG_WIFI_MENU_POS,// Wifi menu
+	STG_SUB_2_MENU_POS,// Level-2 menu 3
+	STG_SUB_3_MENU_POS,// Level-3 menu 4
+	STG_SUB_4_MENU_POS,// Level-4 menu 5
 }MENU_POS;
 
-//(1)普通菜单列表 只有一个桌面菜单
+//(1) General menu list - only one level menu
 typedef enum
 {
-	GNL_MENU_DESKTOP1,		//桌面1
-	GNL_MENU_DESKTOP2,		//桌面2
-	GNL_MENU_DESKTOP3,		//桌面3
+	GNL_MENU_DESKTOP1,		// Desktop 1
+	GNL_MENU_DESKTOP2,		// Desktop 2
+	GNL_MENU_DESKTOP3,		// Desktop 3
 	GNL_MENU_SUM,
-}GENERAL_MENU_LIST;			//普通菜单列表
+}GENERAL_MENU_LIST;			// General menu list
 
-//(2)设置菜单列表ID
+//(2) Settings menu list ID
 typedef enum
 {
 	STG1_MENU_MAIN_SETTING,//0
@@ -45,13 +45,13 @@ typedef enum
 	STG1_MENU_PARA4,//4
 	STG1_MENU_PARA5,//5
 	STG1_MENU_PARA6,//4
-	STG1_MENU_PARA7,//5	
+	STG1_MENU_PARA7,//5
 	STG1_MENU_PARA8,//4
-	STG1_MENU_PARA9,//5		
+	STG1_MENU_PARA9,//5
 	STG1_MENU_SUM//6
 }STG1_MENU_LIST;
 
-//(2)设置菜单列表ID
+//(2) Settings menu list ID
 typedef enum
 {
 	STG2_MENU_MAIN_SETTING,//0
@@ -61,11 +61,11 @@ typedef enum
 	STG2_MENU_PARA4,//4
 	STG2_MENU_PARA5,//5
 	STG2_MENU_PARA6,//4
-	STG2_MENU_PARA7,//5	
+	STG2_MENU_PARA7,//5
 	STG2_MENU_SUM//6
 }STG2_MENU_LIST;
 
-//(3)设置菜单列表ID
+//(3) Settings menu list ID
 typedef enum
 {
 	STG3_MENU_MAIN_SETTING,//0
@@ -76,24 +76,24 @@ typedef enum
 	STG3_MENU_PARA5,//5
 	STG3_MENU_PARA6,//3
 	STG3_MENU_PARA7,//4
-	STG3_MENU_PARA8,//5	
+	STG3_MENU_PARA8,//5
 	STG3_MENU_SUM//6
 }STG3_MENU_LIST;
 
-//所有菜单的共性 结构体嵌套要注意这种格式
+// Common menu struct - struct nesting requires correct format
 typedef struct MODE_MENU
 {
-	unsigned char ID;				//菜单唯一ID号
-	MENU_POS menuPos;				//当前菜单的位置信息
-	const char *pModeType;		//指向当前模式类型
-	void (*action)(void);				//当前模式下的响应函数
-	SCREEN_CMD refreshScreenCmd;		//刷新屏显示命令
-	unsigned char reserved;				//预留，方便参数传递
-	unsigned char keyVal;				//按键值,0xFF代表无按键触发 为什么要用0xff是为了避免用0 1 2 3 4…… 会冲突
-	struct MODE_MENU *pLase;			//指向上一个选项 结构体嵌套 做链表用的
-	struct MODE_MENU *pNext;			//指向下一个选项 结构体嵌套 做链表用的
-	struct MODE_MENU *pParent;			//指向父级菜单 结构体嵌套
-	struct MODE_MENU *pChild;			//指向子级菜单 结构体嵌套
+	unsigned char ID;				// Menu unique ID
+	MENU_POS menuPos;				// Current menu position info
+	const char *pModeType;		// Current mode name string
+	void (*action)(void);				// Action function for current mode
+	SCREEN_CMD refreshScreenCmd;		// Refresh screen display command
+	unsigned char reserved;				// Reserved variable
+	unsigned char keyVal;				// Key value, 0xFF = no key (to avoid conflict with 0,1,2,3,4)
+	struct MODE_MENU *pLase;			// Point to previous option (nested struct)
+	struct MODE_MENU *pNext;			// Point to next option (nested struct)
+	struct MODE_MENU *pParent;			// Point to parent menu (nested struct)
+	struct MODE_MENU *pChild;			// Point to child menu (nested struct)
 }stu_mode_menu;
 //---------------------------------
 

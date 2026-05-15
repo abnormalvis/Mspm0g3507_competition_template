@@ -1,9 +1,9 @@
 /*******************************************************************************
-  * @作者      ： wangming
+  * @author      : wangming
   * @wechat    :DeepCoderMing
-  * @qq      ： 3201935299
-  * @日期      ： 2025年05月01日
-  * @版权声明  ： 仅供参考学习，未经允许禁止商用
+  * @qq      : 3201935299
+  * @date      : 2025-05-01
+  * @copyright  : For reference only, commercial use prohibited
 ********************************************************************************/
 #include "hal_jy62.h"
 #include <string.h>
@@ -67,7 +67,7 @@ static uint8_t get_verify_code()
     return sum&0xff;
 }
 
-//串口2接收中断
+//UART2 receive interrupt
 ////volatile uint8_t UART2_recevie;
 ////void UART_2_INST_IRQHandler(void)
 ////{

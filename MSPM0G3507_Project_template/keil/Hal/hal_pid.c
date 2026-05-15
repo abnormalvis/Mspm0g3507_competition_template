@@ -30,54 +30,54 @@ void pid_control_init(controller *ctrl,
 }
 
 /***************************************************
-函数名: float pid_control_run(controller *ctrl)
-说明:	pid控制器运行
-入口:	controller *ctrl-控制器结构体
-出口:	无
-备注:	无
+Function:   float pid_control_run(controller *ctrl)
+Description: PID controller calculation
+Input:      controller *ctrl - control structure pointer
+Output:     None
+Note:       None
 ****************************************************/
 float pid_control_run(controller *ctrl)
 {
-  /*******偏差计算*********************/
-	for(uint16_t i=19;i>0;i--) //队列后移,保存了每次计算出来的偏差，一直在数组中往后面移
+  /******* Error calculation *********************/
+	for(uint16_t i=19;i>0;i--) // Shift history buffer for derivative calc
 	{
 		ctrl->error_backup[i]=ctrl->error_backup[i-1];
 	}
 	ctrl->error_backup[0]=ctrl->error;
 	
-  ctrl->last_error=ctrl->error;//保存上次偏差
-  ctrl->error= ctrl->expect - ctrl->feedback;//期望减去反馈得到偏差
-	ctrl->dis_error=ctrl->error-ctrl->error_backup[ctrl->dis_error_gap_cnt-1];//微分		ctrl->dis_error=ctrl->error-ctrl->last_error;//原始微分
+  ctrl->last_error=ctrl->error;// Save previous error
+  ctrl->error= ctrl->expect - ctrl->feedback;// Target minus feedback = error
+	ctrl->dis_error=ctrl->error-ctrl->error_backup[ctrl->dis_error_gap_cnt-1];// Derivative error        ctrl->dis_error=ctrl->error-ctrl->last_error;// Original derivative
 	
-  if(ctrl->error_limit_flag==1)//偏差限幅度标志位
+  if(ctrl->error_limit_flag==1)// Error limit flag
   {
     if(ctrl->error>= ctrl->error_limit_max)  ctrl->error= ctrl->error_limit_max;
     if(ctrl->error<=-ctrl->error_limit_max)  ctrl->error=-ctrl->error_limit_max;
   }
-  /*******积分计算*********************/
-  if(ctrl->integral_separate_flag==1)//积分分离标志位
+  /******* Integral calculation ******************/
+	  if(ctrl->integral_separate_flag==1)// Integral separation flag
   {
-		//只在偏差比较小的时候引入积分控制
+		// Only accumulate integral when error is small
     if(ABS(ctrl->error)<=ctrl->integral_separate_limit)	 ctrl->integral+=ctrl->ki*ctrl->error;
   }
   else
   {
     ctrl->integral+=ctrl->ki*ctrl->error;
   }
-	/*******积分限幅*********************/
+	/******* Integral limit ************************/
 	if(ctrl->integral>=ctrl->integral_limit_max)   ctrl->integral=ctrl->integral_limit_max;
 	if(ctrl->integral<=-ctrl->integral_limit_max)  ctrl->integral=-ctrl->integral_limit_max;
 	
-	/*******总输出计算*********************/
-  ctrl->last_output=ctrl->output;//输出值递推
-  ctrl->output=ctrl->kp*ctrl->error//比例
-							+ctrl->integral//积分
-							+ctrl->kd*ctrl->dis_error;//微分
+	/******* Output calculation ********************/
+	  ctrl->last_output=ctrl->output;// Save previous output
+  ctrl->output=ctrl->kp*ctrl->error// Proportional
+								+ctrl->integral// Integral
+							+ctrl->kd*ctrl->dis_error;// Derivative
 	
-	/*******总输出限幅*********************/
+	/******* Output limit **************************/
   if(ctrl->output>= ctrl->output_limit_max)  ctrl->output = ctrl->output_limit_max;
   if(ctrl->output<=-ctrl->output_limit_max)  ctrl->output = -ctrl->output_limit_max;
-  /*******返回总输出*********************/
+  /******* Return output *************************/
   return ctrl->output;
 }
 

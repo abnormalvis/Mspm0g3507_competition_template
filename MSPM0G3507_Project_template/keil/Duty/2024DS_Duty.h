@@ -1,10 +1,10 @@
 #ifndef  _2024DS_DUTY__H
 #define  _2024DS_DUTY__H
 
-/*****    参数宏定义     *******/
+/*****    Parameter macros     *******/
 
 
-/*****    函数声明    *******/
+/*****    Function declarations    *******/
 
 void Params_Init(void);
 void DS2024_duty1(void);

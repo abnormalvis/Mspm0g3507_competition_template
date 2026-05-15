@@ -11,9 +11,9 @@ typedef struct
 
 typedef struct
 {
-	SI_F_XYZ deg_s; // 度每秒
-	SI_F_XYZ rad_s; // 弧度每秒
-	SI_F_XYZ acc_g; // 加速度
+	SI_F_XYZ deg_s; // degrees per second
+	SI_F_XYZ rad_s; // radians per second
+	SI_F_XYZ acc_g; // acceleration in g
 
 	float att_acc_factor;
 	float att_gryo_factor;
@@ -36,10 +36,10 @@ extern int16_t AX, AY, AZ, GX, GY, GZ;
 extern int16_t acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z;
 extern float filter_yaw;  
 extern gyro_param_t GyroOffset;
-extern imu660_data imu; // 陀螺仪数据存储
-extern float mag_ratio;      //?????   
+extern imu660_data imu; // IMU estimation data storage
+extern float mag_ratio;      // Magnetometer ratio   
 
-extern float gyro_ratio;    //?????   
+extern float gyro_ratio;    // Gyroscope ratio   
 void IIR_imu(void);
 void gyroOffsetInit(void);
 void _IMU(void);

@@ -1,10 +1,10 @@
 /*
- * 立创开发板软硬件资料与相关扩展板软硬件资料官网全部开源
- * 开发板官网：www.lckfb.com
- * 技术支持常驻论坛，任何技术问题欢迎随时交流学习
- * 立创论坛：https://oshwhub.com/forum
- * 关注bilibili账号：【立创开发板】，掌握我们的最新动态！
- * 不靠卖板赚钱，以培养中国工程师为己任
+ * LongQiu Technology internal hardware materials. Do not distribute or use commercially.
+ * Taobao: www.lckfb.com
+ * Technical support forum for any questions:
+ * LongQiu Forum: https://oshwhub.com/forum
+ * Follow bilibili: [LongQiu Technology] for latest updates.
+ * LongQiu is dedicated to serving engineers worldwide.
  * Change Logs:
  * Date           Author       Notes
  * 2024-07-08     LCKFB-LP    first version
@@ -17,19 +17,19 @@
 
 storFloatData data_test;
 
-// SLAVE ADDRESS+W为0xA0，SLAVE ADDRESS+R为0xA1
+// SLAVE ADDRESS+W = 0xA0, SLAVE ADDRESS+R = 0xA1
 #define AT24C02_ADDRESS_READ                0xA0
 #define AT24C02_ADDRESS_WRITE               0xA1
 
 
 
 /******************************************************************
- * 函 数 名 称：IIC_Start
- * 函 数 说 明：IIC起始时序
- * 函 数 形 参：无
- * 函 数 返 回：无
- * 作       者：LC
- * 备       注：无
+ * Function Name: IIC_Start
+ * Description:   IIC start signal
+ * Input:         None
+ * Output:        None
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 void IIC_Start(void)
 {
@@ -47,12 +47,12 @@ void IIC_Start(void)
 
 }
 /******************************************************************
- * 函 数 名 称：IIC_Stop
- * 函 数 说 明：IIC停止信号
- * 函 数 形 参：无
- * 函 数 返 回：无
- * 作       者：LC
- * 备       注：无
+ * Function Name: IIC_Stop
+ * Description:   IIC stop signal
+ * Input:         None
+ * Output:        None
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 void IIC_Stop(void)
 {
@@ -68,12 +68,12 @@ void IIC_Stop(void)
 }
 
 /******************************************************************
- * 函 数 名 称：IIC_Send_Ack
- * 函 数 说 明：主机发送应答或者非应答信号
- * 函 数 形 参：0发送应答  1发送非应答
- * 函 数 返 回：无
- * 作       者：LC
- * 备       注：无
+ * Function Name: IIC_Send_Ack
+ * Description:   Send ACK or NACK signal
+ * Input:         0: ACK, 1: NACK
+ * Output:        None
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 void IIC_Send_Ack(unsigned char ack)
 {
@@ -91,12 +91,12 @@ void IIC_Send_Ack(unsigned char ack)
 
 
 /******************************************************************
- * 函 数 名 称：I2C_WaitAck
- * 函 数 说 明：等待从机应答
- * 函 数 形 参：无
- * 函 数 返 回：0有应答  1超时无应答
- * 作       者：LC
- * 备       注：无
+ * Function Name: I2C_WaitAck
+ * Description:   Wait for slave ACK
+ * Input:         None
+ * Output:        0: ACK received, 1: ACK timeout
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 unsigned char I2C_WaitAck(void)
 {
@@ -130,18 +130,18 @@ unsigned char I2C_WaitAck(void)
 }
 
 /******************************************************************
- * 函 数 名 称：Send_Byte
- * 函 数 说 明：写入一个字节
- * 函 数 形 参：dat要写人的数据
- * 函 数 返 回：无
- * 作       者：LC
- * 备       注：无
+ * Function Name: Send_Byte
+ * Description:   Write one byte via IIC
+ * Input:         dat - data to write
+ * Output:        None
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 void Send_Byte(uint8_t dat)
 {
     int i = 0;
     SDA_OUT();
-    SCL(0);//拉低时钟开始数据传输
+    SCL(0);// Pull clock low to start data transfer
 
     for( i = 0; i < 8; i++ )
     {
@@ -156,18 +156,18 @@ void Send_Byte(uint8_t dat)
 }
 
 /******************************************************************
- * 函 数 名 称：Read_Byte
- * 函 数 说 明：IIC读时序
- * 函 数 形 参：无
- * 函 数 返 回：读到的数据
- * 作       者：LC
- * 备       注：无
+ * Function Name: Read_Byte
+ * Description:   IIC read timing
+ * Input:         None
+ * Output:        Received data
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 unsigned char Read_Byte(void)
 {
 	unsigned char i,receive=0;
 
-	SDA_IN();//SDA设置为输入
+	SDA_IN();// Set SDA as input
 
 	for(i=0;i<8;i++ )
 	{
@@ -193,12 +193,12 @@ unsigned char Read_Byte(void)
 
 
 /******************************************************************
- * 函 数 名 称：AT24C02_WriteByte
- * 函 数 说 明：AT24C02写入一个字节
- * 函 数 形 参：WordAddress 要写入字节的地址  Data 要写入的数据
- * 函 数 返 回：无
- * 作       者：LC
- * 备       注：无
+ * Function Name: AT24C02_WriteByte
+ * Description:   Write one byte to AT24C02
+ * Input:         WordAddress - address to write, Data - data to write
+ * Output:        None
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 void AT24C02_WriteByte(unsigned char WordAddress,unsigned char Data)
 {
@@ -213,12 +213,12 @@ void AT24C02_WriteByte(unsigned char WordAddress,unsigned char Data)
 }
 
 /******************************************************************
- * 函 数 名 称：AT24C02_ReadByte
- * 函 数 说 明：AT24C02读取一个字节
- * 函 数 形 参：WordAddress 要读出字节的地址
- * 函 数 返 回：读出的数据
- * 作       者：LC
- * 备       注：无
+ * Function Name: AT24C02_ReadByte
+ * Description:   Read one byte from AT24C02
+ * Input:         WordAddress - address to read
+ * Output:        Data read
+ * Author:        LC
+ * Note:          None
 ******************************************************************/
 unsigned char AT24C02_ReadByte(unsigned char WordAddress)
 {
@@ -238,10 +238,10 @@ unsigned char AT24C02_ReadByte(unsigned char WordAddress)
 }
 
 /********************************************************************************************************
-函数名称：
-函数功能：向指定地址写入1个浮点数
-详    述：
-输    入：
+Function Name: Storage_WriteFloatNum
+Description:   Write 1 float number to specified address
+Input:         addr, data
+Output:        None
 *********************************************************************************************************/
 
 void Storage_WriteFloatNum( uint16_t addr, storFloatData data )
@@ -252,9 +252,9 @@ void Storage_WriteFloatNum( uint16_t addr, storFloatData data )
     for( i = 0; i <= FLOAT_BYTE_NUM - 1; i++ )
     {
       AT24C02_WriteByte( addr + i, data.byte[i]);
-			hal_delay_ms(5);
+				hal_delay_ms(5);
     }
-return;
+	return;
 }
 
 void AT24C02_Write_Float(uint16_t WriteAddr,float *pBuffer)
@@ -265,22 +265,22 @@ void AT24C02_Write_Float(uint16_t WriteAddr,float *pBuffer)
         float a;
         uint8_t b[4];
     }fb;
-    
+
     fb.a = *pBuffer;
-    
-	
+
+
     for(i = 0; i < 4; i++)
     {
         AT24C02_WriteByte(WriteAddr,fb.b[i]);
         WriteAddr++;
     }
-	
+
 }
 /********************************************************************************************************
-函数名称：
-函数功能：从指定地址读出1个浮点数
-详    述：
-输    入：
+Function Name: Storage_ReadFloatNum
+Description:   Read 1 float number from specified address
+Input:         addr
+Output:        float number
 *********************************************************************************************************/
 storFloatData Storage_ReadFloatNum( uint16_t addr )
 {
@@ -303,7 +303,7 @@ void Write_Flaot_data(uint32_t add,float data)
 	storFloatData f_data_buff;
 	f_data_buff.value=data;
 	add=0+add*4;
-	
+
 	AT24C02_WriteByte(add,f_data_buff.value);
 }
 

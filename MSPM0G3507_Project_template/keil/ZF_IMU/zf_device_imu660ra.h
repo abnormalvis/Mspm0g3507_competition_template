@@ -1,61 +1,62 @@
 /*********************************************************************************************************************
-* MSPM0G3507 Opensourec Library 即（MSPM0G3507 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
-* 
-* 本文件是 MSPM0G3507 开源库的一部分
-* 
-* MSPM0G3507 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-* 
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-* 
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-* 
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-* 
-* 文件名称          zf_device_imu660ra
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MDK 5.38a
-* 适用平台          MSPM0G3507
-* 店铺链接          https://seekfree.taobao.com/
+* MSPM0G3507 Open Source Library - a lightweight open source library for official SDK interfaces
+* Copyright (c) 2022 SEEKFREE (SeekFree Technology)
+*
+* This file is part of the MSPM0G3507 Open Source Library
+*
+* MSPM0G3507 Open Source Library is free software.
+* You can redistribute it and/or modify it under the terms of the
+* GPL (GNU General Public License) version 3 (GPL3.0) or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GPL for more details.
+*
+* You should have received a copy of the GPL along with this library.
+* If not, see <https://www.gnu.org/licenses/>
+*
+* Important note:
+* This source code uses the GPL3.0 open source license agreement.
+* Please refer to the English version in GPL3_permission_statement.txt under libraries/doc directory.
+* See the LICENSE file under the libraries directory for details.
+* Welcome to use and distribute. When modifying, please retain the SeekFree copyright.
+*
+* File name          : zf_device_imu660ra
+* Company name       : Chengdu SeekFree Technology Co., Ltd.
+* Version info       : See version file under libraries/doc directory
+* Dev environment    : MDK 5.38a
+* Target platform    : MSPM0G3507
+* Contact            : https://seekfree.taobao.com/
 ********************************************************************************************************************/
 
 /*********************************************************************************************************************
-* 接线定义          查看 zf_device_imu_interface.h 中接口资源定义
+* Hardware configuration: See interface macro definitions in zf_device_imu_interface.h
 ********************************************************************************************************************/
 
 #ifndef _zf_device_imu660ra_h_
 #define _zf_device_imu660ra_h_
 
-// zf_common 层 类型定义 引用
+// zf_common typedef include
 #include "zf_common_typedef.h"
 
-// 此处列举 当前支持的函数列表
-// 具体声明在本函数中查看对应注释 具体定义跳转到对应函数定义查看
+// This section lists currently supported functions
+// Search in the source file for the actual definition, then navigate to the corresponding function
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// imu660ra_get_physical_acc                                                    // 获取 IMU660RA 加速度计物理量数据
-// imu660ra_get_physical_gyro                                                   // 获取 IMU660RA 陀螺仪物理量数据
+// imu660ra_get_physical_acc                                                    // Read IMU660RA accelerometer physical data
+// imu660ra_get_physical_gyro                                                   // Read IMU660RA gyroscope physical data
 
-// imu660ra_get_acc                                                             // 获取 IMU660RA 加速度计数据
-// imu660ra_get_gyro                                                            // 获取 IMU660RA 陀螺仪数据
+// imu660ra_get_acc                                                             // Read IMU660RA accelerometer data
+// imu660ra_get_gyro                                                            // Read IMU660RA gyroscope data
 
-// imu660ra_set_config                                                          // IMU660RA 配置模块工作参数
-// imu660ra_init                                                                // 初始化 IMU660RA
+// imu660ra_set_config                                                          // IMU660RA module config
+// imu660ra_init                                                                // Initialize IMU660RA
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处定义 IMU660RA 相关的结构体数据构成细节 这里不允许用户修改
+// This section defines IMU660RA-related structs, data, and detailed information. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// IMU660RA_ACC_OUTPUT_RATE_BASE 对应默认的 IMU660RA 的加速度计数据输出频率 实际为 50Hz
-// 实际会略有偏差 需要去查看对应的芯片手册 因此对应从低到高可以设置为
+// IMU660RA_ACC_OUTPUT_RATE_BASE corresponds to the default IMU660RA accelerometer output frequency, which is 50Hz
+// Actual frequency may deviate; check the corresponding chip datasheet. The corresponding low to high configurations are:
 // IMU660RA_ACC_OUTPUT_RATE_64_DIV      ->  0.78    Hz
 // IMU660RA_ACC_OUTPUT_RATE_32_DIV      ->  1.5     Hz
 // IMU660RA_ACC_OUTPUT_RATE_16_DIV      ->  3.1     Hz
@@ -70,30 +71,30 @@
 // IMU660RA_ACC_OUTPUT_RATE_32_MUL      ->  1600    Hz
 typedef enum
 {
-    IMU660RA_ACC_OUTPUT_RATE_64_DIV = 2 ,                                       // 加速度计输出频率 64 分频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_32_DIV     ,                                       // 加速度计输出频率 32 分频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_16_DIV     ,                                       // 加速度计输出频率 16 分频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_8_DIV      ,                                       // 加速度计输出频率 8  分频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_4_DIV      ,                                       // 加速度计输出频率 4  分频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_2_DIV      ,                                       // 加速度计输出频率 2  分频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_BASE       ,                                       // 加速度计输出频率基础频率 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_2_MUL      ,                                       // 加速度计输出频率 2  倍频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_4_MUL      ,                                       // 加速度计输出频率 4  倍频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_8_MUL      ,                                       // 加速度计输出频率 8  倍频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_16_MUL     ,                                       // 加速度计输出频率 16 倍频 (ACC = Accelerometer 加速度计)
-    IMU660RA_ACC_OUTPUT_RATE_32_MUL     ,                                       // 加速度计输出频率 32 倍频 (ACC = Accelerometer 加速度计)
+    IMU660RA_ACC_OUTPUT_RATE_64_DIV = 2 ,                                       // Accelerometer output rate 64 div (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_32_DIV     ,                                       // Accelerometer output rate 32 div (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_16_DIV     ,                                       // Accelerometer output rate 16 div (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_8_DIV      ,                                       // Accelerometer output rate 8  div (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_4_DIV      ,                                       // Accelerometer output rate 4  div (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_2_DIV      ,                                       // Accelerometer output rate 2  div (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_BASE       ,                                       // Accelerometer output rate base (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_2_MUL      ,                                       // Accelerometer output rate 2  mul (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_4_MUL      ,                                       // Accelerometer output rate 4  mul (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_8_MUL      ,                                       // Accelerometer output rate 8  mul (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_16_MUL     ,                                       // Accelerometer output rate 16 mul (ACC = Accelerometer)
+    IMU660RA_ACC_OUTPUT_RATE_32_MUL     ,                                       // Accelerometer output rate 32 mul (ACC = Accelerometer)
 }imu660ra_acc_output_rate_enum;
 
 typedef enum
 {
-    IMU660RA_ACC_RANGE_SGN_2G       = 2 ,                                       // 加速度计量程 ±2 g (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-    IMU660RA_ACC_RANGE_SGN_4G           ,                                       // 加速度计量程 ±4 g (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-    IMU660RA_ACC_RANGE_SGN_8G           ,                                       // 加速度计量程 ±8 g (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-    IMU660RA_ACC_RANGE_SGN_16G          ,                                       // 加速度计量程 ±16g (ACC = Accelerometer 加速度计) (SGN = signum 带符号数 表示正负范围) (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
+    IMU660RA_ACC_RANGE_SGN_2G       = 2 ,                                       // Accelerometer range +-2 g (g = gravitational acceleration, typically 9.8 m/s^2 as standard)
+    IMU660RA_ACC_RANGE_SGN_4G           ,                                       // Accelerometer range +-4 g
+    IMU660RA_ACC_RANGE_SGN_8G           ,                                       // Accelerometer range +-8 g
+    IMU660RA_ACC_RANGE_SGN_16G          ,                                       // Accelerometer range +-16g
 }imu660ra_acc_range_enum;
 
-// IMU660RA_GYRO_OUTPUT_RATE_BASE 对应默认的 IMU660RA 的陀螺仪数据输出频率 实际为 50Hz
-// 实际会略有偏差 需要去查看对应的芯片手册 因此对应从低到高可以设置为
+// IMU660RA_GYRO_OUTPUT_RATE_BASE corresponds to the default IMU660RA gyroscope output frequency, which is 50Hz
+// Actual frequency may deviate; check the corresponding chip datasheet. The corresponding low to high configurations are:
 // IMU660RA_GYRO_OUTPUT_RATE_2_DIV      -> 25       Hz
 // IMU660RA_GYRO_OUTPUT_RATE_BASE       -> 50       Hz
 // IMU660RA_GYRO_OUTPUT_RATE_2_MUL      -> 100      Hz
@@ -104,39 +105,39 @@ typedef enum
 // IMU660RA_GYRO_OUTPUT_RATE_64_MUL     -> 3200     Hz
 typedef enum
 {
-    IMU660RA_GYRO_OUTPUT_RATE_2_DIV = 7 ,                                       // 陀螺仪输出频率 2  分频 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_BASE      ,                                       // 陀螺仪输出频率基础频率 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_2_MUL     ,                                       // 陀螺仪输出频率 2  倍频 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_4_MUL     ,                                       // 陀螺仪输出频率 4  倍频 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_8_MUL     ,                                       // 陀螺仪输出频率 8  倍频 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_16_MUL    ,                                       // 陀螺仪输出频率 16 倍频 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_32_MUL    ,                                       // 陀螺仪输出频率 32 倍频 (GYRO = Gyroscope 陀螺仪)
-    IMU660RA_GYRO_OUTPUT_RATE_64_MUL    ,                                       // 陀螺仪输出频率 64 倍频 (GYRO = Gyroscope 陀螺仪)
+    IMU660RA_GYRO_OUTPUT_RATE_2_DIV = 7 ,                                       // Gyroscope output rate 2  div (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_BASE      ,                                       // Gyroscope output rate base   (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_2_MUL     ,                                       // Gyroscope output rate 2  mul (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_4_MUL     ,                                       // Gyroscope output rate 4  mul (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_8_MUL     ,                                       // Gyroscope output rate 8  mul (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_16_MUL    ,                                       // Gyroscope output rate 16 mul (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_32_MUL    ,                                       // Gyroscope output rate 32 mul (GYRO = Gyroscope)
+    IMU660RA_GYRO_OUTPUT_RATE_64_MUL    ,                                       // Gyroscope output rate 64 mul (GYRO = Gyroscope)
 }imu660ra_gyro_output_rate_enum;
 
 typedef enum
 {
-    IMU660RA_GYRO_RANGE_SGN_125DPS  = 2 ,                                       // 陀螺仪量程 ±125DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    IMU660RA_GYRO_RANGE_SGN_250DPS      ,                                       // 陀螺仪量程 ±250DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    IMU660RA_GYRO_RANGE_SGN_500DPS      ,                                       // 陀螺仪量程 ±500DPS  (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    IMU660RA_GYRO_RANGE_SGN_1000DPS     ,                                       // 陀螺仪量程 ±1000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
-    IMU660RA_GYRO_RANGE_SGN_2000DPS     ,                                       // 陀螺仪量程 ±2000DPS (GYRO = Gyroscope 陀螺仪) (SGN = signum 带符号数 表示正负范围) (DPS = Degree Per Second 角速度单位 °/S)
+    IMU660RA_GYRO_RANGE_SGN_125DPS  = 2 ,                                       // Gyroscope range +-125DPS  (DPS = Degree Per Second)
+    IMU660RA_GYRO_RANGE_SGN_250DPS      ,                                       // Gyroscope range +-250DPS
+    IMU660RA_GYRO_RANGE_SGN_500DPS      ,                                       // Gyroscope range +-500DPS
+    IMU660RA_GYRO_RANGE_SGN_1000DPS     ,                                       // Gyroscope range +-1000DPS
+    IMU660RA_GYRO_RANGE_SGN_2000DPS     ,                                       // Gyroscope range +-2000DPS
 }imu660ra_gyro_range_enum;
 
-#define IMU660RA_TIMEOUT_COUNT              ( 10 )                              // IMU660RA 超时计数
+#define IMU660RA_TIMEOUT_COUNT              ( 10 )                              // IMU660RA timeout count
 
-#define IMU660RA_ACC_OUTPUT_RATE_DEFAULT    ( IMU660RA_ACC_OUTPUT_RATE_BASE   ) // 在这设置默认的 加速度计  初始化输出频率
-#define IMU660RA_ACC_RANGE_DEFAULT          ( IMU660RA_ACC_RANGE_SGN_8G       ) // 在这设置默认的 加速度计  初始化量程
-#define IMU660RA_GYRO_OUTPUT_RATE_DEFAULT   ( IMU660RA_GYRO_OUTPUT_RATE_4_MUL ) // 在这设置默认的 陀螺仪    初始化输出频率
-#define IMU660RA_GYRO_RANGE_DEFAULT         ( IMU660RA_GYRO_RANGE_SGN_2000DPS ) // 在这设置默认的 陀螺仪    初始化量程
+#define IMU660RA_ACC_OUTPUT_RATE_DEFAULT    ( IMU660RA_ACC_OUTPUT_RATE_BASE   ) // Default accelerometer init output rate
+#define IMU660RA_ACC_RANGE_DEFAULT          ( IMU660RA_ACC_RANGE_SGN_8G       ) // Default accelerometer init range
+#define IMU660RA_GYRO_OUTPUT_RATE_DEFAULT   ( IMU660RA_GYRO_OUTPUT_RATE_4_MUL ) // Default gyroscope init output rate
+#define IMU660RA_GYRO_RANGE_DEFAULT         ( IMU660RA_GYRO_RANGE_SGN_2000DPS ) // Default gyroscope init range
 
-#define IMU660RA_CONFIG_TYPE_OFFSET         ( 4     )                           // 累计低位的位移后从 16bit 开始
-#define IMU660RA_CONFIG_TYPE_MASK           ( 0x0F  )                           // 同样根据需要添加的引脚服用功能掩码 这里也是 4bit 因此掩码为 0xF
+#define IMU660RA_CONFIG_TYPE_OFFSET         ( 4     )                           // Accumulated shift offset, 16bit start
+#define IMU660RA_CONFIG_TYPE_MASK           ( 0x0F  )                           // Same as above, requires appending to config enum, same 4bit, mask is 0xF
 
-#define IMU660RA_CONFIG_VALUE_OFFSET        ( 0     )                           // 累计低位的位移后从 16bit 开始
-#define IMU660RA_CONFIG_VALUE_MASK          ( 0x0F  )                           // 同样根据需要添加的引脚服用功能掩码 这里也是 4bit 因此掩码为 0xF
+#define IMU660RA_CONFIG_VALUE_OFFSET        ( 0     )                           // Accumulated shift offset, 16bit start
+#define IMU660RA_CONFIG_VALUE_MASK          ( 0x0F  )                           // Same as above, requires appending to config enum, same 4bit, mask is 0xF
 
-typedef enum                                                                    // 枚举 IMU660RA 配置选项 此枚举定义不允许用户修改
+typedef enum                                                                    // Enum: IMU660RA config options. Do not modify.
 {
     IMU660RA_CONFIG_ACC_OUTPUT_RATE_64_DIV          = ((0x00 << IMU660RA_CONFIG_TYPE_OFFSET) | IMU660RA_ACC_OUTPUT_RATE_64_DIV) ,
     IMU660RA_CONFIG_ACC_OUTPUT_RATE_32_DIV          = ((0x00 << IMU660RA_CONFIG_TYPE_OFFSET) | IMU660RA_ACC_OUTPUT_RATE_32_DIV) ,
@@ -194,25 +195,25 @@ typedef enum
     IMU660RA_STATE_SET_GYRO_RANGE_ERROR         ,
 }imu660ra_state_enum;
 
-typedef struct                                                                  // IMU660RA 数据格式模板 用于存储 IMU660RA 的数据
+typedef struct                                                                  // IMU660RA data format model, for storing IMU660RA raw data
 {
-    int16       x   ;                                                           // X 轴的原始数据
-    int16       y   ;                                                           // Y 轴的原始数据
-    int16       z   ;                                                           // Z 轴的原始数据
+    int16       x   ;                                                           // X axis raw data
+    int16       y   ;                                                           // Y axis raw data
+    int16       z   ;                                                           // Z axis raw data
 }imu660ra_measurement_data_struct;
 
-typedef struct                                                                  // IMU660RA 数据格式模板 用于存储 IMU660RA 的数据
+typedef struct                                                                  // IMU660RA data format model, for storing IMU660RA physical data
 {
-    float       x   ;                                                           // X 轴的物理量数据
-    float       y   ;                                                           // Y 轴的物理量数据
-    float       z   ;                                                           // Z 轴的物理量数据
+    float       x   ;                                                           // X axis physical data
+    float       y   ;                                                           // Y axis physical data
+    float       z   ;                                                           // Z axis physical data
 }imu660ra_physical_data_struct;
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处定义 IMU660RA 驱动所需的内部定义 这里不允许用户修改
+// This section defines IMU660RA register addresses and internal parameters. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// 定义 IMU660RA 内部地址
-#define IMU660RA_DEV_ADDR           ( 0x69 )                                    // 7bit 地址格式 SA0接地：0x68 SA0上拉：0x69 模块默认上拉
+// Map IMU660RA internal addresses
+#define IMU660RA_DEV_ADDR           ( 0x69 )                                    // 7bit address format. SA0 to GND: 0x68, SA0 to VCC: 0x69. Default on module.
 #define IMU660RA_SPI_W              ( 0x00 )
 #define IMU660RA_SPI_R              ( 0x80 )
 
@@ -230,72 +231,72 @@ typedef struct                                                                  
 #define IMU660RA_GYR_RANGE          ( 0x43 )
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处列举 本文件的所有函数声明 [ 其中包括宏定义函数 ] 这里不允许用户修改
+// This section lists all function declarations [ including macro-defined functions ]. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 加速度计物理量数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     range                   IMU660RA 加速度量程 详见 zf_device_imu660ra.h 中 imu660ra_acc_range_enum 定义
-// 参数说明     *physical_data          IMU660RA 的物理量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_physical_acc(imu660_data_buffer, range, physical_data);
-// 备注信息     根据量程进行物理量换算
-//              加速度计量程 ±2  g   获取到的加速度计数据除以 16384  可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-//              加速度计量程 ±4  g   获取到的加速度计数据除以 8192   可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-//              加速度计量程 ±8  g   获取到的加速度计数据除以 4096   可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-//              加速度计量程 ±16 g   获取到的加速度计数据除以 2048   可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
+// Function Name  : Read IMU660RA accelerometer physical data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Parameter      : range                   IMU660RA accelerometer range, see imu660ra_acc_range_enum in zf_device_imu660ra.h
+// Description    : *physical_data          IMU660RA physical data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_physical_acc(imu660_data_buffer, range, physical_data);
+// Note           : The conversion process considers the range:
+//                 Accelerometer range +-2  g   raw data factor 16384  converted to physical quantity in g (gravitational acceleration, typically 9.8 m/s^2 as standard)
+//                 Accelerometer range +-4  g   raw data factor 8192   converted to physical quantity in g
+//                 Accelerometer range +-8  g   raw data factor 4096   converted to physical quantity in g
+//                 Accelerometer range +-16 g   raw data factor 2048   converted to physical quantity in g
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_physical_acc (imu660ra_measurement_data_struct *measurement_data, imu660ra_acc_range_enum range,imu660ra_physical_data_struct *physical_data);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 陀螺仪物理量数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     range                   IMU660RA 加速度量程 详见 zf_device_imu660ra.h 中 imu660ra_gyro_range_enum 定义
-// 参数说明     *physical_data          IMU660RA 的物理量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_physical_gyro(imu660_data_buffer, range, physical_data);
-// 备注信息     根据量程进行物理量换算
-//              陀螺仪量程 ±125  dps    获取到的陀螺仪数据除以 262.4   可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±250  dps    获取到的陀螺仪数据除以 131.2   可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±500  dps    获取到的陀螺仪数据除以 65.6    可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±1000 dps    获取到的陀螺仪数据除以 32.8    可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±2000 dps    获取到的陀螺仪数据除以 16.4    可以转化为带物理单位的数据 单位为 °/s
+// Function Name  : Read IMU660RA gyroscope physical data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Parameter      : range                   IMU660RA gyroscope range, see imu660ra_gyro_range_enum in zf_device_imu660ra.h
+// Description    : *physical_data          IMU660RA physical data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_physical_gyro(imu660_data_buffer, range, physical_data);
+// Note           : The conversion process considers the range:
+//                 Gyroscope range +-125  dps    raw data factor 262.4   converted to physical quantity in deg/s
+//                 Gyroscope range +-250  dps    raw data factor 131.2   converted to physical quantity in deg/s
+//                 Gyroscope range +-500  dps    raw data factor 65.6    converted to physical quantity in deg/s
+//                 Gyroscope range +-1000 dps    raw data factor 32.8    converted to physical quantity in deg/s
+//                 Gyroscope range +-2000 dps    raw data factor 16.4    converted to physical quantity in deg/s
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_physical_gyro (imu660ra_measurement_data_struct *measurement_data, imu660ra_gyro_range_enum range,imu660ra_physical_data_struct *physical_data);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 加速度计数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_acc(imu660_data_buffer);
-// 备注信息     
+// Function Name  : Read IMU660RA accelerometer data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_acc(imu660_data_buffer);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_acc (imu660ra_measurement_data_struct *measurement_data);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 陀螺仪数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_gyro(imu660_data_buffer);
-// 备注信息     
+// Function Name  : Read IMU660RA gyroscope data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_gyro(imu660_data_buffer);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_gyro (imu660ra_measurement_data_struct *measurement_data);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     IMU660RA 配置模块工作参数
-// 参数说明     item                    IMU660RA 配置参照 zf_device_imu660ra.h 中 imu660ra_config_item_enum 枚举体定义
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_set_config(item);
-// 备注信息
+// Function Name  : IMU660RA module config
+// Description    : item                    IMU660RA config parameter, defined in imu660ra_config_item_enum enum in zf_device_imu660ra.h
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_set_config(item);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_set_config (imu660ra_config_item_enum item);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     初始化 IMU660RA
-// 参数说明     void
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_init(imu660_data_buffer);
-// 备注信息
+// Function Name  : Initialize IMU660RA
+// Description    : void
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_init();
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_init (void);
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -303,4 +304,3 @@ imu660ra_state_enum imu660ra_init (void);
 extern imu660ra_measurement_data_struct acc_data, gyro_data;
 
 #endif
-

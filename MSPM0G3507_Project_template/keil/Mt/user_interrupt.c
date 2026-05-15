@@ -1,9 +1,9 @@
 /*******************************************************************************
-  * @����      �� wangming
-  * @wechat    :DeepCoderMing
-  * @qq      �� 3201935299
-  * @����      �� 2025��05��01��
-  * @��Ȩ����  �� �����ο�ѧϰ��δ��������ֹ����
+  * @author     : wangming
+  * @wechat     : DeepCoderMing
+  * @qq         : 3201935299
+  * @date       : 2025-05-01
+  * @copyright  : For reference and learning only. Redistribution prohibited.
 ********************************************************************************/
 #include "user_interrupt.h"
 #include "ti_msp_dl_config.h"
@@ -30,21 +30,21 @@ void UART0_IRQHandler(void)
 	if(DL_UART_Main_getPendingInterrupt(UART0) != 0)
 	{
 		UART1_recevie = DL_UART_Main_receiveData(UART0);
-		fifo_write_buffer(&debug_uart_fifo, &UART1_recevie, 1);               // ���� FIFO	
+			fifo_write_buffer(&debug_uart_fifo, &UART1_recevie, 1);               // Write to FIFO
 		/* VOFA parsing moved to seekfree_assistant_data_analysis() main loop,
 		   to avoid double-feeding static state machine from ISR context */
 
 //            DL_GPIO_togglePins(RGB_GPIO,
 //                RGB_Red_Pin);
 //				//DL_UART_Main_transmitData(UART0, UART1_recevie);
-//				date_openmv[i++]=DL_UART_Main_receiveData(UART0)&0xff; //��������
+	//				date_openmv[i++]=DL_UART_Main_receiveData(UART0)&0xff; // Receive OpenMV data
 //		//data =  USART_ReceiveData(USART3)&0xff;
-//				if(date_openmv[0]!=0xfe) i=0;              	  //�ж�֡ͷ
-//				if((i==6)&&(date_openmv[5]!=0xff)) i=0;			//�ж�֡β
-//				if(i==6)                            			//����һ�����ݴ������?
+	//				if(date_openmv[0]!=0xfe) i=0;              	  // Check frame header
+	//				if((i==6)&&(date_openmv[5]!=0xff)) i=0;			// Check frame tail
+	//				if(i==6)                            			// One complete data frame received
 //				{
 //					 i=0;
-//					 //Usart3_Send_function(10,data0);        //д��Ҫ����������
+	//					 //Usart3_Send_function(10,data0);        // Send data to serial
 //		//			l_error_data = date_openmv[1];
 //		//			r_error_data = date_openmv[2];
 //		//			ul_error_data = date_openmv[3];
@@ -56,11 +56,11 @@ uint16_t Num1 = 0,Num2 = 0;
 static uint16_t beep_on_cnt = 0,task_start_cnt = 0;
 static uint16_t vofa_send_cnt = 0;
 volatile uint8_t gray_sample_req = 0;
-void TIMG6_IRQHandler(void)//5ms ѭ��
+	void TIMG6_IRQHandler(void)// 5ms periodic interrupt
 {
 		gray_sample_req = 1;
 		// Num1++;
-			if(Flag.beep_on == 1)//����������1��
+			if(Flag.beep_on == 1)// Beep flag set, sound for 1 second
 			{
 				
 				beep_on_cnt++;
@@ -81,7 +81,7 @@ void TIMG6_IRQHandler(void)//5ms ѭ��
 		// 	Num1=0;
 		// 	//DL_GPIO_togglePins(RGB_GPIO,RGB_Red_Pin);
 
-		// 	if(Flag.task_start == 1) //���жϼ�ʱ�л�����״̬
+	// 		if(Flag.task_start == 1) // Interrupt timer switches task state
 		// 	{
 		// 			task_start_cnt++;
 		// 		if(task_start_cnt > 1)

@@ -1,9 +1,9 @@
 /*******************************************************************************
-  * @�ļ�      �� wangming
-  * @wechat    :DeepCoderMing
-  * @qq      �� 3201935299
-  * @���?      �� 2025��05��01��
-  * @��Ȩ����  �� �����ο�ѧϰ��δ��������ֹ����
+  * @author     : wangming
+  * @wechat     : DeepCoderMing
+  * @qq         : 3201935299
+  * @date       : 2025-05-01
+  * @copyright  : For reference and learning only. Redistribution prohibited.
 ********************************************************************************/
 #include "hal_gray.h"
 #include "ti_msp_dl_config.h"
@@ -11,22 +11,22 @@
 #include "ti/driverlib/dl_adc12.h"
 #include "mt_flag.h"
 
-/* 8·���Ҷȵ�ADCֵ */
+/* 8-channel gray sensor ADC values */
 uint16_t LQ_Tracking_Value[8] = {0};
 
-/* ��λ�ж� threshold ���ã�С��Ϊѽ����? */
+/* Threshold settings: below threshold = line detected */
 uint16_t gray_threshold[8] = {1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500};
 
-/* 12·���Ҷȵ���Ϣ��
- * ע��: ��Ϊ8·ADC+3·IO
- * ��S2,S1,S0ѡ��ͨ��
+/* 12-channel gray sensor info.
+ * Note: 8-ch ADC + 3-ch IO with S2,S1,S0 channel select
+ * Note: 8-ch ADC + 3-ch IO with S2,S1,S0 channel select
  */
 _gray_state gray_state;
 float gray_status = 0, gray_status_backup = 0;
 uint32_t gray_status_worse = 0;
 char stop_flag = 0;
 
-/* ��S2,S1,S0ѡ��ͨ��(S2,S1,S0)=(0,0,0)~(1,1,1) ��Ӧͨ��1~8 */
+/* Channel select via S2,S1,S0: (0,0,0)~(1,1,1) maps to channels 1~8 */
 void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
 {
     if(s0) DL_GPIO_setPins(Tracking_SO_PORT, Tracking_SO_PIN);
@@ -39,20 +39,20 @@ void Tracking_IO_Set(unsigned char s2, unsigned char s1, unsigned char s0)
     else DL_GPIO_clearPins(Tracking_S2_PORT, Tracking_S2_PIN);
 }
 
-/* ��ȡ8·���Ҷȵ��ADCֵ */
+/* Read 8-channel gray sensor ADC values */
 void gray_8data_read(void)
 {
     unsigned char i;
     DL_ADC12_startConversion(ADC12_0_INST);
     for(i = 0; i < 8; i++)
     {
-        Tracking_IO_Set(i >> 2, (i >> 1) & 0x01, i & 0x01);  //ѡ��ͨ�� i
-        /* �ӳٶ�ȡADCֵ */
+	    Tracking_IO_Set(i >> 2, (i >> 1) & 0x01, i & 0x01);  // Select channel i
+        /* Delay for ADC read */
         for(volatile unsigned short j = 0; j < 500; j++);
         LQ_Tracking_Value[i] = DL_ADC12_getMemResult(ADC12_0_INST, ADC12_0_ADCMEM_0);
     }
 
-    /* ��λȡ״̬ */
+    /* Read each bit state */
     gray_state.gray.bit1 = LQ_Tracking_Value[0] < gray_threshold[0] ? 1 : 0;
     gray_state.gray.bit2 = LQ_Tracking_Value[1] < gray_threshold[1] ? 1 : 0;
     gray_state.gray.bit3 = LQ_Tracking_Value[2] < gray_threshold[2] ? 1 : 0;
@@ -62,7 +62,7 @@ void gray_8data_read(void)
     gray_state.gray.bit7 = LQ_Tracking_Value[6] < gray_threshold[6] ? 1 : 0;
     gray_state.gray.bit8 = LQ_Tracking_Value[7] < gray_threshold[7] ? 1 : 0;
 
-    /* ����ǰ������Ϊλ�� */
+    /* Current gray value as position */
     gray_status_backup = gray_status;
     switch(gray_state.state)
     {
@@ -98,7 +98,7 @@ void gray_8data_read(void)
     }
 }
 
-/* ��ʼ���õĲ�ѹ��ֵ */
+/* Initialize threshold values */
 void gray_set_threshold(uint16_t* threshold)
 {
     uint8_t i;

@@ -34,7 +34,7 @@ void UART0_send(unsigned char *buff,int len)
 {
     while(len--)
     {
-        DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);    // �����ַ�����������
+        DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);    // Send character via UART
         buff++;
     }
 }
@@ -43,7 +43,7 @@ void UART1_send(const unsigned char *buff,int len)
 	while(len--)
 	{
 	
-	  DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);	//�����ַ���
+        DL_UART_Main_transmitDataBlocking(UART_1_INST, *buff);    // Send character via UART
   	buff++;	
 	}
 }
@@ -52,38 +52,38 @@ void UART2_send(unsigned char *buff,int len)
 	while(len--)
 	{
 	
-	  DL_UART_Main_transmitDataBlocking(UART_2_INST, *buff);	//�����ַ���
+	  DL_UART_Main_transmitDataBlocking(UART_2_INST, *buff);	// Send character string
   	buff++;	
 	}
 }
 
-//���ڷ��͵����ַ�
+// Send a single character via UART
 void uart0_send_char(char ch)
 {
     while( DL_UART_isBusy(UART_1_INST) == true );
     DL_UART_Main_transmitData(UART_1_INST, ch);
 }
-//���ڷ��͵����ַ�
+// Send a single character via UART
 void uart1_send_char(char ch)
 {
-    //������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
+    // Wait until UART is not busy, then send character
     while( DL_UART_isBusy(UART_1_INST) == true );
-    //���͵����ַ�
+    // Send single character
     DL_UART_Main_transmitData(UART_1_INST, ch);
 }
-//���ڷ��͵����ַ�
+// Send a single character via UART
 void uart2_send_char(char ch)
 {
-    //������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
+    // Wait until UART is not busy, then send character
     while( DL_UART_isBusy(UART_2_INST) == true );
-    //���͵����ַ�
+    // Send single character
     DL_UART_Main_transmitData(UART_2_INST, ch);
 }
-//ʹ�ð�����u3_printf("�յ�%c",UART3_recevie);
+// Usage: u3_printf("received %c", UART3_recevie);
 //void u0_printf(const char *fmt, ...) {
 //    int i;
 //    int len;
-//    char buffer[128]; //�㹻���ɲſ��ԣ����Ը���
+    char buffer[128]; // Large enough buffer
 //    va_list args;
 //    va_start(args, fmt);
 //    vsprintf(buffer, fmt, args); 
@@ -94,9 +94,9 @@ void uart2_send_char(char ch)
 //		UART0_send((unsigned char*)buffer,len);
 ////    for (i = 0; i < len; i++) {
 ////			//uart0_send_char(buffer[i]);
-////				//������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
+////				// Wait until UART is not busy, then send character
 //////				while( DL_UART_isBusy(UART_0_INST) == true );
-//////				//���͵����ַ�
+//////				// Send single character
 ////				DL_UART_Main_transmitData(UART_0_INST, buffer[i]);			
 
 ////    }
@@ -104,7 +104,7 @@ void uart2_send_char(char ch)
 void u1_printf(const char *fmt, ...) {
     int i;
     int len;
-    char buffer[128]; //�㹻���ɲſ��ԣ����Ը���
+    char buffer[128]; // Large enough buffer
     va_list args;
     va_start(args, fmt);
     vsprintf(buffer, fmt, args); 
@@ -114,25 +114,25 @@ void u1_printf(const char *fmt, ...) {
 
     for (i = 0; i < len; i++) {
 			uart1_send_char(buffer[i]);
-				//������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
+				// Wait until UART is not busy, then send character
 //				while( DL_UART_isBusy(UART_0_INST) == true );
-//				//���͵����ַ�
+//				// Send single character
 //				DL_UART_Main_transmitData(UART_0_INST, buffer[i]);			
 
     }
 }
 
 #if !defined(__MICROLIB)
-//��ʹ��΢��Ļ������?��������ĺ���?
+// If not using Microlib, implement the following functions
 #if (__ARMCLIB_VERSION <= 6000000)
-//�����������AC5  �Ͷ�����������ṹ��?
+// For AC5 compiler and below, define FILE struct
 struct __FILE
 {
         int handle;
 };
 #endif
 FILE __stdout;
-//����_sys_exit()�Ա���ʹ�ð�����ģʽ
+// Define _sys_exit() for semi-hosting mode
 void _sys_exit(int x)
 {
         x = x;
@@ -153,7 +153,7 @@ int fputc(int ch, FILE *stream)
 //{
 //	//u0_printf("%f,%f\n",smartcar_imu.left_motor_speed_cmps,2.f);
 //	printf("%d\n",50);
-//	//u0_printf("abc");//���Դ���0
+//	//u0_printf("abc");// Test UART0
 //}
 
 

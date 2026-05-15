@@ -1,37 +1,38 @@
 /*********************************************************************************************************************
-* TC264 Opensourec Library 即（TC264 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
+* TC264 Open Source Library - a lightweight open source library for official SDK interfaces
+* Copyright (c) 2022 SEEKFREE (SeekFree Technology)
 *
-* 本文件是 TC264 开源库的一部分
+* This file is part of the TC264 Open Source Library
 *
-* TC264 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
+* TC264 Open Source Library is free software.
+* You can redistribute it and/or modify it under the terms of the
+* GPL (GNU General Public License) version 3 (GPL3.0) or (at your option) any later version.
 *
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GPL for more details.
 *
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
+* You should have received a copy of the GPL along with this library.
+* If not, see <https://www.gnu.org/licenses/>
 *
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
+* Important note:
+* This source code uses the GPL3.0 open source license agreement.
+* Please refer to the English version in GPL3_permission_statement.txt under libraries/doc directory.
+* See the LICENSE file under the libraries directory for details.
+* Welcome to use and distribute. When modifying, please retain the SeekFree copyright.
 *
-* 文件名称          zf_common_fifo
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          ADS v1.9.4
-* 适用平台          TC264D
-* 店铺链接          https://seekfree.taobao.com/
+* File name          : zf_common_fifo
+* Company name       : Chengdu SeekFree Technology Co., Ltd.
+* Version info       : See version file under libraries/doc directory
+* Dev environment    : ADS v1.9.4
+* Target platform    : TC264D
+* Contact            : https://seekfree.taobao.com/
 *
-* 修改记录
-* 日期              作者                备注
+* Change Log:
+* Date              Author              Notes
 * 2022-08-10        Teternal            first version
-* 2023-12-06        Teternal            更新操作逻辑 修复无数据读取时异常的操作
+* 2023-12-06        Teternal            Update operation logic, fix abnormal data read bug
 ********************************************************************************************************************/
 
 #ifndef _zf_common_fifo_h_
@@ -44,56 +45,56 @@
 #include "string.h"
 typedef enum
 {
-    FIFO_SUCCESS,                                                               // FIFO 操作成功
+    FIFO_SUCCESS,                                                               // FIFO operation success
 
-    FIFO_RESET_UNDO,                                                            // FIFO 重置操作未执行
-    FIFO_CLEAR_UNDO,                                                            // FIFO 清空操作未执行
-    FIFO_BUFFER_NULL,                                                           // FIFO 用户缓冲区异常
-    FIFO_WRITE_UNDO,                                                            // FIFO 写入操作未执行
-    FIFO_SPACE_NO_ENOUGH,                                                       // FIFO 写入操作 缓冲区空间不足
-    FIFO_READ_UNDO,                                                             // FIFO 读取操作未执行
-    FIFO_DATA_NO_ENOUGH,                                                        // FIFO 读取操作 数据长度不足
-}fifo_state_enum;                                                               // FIFO 操作结果
+    FIFO_RESET_UNDO,                                                            // FIFO reset operation not executed
+    FIFO_CLEAR_UNDO,                                                            // FIFO clear operation not executed
+    FIFO_BUFFER_NULL,                                                           // FIFO user buffer exception
+    FIFO_WRITE_UNDO,                                                            // FIFO write operation not executed
+    FIFO_SPACE_NO_ENOUGH,                                                       // FIFO write operation insufficient space
+    FIFO_READ_UNDO,                                                             // FIFO read operation not executed
+    FIFO_DATA_NO_ENOUGH,                                                        // FIFO read operation insufficient data length
+}fifo_state_enum;                                                               // FIFO state enum
 
-// 操作逻辑
-// 整体重置操作   将会强制清空 FIFO 谨慎使用
-// 数据写入操作   不能在重置以及写入操作时进行
-// 顺序读取操作   不能在清空和重置操作时进行
-// 尾部读取操作   不能在清空和重置以及写入操作时进行
-// 读取清空操作   不能在清空和重置以及读取操作时进行
-// 这是为了防止中断嵌套导致数据混乱
+// State machine logic
+// Reset operation   Must force FIFO to idle before use
+// Write operation   Must complete its own write operation before returning
+// Sequential read    Must complete clear and reset operations before returning
+// Tail read          Must complete clear and its own write operation before returning
+// Read and clear     Must complete clear and its own read operation before returning
+// Designed to prevent interrupt nesting from damaging data
 typedef enum
 {
-    FIFO_IDLE       = 0x00,                                                     // 空闲状态
+    FIFO_IDLE       = 0x00,                                                     // Idle state
 
-    FIFO_RESET      = 0x01,                                                     // 正在执行重置缓冲区
-    FIFO_CLEAR      = 0x02,                                                     // 正在执行清空缓冲区
-    FIFO_WRITE      = 0x04,                                                     // 正在执行写入缓冲区
-    FIFO_READ       = 0x08,                                                     // 正在执行读取缓冲区
-}fifo_execution_enum;                                                           // FIFO 操作状态 为嵌套使用预留 无法完全避免误操作
+    FIFO_RESET      = 0x01,                                                     // Executing reset buffer
+    FIFO_CLEAR      = 0x02,                                                     // Executing clear buffer
+    FIFO_WRITE      = 0x04,                                                     // Executing write buffer
+    FIFO_READ       = 0x08,                                                     // Executing read buffer
+}fifo_execution_enum;                                                           // FIFO operation state Reserved for nesting use, cannot fully avoid concurrency
 
 typedef enum
 {
-    FIFO_READ_AND_CLEAN,                                                        // FIFO 读操作模式 读取后清空释放对应缓冲区
-    FIFO_READ_ONLY,                                                             // FIFO 读操作模式 仅读取
+    FIFO_READ_AND_CLEAN,                                                        // FIFO read mode: read and release corresponding data
+    FIFO_READ_ONLY,                                                             // FIFO read mode: read only
 }fifo_operation_enum;
 
 typedef enum
 {
-    FIFO_DATA_8BIT,                                                             // FIFO 数据位宽 8bit
-    FIFO_DATA_16BIT,                                                            // FIFO 数据位宽 16bit
-    FIFO_DATA_32BIT,                                                            // FIFO 数据位宽 32bit
+    FIFO_DATA_8BIT,                                                             // FIFO data bit width 8bit
+    FIFO_DATA_16BIT,                                                            // FIFO data bit width 16bit
+    FIFO_DATA_32BIT,                                                            // FIFO data bit width 32bit
 }fifo_data_type_enum;
 
 typedef struct
 {
-    uint8_t               execution;                                              // 执行步骤
-    fifo_data_type_enum type;                                                   // 数据类型
-    void                *buffer;                                                // 缓存指针
-    uint32_t              head;                                                   // 缓存头指针 总是指向空的缓存
-    uint32_t              end;                                                    // 缓存尾指针 总是指向非空缓存（缓存全空除外）
-    uint32_t              size;                                                   // 缓存剩余大小
-    uint32_t              max;                                                    // 缓存总大小
+    uint8_t               execution;                                              // Execution operation
+    fifo_data_type_enum type;                                                   // Data type
+    void                *buffer;                                                // Buffer pointer
+    uint32_t              head;                                                   // Buffer head pointer, always points to empty buffer
+    uint32_t              end;                                                    // Buffer tail pointer, always points to non-empty buffer (except when fully empty)
+    uint32_t              size;                                                   // Buffer remaining size
+    uint32_t              max;                                                    // Buffer total size
 }fifo_obj_struct;
 
 fifo_state_enum fifo_clear              (fifo_obj_struct *fifo);

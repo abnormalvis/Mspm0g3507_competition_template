@@ -4,6 +4,6 @@
 #include "stdint.h"
 void TIMG0_Init(void);
 void TIMG6_Init(void);
-void TIMG7_Init(void);//²»ÄÜ×¢ÊÍ
+void TIMG7_Init(void);//Do not add comment
 #endif
 

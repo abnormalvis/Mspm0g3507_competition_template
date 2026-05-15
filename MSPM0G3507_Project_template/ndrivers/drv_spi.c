@@ -13,17 +13,17 @@ uint8_t SPI_WriteByte(uint8_t Byte)
 
 
 /****************SPI***************************/
-/*------------写一个数据：片选拉高-----------*/
+/*------------ Write one data byte, chip select high -----------*/
 void SPI_LCD_WrDat(unsigned char dat)
 {
 	OLED_CS_Clr();
   OLED_DC_Set();
-  SPI_WriteByte(dat);//传送8位数据：时钟线拉低有效
+  SPI_WriteByte(dat);//Send 8-bit data; valid on clock rising edge
 	OLED_CS_Set();
 }
 
 
-/*------------写命令：片选拉低-------------*/
+/*------------ Write command, chip select low -------------*/
 void SPI_LCD_WrCmd(unsigned char cmd)
 {
 	OLED_CS_Clr();

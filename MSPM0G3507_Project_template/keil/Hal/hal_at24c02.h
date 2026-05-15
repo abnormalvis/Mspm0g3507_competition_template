@@ -1,10 +1,9 @@
 /*
- * 立创开发板软硬件资料与相关扩展板软硬件资料官网全部开源
- * 开发板官网：www.lckfb.com
- * 技术支持常驻论坛，任何技术问题欢迎随时交流学习
- * 立创论坛：https://oshwhub.com/forum
- * 关注bilibili账号：【立创开发板】，掌握我们的最新动态！
- * 不靠卖板赚钱，以培养中国工程师为己任
+ * LongQiu Technology internal hardware materials. Do not distribute or use commercially.
+ * Taobao: www.lckfb.com
+ * Technical support forum: https://oshwhub.com/forum
+ * Follow bilibili: [LongQiu Technology] for latest updates.
+ * LongQiu is dedicated to serving engineers worldwide.
  * Change Logs:
  * Date           Author       Notes
  * 2024-07-08     LCKFB-LP    first version
@@ -16,23 +15,23 @@
 #include "ti_msp_dl_config.h"
 
 
-//设置SDA输出模式
+// Set SDA output mode
 #define SDA_OUT()   {                                                  \
                         DL_GPIO_initDigitalOutput(GPIO_SDA_IOMUX);     \
                         DL_GPIO_setPins(GPIO_PORT, GPIO_SDA_PIN);      \
                         DL_GPIO_enableOutput(GPIO_PORT, GPIO_SDA_PIN); \
                     }
-//设置SDA输入模式
+// Set SDA input mode
 #define SDA_IN()    { DL_GPIO_initDigitalInput(GPIO_SDA_IOMUX); }
-//获取SDA引脚的电平变化
+// Read SDA pin level
 #define SDA_GET()   ( ( ( DL_GPIO_readPins(GPIO_PORT,GPIO_SDA_PIN) & GPIO_SDA_PIN ) > 0 ) ? 1 : 0 )
-//SDA与SCL输出
+// SDA and SCL control macros
 #define SDA(x)      ( (x) ? (DL_GPIO_setPins(GPIOA,GPIO_SDA_PIN)) : (DL_GPIO_clearPins(GPIO_PORT,GPIO_SDA_PIN)) )
 #define SCL(x)      ( (x) ? (DL_GPIO_setPins(GPIOA,GPIO_SCL_PIN)) : (DL_GPIO_clearPins(GPIO_PORT,GPIO_SCL_PIN)) )
 
-#define FLOAT_BYTE_NUM 4 //float类型占用字节数
+#define FLOAT_BYTE_NUM 4 // Float type byte count
 
-//浮点数存储共用体
+// Float storage union type
 typedef union
 {
     float value;

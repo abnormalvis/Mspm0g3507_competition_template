@@ -1,32 +1,35 @@
 /*********************************************************************************************************************
-* MSPM0G3507 Opensource Library 即（MSPM0G3507 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
-* 
-* 本文件是 MSPM0G3507 开源库的一部分
-* 
-* MSPM0G3507 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-* 
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-* 
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-* 
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-* 
-* 文件名称          zf_common_function
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MDK 5.38a
-* 适用平台          MSPM0G3507
-* 店铺链接          https://seekfree.taobao.com/
+* MSPM0G3507 Opensource Library is a third-party open source library based on the official SDK interface
+* Copyright (c) 2022 SEEKFREE (ZhuFei Technology)
+*
+* This file is part of the MSPM0G3507 open source library
+*
+* MSPM0G3507 open source library is free software
+* You can redistribute and/or modify it under the terms of the GPL
+* (GNU General Public License) as published by the Free Software Foundation,
+* either version 3 of the GPL (GPL 3.0) or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GPL for more details.
+*
+* You should have received a copy of the GPL along with this library.
+*
+* Commercial use of this library requires written permission beyond GPL 3.0.
+* See libraries/doc/GPL3_permission_statement.txt or the LICENSE file.
+* For inquiries contact the author via official channels.
+*
+* Module name:    zf_common_function
+* Description:    common function library for MSPM0G3507
+* Version:         see libraries/doc version description
+* Toolchain:      CCS / Keil MDK
+* Platform:       MSPM0G3507
+* Shop:           https://seekfree.taobao.com/
+*
+* Changelog:
+* Date              Author              Notes
+* 2023-03-15       pudding             first version
 ********************************************************************************************************************/
 
 #ifndef _zf_common_function_h_
@@ -36,282 +39,283 @@
 
 extern int32 value_default_addr;
 
-//====================================================宏定义函数区====================================================
+//================================================== Macro Function Section ==================================================
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     绝对值函数 数据范围是 [-32767,32767]
-// 参数说明     dat             需要求绝对值的数
-// 返回参数     int             返回绝对值
-// 使用示例     dat = func_abs(dat);                            // 将dat变成正数
-// 备注信息     
+// Function brief     Absolute value function. Data range is [-32767,32767]
+// Parameter          dat             number to get absolute value
+// Return             int             absolute value
+// Usage example      dat = func_abs(dat);                            // Convert dat to positive
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 #define     func_abs(x)             ((x) >= 0 ? (x): -(x))
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     限幅 数据范围是 [-32768,32767]
-// 参数说明     x               被限幅的数据
-// 参数说明     y               限幅范围(数据会被限制在-y至+y之间)
-// 返回参数     int             限幅之后的数据         
-// 使用示例     int dat = func_limit(500, 300);                 // 数据被限制在-300至+300之间  因此返回的结果是300
-// 备注信息     
+// Function brief     Limiter. Data range is [-32768,32767]
+// Parameter          x               value to be limited
+// Parameter          y               limit range (value will be limited to [-y, +y])
+// Return             int             limited value
+// Usage example      int dat = func_limit(500, 300);                 // Value is limited to [-300, +300], so the result is 300
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 #define     func_limit(x, y)        ((x) > (y) ? (y) : ((x) < -(y) ? -(y) : (x)))
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     双边限幅 数据范围是 [-32768,32767]
-// 参数说明     x               被限幅的数据
-// 参数说明     a               限幅范围左边界
-// 参数说明     b               限幅范围右边界
-// 返回参数     int             限幅之后的数据         
-// 使用示例     int dat = func_limit_ab(500, -300, 400);        //数据被限制在-300至+400之间  因此返回的结果是400
-// 备注信息     
+// Function brief     Two-sided limiter. Data range is [-32768,32767]
+// Parameter          x               value to be limited
+// Parameter          a               limit range left boundary
+// Parameter          b               limit range right boundary
+// Return             int             limited value
+// Usage example      int dat = func_limit_ab(500, -300, 400);        // Value is limited to [-300, +400], so the result is 400
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 #define     func_limit_ab(x, a, b)  ((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
 
-//====================================================宏定义函数区====================================================
+//================================================== Macro Function Section ==================================================
 
-//=====================================================常规函数区=====================================================
+//================================================== Standard Function Section ==================================================
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     正弦波转换函数 获取指定采样点
-// 参数说明     *data_buffer    数据缓冲区
-// 参数说明     sample_max      采样点数
-// 参数说明     amplitude_max   最大幅值
-// 参数说明     offset_degree   偏移相位角
-// 返回参数     void
-// 使用示例     func_get_sin_amplitude_table(sound_amplitude, 1024, 512, 270);
-// 备注信息
+// Function brief     Sine wave conversion function, get specified sample point
+// Parameter          *data_buffer    data buffer
+// Parameter          sample_max      number of sample points
+// Parameter          amplitude_max   maximum amplitude
+// Parameter          offset_degree   offset phase angle
+// Return             void
+// Usage example      func_get_sin_amplitude_table(sound_amplitude, 1024, 512, 270);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_get_sin_amplitude_table        (uint32 *data_buffer, uint32 sample_max, uint32 amplitude_max, uint32 offset_degree);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取整型数的最大公约数 九章算术之更相减损术
-// 参数说明     num1            数字1
-// 参数说明     num2            数字2
-// 返回参数     uint32          最大公约数
-// 使用示例     return func_get_greatest_common_divisor(144, 36);               // 获取 144 与 36 的最大公约数
-// 备注信息     
+// Function brief     Get greatest common divisor of two integers (Euclidean algorithm / subtraction method from Nine Chapters of Arithmetic)
+// Parameter          num1            number 1
+// Parameter          num2            number 2
+// Return             uint32          greatest common divisor
+// Usage example      return func_get_greatest_common_divisor(144, 36);               // Get GCD of 144 and 36
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 uint32      func_get_greatest_common_divisor    (uint32 num1, uint32 num2);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     软件延时
-// 参数说明     tick            延时时间
-// 返回参数     void
-// 使用示例     func_soft_delay(100);
-// 备注信息     
+// Function brief     Software delay
+// Parameter          tick            delay count
+// Return             void
+// Usage example      func_soft_delay(100);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_soft_delay                     (volatile long tick);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     数据元素定位
-// 参数说明     data_size       数据元素类型 (详见 zf_common_typedef.h 的 common_data_size_enum 定义)
-// 返回参数     *buffer         数据缓冲区
-// 返回参数     buffer_length   数据缓冲区长度
-// 返回参数     data            查询的数据值
-// 返回参数     id              查询的数据 ID 比如查询数组中的第一个 data 数据就填 1 此数据范围为 [1 - n]
-// 使用示例     uint32 index = func_get_data_index(COMMON_DATA_SIZE_8BIT, (void *)"-100", 4, '-', 1);
-// 备注信息     
+// Function brief     Data element location
+// Parameter          data_size       data element type (see common_data_size_enum definition in zf_common_typedef.h)
+// Parameter          *buffer         data buffer
+// Parameter          buffer_length   data buffer length
+// Parameter          data            data value to search for
+// Parameter          id              data ID to search for, e.g. to find the first occurrence pass 1, range is [1 - n]
+// Return             uint32          index position
+// Usage example      uint32 index = func_get_data_index(COMMON_DATA_SIZE_8BIT, (void *)"-100", 4, '-', 1);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
-uint32      func_get_data_index                 (common_data_size_enum data_size, void *buffer, uint32 buffer_length, uint32 data, uint32 offset);
+uint32      func_get_data_index                 (common_data_size_enum data_size, void *buffer, uint32 buffer_length, uint32 data, uint32 id);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     字符串转整形数字 数据范围是 [-32768,32767]
-// 参数说明     *str            传入字符串 可带符号
-// 返回参数     int32           转换后的数据          
-// 使用示例     int32 dat = func_str_to_int("-100");
-// 备注信息     
+// Function brief     String to integer. Data range is [-32768,32767]
+// Parameter          *str            input string, can include sign
+// Return             int32           converted value
+// Usage example      int32 dat = func_str_to_int("-100");
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 int32       func_str_to_int                     (char *str);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     整形数字转字符串 数据范围是 [-32768,32767]
-// 参数说明     *str            字符串指针
-// 参数说明     number          传入的数据
-// 返回参数     void
-// 使用示例     func_int_to_str(data_buffer, -300);
-// 备注信息     
+// Function brief     Integer to string. Data range is [-32768,32767]
+// Parameter          *str            string pointer
+// Parameter          number          input value
+// Return             void
+// Usage example      func_int_to_str(data_buffer, -300);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_int_to_str                     (char *str, int32 number);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     字符串转整形数字 数据范围是 [0,65535]
-// 参数说明     *str            传入字符串 无符号
-// 返回参数     uint32          转换后的数据          
-// 使用示例     uint32 dat = func_str_to_uint("100");
-// 备注信息     
+// Function brief     String to unsigned integer. Data range is [0,65535]
+// Parameter          *str            input string, no sign
+// Return             uint32          converted value
+// Usage example      uint32 dat = func_str_to_uint("100");
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 uint32      func_str_to_uint                    (char *str);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     整形数字转字符串 数据范围是 [0,65535]
-// 参数说明     *str            字符串指针
-// 参数说明     number          传入的数据
-// 返回参数     void
-// 使用示例     func_uint_to_str(data_buffer, 300);
-// 备注信息     
+// Function brief     Unsigned integer to string. Data range is [0,65535]
+// Parameter          *str            string pointer
+// Parameter          number          input value
+// Return             void
+// Usage example      func_uint_to_str(data_buffer, 300);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_uint_to_str                    (char *str, uint32 number);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     字符串转浮点数 有效累计精度为小数点后六位
-// 参数说明     *str            传入字符串 可带符号
-// 返回参数     float           转换后的数据          
-// 使用示例     float dat = func_str_to_float("-100.2");
-// 备注信息     
+// Function brief     String to float. Effective cumulative precision is 6 decimal places
+// Parameter          *str            input string, can include sign
+// Return             float           converted value
+// Usage example      float dat = func_str_to_float("-100.2");
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 float       func_str_to_float                   (char *str);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     浮点数字转字符串
-// 参数说明     *str            字符串指针
-// 参数说明     number          传入的数据
-// 参数说明     point_bit       小数点精度
-// 返回参数     void
-// 使用示例     func_float_to_str(data_buffer, 3.1415, 2);                      // 结果输出 data_buffer = "3.14"
-// 备注信息     
+// Function brief     Float to string
+// Parameter          *str            string pointer
+// Parameter          number          input value
+// Parameter          point_bit       decimal point precision
+// Return             void
+// Usage example      func_float_to_str(data_buffer, 3.1415, 2);                      // Result output: data_buffer = "3.14"
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_float_to_str                   (char *str, float number, uint8 point_bit);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     字符串转浮点数 有效累计精度为小数点后九位
-// 参数说明     str             传入字符串 可带符号
-// 返回参数     double          转换后的数据          
-// 使用示例     double dat = func_str_to_double("-100.2");
-// 备注信息     
+// Function brief     String to double. Effective cumulative precision is 9 decimal places
+// Parameter          str             input string, can include sign
+// Return             double          converted value
+// Usage example      double dat = func_str_to_double("-100.2");
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 double      func_str_to_double                  (char *str);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     浮点数字转字符串
-// 参数说明     *str            字符串指针
-// 参数说明     number          传入的数据
-// 参数说明     point_bit       小数点精度
-// 返回参数     void
-// 使用示例     func_double_to_str(data_buffer, 3.1415, 2);                     // 结果输出 data_buffer = "3.14"
-// 备注信息     
+// Function brief     Double to string
+// Parameter          *str            string pointer
+// Parameter          number          input value
+// Parameter          point_bit       decimal point precision
+// Return             void
+// Usage example      func_double_to_str(data_buffer, 3.1415, 2);                     // Result output: data_buffer = "3.14"
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_double_to_str                  (char *str, double number, uint8 point_bit);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     字符串转 Hex
-// 参数说明     str             传入字符串 无符号
-// 返回参数     uint32          转换后的数据
-// 使用示例     uint32 dat = func_str_to_hex("0x11");
-// 备注信息     必须要 0x 开头才行
+// Function brief     String to Hex
+// Parameter          str             input string, no sign
+// Return             uint32          converted value
+// Usage example      uint32 dat = func_str_to_hex("0x11");
+// Note               Must start with 0x
 //-------------------------------------------------------------------------------------------------------------------
 uint32      func_str_to_hex                     (char *str);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     Hex 转字符串
-// 参数说明     *str            字符串指针
-// 参数说明     number          传入的数据
-// 返回参数     void
-// 使用示例     func_hex_to_str(data_buffer, 0x11);                             // 结果输出 data_buffer = "0x11"
-// 备注信息     
+// Function brief     Hex to string
+// Parameter          *str            string pointer
+// Parameter          number          input value
+// Return             void
+// Usage example      func_hex_to_str(data_buffer, 0x11);                             // Result output: data_buffer = "0x11"
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        func_hex_to_str                     (char *str, uint32 number);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     void
-// 返回参数     void
-// 使用示例     void_function_void something_callback = void_function_void_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          void
+// Return             void
+// Usage example      void_function_void something_callback = void_function_void_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        void_function_void_default          (void);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     void
-// 参数说明     parameter       参数
-// 使用示例     void_function_uint32 something_callback = void_function_uint32_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          parameter       parameter
+// Return             void
+// Usage example      void_function_uint32 something_callback = void_function_uint32_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        void_function_uint32_default        (uint32 parameter);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     void
-// 参数说明     *prt            用户参数指针
-// 使用示例     void_function_ptr something_callback = void_function_ptr_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          *ptr            user parameter pointer
+// Return             void
+// Usage example      void_function_ptr something_callback = void_function_ptr_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        void_function_ptr_default           (void *ptr);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     void
-// 返回参数     uint32          返回一个 uint32
-// 使用示例     uint32_function_void something_callback = uint32_function_void_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          void
+// Return             uint32          returns a uint32
+// Usage example      uint32_function_void something_callback = uint32_function_void_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 uint32      uint32_function_void_default        (void);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     parameter       参数
-// 返回参数     uint32          返回一个 uint32
-// 使用示例     uint32_function_uint32 something_callback = uint32_function_uint32_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          parameter       parameter
+// Return             uint32          returns a uint32
+// Usage example      uint32_function_uint32 something_callback = uint32_function_uint32_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 uint32      uint32_function_uint32_default      (uint32 parameter);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     *prt            用户参数指针
-// 返回参数     uint32          返回一个 uint32
-// 使用示例     uint32_function_ptr something_callback = uint32_function_ptr_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          *ptr            user parameter pointer
+// Return             uint32          returns a uint32
+// Usage example      uint32_function_ptr something_callback = uint32_function_ptr_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 uint32      uint32_function_ptr_default         (void *ptr);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     void
-// 返回参数     void *          返回一个指针
-// 使用示例     ptr_function_void something_callback = ptr_function_void_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          void
+// Return             void *          returns a pointer
+// Usage example      ptr_function_void something_callback = ptr_function_void_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        *ptr_function_void_default          (void);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     parameter       参数
-// 返回参数     void *          返回一个指针
-// 使用示例     ptr_function_uint32 something_callback = ptr_function_uint32_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          parameter       parameter
+// Return             void *          returns a pointer
+// Usage example      ptr_function_uint32 something_callback = ptr_function_uint32_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        *ptr_function_uint32_default        (uint32 parameter);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     *prt            用户参数指针
-// 返回参数     void *          返回一个指针
-// 使用示例     ptr_function_ptr something_callback = ptr_function_ptr_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          *ptr            user parameter pointer
+// Return             void *          returns a pointer
+// Usage example      ptr_function_ptr something_callback = ptr_function_ptr_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        *ptr_function_ptr_default           (void *ptr);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     默认处理函数 占位用
-// 参数说明     state           中断状态传入
-// 参数说明     *prt            用户参数指针
-// 返回参数     void
-// 使用示例     void_callback_uint32_ptr something_callback = void_callback_uint32_ptr_default;
-// 备注信息     
+// Function brief     Default handler placeholder
+// Parameter          state           interrupt state passed in
+// Parameter          *ptr            user parameter pointer
+// Return             void
+// Usage example      void_callback_uint32_ptr something_callback = void_callback_uint32_ptr_default;
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 void        void_callback_uint32_ptr_default    (uint32 state, void *ptr);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     sprintf 函数实现
-// 参数说明     *buff           缓冲区
-// 参数说明     *format         源字符串
-// 参数说明     ...             可变参数列表
-// 返回参数     uint32          处理后数据长
-// 使用示例     zf_sprintf(buff, "Data : %d", 100);
-// 备注信息     本函数在文件内部调用 用户不用关注 也不可修改
+// Function brief     sprintf function implementation
+// Parameter          *buff           buffer
+// Parameter          *format         source string
+// Parameter          ...             variable parameter list
+// Return             uint32          processed data length
+// Usage example      zf_sprintf(buff, "Data : %d", 100);
+// Note               This function is called internally. Users do not need to care about it and should not modify it.
 //-------------------------------------------------------------------------------------------------------------------
 uint32      zf_sprintf                          (int8 *buff, const int8 *format, ...);
-//=====================================================常规函数区=====================================================
+//================================================== Standard Function Section ==================================================
 
 #endif

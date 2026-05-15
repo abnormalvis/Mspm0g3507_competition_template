@@ -1,33 +1,33 @@
 /*******************************************************************************
-  * @作者      ： wangming
+  * @author      : wangming
   * @wechat    :DeepCoderMing
-  * @qq      ： 3201935299
-  * @日期      ： 2025年05月01日
-  * @版权声明  ： 仅供参考学习，未经允许禁止商用
+  * @qq      : 3201935299
+  * @date      : 2025-05-01
+  * @copyright  : For reference only, commercial use prohibited
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "OS_System.h" 
 #include "CPU.h"
 #include "hal_timer.h"
 /********************************************************************************************************
-*  @函数名   hal_CoreClockInit						                                                           
-*  @描述     CPU系统时钟初始化					                                     
-*  @参数     无
-*  @返回值   无
-*  @注意     这个时钟绝对任务调度的Tick值,为了保证实时性，一般设置为10ms
+*  @fn   hal_CoreClockInit						                                                           
+*  @brief     CPU system clock init					                                     
+*  @param     None
+*  @return   None
+*  @note     Task scheduling tick; typically set to 10ms for real-time performance
 ********************************************************************************************************/
 static void hal_CoreClockInit(void)
 {	
-	TIMG7_Init(); //定时器中断
+	TIMG7_Init(); //Timer interrupt
 }
 
 
 /********************************************************************************************************
-*  @函数名   SysTick_Handler						                                                           
-*  @描述     CPU系统时钟中断				                                     
-*  @参数     无
-*  @返回值   无
-*  @注意     内核时钟10ms定时中断回调函数,一定要把系统时钟处理函数放进去
+*  @fn   SysTick_Handler						                                                           
+*  @brief     CPU system tick interrupt				                                     
+*  @param     None
+*  @return   None
+*  @note     Core 10ms tick ISR callback; must call system clock handler
 ********************************************************************************************************/
 //void SysTick_Handler(void)
 //{
@@ -53,55 +53,55 @@ void TIMG7_IRQHandler(void)//10ms
 
 
 /********************************************************************************************************
-*  @函数名   hal_getprimask						                                                           
-*  @描述     获取CPU总中断状态							                                     
-*  @参数     无
-*  @返回值   0-总中断关闭 1-总中断打开
-*  @注意     无
+*  @fn   hal_getprimask						                                                           
+*  @brief     Get CPU global interrupt state							                                     
+*  @param     None
+*  @return   0-global interrupt off, 1-global interrupt on
+*  @note     None
 ********************************************************************************************************/
 static unsigned char hal_getprimask(void)
 {
-	return (!__get_PRIMASK());		//0是中断打开，1是中断关闭，所以要取反
+	return (!__get_PRIMASK());		//0=interrupts on, 1=interrupts off; invert logic
 }
 
 
 /********************************************************************************************************
-*  @函数名   hal_CPU_Critical_Control						                                                           
-*  @描述     CPU临界处理控制						                                     
-*  @参数     cmd-控制命令  *pSta-总中断状态
-*  @返回值   无
-*  @注意     无
+*  @fn   hal_CPU_Critical_Control						                                                           
+*  @brief     CPU critical section control						                                     
+*  @param     cmd: control command, *pSta: global interrupt state
+*  @return   None
+*  @note     None
 ********************************************************************************************************/
 void hal_CPU_Critical_Control(CPU_EA_TYPEDEF cmd,unsigned char *pSta)
 {
 	if(cmd == CPU_ENTER_CRITICAL)
 	{
-		*pSta = hal_getprimask();	//保存中断状态
-		__disable_irq();		    //关CPU总中断   
+		*pSta = hal_getprimask();	//Save interrupt state
+		__disable_irq();		    //Disable CPU global interrupt   
 	}
 	else if(cmd == CPU_EXIT_CRITICAL)
 	{
 		if(*pSta)
 		{
-			__enable_irq();		//打开中断    
+			__enable_irq();		//Enable interrupt    
 		}else 
 		{
-			__disable_irq();	//关闭中断     
+			__disable_irq();	//Disable interrupt     
 		}
 	}
 }
  
 
 /********************************************************************************************************
-*  @函数名   hal_CPUInit					                                                           
-*  @描述     CPU系统时钟相关初始化							                                     
-*  @参数     无
-*  @返回值   0-总中断关闭 1-总中断打开
-*  @注意     无
+*  @fn   hal_CPUInit					                                                           
+*  @brief     CPU system clock related init							                                     
+*  @param     None
+*  @return   0-global interrupt off, 1-global interrupt on
+*  @note     None
 ********************************************************************************************************/
 void hal_CPUInit(void)
 {
-	hal_CoreClockInit();   //滴答定时器配置为自动启动 10ms
+	hal_CoreClockInit();   //SysTick auto-start, 10ms period
 	OS_CPUInterruptCBSRegister(hal_CPU_Critical_Control);
 }
 

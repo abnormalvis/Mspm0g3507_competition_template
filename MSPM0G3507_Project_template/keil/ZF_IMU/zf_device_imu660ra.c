@@ -1,63 +1,64 @@
 /*********************************************************************************************************************
-* MSPM0G3507 Opensourec Library 即（MSPM0G3507 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
-* 
-* 本文件是 MSPM0G3507 开源库的一部分
-* 
-* MSPM0G3507 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-* 
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-* 
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-* 
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-* 
-* 文件名称          zf_device_imu660ra
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MDK 5.38a
-* 适用平台          MSPM0G3507
-* 店铺链接          https://seekfree.taobao.com/
+* MSPM0G3507 Open Source Library - a lightweight open source library for official SDK interfaces
+* Copyright (c) 2022 SEEKFREE (SeekFree Technology)
+*
+* This file is part of the MSPM0G3507 Open Source Library
+*
+* MSPM0G3507 Open Source Library is free software.
+* You can redistribute it and/or modify it under the terms of the
+* GPL (GNU General Public License) version 3 (GPL3.0) or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GPL for more details.
+*
+* You should have received a copy of the GPL along with this library.
+* If not, see <https://www.gnu.org/licenses/>
+*
+* Important note:
+* This source code uses the GPL3.0 open source license agreement.
+* Please refer to the English version in GPL3_permission_statement.txt under libraries/doc directory.
+* See the LICENSE file under the libraries directory for details.
+* Welcome to use and distribute. When modifying, please retain the SeekFree copyright.
+*
+* File name          : zf_device_imu660ra
+* Company name       : Chengdu SeekFree Technology Co., Ltd.
+* Version info       : See version file under libraries/doc directory
+* Dev environment    : MDK 5.38a
+* Target platform    : MSPM0G3507
+* Contact            : https://seekfree.taobao.com/
 ********************************************************************************************************************/
 
 /*********************************************************************************************************************
-* 接线定义          查看 zf_device_imu_interface.h 中接口资源定义
+* Hardware configuration: See interface macro definitions in zf_device_imu_interface.h
 ********************************************************************************************************************/
 
-// zf_device 层头文件引用
+// zf_device header include
 #include "zf_device_imu_interface.h"
 
-// 自身头文件
+// Include header file
 #include "zf_device_imu660ra.h"
 imu660ra_measurement_data_struct acc_data, gyro_data;
 const unsigned char imu660ra_config_file[8192];
 
-// 此处定义 本文件的所有函数具体定义 这里不允许用户修改
+// This section lists all function definitions in this file. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 加速度计数据 拓展接口
-// 参数说明     *interface              IMU660RA 的通信接口对象指针
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_expansion_get_acc(interface, data_buffer);
-// 备注信息     本接口为传感器框架接口 并不直接对用户开放
+// Function Name  : Read IMU660RA accelerometer data, expansion interface
+// Description    : *interface              IMU660RA communication interface object pointer
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_expansion_get_acc(interface, data_buffer);
+// Note           : This interface is an alternative expansion interface, generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 static imu660ra_state_enum imu660ra_expansion_get_acc (imu_interface_obj_struct *interface, imu660ra_measurement_data_struct *measurement_data)
 {
     imu660ra_state_enum return_state = IMU660RA_STATE_NO_ERROR;
     do{
         if( interface->assert(
-                NULL != measurement_data,                                       // 缓冲区指针 不能为空
-                "*measurement_data error.",                                     // 输出预设报错信息
+                NULL != measurement_data,                                       // Check if buffer pointer is null
+                "*measurement_data error.",                                     // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_DATA_BUFFER_ERROR;
@@ -80,20 +81,20 @@ static imu660ra_state_enum imu660ra_expansion_get_acc (imu_interface_obj_struct 
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 陀螺仪数据 拓展接口
-// 参数说明     *interface              IMU660RA 的通信接口对象指针
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_expansion_get_gyro(interface, data_buffer);
-// 备注信息     本接口为传感器框架接口 并不直接对用户开放
+// Function Name  : Read IMU660RA gyroscope data, expansion interface
+// Description    : *interface              IMU660RA communication interface object pointer
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_expansion_get_gyro(interface, data_buffer);
+// Note           : This interface is an alternative expansion interface, generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 static imu660ra_state_enum imu660ra_expansion_get_gyro (imu_interface_obj_struct *interface, imu660ra_measurement_data_struct *measurement_data)
 {
     imu660ra_state_enum return_state = IMU660RA_STATE_NO_ERROR;
     do{
         if( interface->assert(
-                NULL != measurement_data,                                       // 缓冲区指针 不能为空
-                "*measurement_data error.",                                     // 输出预设报错信息
+                NULL != measurement_data,                                       // Check if buffer pointer is null
+                "*measurement_data error.",                                     // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_DATA_BUFFER_ERROR;
@@ -116,12 +117,12 @@ static imu660ra_state_enum imu660ra_expansion_get_gyro (imu_interface_obj_struct
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     IMU660RA 配置模块工作参数 拓展接口
-// 参数说明     *interface              IMU660RA 的通信接口对象指针
-// 参数说明     item                    IMU660RA 配置参照 zf_device_imu660ra.h 中 imu660ra_config_item_enum 枚举体定义
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_expansion_set_config(interface, item);
-// 备注信息     本接口为传感器框架接口 并不直接对用户开放
+// Function Name  : IMU660RA module config, expansion interface
+// Description    : *interface              IMU660RA communication interface object pointer
+// Description    : item                    IMU660RA config parameter, defined in imu660ra_config_item_enum enum in zf_device_imu660ra.h
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_expansion_set_config(interface, item);
+// Note           : This interface is an alternative expansion interface, generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_struct *interface, imu660ra_config_item_enum item)
 {
@@ -134,7 +135,7 @@ static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_stru
                 if( interface->assert(
                             IMU660RA_ACC_OUTPUT_RATE_64_DIV     <= (item & 0x0F)
                         &&  IMU660RA_ACC_OUTPUT_RATE_32_MUL     >= (item & 0x0F),
-                        "item set error.",                                      // 输出预设报错信息
+                        "item set error.",                                      // Assertion preset error message
                         ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
                 {
                     return_state = IMU660RA_STATE_SET_ACC_OUTPUT_RATE_ERROR;
@@ -147,7 +148,7 @@ static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_stru
                 if( interface->assert(
                             IMU660RA_ACC_RANGE_SGN_2G <= (item & 0x0F)
                         &&  IMU660RA_ACC_RANGE_SGN_16G >= (item & 0x0F),
-                        "item set error.",                                      // 输出预设报错信息
+                        "item set error.",                                      // Assertion preset error message
                         ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
                 {
                     return_state = IMU660RA_STATE_SET_ACC_RANGE_ERROR;
@@ -160,7 +161,7 @@ static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_stru
                 if( interface->assert(
                             IMU660RA_GYRO_OUTPUT_RATE_2_DIV     <= (item & 0x0F)
                         &&  IMU660RA_GYRO_OUTPUT_RATE_64_MUL    >= (item & 0x0F),
-                        "item set error.",                                      // 输出预设报错信息
+                        "item set error.",                                      // Assertion preset error message
                         ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
                 {
                     return_state = IMU660RA_STATE_SET_GYRO_OUTPUT_RATE_ERROR;
@@ -173,7 +174,7 @@ static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_stru
                 if( interface->assert(
                             IMU660RA_GYRO_RANGE_SGN_125DPS  <= (item & 0x0F)
                         &&  IMU660RA_GYRO_RANGE_SGN_2000DPS >= (item & 0x0F),
-                        "item set error.",                                      // 输出预设报错信息
+                        "item set error.",                                      // Assertion preset error message
                         ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
                 {
                     return_state = IMU660RA_STATE_SET_GYRO_RANGE_ERROR;
@@ -185,7 +186,7 @@ static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_stru
             {
                 if( interface->assert(
                         0,
-                        "item set error.",                                      // 输出预设报错信息
+                        "item set error.",                                      // Assertion preset error message
                         ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
                 {
                     return_state = IMU660RA_STATE_SET_CONFIG_ERROR;
@@ -198,11 +199,11 @@ static imu660ra_state_enum imu660ra_expansion_set_config (imu_interface_obj_stru
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     IMU660RA 检测 ID 是否匹配 拓展接口
-// 参数说明     *interface              IMU660RA 的通信接口对象指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_expansion_ckeck_id(interface);
-// 备注信息     本接口为传感器框架接口 并不直接对用户开放
+// Function Name  : IMU660RA check if ID matches, expansion interface
+// Description    : *interface              IMU660RA communication interface object pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_expansion_ckeck_id(interface);
+// Note           : This interface is an alternative expansion interface, generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 static imu660ra_state_enum imu660ra_expansion_ckeck_id (imu_interface_obj_struct *interface)
 {
@@ -230,21 +231,21 @@ static imu660ra_state_enum imu660ra_expansion_ckeck_id (imu_interface_obj_struct
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     初始化 IMU660RA 拓展接口
-// 参数说明     *interface              IMU660RA 的通信接口对象指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_expansion_init(interface);
-// 备注信息     本接口为传感器框架接口 并不直接对用户开放
+// Function Name  : Initialize IMU660RA, expansion interface
+// Description    : *interface              IMU660RA communication interface object pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_expansion_init(interface);
+// Note           : This interface is an alternative expansion interface, generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *interface)
 {
     imu660ra_state_enum return_state = IMU660RA_STATE_NO_ERROR;
     do{
-        interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_PWR_CONF, 0x00);     // 关闭高级省电模式
+        interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_PWR_CONF, 0x00);     // Disable advanced power saving mode
         interface->delay_ms(1);
-        interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_INIT_CTRL, 0x00);    // 开始对模块进行初始化配置
+        interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_INIT_CTRL, 0x00);    // Init module, start init sequence
         interface->write_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_INIT_DATA, imu660ra_config_file, sizeof(imu660ra_config_file));
-        interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_INIT_CTRL, 0x01);    // 初始化配置结束
+        interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_INIT_CTRL, 0x01);    // Init sequence complete
         interface->delay_ms(20);
 
         uint8 data[2] = {0, 0};
@@ -257,21 +258,21 @@ static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *in
             data[1] = interface->read_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_INT_STA);
         }
         if( interface->assert(
-                1 == data[1],                                                   // 检查是否配置完成
-                "imu660ra config error.",                                       // 输出预设报错信息
+                1 == data[1],                                                   // Check if config is complete
+                "imu660ra config error.",                                       // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_CONFIG_ERROR;
             break;
         }
 
-        // 开启性能模式  使能陀螺仪、加速度、温度传感器
+        // Set performance mode, use gyroscope, accelerometer, temperature sensors
         interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_PWR_CTRL, 0x0E);
 
         if( interface->assert(
                     IMU660RA_ACC_OUTPUT_RATE_64_DIV <= IMU660RA_ACC_OUTPUT_RATE_DEFAULT
                 &&  IMU660RA_ACC_OUTPUT_RATE_32_MUL >= IMU660RA_ACC_OUTPUT_RATE_DEFAULT,
-                "IMU660RA_ACC_SAMPLE_RATE_DEFAULT set error.",                  // 输出预设报错信息
+                "IMU660RA_ACC_SAMPLE_RATE_DEFAULT set error.",                  // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_ACC_OUTPUT_RATE_ERROR;
@@ -282,7 +283,7 @@ static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *in
         if( interface->assert(
                     IMU660RA_GYRO_OUTPUT_RATE_2_DIV     <= IMU660RA_GYRO_OUTPUT_RATE_DEFAULT
                 &&  IMU660RA_GYRO_OUTPUT_RATE_64_MUL    >= IMU660RA_GYRO_OUTPUT_RATE_DEFAULT,
-                "IMU660RA_GYRO_SAMPLE_RATE_DEFAULT set error.",                 // 输出预设报错信息
+                "IMU660RA_GYRO_SAMPLE_RATE_DEFAULT set error.",                 // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_GYRO_OUTPUT_RATE_ERROR;
@@ -290,15 +291,15 @@ static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *in
         }
         interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_GYR_CONF, 0xA0 | (IMU660RA_GYRO_OUTPUT_RATE_DEFAULT - 1));
 
-        // IMU660RA_ACC_RANGE 寄存器
-        // 设置为 0x00 加速度计量程为 ±2  g
-        // 设置为 0x01 加速度计量程为 ±4  g
-        // 设置为 0x02 加速度计量程为 ±8  g
-        // 设置为 0x03 加速度计量程为 ±16 g
+        // IMU660RA_ACC_RANGE register
+        // Value 0x00: accelerometer range +-2  g
+        // Value 0x01: accelerometer range +-4  g
+        // Value 0x02: accelerometer range +-8  g
+        // Value 0x03: accelerometer range +-16 g
         if( interface->assert(
                     IMU660RA_ACC_RANGE_SGN_2G       <= IMU660RA_ACC_RANGE_DEFAULT
                 &&  IMU660RA_ACC_RANGE_SGN_16G      >= IMU660RA_ACC_RANGE_DEFAULT,
-                "IMU660RA_ACC_RANGE_DEFAULT set error.",                        // 输出预设报错信息
+                "IMU660RA_ACC_RANGE_DEFAULT set error.",                        // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_ACC_RANGE_ERROR;
@@ -306,16 +307,16 @@ static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *in
         }
         interface->write_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_ACC_RANGE, IMU660RA_ACC_RANGE_DEFAULT - 2);
 
-        // IMU660RA_GYR_RANGE 寄存器
-        // 设置为 0x04 陀螺仪量程为 ±125  dps
-        // 设置为 0x03 陀螺仪量程为 ±250  dps
-        // 设置为 0x02 陀螺仪量程为 ±500  dps
-        // 设置为 0x01 陀螺仪量程为 ±1000 dps
-        // 设置为 0x00 陀螺仪量程为 ±2000 dps
+        // IMU660RA_GYR_RANGE register
+        // Value 0x04: gyroscope range +-125  dps
+        // Value 0x03: gyroscope range +-250  dps
+        // Value 0x02: gyroscope range +-500  dps
+        // Value 0x01: gyroscope range +-1000 dps
+        // Value 0x00: gyroscope range +-2000 dps
         if( interface->assert(
                     IMU660RA_GYRO_RANGE_SGN_125DPS      <= IMU660RA_GYRO_RANGE_DEFAULT
                 &&  IMU660RA_GYRO_RANGE_SGN_2000DPS     >= IMU660RA_GYRO_RANGE_DEFAULT,
-                "IMU660RA_GYRO_RANGE_DEFAULT set error.",                       // 输出预设报错信息
+                "IMU660RA_GYRO_RANGE_DEFAULT set error.",                       // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_GYRO_RANGE_ERROR;
@@ -327,25 +328,25 @@ static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *in
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 加速度计物理量数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     range                   IMU660RA 加速度量程 详见 zf_device_imu660ra.h 中 imu660ra_acc_range_enum 定义
-// 参数说明     *physical_data          IMU660RA 的物理量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_physical_acc(imu660_data_buffer, range, physical_data);
-// 备注信息     根据量程进行物理量换算
-//              加速度计量程 ±2  g   获取到的加速度计数据除以 16384  可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-//              加速度计量程 ±4  g   获取到的加速度计数据除以 8192   可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-//              加速度计量程 ±8  g   获取到的加速度计数据除以 4096   可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
-//              加速度计量程 ±16 g   获取到的加速度计数据除以 2048   可以转化为带物理单位的数据 (g 代表重力加速度 物理学名词 一般情况下 g 取 9.8 m/s^2 为标准值)
+// Function Name  : Read IMU660RA accelerometer physical data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Parameter      : range                   IMU660RA accelerometer range, see imu660ra_acc_range_enum in zf_device_imu660ra.h
+// Description    : *physical_data          IMU660RA physical data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_physical_acc(imu660_data_buffer, range, physical_data);
+// Note           : The conversion process considers the range:
+//                 Accelerometer range +-2  g   raw data factor 16384  converted to physical quantity in g (gravitational acceleration, typically 9.8 m/s^2 as standard)
+//                 Accelerometer range +-4  g   raw data factor 8192   converted to physical quantity in g
+//                 Accelerometer range +-8  g   raw data factor 4096   converted to physical quantity in g
+//                 Accelerometer range +-16 g   raw data factor 2048   converted to physical quantity in g
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_physical_acc (imu660ra_measurement_data_struct *measurement_data, imu660ra_acc_range_enum range,imu660ra_physical_data_struct *physical_data)
 {
     imu660ra_state_enum return_state = IMU660RA_STATE_NO_ERROR;
     do{
         if( imu_assert(
-                NULL != measurement_data,                                       // 缓冲区指针 不能为空
-                "*measurement_data error.",                                     // 输出预设报错信息
+                NULL != measurement_data,                                       // Check if buffer pointer is null
+                "*measurement_data error.",                                     // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_DATA_BUFFER_ERROR;
@@ -354,15 +355,15 @@ imu660ra_state_enum imu660ra_get_physical_acc (imu660ra_measurement_data_struct 
         if( imu_assert(
                     IMU660RA_ACC_RANGE_SGN_2G   <= range
                 &&  IMU660RA_ACC_RANGE_SGN_16G  >= range,
-                "range error.",                                                 // 输出预设报错信息
+                "range error.",                                                 // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_ACC_RANGE_ERROR;
             break;
         }
         if( imu_assert(
-                NULL != physical_data,                                          // 缓冲区指针 不能为空
-                "*physical_data error.",                                        // 输出预设报错信息
+                NULL != physical_data,                                          // Check if buffer pointer is null
+                "*physical_data error.",                                        // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_DATA_BUFFER_ERROR;
@@ -377,26 +378,26 @@ imu660ra_state_enum imu660ra_get_physical_acc (imu660ra_measurement_data_struct 
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 陀螺仪物理量数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     range                   IMU660RA 加速度量程 详见 zf_device_imu660ra.h 中 imu660ra_gyro_range_enum 定义
-// 参数说明     *physical_data          IMU660RA 的物理量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_physical_gyro(imu660_data_buffer, range, physical_data);
-// 备注信息     根据量程进行物理量换算
-//              陀螺仪量程 ±125  dps    获取到的陀螺仪数据除以 262.144  可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±250  dps    获取到的陀螺仪数据除以 131.072  可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±500  dps    获取到的陀螺仪数据除以  65.536  可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±1000 dps    获取到的陀螺仪数据除以  32.768  可以转化为带物理单位的数据 单位为 °/s
-//              陀螺仪量程 ±2000 dps    获取到的陀螺仪数据除以  16.384  可以转化为带物理单位的数据 单位为 °/s
+// Function Name  : Read IMU660RA gyroscope physical data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Parameter      : range                   IMU660RA gyroscope range, see imu660ra_gyro_range_enum in zf_device_imu660ra.h
+// Description    : *physical_data          IMU660RA physical data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_physical_gyro(imu660_data_buffer, range, physical_data);
+// Note           : The conversion process considers the range:
+//                 Gyroscope range +-125  dps    raw data factor 262.144  converted to physical quantity in deg/s
+//                 Gyroscope range +-250  dps    raw data factor 131.072  converted to physical quantity in deg/s
+//                 Gyroscope range +-500  dps    raw data factor  65.536  converted to physical quantity in deg/s
+//                 Gyroscope range +-1000 dps    raw data factor  32.768  converted to physical quantity in deg/s
+//                 Gyroscope range +-2000 dps    raw data factor  16.384  converted to physical quantity in deg/s
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_physical_gyro (imu660ra_measurement_data_struct *measurement_data, imu660ra_gyro_range_enum range,imu660ra_physical_data_struct *physical_data)
 {
     imu660ra_state_enum return_state = IMU660RA_STATE_NO_ERROR;
     do{
         if( imu_assert(
-                NULL != measurement_data,                                       // 缓冲区指针 不能为空
-                "*measurement_data error.",                                     // 输出预设报错信息
+                NULL != measurement_data,                                       // Check if buffer pointer is null
+                "*measurement_data error.",                                     // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_DATA_BUFFER_ERROR;
@@ -405,15 +406,15 @@ imu660ra_state_enum imu660ra_get_physical_gyro (imu660ra_measurement_data_struct
         if( imu_assert(
                     IMU660RA_GYRO_RANGE_SGN_125DPS  <= range
                 &&  IMU660RA_GYRO_RANGE_SGN_2000DPS >= range,
-                "range error.",                                                 // 输出预设报错信息
+                "range error.",                                                 // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_SET_GYRO_RANGE_ERROR;
             break;
         }
         if( imu_assert(
-                NULL != physical_data,                                          // 缓冲区指针 不能为空
-                "*physical_data error.",                                        // 输出预设报错信息
+                NULL != physical_data,                                          // Check if buffer pointer is null
+                "*physical_data error.",                                        // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_DATA_BUFFER_ERROR;
@@ -428,11 +429,11 @@ imu660ra_state_enum imu660ra_get_physical_gyro (imu660ra_measurement_data_struct
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 加速度计数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_acc(imu660_data_buffer);
-// 备注信息     
+// Function Name  : Read IMU660RA accelerometer data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_acc(imu660_data_buffer);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_acc (imu660ra_measurement_data_struct *measurement_data)
 {
@@ -440,11 +441,11 @@ imu660ra_state_enum imu660ra_get_acc (imu660ra_measurement_data_struct *measurem
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     获取 IMU660RA 陀螺仪数据
-// 参数说明     *measurement_data       IMU660RA 的测量数据缓冲指针
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_get_gyro(imu660_data_buffer);
-// 备注信息     
+// Function Name  : Read IMU660RA gyroscope data
+// Description    : *measurement_data       IMU660RA measurement data buffer pointer
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_get_gyro(imu660_data_buffer);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_get_gyro (imu660ra_measurement_data_struct *measurement_data)
 {
@@ -452,11 +453,11 @@ imu660ra_state_enum imu660ra_get_gyro (imu660ra_measurement_data_struct *measure
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     IMU660RA 配置模块工作参数
-// 参数说明     item                    IMU660RA 配置参照 zf_device_imu660ra.h 中 imu660ra_config_item_enum 枚举体定义
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_set_config(item);
-// 备注信息
+// Function Name  : IMU660RA module config
+// Description    : item                    IMU660RA config parameter, defined in imu660ra_config_item_enum enum in zf_device_imu660ra.h
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_set_config(item);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_set_config (imu660ra_config_item_enum item)
 {
@@ -464,20 +465,20 @@ imu660ra_state_enum imu660ra_set_config (imu660ra_config_item_enum item)
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     初始化 IMU660RA
-// 参数说明     void
-// 返回参数     imu660ra_state_enum     IMU660RA 状态码 详见 zf_device_imu660ra.h 中 imu660ra_state_enum 定义
-// 使用示例     imu660ra_init();
-// 备注信息
+// Function Name  : Initialize IMU660RA
+// Description    : void
+// Return Value   : imu660ra_state_enum     IMU660RA state code, see imu660ra_state_enum in zf_device_imu660ra.h
+// Usage Example  : imu660ra_init();
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 imu660ra_state_enum imu660ra_init (void)
 {
     imu660ra_state_enum return_state = IMU660RA_STATE_NO_ERROR;
-    imu_delay_ms(20);                                                           // 等待设备上电成功
+    imu_delay_ms(20);                                                           // Wait for device power-on to complete
     do{
         if( imu_assert(
-                !imu_interface_init(),                                          // 如果没有异常 那么接口初始化返回为 0
-                "IMU interface init error.",                                    // 输出预设报错信息
+                !imu_interface_init(),                                          // If no exception then interface init returns 0
+                "IMU interface init error.",                                    // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
             return_state = IMU660RA_STATE_INTERFACE_INIT_ERROR;
@@ -485,13 +486,13 @@ imu660ra_state_enum imu660ra_init (void)
         }
 
         if( imu_assert(
-                !imu660ra_expansion_ckeck_id(&imu_interface_default_obj),       // IMU660RA 自检 如果没有异常 那么接口初始化返回为 0
-                "imu660ra self check error.",                                   // 输出预设报错信息
+                !imu660ra_expansion_ckeck_id(&imu_interface_default_obj),       // IMU660RA self-check, no exception returns 0
+                "imu660ra self check error.",                                   // Assertion preset error message
                 ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
         {
-            // 如果程序在输出了断言信息 并且提示出错位置在这里
-            // 那么就是 IMU660RA 自检出错并超时退出了
-            // 检查一下接线有没有问题 如果没问题可能就是坏了
+            // The assert function has already output error info; changing the display format is not recommended
+            // So exit directly when IMU660RA self-check fails
+            // Check the wiring first; if wiring is correct it may be a hardware issue
             return_state = IMU660RA_STATE_SELF_CHECK_ERROR;
             break;
         }

@@ -100,8 +100,9 @@ void LCD_ShowChinese(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
     }
 }
 
-// 简化处理：没有字体表时提供最小 stub 实现，避免链接错误。
-// 这些实现不绘制汉字，只保留指针占位行为（兼容调用），后续可替换为完整字库渲染实现。
+// Simplified stub functions for compilation compatibility
+// These stubs do not render Chinese characters; placeholders only for function call support
+// Replace with real font-rendering implementation if Chinese display is needed
 void LCD_ShowChinese12x12(u16 x,u16 y,u8 *s,u16 fc,u16 bc,u8 sizey,u8 mode)
 {
     (void)x; (void)y; (void)s; (void)fc; (void)bc; (void)sizey; (void)mode;

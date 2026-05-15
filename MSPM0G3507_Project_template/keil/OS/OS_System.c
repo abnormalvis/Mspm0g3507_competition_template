@@ -1,9 +1,9 @@
 /*******************************************************************************
-  * @作者      ： wangming
-  * @wechat    :DeepCoderMing
-  * @qq      ： 3201935299
-  * @日期      ： 2025年05月01日
-  * @版权声明  ： 仅供参考学习，未经允许禁止商用
+  * @Author      : wangming
+  * @wechat      : DeepCoderMing
+  * @qq          : 3201935299
+  * @Date        : 2025-05-01
+  * @Copyright   : For learning reference only. Commercial use prohibited.
 ********************************************************************************/
 #include "OS_System.h"
 
@@ -13,11 +13,11 @@ CPUInterrupt_CallBack_t CPUInterrupptCtrlCBS;
 
 
 /********************************************************************************************************
-*  @函数名   OS_CPUInterruptCBSRegister						                                                           
-*  @描述     注册CPU中断控制函数								                                     
-*  @参数     pCPUInterruptCtrlCBS-CPU中断控制回调函数地址
-*  @返回值   无   
-*  @注意     无
+*  @FunctionName   OS_CPUInterruptCBSRegister
+*  @Description    Register CPU interrupt control function
+*  @Parameter      pCPUInterruptCtrlCBS - CPU interrupt control callback function address
+*  @ReturnValue    None
+*  @Note           None
 ********************************************************************************************************/
 void OS_CPUInterruptCBSRegister(CPUInterrupt_CallBack_t pCPUInterruptCtrlCBS)
 {
@@ -28,11 +28,11 @@ void OS_CPUInterruptCBSRegister(CPUInterrupt_CallBack_t pCPUInterruptCtrlCBS)
 }
 
 /********************************************************************************************************
-*  @函数名   OS_TaskInit					                                                           
-*  @描述     系统任务初始化							                                     
-*  @参数     无
-*  @返回值   无
-*  @注意     无
+*  @FunctionName   OS_TaskInit
+*  @Description    Initialize system tasks
+*  @Parameter      None
+*  @ReturnValue    None
+*  @Note           None
 ********************************************************************************************************/
 void OS_TaskInit(void)
 {
@@ -43,23 +43,23 @@ void OS_TaskInit(void)
 		OS_Task[i].RunFlag = OS_SLEEP;
 		OS_Task[i].RunPeriod = 0;
 		OS_Task[i].RunTimer = 0;
-	}	
+	}
 }
 
 
 /*******************************************************************************
 * Function Name  : void OS_CreatTask(unsigned char ID, void (*proc)(void), OS_TIME_TYPEDEF TimeDly, bool flag)
-* Description    : 创建任务 
-* Input          : - ID：任务ID
-*					- (*proc)() 用户函数入口地址 
-*					- TimeDly 任务执行频率，单位ms
-* 					- flag 任务就绪状态  OS_SLEEP-休眠 OS_RUN-运行 
+* Description    : Create a task
+* Input          : - ID: Task ID
+*					- (*proc)() User task function address
+*					- TimeDly: Task execution frequency, unit ms
+* 					- flag: Task running status  OS_SLEEP-Sleep OS_RUN-Run
 * Output         : None
 * Return         : None
-* Attention		 : None
+* Attention      : None
 *******************************************************************************/
 void OS_CreatTask(unsigned char ID, void (*proc)(void), unsigned short Period, OS_TaskStatusTypeDef flag)
-{	
+{
 	if(!OS_Task[ID].task)
 	{
 		OS_Task[ID].task = proc;
@@ -71,38 +71,38 @@ void OS_CreatTask(unsigned char ID, void (*proc)(void), unsigned short Period, O
 
 
 /********************************************************************************************************
-*  @函数名   OS_ClockInterruptHandle						                                                           
-*  @描述     系统任务调度函数								                                     
-*  @参数     无
-*  @返回值   无   
-*  @注意     为了保证任务实时性，这个必须放在10ms的定时器或系统时钟中断函数里
+*  @FunctionName   OS_ClockInterruptHandle
+*  @Description    System task scheduler
+*  @Parameter      None
+*  @ReturnValue    None
+*  @Note           To ensure task real-time performance, place this in the 10ms timer system tick ISR
 ********************************************************************************************************/
 void OS_ClockInterruptHandle(void)
 {
 	unsigned char i;
-	for(i=0; i<OS_TASK_SUM; i++)	//这个循环是对所有的任务执行一次以下操作。
+	for(i=0; i<OS_TASK_SUM; i++)	// This loop iterates through all tasks once to update parameters
 	{
-		if(OS_Task[i].task)	//通过task函数指针指向不等于0来判断任务是否被创建
-		{					
+		if(OS_Task[i].task)	// Check if task has been created by verifying the task function pointer is non-zero
+		{
 			OS_Task[i].RunTimer++;
-			if(OS_Task[i].RunTimer >= OS_Task[i].RunPeriod)	//判断计时器值是否到达任务需要执行的时间
+			if(OS_Task[i].RunTimer >= OS_Task[i].RunPeriod)	// Check if the interrupt timer value has reached the execution period
 			{
 				OS_Task[i].RunTimer = 0;
-				OS_Task[i].RunFlag = OS_RUN;//把任务的状态设置成执行，任务调度函数会一直判断这个变量的值，如果是OS_RUN就会执行task指向的函数。
+				OS_Task[i].RunFlag = OS_RUN;// Set task status to run. The main loop keeps polling this flag. When OS_RUN is set, the task function pointer is executed.
 			}
-			
+
 		}
 	}
-	
+
 }
 
 /*******************************************************************************
 * Function Name  : void OS_Start(void)
-* Description    : 开始任务 
+* Description    : Start task scheduling
 * Input          : None
 * Output         : None
 * Return         : None
-* Attention		 : None
+* Attention      : None
 *******************************************************************************/
 void OS_Start(void)
 {
@@ -114,29 +114,29 @@ void OS_Start(void)
 			if(OS_Task[i].RunFlag == OS_RUN)
 			{
 				OS_Task[i].RunFlag = OS_SLEEP;
-		 
-				(*(OS_Task[i].task))();	
+
+				(*(OS_Task[i].task))();
 			}
-		}	
+		}
 	}
 }
 
 /*******************************************************************************
 * Function Name  : void OS_TaskGetUp(OS_TaskIDTypeDef taskID)
-* Description    : 唤醒一个任务
-* Input          : - taskID：需要被唤醒任务的ID
+* Description    : Wake up a task
+* Input          : - taskID: ID of the task to wake up
 * Output         : None
 * Return         : None
-* Attention		 : None
+* Attention      : None
 *******************************************************************************/
 void OS_TaskGetUp(OS_TaskIDTypeDef taskID)
-{	
+{
 	unsigned char IptStatus;
 	if(CPUInterrupptCtrlCBS != 0)
 	{
 		CPUInterrupptCtrlCBS(CPU_ENTER_CRITICAL,&IptStatus);
 	}
-	OS_Task[taskID].RunFlag = OS_RUN;	
+	OS_Task[taskID].RunFlag = OS_RUN;
 	if(CPUInterrupptCtrlCBS != 0)
 	{
 		CPUInterrupptCtrlCBS(CPU_EXIT_CRITICAL,&IptStatus);
@@ -145,11 +145,11 @@ void OS_TaskGetUp(OS_TaskIDTypeDef taskID)
 
 /*******************************************************************************
 * Function Name  : void OS_TaskSleep(OS_TaskIDTypeDef taskID)
-* Description    : 挂起一个任务，让一个任务进入睡眠状态，该函数暂时没用到
-* Input          : - taskID：需要被挂起任务的ID
+* Description    : Put a task to sleep. This function is currently unused.
+* Input          : - taskID: ID of the task to put to sleep
 * Output         : None
 * Return         : None
-* Attention		 : None
+* Attention      : None
 *******************************************************************************/
 void OS_TaskSleep(OS_TaskIDTypeDef taskID)
 {
@@ -166,11 +166,11 @@ void OS_TaskSleep(OS_TaskIDTypeDef taskID)
 }
 
 /********************************************************************************************************
-*  @函数名   S_QueueEmpty						                                                           
-*  @描述     清空一个队列								                                     
-*  @参数     Head-队列头地址,  Tail-队列尾地址,   HBuff-队列缓存
-*  @返回值   无   
-*  @注意    无
+*  @FunctionName   S_QueueEmpty
+*  @Description    Clear a queue
+*  @Parameter      Head - Queue head address, Tail - Queue tail address, HBuff - Queue buffer
+*  @ReturnValue    None
+*  @Note           None
 ********************************************************************************************************/
 void S_QueueEmpty(unsigned char **Head, unsigned char **Tail, unsigned char *HBuff)
 {
@@ -179,17 +179,17 @@ void S_QueueEmpty(unsigned char **Head, unsigned char **Tail, unsigned char *HBu
 }
 
 /********************************************************************************************************
-*  @函数名   S_QueueDataIn						                                                           
-*  @描述     输入一个字节数据进队列								                                     
-*  @参数     Head-队列头地址,  Tail-队列尾地址,   HBuff-队列缓存
-*  @返回值   无   
-*  @注意     无
+*  @FunctionName   S_QueueDataIn
+*  @Description    Write one or more bytes of data into the queue
+*  @Parameter      Head - Queue head address, Tail - Queue tail address, HBuff - Queue buffer
+*  @ReturnValue    None
+*  @Note           None
 ********************************************************************************************************/
 void S_QueueDataIn(unsigned char **Head, unsigned char **Tail, unsigned char *HBuff, unsigned short Len, unsigned char *HData, unsigned short DataLen)
-{	
+{
 	unsigned short num;
 	unsigned char IptStatus;
-	
+
 	if(CPUInterrupptCtrlCBS != 0)
 	{
 		CPUInterrupptCtrlCBS(CPU_ENTER_CRITICAL,&IptStatus);
@@ -203,9 +203,9 @@ void S_QueueDataIn(unsigned char **Head, unsigned char **Tail, unsigned char *HB
 			if(*Tail == *Head)
 			{
 					if(++(*Head) == HBuff+Len)
-						*Head = HBuff;		
+						*Head = HBuff;
 			}
-	}	
+	}
 	if(CPUInterrupptCtrlCBS != 0)
 	{
 		CPUInterrupptCtrlCBS(CPU_EXIT_CRITICAL,&IptStatus);
@@ -213,14 +213,14 @@ void S_QueueDataIn(unsigned char **Head, unsigned char **Tail, unsigned char *HB
 }
 
 /********************************************************************************************************
-*  @函数名   S_QueueDataOut						                                                           
-*  @描述     从队列里取出一个数据								                                     
-*  @参数     Head-队列头地址,  Tail-队列尾地址,   HBuff-队列缓存
-*  @返回值   取出的数据   
-*  @注意     无
+*  @FunctionName   S_QueueDataOut
+*  @Description    Read one byte of data from the queue
+*  @Parameter      Head - Queue head address, Tail - Queue tail address, HBuff - Queue buffer
+*  @ReturnValue    Retrieved data
+*  @Note           None
 ********************************************************************************************************/
 unsigned char S_QueueDataOut(unsigned char **Head, unsigned char **Tail, unsigned char *HBuff, unsigned short Len, unsigned char *Data)
-{					   
+{
 	unsigned char back = 0;
 	unsigned char IptStatus;
 	if(CPUInterrupptCtrlCBS != 0)
@@ -231,7 +231,7 @@ unsigned char S_QueueDataOut(unsigned char **Head, unsigned char **Tail, unsigne
 	if(*Tail != *Head)
 	{
 			*Data = **Head;
-			back = 1; 				
+			back = 1;
 			if(++(*Head) == HBuff+Len)
 				*Head = HBuff;
 	}
@@ -239,15 +239,15 @@ unsigned char S_QueueDataOut(unsigned char **Head, unsigned char **Tail, unsigne
 	{
 		CPUInterrupptCtrlCBS(CPU_EXIT_CRITICAL,&IptStatus);
 	}
-	return back;	
+	return back;
 }
 
 /********************************************************************************************************
-*  @函数名   S_QueueDataLen						                                                           
-*  @描述     判断队列里数据的长度							                                     
-*  @参数     Head-队列头地址,  Tail-队列尾地址,   HBuff-队列缓存
-*  @返回值   队列里有数据个数
-*  @注意     无
+*  @FunctionName   S_QueueDataLen
+*  @Description    Get the length of data in the queue
+*  @Parameter      Head - Queue head address, Tail - Queue tail address, HBuff - Queue buffer
+*  @ReturnValue    Number of data elements in the queue
+*  @Note           None
 ********************************************************************************************************/
 unsigned short S_QueueDataLen(unsigned char **Head, unsigned char **Tail, unsigned short Len)
 {
@@ -257,4 +257,3 @@ unsigned short S_QueueDataLen(unsigned char **Head, unsigned char **Tail, unsign
 			return *Tail+Len-*Head;
 		return 0;
 }
-

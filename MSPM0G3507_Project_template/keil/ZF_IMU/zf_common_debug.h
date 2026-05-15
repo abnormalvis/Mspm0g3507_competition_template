@@ -1,118 +1,119 @@
 /*********************************************************************************************************************
-* MSPM0G3507 Opensourec Library 即（MSPM0G3507 开源库）是一个基于官方 SDK 接口的第三方开源库
-* Copyright (c) 2022 SEEKFREE 逐飞科技
-* 
-* 本文件是 MSPM0G3507 开源库的一部分
-* 
-* MSPM0G3507 开源库 是免费软件
-* 您可以根据自由软件基金会发布的 GPL（GNU General Public License，即 GNU通用公共许可证）的条款
-* 即 GPL 的第3版（即 GPL3.0）或（您选择的）任何后来的版本，重新发布和/或修改它
-* 
-* 本开源库的发布是希望它能发挥作用，但并未对其作任何的保证
-* 甚至没有隐含的适销性或适合特定用途的保证
-* 更多细节请参见 GPL
-* 
-* 您应该在收到本开源库的同时收到一份 GPL 的副本
-* 如果没有，请参阅<https://www.gnu.org/licenses/>
-* 
-* 额外注明：
-* 本开源库使用 GPL3.0 开源许可证协议 以上许可申明为译文版本
-* 许可申明英文版在 libraries/doc 文件夹下的 GPL3_permission_statement.txt 文件中
-* 许可证副本在 libraries 文件夹下 即该文件夹下的 LICENSE 文件
-* 欢迎各位使用并传播本程序 但修改内容时必须保留逐飞科技的版权声明（即本声明）
-* 
-* 文件名称          zf_common_debug
-* 公司名称          成都逐飞科技有限公司
-* 版本信息          查看 libraries/doc 文件夹内 version 文件 版本说明
-* 开发环境          MDK 5.38a
-* 适用平台          MSPM0G3507
-* 店铺链接          https://seekfree.taobao.com/
+* MSPM0G3507 Open Source Library - a lightweight open source library for official SDK interfaces
+* Copyright (c) 2022 SEEKFREE (SeekFree Technology)
+*
+* This file is part of the MSPM0G3507 Open Source Library
+*
+* MSPM0G3507 Open Source Library is free software.
+* You can redistribute it and/or modify it under the terms of the
+* GPL (GNU General Public License) version 3 (GPL3.0) or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+* See the GPL for more details.
+*
+* You should have received a copy of the GPL along with this library.
+* If not, see <https://www.gnu.org/licenses/>
+*
+* Important note:
+* This source code uses the GPL3.0 open source license agreement.
+* Please refer to the English version in GPL3_permission_statement.txt under libraries/doc directory.
+* See the LICENSE file under the libraries directory for details.
+* Welcome to use and distribute. When modifying, please retain the SeekFree copyright.
+*
+* File name          : zf_common_debug
+* Company name       : Chengdu SeekFree Technology Co., Ltd.
+* Version info       : See version file under libraries/doc directory
+* Dev environment    : MDK 5.38a
+* Target platform    : MSPM0G3507
+* Contact            : https://seekfree.taobao.com/
 ********************************************************************************************************************/
 
 #ifndef _zf_common_debug_h_
 #define _zf_common_debug_h_
 
-// zf_common 层引用
+// zf_common header
 #include "zf_common_typedef.h"
 
-// 此处列举 当前支持的函数列表
-// 具体声明在本函数中查看对应注释 具体定义跳转到对应函数定义查看
+// This section lists currently supported functions
+// Search in the source file for the actual definition, then navigate to the corresponding function
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// zf_assert                                                                    // 断言函数
-// zf_log                                                                       // Log 输出函数
+// zf_assert                                                                    // Assertion macro
+// zf_log                                                                       // Log output macro
 
-// debug_read_ring_buffer                                                       // 读取 debug 环形缓冲区数据
+// debug_read_ring_buffer                                                       // Read debug ring buffer data
 
-// debug_message_handler                                                        // debug 调试信息处理函数
-// debug_output_struct_init                                                     // debug 输出绑定信息初始化 这个函数一般不由用户调用
-// debug_output_init                                                            // debug 输出绑定初始化     这个函数一般不由用户调用
-// debug_init                                                                   // debug 串口初始化
+// debug_message_handler                                                        // Debug output message processing
+// debug_output_struct_init                                                     // Debug output struct init, generally not called directly by users
+// debug_output_init                                                            // Debug output bind init, generally not called directly by users
+// debug_init                                                                   // Debug serial port init
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-//// 此处定义 默认使用的调试输出串口资源 用户可以根据自己的需要进行修改
+//// This section configures the default serial port resource used. Users can modify as needed.
 //// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//#define DEBUG_UART_INDEX                ( UART_1 )                              // 指定 debug uart 所使用的的串口
-//#define DEBUG_UART_BAUDRATE             ( 460800 )                              // 指定 debug uart 所使用的的串口波特率
-//#define DEBUG_UART_TX_PIN               ( UART1_TX_A9  )                        // 指定 debug uart 所使用的的串口引脚
-//#define DEBUG_UART_RX_PIN               ( UART1_RX_A10 )                        // 指定 debug uart 所使用的的串口引脚
+//#define DEBUG_UART_INDEX                ( UART_1 )                              // Specify debug uart serial port number
+//#define DEBUG_UART_BAUDRATE             ( 460800 )                              // Specify debug uart baud rate
+//#define DEBUG_UART_TX_PIN               ( UART1_TX_A9  )                        // Specify debug uart TX pin
+//#define DEBUG_UART_RX_PIN               ( UART1_RX_A10 )                        // Specify debug uart RX pin
 //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-//// 此处定义 调试输出串口的模式 用户可以根据自己的需要进行修改
+//// This section configures the serial port reception mode. Users can modify as needed.
 //// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//#define DEBUG_UART_USE_INTERRUPT        ( 1 )                                   // 是否启用 debug uart 接收中断
-//#if DEBUG_UART_USE_INTERRUPT                                                    // 如果启用 debug uart 接收中断
-//#define DEBUG_RING_BUFFER_LEN           ( 64 )                                  // 定义环形缓冲区大小 默认 64byte
-//#endif  
+//#define DEBUG_UART_USE_INTERRUPT        ( 1 )                                   // Whether to enable debug uart serial interrupt
+//#if DEBUG_UART_USE_INTERRUPT                                                    // If debug uart serial interrupt is enabled
+//#define DEBUG_RING_BUFFER_LEN           ( 64 )                                  // Serial ring buffer size, default 64 bytes
+//#endif
 //// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处定义 调试输出等级 这里不允许用户修改
+// This section defines output levels. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#define DEBUG_OUTPUT_LEVEL_DISABLE      ( 0 )                                   // 禁用调试输出 使用此定义时会跳过调试检查语句
-#define DEBUG_OUTPUT_LEVEL_LOG          ( 1 )                                   // Log 调试输出等级 此定义仅仅输出检查报错 不会直接中断程序
-#define DEBUG_OUTPUT_LEVEL_ASSERT       ( 2 )                                   // 断言调试输出等级 此定义在检查报错后会输出 Log 并直接中断程序
+#define DEBUG_OUTPUT_LEVEL_DISABLE      ( 0 )                                   // Disable output level. When this define is used, no output is produced.
+#define DEBUG_OUTPUT_LEVEL_LOG          ( 1 )                                   // Log output level. This define is for general informational messages and does NOT halt the program.
+#define DEBUG_OUTPUT_LEVEL_ASSERT       ( 2 )                                   // Assertion output level. This define is for checking informational messages and will halt the program, unlike Log.
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处定义 各层级调试输出等级 用户可以根据自己的需要进行修改
+// This section defines driver-level output levels. Users can modify as needed.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#define ZF_DEBUG_OUTPUT_LEVEL_DRIVER    ( DEBUG_OUTPUT_LEVEL_ASSERT )           // 芯片外设驱动层调试输出等级 默认断言设置
-#define ZF_DEBUG_OUTPUT_LEVEL_DEVICE    ( DEBUG_OUTPUT_LEVEL_ASSERT )           // 外接设备驱动层调试输出等级 默认断言设置
+#define ZF_DEBUG_OUTPUT_LEVEL_DRIVER    ( DEBUG_OUTPUT_LEVEL_ASSERT )           // Chip driver layer output level, defaults to assertion
+#define ZF_DEBUG_OUTPUT_LEVEL_DEVICE    ( DEBUG_OUTPUT_LEVEL_ASSERT )           // Device layer output level, defaults to assertion
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处定义 本文件需要的枚举与对象结构等 这里不允许用户修改
+// This section defines the main enums and structs for this file. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-typedef enum                                                                    // 枚举 调试输出类型 此定义不允许用户修改
+typedef enum                                                                    // Enum: Debug object type. Do not modify.
 {
-    DEBUG_OBJ_TYPE_NULL             = 0,                                        // 未初始化时的默认状态
+    DEBUG_OBJ_TYPE_NULL             = 0,                                        // Default state when not initialized
 
-    DEBUG_OBJ_TYPE_UART             = 1,                                        // 使用串口
-    DEBUG_OBJ_TYPE_UART_INTERRUPT   = 2,                                        // 使用串口并且开启接收中断
-    DEBUG_OBJ_TYPE_SCREEN           = 3,                                        // 使用屏幕
+    DEBUG_OBJ_TYPE_UART             = 1,                                        // Use serial port
+    DEBUG_OBJ_TYPE_UART_INTERRUPT   = 2,                                        // Use serial port with interrupt enabled
+    DEBUG_OBJ_TYPE_SCREEN           = 3,                                        // Use screen
 }debug_obj_type_enum;
 
-typedef struct                                                                  // 结构体 调试输出管理对象 此定义不允许用户修改
+typedef struct                                                                  // Struct: Debug output object. Do not modify.
 {
-    debug_obj_type_enum     type_index;                                         // 显示类型
+    debug_obj_type_enum     type_index;                                         // Type index
 
-    uint16                  display_x_max;                                      // 屏幕显示范围
-    uint16                  display_y_max;                                      // 屏幕显示范围
+    uint16                  display_x_max;                                      // Screen display range X
+    uint16                  display_y_max;                                      // Screen display range Y
 
-    uint8                   font_x_size;                                        // 屏幕显示字体大小
-    uint8                   font_y_size;                                        // 屏幕显示字体大小
+    uint8                   font_x_size;                                        // Screen display font X size
+    uint8                   font_y_size;                                        // Screen display font Y size
 
-    void                    *device_obj;                                        // 
-    union                                                                       // 串口显示函数指针 和 屏幕字符串显示函数指针 共用一个变量地址
+    void                    *device_obj;                                        //
+    union                                                                       // Serial output function pointer / Screen string display function pointer, share the same address
     {
         void                (*output_uart)          (const char *str);
         void                (*output_screen)        (void *screen_obj, uint16 x, uint16 y, const char *str);
     };
-    void                    (*output_screen_clear)  (void *screen_obj);         // 屏幕清屏函数指针
+    void                    (*output_screen_clear)  (void *screen_obj);         // Screen clear function pointer
 }debug_obj_struct;
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处定义 芯片外设驱动层调试输出的具体调用策略 用户可以根据自己的需要进行修改
+// This section defines the specific macros for chip driver layer output. Users can modify as needed.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// 如果是禁用调试输出 直接输出返回值
-// 如果是启用调试输出 会在触发条件时根据输出等级进行处理
+// If the output level is disabled, directly return a constant value
+// If the output level is enabled, output according to the corresponding level when an error occurs during driver operation
 #if (DEBUG_OUTPUT_LEVEL_DISABLE == ZF_DEBUG_OUTPUT_LEVEL_DRIVER)
 #define debug_message_driver_handler(pass, str) (pass ? ZF_NO_ERROR : !ZF_NO_ERROR)
 #else
@@ -125,74 +126,74 @@ typedef struct                                                                  
 #endif
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// 此处列举 本文件的所有函数声明 [ 其中包括宏定义函数 ] 这里不允许用户修改
+// This section lists all function declarations [ including macro-defined functions ]. Do not modify.
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Part Start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     调试断言
-// 参数说明     pass            判断条件 如果条件为真则返回无错误 如果条件为假就触发断言机制
-// 返回参数     uint8           ZF_NO_ERROR - 0 - 正常 /  !ZF_NO_ERROR - !0 - 异常
-// 使用示例     zf_assert(pass_flag);
-// 备注信息     
+// Function Name  : Assertion macro
+// Description    : pass            Condition check. Returns no error if true; triggers assertion handling if false.
+// Return Value   : uint8           ZF_NO_ERROR - 0 - OK / !ZF_NO_ERROR - !0 - Error
+// Usage Example  : zf_assert(pass_flag);
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 #define zf_assert(pass)     (pass ? ZF_NO_ERROR : debug_message_handler(DEBUG_OUTPUT_LEVEL_ASSERT, (pass), (NULL), ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     调试断言
-// 参数说明     pass            判断条件 如果条件为真则返回无错误 如果条件为假就触发调试输出
-// 参数说明     str             触发输出时需要输出的信息
-// 返回参数     uint8           ZF_NO_ERROR - 0 - 正常 /  !ZF_NO_ERROR - !0 - 异常
-// 使用示例     zf_log(pass_flag, "Pass flag set.");
-// 备注信息     
+// Function Name  : Log macro
+// Description    : pass            Condition check. Returns no error if true; triggers log handling if false.
+// Description    : str             Message to output when log is triggered
+// Return Value   : uint8           ZF_NO_ERROR - 0 - OK / !ZF_NO_ERROR - !0 - Error
+// Usage Example  : zf_log(pass_flag, "Pass flag set.");
+// Note
 //-------------------------------------------------------------------------------------------------------------------
 #define zf_log(pass, str)   (pass ? ZF_NO_ERROR : debug_message_handler(DEBUG_OUTPUT_LEVEL_LOG, (pass), (str), ZF_FILE_MESSAGE, ZF_LINE_MESSAGE))
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     读取 debug 环形缓冲区数据
-// 参数说明     *data       读出数据存放的数组指针
-// 返回参数     uint32      读出数据的实际长度
-// 使用示例     uint8 data[64]; uint32 len = debug_read_ring_buffer(data);
-// 备注信息     本函数需要开启 DEBUG_UART_USE_INTERRUPT 宏定义 否则直接返回
+// Function Name  : Read debug ring buffer data
+// Description    : *data       Data buffer pointer for storing read data
+// Return Value   : uint32      Actual length of data read
+// Usage Example  : uint8 data[64]; uint32 len = debug_read_ring_buffer(data);
+// Note           : Requires DEBUG_UART_USE_INTERRUPT macro definition; returns directly if not enabled
 //-------------------------------------------------------------------------------------------------------------------
 uint32 debug_read_ring_buffer (uint8 *data);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     debug 调试信息处理函数
-// 参数说明     output_level    输出等级
-// 参数说明     pass            条件判断
-// 参数说明     *str            输出的信息
-// 参数说明     *file           文件名
-// 参数说明     line            目标行数
-// 返回参数     uint8           返回 pass 判断值
-// 使用示例     debug_message_handler(ZF_DEBUG_FILE, 0, "Error", ZF_DEBUG_FILE, ZF_DEBUG_LINE);
-// 备注信息     此部分不允许用户更改
-//              推荐使用 zf_commmon_debug.h 中的 zf_log(x, str) 接口
+// Function Name  : Debug output message processing
+// Description    : output_level    output level
+// Description    : pass            condition check
+// Description    : *str            output message
+// Description    : *file           file name
+// Description    : line            target line number
+// Return Value   : uint8           return pass check value
+// Usage Example  : debug_message_handler(ZF_DEBUG_FILE, 0, "Error", ZF_DEBUG_FILE, ZF_DEBUG_LINE);
+// Note           : This function is generally not called directly by users
+//                  Recommended to use zf_log(x, str) interface in zf_commmon_debug.h
 //-------------------------------------------------------------------------------------------------------------------
 uint8 debug_message_handler (uint8 output_level, uint8 pass, char *str, char *file, int line);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     debug 输出绑定信息初始化
-// 参数说明     *info       debug 输出的信息结构体
-// 返回参数     void
-// 使用示例     debug_output_struct_init(info);
-// 备注信息     这个函数一般不由用户调用
+// Function Name  : Debug output struct init
+// Description    : *info       debug output info struct
+// Return Value   : void
+// Usage Example  : debug_output_struct_init(info);
+// Note           : This function is generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 void debug_output_struct_init (debug_obj_struct *obj);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     debug 输出绑定初始化
-// 参数说明     *info       debug 输出的信息结构体
-// 返回参数     void
-// 使用示例     debug_output_init(info);
-// 备注信息     这个函数一般不由用户调用
+// Function Name  : Debug output bind init
+// Description    : *info       debug output info struct
+// Return Value   : void
+// Usage Example  : debug_output_init(info);
+// Note           : This function is generally not called directly by users
 //-------------------------------------------------------------------------------------------------------------------
 void debug_output_init (debug_obj_struct *obj);
 
 //-------------------------------------------------------------------------------------------------------------------
-// 函数简介     debug 串口初始化
-// 参数说明     void
-// 返回参数     void
-// 使用示例     debug_init();
-// 备注信息     开源库示例默认调用 但默认禁用中断接收
+// Function Name  : Debug serial port init
+// Description    : void
+// Return Value   : void
+// Usage Example  : debug_init();
+// Note           : Default call in the open source demo, interrupt reception enabled by default
 //-------------------------------------------------------------------------------------------------------------------
 void debug_init (void);
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Part   End <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

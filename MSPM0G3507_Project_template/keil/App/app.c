@@ -1,9 +1,9 @@
 /*******************************************************************************
-  * @作者      ： wangming
-  * @wechat    :DeepCoderMing
-  * @qq      ： 3201935299
-  * @日期      ： 2025年05月01日
-  * @版权声明  ： 仅供参考学习，未经允许禁止商用
+  * @author      :  wangming
+   * @wechat     : DeepCoderMing
+  * @qq      :  3201935299
+  * @date      :  2025-05-01
+  * @copyright  :  For reference only, commercial use prohibited
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "OS_System.h"
@@ -68,7 +68,7 @@ static void stg3Menu_Para5CBS(void);
 static void stg3Menu_Para6CBS(void);
 static void stg3Menu_Para7CBS(void);
 static void stg3Menu_Para8CBS(void);
-stu_mode_menu *pModeMenu;		//系统当前执行菜单的结构体指针 
+stu_mode_menu *pModeMenu;		//Current active menu struct pointer 
 
 static void hal_Oled_Clear(void)
 {
@@ -81,29 +81,29 @@ static void hal_Oled_Clear(void)
 	LCD_clear_L(0,7);
 }
 
-/***参数**/
-//菜单唯一ID号
-//当前菜单的位置信息
-//指向当前模式类型
-//当前模式下的响应函数
-//刷新屏显示命令
-//预留，方便参数传递
-//按键值,0xFF代表无按键触发
-//指向上一个选项
-//指向下一个选项
-//指向父级菜单
-//指向子级菜单
+/***Parameters**/
+//Menu unique ID
+//Current menu position info
+//Points to current mode type
+//Current mode response function
+//Screen refresh command
+//Reserved for parameter passing
+//Key value, 0xFF = no key triggered
+//Points to previous option
+//Points to next option
+//Points to parent menu
+//Points to child menu
  
-//初始化桌面菜单（一级菜单） 普通模式菜单
-stu_mode_menu generalModeMenu[GNL_MENU_SUM] = //定义结构体数组，并且进行初始化 
+//Init desktop menu (L1 menu): general mode menu
+stu_mode_menu generalModeMenu[GNL_MENU_SUM] = //Define struct array and initialize 
 {
 	{GNL_MENU_DESKTOP1,DESKTOP_MENU_POS,"Desktop1",gnlMenu_Desktop1CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},
 	{GNL_MENU_DESKTOP2,DESKTOP_MENU_POS,"Desktop2",gnlMenu_Desktop2CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},
 	{GNL_MENU_DESKTOP3,DESKTOP_MENU_POS,"Desktop3",gnlMenu_Desktop3CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
-	//菜单唯一ID号  菜单位置信息（是枚举变量）字符指针 桌面菜单的处理函数       
+	//Menu unique ID  | position info (enum) | string ptr | Desktop menu handler       
 };	
 
-//（1）初始化设置菜单（一级菜单） 结构体数组 设置菜单包含了所有列表
+//Init settings menu (L1 menu) - struct array, contains all lists
 stu_mode_menu settingModeMenu1[STG1_MENU_SUM] = 
 {
 	{STG1_MENU_MAIN_SETTING,STG_MENU_POS,"Main Menu1",stg1Menu_MainMenuCBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
@@ -118,20 +118,20 @@ stu_mode_menu settingModeMenu1[STG1_MENU_SUM] =
 	{STG1_MENU_PARA9,STG_SUB_2_MENU_POS,"9. yaw_track_kd ",stg1Menu_Para9CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 };
 
-//（2）初始化设置菜单（一级菜单） 结构体数组 设置菜单包含了所有列表
+//Init settings menu (L1 menu) - struct array, contains all lists
 stu_mode_menu settingModeMenu2[STG2_MENU_SUM] = 
 {
 	{STG2_MENU_MAIN_SETTING,STG_MENU_POS,"Main Menu2",stg2Menu_MainMenuCBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
-	{STG2_MENU_PARA1,STG_SUB_2_MENU_POS,"1. task1",stg2Menu_Para1CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//复位任务
-	{STG2_MENU_PARA2,STG_SUB_2_MENU_POS,"2. task2",stg2Menu_Para2CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//沿铅笔框边线顺时针一周
-	{STG2_MENU_PARA3,STG_SUB_2_MENU_POS,"3. task3",stg2Menu_Para3CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0}, //沿胶布边线顺时针一周
+	{STG2_MENU_PARA1,STG_SUB_2_MENU_POS,"1. task1",stg2Menu_Para1CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//Reset task
+	{STG2_MENU_PARA2,STG_SUB_2_MENU_POS,"2. task2",stg2Menu_Para2CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	//Follow pencil frame border clockwise
+	{STG2_MENU_PARA3,STG_SUB_2_MENU_POS,"3. task3",stg2Menu_Para3CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0}, //Follow tape border clockwise
 	{STG2_MENU_PARA4,STG_SUB_2_MENU_POS,"4. task4 ",stg2Menu_Para4CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 	{STG2_MENU_PARA5,STG_SUB_2_MENU_POS,"5. Dire ",stg2Menu_Para5CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 	{STG2_MENU_PARA5,STG_SUB_2_MENU_POS,"6. Clear ",stg2Menu_Para6CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},
 	{STG2_MENU_PARA5,STG_SUB_2_MENU_POS,"7. Orignal ",stg2Menu_Para7CBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
 };
 
-//（2）初始化设置菜单（一级菜单） 结构体数组 设置菜单包含了所有列表
+//Init settings menu (L1 menu) - struct array, contains all lists
 stu_mode_menu settingModeMenu3[STG3_MENU_SUM] = 
 {
 	{STG3_MENU_MAIN_SETTING,STG_MENU_POS,"Main Menu3",stg3Menu_MainMenuCBS,SCREEN_CMD_RESET,0,0xFF,0,0,0,0},	
@@ -149,24 +149,24 @@ stu_mode_menu settingModeMenu3[STG3_MENU_SUM] =
 
 void AppInit(void)
 {
-	menuInit();    //必须要初始化，才能将菜单显示为桌面菜单
+	menuInit();    //Must init before displaying as desktop menu
 
 	hal_KeyScanCBSRegister(KeyEventHandle);
 
 }
 
-//菜单初始化函数 实现菜单双向链表功能
+//Menu init function - builds doubly linked list
 static void menuInit(void)
 {
 	unsigned char i;
-	/*！！！以下代码顺序不能调换！！！*/
-	//把第二级子菜单列表形成循环双向链表形式，方便调用
-	//特殊的头和尾进行连接 
-	settingModeMenu1[1].pLase = &settingModeMenu1[STG1_MENU_SUM-1];	//settingModeMenu1[1].pLase的上一个选项
-	settingModeMenu1[1].pNext = &settingModeMenu1[2];	//settingModeMenu1[1].pNext的下一个选项
-	settingModeMenu1[1].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParent的父级菜单
+	/*!!! Code order below MUST NOT be changed !!!*/
+	//Link L2 submenu list into circular doubly linked list
+	//Connect special head and tail 
+	settingModeMenu1[1].pLase = &settingModeMenu1[STG1_MENU_SUM-1];	//settingModeMenu1[1].pLase previous option
+	settingModeMenu1[1].pNext = &settingModeMenu1[2];	//settingModeMenu1[1].pNext next option
+	settingModeMenu1[1].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParent parent menu
 
-	//从设置菜单的第二个开始连接 第一个是主菜单页面 上一个选项 下一个选项 父级菜单
+	//Connect from 2nd settings item; 1st is main page; prev option; next option; parent menu
 	for(i=2; i<STG1_MENU_SUM-1; i++)
 	{
 		settingModeMenu1[i].pLase = &settingModeMenu1[i-1];
@@ -174,21 +174,21 @@ static void menuInit(void)
 		settingModeMenu1[i].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];
 	}	
 	
-	//特殊的尾和头进行连接 设置菜单的最后一个选项 的上一个选项 下一个选项 父级菜单
+	//Connect special tail and head (last settings item); prev option; next option; parent menu
 	settingModeMenu1[STG1_MENU_SUM-1].pLase = &settingModeMenu1[i-1];
 	settingModeMenu1[STG1_MENU_SUM-1].pNext = &settingModeMenu1[1];
 	settingModeMenu1[STG1_MENU_SUM-1].pParent = &settingModeMenu1[STG1_MENU_MAIN_SETTING];	
-	//以上代码实现循环双向链表,顺序不能调换！！！！！	
-	/*！！！以上代码顺序不能调换！！！*/
+	//Above code builds circular doubly linked list; order MUST NOT change!!!!!	
+	/*!!! Code order above MUST NOT be changed !!!*/
 
-	/*！！！以下代码顺序不能调换！！！*/
-	//把第二级子菜单列表形成循环双向链表形式，方便调用
-	//特殊的头和尾进行连接 
-	settingModeMenu2[1].pLase = &settingModeMenu2[STG2_MENU_SUM-1];	//settingModeMenu1[1].pLase的上一个选项
-	settingModeMenu2[1].pNext = &settingModeMenu2[2];	//settingModeMenu1[1].pNext的下一个选项
-	settingModeMenu2[1].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParent的父级菜单
+	/*!!! Code order below MUST NOT be changed !!!*/
+	//Link L2 submenu list into circular doubly linked list
+	//Connect special head and tail 
+	settingModeMenu2[1].pLase = &settingModeMenu2[STG2_MENU_SUM-1];	//settingModeMenu1[1].pLase previous option
+	settingModeMenu2[1].pNext = &settingModeMenu2[2];	//settingModeMenu1[1].pNext next option
+	settingModeMenu2[1].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParent parent menu
 
-	//从设置菜单的第二个开始连接 第一个是主菜单页面 上一个选项 下一个选项 父级菜单
+	//Connect from 2nd settings item; 1st is main page; prev option; next option; parent menu
 	for(i=2; i<STG2_MENU_SUM-1; i++)
 	{
 		settingModeMenu2[i].pLase = &settingModeMenu2[i-1];
@@ -196,21 +196,21 @@ static void menuInit(void)
 		settingModeMenu2[i].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];
 	}	
 	
-	//特殊的尾和头进行连接 设置菜单的最后一个选项 的上一个选项 下一个选项 父级菜单
+	//Connect special tail and head (last settings item); prev option; next option; parent menu
 	settingModeMenu2[STG2_MENU_SUM-1].pLase = &settingModeMenu2[i-1];
 	settingModeMenu2[STG2_MENU_SUM-1].pNext = &settingModeMenu2[1];
 	settingModeMenu2[STG2_MENU_SUM-1].pParent = &settingModeMenu2[STG2_MENU_MAIN_SETTING];	
-	//以上代码实现循环双向链表,顺序不能调换！！！！！	
-	/*！！！以上代码顺序不能调换！！！*/
+	//Above code builds circular doubly linked list; order MUST NOT change!!!!!	
+	/*!!! Code order above MUST NOT be changed !!!*/
 	
-	/*！！！以下代码顺序不能调换！！！*/
-	//把第二级子菜单列表形成循环双向链表形式，方便调用
-	//特殊的头和尾进行连接 
-	settingModeMenu3[1].pLase = &settingModeMenu3[STG3_MENU_SUM-1];	//settingModeMenu1[1].pLase的上一个选项
-	settingModeMenu3[1].pNext = &settingModeMenu3[2];	//settingModeMenu1[1].pNext的下一个选项
-	settingModeMenu3[1].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParent的父级菜单
+	/*!!! Code order below MUST NOT be changed !!!*/
+	//Link L2 submenu list into circular doubly linked list
+	//Connect special head and tail 
+	settingModeMenu3[1].pLase = &settingModeMenu3[STG3_MENU_SUM-1];	//settingModeMenu1[1].pLase previous option
+	settingModeMenu3[1].pNext = &settingModeMenu3[2];	//settingModeMenu1[1].pNext next option
+	settingModeMenu3[1].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];	//settingModeMenu1[1].pParent parent menu
 
-	//从设置菜单的第二个开始连接 第一个是主菜单页面 上一个选项 下一个选项 父级菜单
+	//Connect from 2nd settings item; 1st is main page; prev option; next option; parent menu
 	for(i=2; i<STG3_MENU_SUM-1; i++)
 	{
 		settingModeMenu3[i].pLase = &settingModeMenu3[i-1];
@@ -218,39 +218,39 @@ static void menuInit(void)
 		settingModeMenu3[i].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];
 	}	
 	
-	//特殊的尾和头进行连接 设置菜单的最后一个选项 的上一个选项 下一个选项 父级菜单
+	//Connect special tail and head (last settings item); prev option; next option; parent menu
 	settingModeMenu3[STG3_MENU_SUM-1].pLase = &settingModeMenu3[i-1];
 	settingModeMenu3[STG3_MENU_SUM-1].pNext = &settingModeMenu3[1];
 	settingModeMenu3[STG3_MENU_SUM-1].pParent = &settingModeMenu3[STG3_MENU_MAIN_SETTING];	
-	//以上代码实现循环双向链表,顺序不能调换！！！！！	
-	/*！！！以上代码顺序不能调换！！！*/	
+	//Above code builds circular doubly linked list; order MUST NOT change!!!!!	
+	/*!!! Code order above MUST NOT be changed !!!*/	
 	
 	
-	//系统当前执行菜单的结构体指针指向 普通模式的桌面菜单 然后就可以改变普通模式的桌面菜单里的参数
-	pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];	//设置上电显示的菜单界面为桌面显示
-	pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;	//更新刷新界面标志，进入界面后刷新全界面UI
-	//上行代码其实不写在这个初始化函数中也是这个值，因为定义普通模式的桌面菜单时就已经将它初始化为了SCREEN_CMD_RESET
+	//Point current menu ptr to general mode desktop menu so params can be changed
+	pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];	//Set power-on default display to desktop
+	pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;	//Update refresh flag to refresh full UI on entry
+	//Above is redundant here since desktop menu definition already initializes it to SCREEN_CMD_RESET
 }
 
 
-int key_count;    //按键值
+int key_count;    //Key value
 int task_num = 0;
 char stop_task = 0;
 static uint16_t gray_vofa_send_cnt = 0;
 
-float pwm_x0 = 1950,pwm_y0 = 1050;	//复位位置的pwm
-float pwm_x1 = 1950,pwm_y1 = 1050;	//周边左上角点的pwm
-float pwm_x2 = 1950,pwm_y2 = 1050;	//周边右下角点的pwm
+float pwm_x0 = 1950,pwm_y0 = 1050;	//Reset position PWM
+float pwm_x1 = 1950,pwm_y1 = 1050;	//Perimeter top-left corner PWM
+float pwm_x2 = 1950,pwm_y2 = 1050;	//Perimeter bottom-right corner PWM
 char Beep_toggle_flag = 0;
-//桌面1菜单服务函数
+//Desktop1 menu service function
 static void gnlMenu_Desktop1CBS(void)
 {
 	unsigned char keys;
 	static uint8_t gray_display_state = 1;
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//状态为刷新时满足条件
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)// Enter when refresh state
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//下次不刷新了，刷新一次
-		pModeMenu->keyVal = 0xFF;//初始化为没有按键按下
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;// Do not refresh next time, refresh once
+		pModeMenu->keyVal = 0xFF;// Init: no key event
 		 
 		hal_Oled_Clear();
 		//display_6_8_string(110,0,"M1");
@@ -261,7 +261,7 @@ static void gnlMenu_Desktop1CBS(void)
 		case 1:
 			gray_display_state++;
 			LCD_clear_L(0,1);
-			display_6_8_string(0,1,"cmps:");			  //厘米/秒   
+			display_6_8_string(0,1,"cmps:");			  //cm/s   
 				display_6_8_number(30,5,gray_status);
 			display_6_8_number(40,1,smartcar_imu.left_motor_speed_cmps);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(85,1,smartcar_imu.right_motor_speed_cmps); 		
@@ -271,7 +271,7 @@ static void gnlMenu_Desktop1CBS(void)
 			gray_display_state++;
 			LCD_clear_L(0,2);
 		//distance_l
-			display_6_8_string(0,2,"dtas:");			  //厘米/秒   
+			display_6_8_string(0,2,"dtas:");			  //cm/s   
 			display_6_8_number(30,2,distance_inter);  
 			//display_6_8_number(80,2,distance_r); 			
 //			display_6_8_string(0,2,"p_x1:");				         
@@ -342,30 +342,30 @@ static void gnlMenu_Desktop1CBS(void)
 		default:
 			gray_display_state = 1;
 	}
-	//以下代码在桌面菜单服务函数中，表示在桌面菜单下长按中键才会进入主界面
-	if(pModeMenu->keyVal != 0xff)//有按键触发
+	//In desktop menu service: long-press center key to enter main menu
+	if(pModeMenu->keyVal != 0xff)//Key triggered
 	{
-		keys = pModeMenu->keyVal; //keys是这个函数里的临时变量
+		keys = pModeMenu->keyVal; //keys is a temp variable in this function
 
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值 keys中有值了
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value; keys now holds the value
 		switch(keys)
 		{
 			case KEY5_CLICK_RELEASE:
-				pModeMenu = &settingModeMenu1[0];	//跳转到设置菜单界面
+				pModeMenu = &settingModeMenu1[0];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY4_CLICK_RELEASE:	//右键
-				pModeMenu = &generalModeMenu[1];	//跳转到桌面摄像头界面
+			case KEY4_CLICK_RELEASE:	// Right key
+				pModeMenu = &generalModeMenu[1];	//Jump to desktop camera view
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_CLICK_RELEASE:	//左键
-				pModeMenu = &generalModeMenu[2];	//跳转到设置菜单界面
+			case KEY3_CLICK_RELEASE:	// Left key
+				pModeMenu = &generalModeMenu[2];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:	//上键 启动发车
+			case KEY1_CLICK_RELEASE:	// Up key, Start car
 						Flag.Start_Car = 1;
 			break;				
-			case KEY2_CLICK_RELEASE:	//上键 启动发车
+			case KEY2_CLICK_RELEASE:	// Up key, Start car
 						Flag.Start_Car = 0;			
 			break;				
 		}
@@ -373,14 +373,14 @@ static void gnlMenu_Desktop1CBS(void)
 	
 }
 
-//桌面2菜单服务函数
+//Desktop2 menu service function
 static void gnlMenu_Desktop2CBS(void)
 {
 	unsigned char keys;
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//状态为刷新时满足条件
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)// Enter when refresh state
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//下次不刷新了，刷新一次
-		pModeMenu->keyVal = 0xFF;//初始化为没有按键按下
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;// Do not refresh next time, refresh once
+		pModeMenu->keyVal = 0xFF;// Init: no key event
 		 
 		hal_Oled_Clear();
 		//display_6_8_string(110,0,"M2");
@@ -388,28 +388,28 @@ static void gnlMenu_Desktop2CBS(void)
 		
 	}
 	display_6_8_string(50,4,"TASK");
-	//以下代码在桌面菜单服务函数中，表示在桌面菜单下长按中键才会进入主界面
-	if(pModeMenu->keyVal != 0xff)//有按键触发
+	//In desktop menu service: long-press center key to enter main menu
+	if(pModeMenu->keyVal != 0xff)//Key triggered
 	{
-		keys = pModeMenu->keyVal; //keys是这个函数里的临时变量
+		keys = pModeMenu->keyVal; //keys is a temp variable in this function
 
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值 keys中有值了
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value; keys now holds the value
 		switch(keys)
 		{
 			case KEY5_CLICK_RELEASE:
-				pModeMenu = &settingModeMenu2[0];	//跳转到设置菜单界面
+				pModeMenu = &settingModeMenu2[0];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 				
 			break;
-			case KEY3_CLICK_RELEASE:	//左键
-				pModeMenu = &generalModeMenu[0];	//跳转到设置菜单界面
+			case KEY3_CLICK_RELEASE:	// Left key
+				pModeMenu = &generalModeMenu[0];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY4_CLICK_RELEASE:	//右键
-				pModeMenu = &generalModeMenu[2];	//跳转到设置菜单界面
+			case KEY4_CLICK_RELEASE:	// Right key
+				pModeMenu = &generalModeMenu[2];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:	//上键 启动发车
+			case KEY1_CLICK_RELEASE:	// Up key, Start car
 						
 			break;			
 			
@@ -418,15 +418,15 @@ static void gnlMenu_Desktop2CBS(void)
 	
 }
 
-//桌面3控制菜单服务函数
+//Desktop3 control menu service function
 static void gnlMenu_Desktop3CBS(void)
 {
 	unsigned char keys;
 	static uint8_t gray_display_state = 1;
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)//状态为刷新时满足条件
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)// Enter when refresh state
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;//下次不刷新了，刷新一次
-		pModeMenu->keyVal = 0xFF;//初始化为没有按键按下
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;// Do not refresh next time, refresh once
+		pModeMenu->keyVal = 0xFF;// Init: no key event
 		 
 		hal_Oled_Clear();
 	//	display_6_8_string(110,0,"M3");
@@ -437,7 +437,7 @@ static void gnlMenu_Desktop3CBS(void)
 		case 1:
 			gray_display_state++;
 			LCD_clear_L(0,1);
-			display_6_8_string(0,1,"pointA:");			  //厘米/秒   
+			display_6_8_string(0,1,"pointA:");			  //cm/s   
 			display_6_8_number(40,1,point_A[0]);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(80,1,point_A[1]); 		
 	
@@ -484,24 +484,24 @@ static void gnlMenu_Desktop3CBS(void)
 		default:
 			gray_display_state = 1;
 	}	
-	//以下代码在桌面菜单服务函数中，表示在桌面菜单下长按中键才会进入主界面
-	if(pModeMenu->keyVal != 0xff)//有按键触发
+	//In desktop menu service: long-press center key to enter main menu
+	if(pModeMenu->keyVal != 0xff)//Key triggered
 	{
-		keys = pModeMenu->keyVal; //keys是这个函数里的临时变量
+		keys = pModeMenu->keyVal; //keys is a temp variable in this function
 
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值 keys中有值了
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value; keys now holds the value
 		switch(keys)
 		{
 			case KEY5_CLICK_RELEASE:
-				pModeMenu = &settingModeMenu3[0];	//跳转到设置菜单界面
+				pModeMenu = &settingModeMenu3[0];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_CLICK_RELEASE:	//左键
-				pModeMenu = &generalModeMenu[1];	//跳转到设置菜单界面
+			case KEY3_CLICK_RELEASE:	// Left key
+				pModeMenu = &generalModeMenu[1];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY4_CLICK_RELEASE:	//右键
-				pModeMenu = &generalModeMenu[0];	//跳转到设置菜单界面
+			case KEY4_CLICK_RELEASE:	// Right key
+				pModeMenu = &generalModeMenu[0];	// Jump to settings menu
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 		}
@@ -509,49 +509,49 @@ static void gnlMenu_Desktop3CBS(void)
 	
 }
 
-//主菜单1处理函数
+//Main menu 1 handler
 static void stg1Menu_MainMenuCBS(void)
 {
-	//pMenu  MHead  MTail是独立的结构体指针，分配了独立的资源
-	//static定义的变量，下次再回到这个函数中，变量的值保持上一个不变
-	unsigned char keys;//键值临时储存的变量
-	unsigned char i;//用于for循环
-	unsigned char ClrScreenFlag;//要不要去刷屏的标志位，翻页的时候刷屏，清楚列表区域的显示，重新显示，不翻页的话不用刷屏
-	static stu_mode_menu *pMenu;		//用来保存当前选中的菜单
-	static stu_mode_menu *bpMenu=0;		//用来备份上一次菜单选项，主要用于刷屏判断，当pMenu！= bpMenu时，刷屏
-	static unsigned char stgMainMenuSelectedPos=0;	//用来记录当前选中菜单的位置，选择列表中选中菜单的位置，默认等于1，从第一个菜单开始
-	static stu_mode_menu *MHead,*MTail;		//这两个结构体指针是为了上下切换菜单时做翻页处理
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//需要刷新屏幕
+	//pMenu, MHead, MTail are independent struct ptrs with separate resources
+	//static vars retain their value across function calls
+	unsigned char keys;//Temp key value variable
+	unsigned char i;//for loop counter
+	unsigned char ClrScreenFlag;//Screen refresh flag: refresh on page flip to clear/redraw list area; skip if no flip
+	static stu_mode_menu *pMenu;		//Stores currently selected menu item
+	static stu_mode_menu *bpMenu=0;		//Backup of last menu item for refresh check; refresh when pMenu != bpMenu
+	static unsigned char stgMainMenuSelectedPos=0;	//Records selected menu position in list; default = 1, starting from first item
+	static stu_mode_menu *MHead,*MTail;		//These two struct ptrs handle page flip on up/down menu navigation
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//Need to refresh screen
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//下次进来这个函数不刷新了，只刷新一次，长按中键后加入主页面刷新一次
-		pMenu = &settingModeMenu1[0];//执行主菜单
-		hal_Oled_Clear();//刷屏
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//Only refresh once; next entry skips refresh; long-press center key triggers page refresh
+		pMenu = &settingModeMenu1[0];//Execute main menu
+		hal_Oled_Clear();// Refresh screen
 		
-		//display_6_8_string(10,0,pMenu->pModeType);//将要显示的数据写入oled缓存，oled还不会更新显示，要运行下一步刷新
+		//display_6_8_string(10,0,pMenu->pModeType);//Write to OLED buffer; display updates on next refresh step
 
 		
-	//刷屏和更新显示费时间，只有键值改变的时候才进行
+	// Refresh screen and display update is slow; only do it on key change
 		
-		pMenu = &settingModeMenu1[1];	//设置菜单列表的第一个选项
+		pMenu = &settingModeMenu1[1];	//First item in settings menu list
 		
-		MHead = pMenu;			//记录当前设置菜单第一项
-		MTail = pMenu+6;		//记录当前设置菜单最后一项,一页显示4个选项，共5个选项
-		bpMenu = 0;	//bpMenu与pMenu不相等，进入下面的ui显示程序
+		MHead = pMenu;			//Record current settings menu first item
+		MTail = pMenu+6;		//Record current settings menu last item; 4 items per page, 5 total items
+		bpMenu = 0;	//bpMenu != pMenu, enter UI display routine below
  
-		ClrScreenFlag = 1;	//写成1，使得第一次进入下面的显示程序时，把菜单列表显示出来，否则选择列表显示不出来
+		ClrScreenFlag = 1;	//Set to 1 so first entry into display routine shows the menu list
 		stgMainMenuSelectedPos = 1;
 		keys = 0xFF;
  
 	}
 	
-	//按键操作菜单 包括翻页操作
+	//Key menu operations including page flip
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY1_CLICK_RELEASE:		//上
+			case KEY1_CLICK_RELEASE:		//Up key
 				
 				if(stgMainMenuSelectedPos ==1)
 				{
@@ -562,34 +562,34 @@ static void stg1Menu_MainMenuCBS(void)
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//取消选中本菜单显示
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//Deselect current menu item display
 					pMenu = pMenu->pLase;
 					stgMainMenuSelectedPos--;
 				}
 			break;
-			case KEY2_CLICK_RELEASE:		//下
-				if(stgMainMenuSelectedPos == 7)///翻页：选中第4个菜单按下键时
+			case KEY2_CLICK_RELEASE:		//Down key
+				if(stgMainMenuSelectedPos == 7)///Page flip: 4th item selected, down key pressed
 				{
 					MHead = MHead->pNext;	
 					pMenu = pMenu->pNext;
 					MTail = pMenu;
-					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos最大是4
+					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos max is 4
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//取消选中本菜单显示
-					pMenu = pMenu->pNext;																			//切换下一个选项
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//Deselect current menu item display
+					pMenu = pMenu->pNext;																			//Switch to next option
 					stgMainMenuSelectedPos++;
 				}
 
 			break;
 			
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 			
-			case KEY4_CLICK_RELEASE:	//右键 确定
+			case KEY4_CLICK_RELEASE:	// Right key Confirm
 				pModeMenu->pChild = pMenu;
 				pModeMenu = pModeMenu->pChild;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;		
@@ -598,78 +598,78 @@ static void stg1Menu_MainMenuCBS(void)
 		}
 	}
 	
-	//以下代码用于UI显示，显示主页面的菜单列表
-	if(bpMenu != pMenu)//如果指向地址不一致，需要更新显示，上面已经强制地址不一致了
+	//UI display: show main page menu list
+	if(bpMenu != pMenu)//If address differs, update display (forced mismatch above)
 	{
-		bpMenu = pMenu;//bpMenu更新为现在菜单状态，若pMenu改变，则bpMenu != pMenu，表示有按键按下，要更新屏幕显示
-		if(ClrScreenFlag)//刷屏标志位，翻页的时候起作用，翻页的时候要清屏
+		bpMenu = pMenu;//bpMenu updated to current state; if pMenu changed, bpMenu != pMenu means key pressed, refresh display
+		if(ClrScreenFlag)// Refresh screen flag, used on page flip to clear screen
 		{
 			
 			ClrScreenFlag = 0;
 			pMenu = MHead;
-			hal_Oled_Clear();		//清屏 清除列表的那块区域
+			hal_Oled_Clear();		// Clear screen (clear the list area)
 
-			for(i=1; i<8; i++)	//这里一定是i<5，因为一页只能显示4个菜单列表
+			for(i=1; i<8; i++)	//Must be i<5 since only 4 menu items fit per page
 			{
-				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//循环显示菜单列表的名字
+				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Loop to display menu list names
 
-				pMenu = pMenu->pNext;//下一个
+				pMenu = pMenu->pNext;//Next
 			} 
-			pMenu = bpMenu;//将pMenu指向&settingModeMenu1[1];指向第一个菜单，前面for循环中pMenu = pMenu->pNext;pMenu一直变化
-			//以下代码为光标显示的位置
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//反色显示
+			pMenu = bpMenu;//Restore pMenu to first item; it was modified by pMenu->pNext in loop above
+			//Cursor display position code below
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//Inverse highlight
 		 
-		}else//不需要清屏，不翻页的时候
+		}else//No clear needed when not flipping page
 		{ 
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//反色显示
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//Inverse highlight
 
 		}	
 			
 				 
 	}
 }
-//主菜单2处理函数
+//Main menu 2 handler
 static void stg2Menu_MainMenuCBS(void)
 {
-	//pMenu  MHead  MTail是独立的结构体指针，分配了独立的资源
-	//static定义的变量，下次再回到这个函数中，变量的值保持上一个不变
-	unsigned char keys;//键值临时储存的变量
-	unsigned char i;//用于for循环
-	unsigned char ClrScreenFlag;//要不要去刷屏的标志位，翻页的时候刷屏，清楚列表区域的显示，重新显示，不翻页的话不用刷屏
-	static stu_mode_menu *pMenu;		//用来保存当前选中的菜单
-	static stu_mode_menu *bpMenu=0;		//用来备份上一次菜单选项，主要用于刷屏判断，当pMenu！= bpMenu时，刷屏
-	static unsigned char stgMainMenuSelectedPos=0;	//用来记录当前选中菜单的位置，选择列表中选中菜单的位置，默认等于1，从第一个菜单开始
-	static stu_mode_menu *MHead,*MTail;		//这两个结构体指针是为了上下切换菜单时做翻页处理
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//需要刷新屏幕
+	//pMenu, MHead, MTail are independent struct ptrs with separate resources
+	//static vars retain their value across function calls
+	unsigned char keys;//Temp key value variable
+	unsigned char i;//for loop counter
+	unsigned char ClrScreenFlag;//Screen refresh flag: refresh on page flip to clear/redraw list area; skip if no flip
+	static stu_mode_menu *pMenu;		//Stores currently selected menu item
+	static stu_mode_menu *bpMenu=0;		//Backup of last menu item for refresh check; refresh when pMenu != bpMenu
+	static unsigned char stgMainMenuSelectedPos=0;	//Records selected menu position in list; default = 1, starting from first item
+	static stu_mode_menu *MHead,*MTail;		//These two struct ptrs handle page flip on up/down menu navigation
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//Need to refresh screen
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//下次进来这个函数不刷新了，只刷新一次，长按中键后加入主页面刷新一次
-		pMenu = &settingModeMenu2[0];//执行主菜单
-		hal_Oled_Clear();//刷屏
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//Only refresh once; next entry skips refresh; long-press center key triggers page refresh
+		pMenu = &settingModeMenu2[0];//Execute main menu
+		hal_Oled_Clear();// Refresh screen
 		
-		//display_6_8_string(37,0,pMenu->pModeType);//将要显示的数据写入oled缓存，oled还不会更新显示，要运行下一步刷新
+		//display_6_8_string(37,0,pMenu->pModeType);//Write to OLED buffer; display updates on next refresh step
 		
-	//刷屏和更新显示费时间，只有键值改变的时候才进行
+	// Refresh screen and display update is slow; only do it on key change
 		
-		pMenu = &settingModeMenu2[1];	//设置菜单列表的第一个选项
+		pMenu = &settingModeMenu2[1];	//First item in settings menu list
 		
-		MHead = pMenu;			//记录当前设置菜单第一项
-		MTail = pMenu+6;		//记录当前设置菜单最后一项,一页显示4个选项，共5个选项
-		bpMenu = 0;	//bpMenu与pMenu不相等，进入下面的ui显示程序
+		MHead = pMenu;			//Record current settings menu first item
+		MTail = pMenu+6;		//Record current settings menu last item; 4 items per page, 5 total items
+		bpMenu = 0;	//bpMenu != pMenu, enter UI display routine below
  
-		ClrScreenFlag = 1;	//写成1，使得第一次进入下面的显示程序时，把菜单列表显示出来，否则选择列表显示不出来
+		ClrScreenFlag = 1;	//Set to 1 so first entry into display routine shows the menu list
 		stgMainMenuSelectedPos = 1;
 		keys = 0xFF;
  
 	}
 	
-	//按键操作菜单 包括翻页操作
+	//Key menu operations including page flip
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY1_CLICK_RELEASE:		//上
+			case KEY1_CLICK_RELEASE:		//Up key
 				
 				if(stgMainMenuSelectedPos ==1)
 				{
@@ -680,39 +680,39 @@ static void stg2Menu_MainMenuCBS(void)
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//取消选中本菜单显示
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//Deselect current menu item display
 					pMenu = pMenu->pLase;
 					stgMainMenuSelectedPos--;
 				}
 			break;
-			case KEY2_CLICK_RELEASE:		//下
-				if(stgMainMenuSelectedPos == 7)///翻页：选中第4个菜单按下键时
+			case KEY2_CLICK_RELEASE:		//Down key
+				if(stgMainMenuSelectedPos == 7)///Page flip: 4th item selected, down key pressed
 				{
 					MHead = MHead->pNext;	
 					pMenu = pMenu->pNext;
 					MTail = pMenu;
-					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos最大是4
+					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos max is 4
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//取消选中本菜单显示
-					pMenu = pMenu->pNext;																			//切换下一个选项
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//Deselect current menu item display
+					pMenu = pMenu->pNext;																			//Switch to next option
 					stgMainMenuSelectedPos++;
 				}
 
 			break;
 			
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 			
-			case KEY4_CLICK_RELEASE:	//右键 确定
+			case KEY4_CLICK_RELEASE:	// Right key Confirm
 				pModeMenu->pChild = pMenu;
 				pModeMenu = pModeMenu->pChild;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;		
 			break;			
-			case KEY5_CLICK_RELEASE:	//中键 确定
+			case KEY5_CLICK_RELEASE:	//Center key / Confirm
 					if(stgMainMenuSelectedPos < 5)
 					{
 						task_num = (stgMainMenuSelectedPos-1)%5 + 1;
@@ -735,74 +735,74 @@ static void stg2Menu_MainMenuCBS(void)
 		}
 	}
 	
-	//以下代码用于UI显示，显示主页面的菜单列表
-	if(bpMenu != pMenu)//如果指向地址不一致，需要更新显示，上面已经强制地址不一致了
+	//UI display: show main page menu list
+	if(bpMenu != pMenu)//If address differs, update display (forced mismatch above)
 	{
-		bpMenu = pMenu;//bpMenu更新为现在菜单状态，若pMenu改变，则bpMenu != pMenu，表示有按键按下，要更新屏幕显示
-		if(ClrScreenFlag)//刷屏标志位，翻页的时候起作用，翻页的时候要清屏
+		bpMenu = pMenu;//bpMenu updated to current state; if pMenu changed, bpMenu != pMenu means key pressed, refresh display
+		if(ClrScreenFlag)// Refresh screen flag, used on page flip to clear screen
 		{
 			
 			ClrScreenFlag = 0;
 			pMenu = MHead;
-			hal_Oled_Clear();		//清屏 清除列表的那块区域
-			for(i=1; i<8; i++)	//这里一定是i<5，因为一页只能显示4个菜单列表
+			hal_Oled_Clear();		// Clear screen (clear the list area)
+			for(i=1; i<8; i++)	//Must be i<5 since only 4 menu items fit per page
 			{
-				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//循环显示菜单列表的名字
-				pMenu = pMenu->pNext;//下一个
+				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Loop to display menu list names
+				pMenu = pMenu->pNext;//Next
 			} 
-			pMenu = bpMenu;//将pMenu指向&settingModeMenu1[1];指向第一个菜单，前面for循环中pMenu = pMenu->pNext;pMenu一直变化
-			//以下代码为光标显示的位置
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//反色显示
-		}else//不需要清屏，不翻页的时候
+			pMenu = bpMenu;//Restore pMenu to first item; it was modified by pMenu->pNext in loop above
+			//Cursor display position code below
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//Inverse highlight
+		}else//No clear needed when not flipping page
 		{ 
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//反色显示
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//Inverse highlight
 		}	
 			
 				 
 	}
 }
-//主菜单3处理函数
+//Main menu 3 handler
 static void stg3Menu_MainMenuCBS(void)
 {
-	//pMenu  MHead  MTail是独立的结构体指针，分配了独立的资源
-	//static定义的变量，下次再回到这个函数中，变量的值保持上一个不变
-	unsigned char keys;//键值临时储存的变量
-	unsigned char i;//用于for循环
-	unsigned char ClrScreenFlag;//要不要去刷屏的标志位，翻页的时候刷屏，清楚列表区域的显示，重新显示，不翻页的话不用刷屏
-	static stu_mode_menu *pMenu;		//用来保存当前选中的菜单
-	static stu_mode_menu *bpMenu=0;		//用来备份上一次菜单选项，主要用于刷屏判断，当pMenu！= bpMenu时，刷屏
-	static unsigned char stgMainMenuSelectedPos=0;	//用来记录当前选中菜单的位置，选择列表中选中菜单的位置，默认等于1，从第一个菜单开始
-	static stu_mode_menu *MHead,*MTail;		//这两个结构体指针是为了上下切换菜单时做翻页处理
-	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//需要刷新屏幕
+	//pMenu, MHead, MTail are independent struct ptrs with separate resources
+	//static vars retain their value across function calls
+	unsigned char keys;//Temp key value variable
+	unsigned char i;//for loop counter
+	unsigned char ClrScreenFlag;//Screen refresh flag: refresh on page flip to clear/redraw list area; skip if no flip
+	static stu_mode_menu *pMenu;		//Stores currently selected menu item
+	static stu_mode_menu *bpMenu=0;		//Backup of last menu item for refresh check; refresh when pMenu != bpMenu
+	static unsigned char stgMainMenuSelectedPos=0;	//Records selected menu position in list; default = 1, starting from first item
+	static stu_mode_menu *MHead,*MTail;		//These two struct ptrs handle page flip on up/down menu navigation
+	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)	//Need to refresh screen
 	{
-		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//下次进来这个函数不刷新了，只刷新一次，长按中键后加入主页面刷新一次
-		pMenu = &settingModeMenu3[0];//执行主菜单
-		hal_Oled_Clear();//刷屏
+		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;	//Only refresh once; next entry skips refresh; long-press center key triggers page refresh
+		pMenu = &settingModeMenu3[0];//Execute main menu
+		hal_Oled_Clear();// Refresh screen
 		
-		//display_6_8_string(37,0,pMenu->pModeType);//将要显示的数据写入oled缓存，oled还不会更新显示，要运行下一步刷新
+		//display_6_8_string(37,0,pMenu->pModeType);//Write to OLED buffer; display updates on next refresh step
 		
-	//刷屏和更新显示费时间，只有键值改变的时候才进行
+	// Refresh screen and display update is slow; only do it on key change
 		
-		pMenu = &settingModeMenu3[1];	//设置菜单列表的第一个选项
+		pMenu = &settingModeMenu3[1];	//First item in settings menu list
 		
-		MHead = pMenu;			//记录当前设置菜单第一项
-		MTail = pMenu+6;		//记录当前设置菜单最后一项,一页显示4个选项，共5个选项		这个加值3有什么用？？
-		bpMenu = 0;	//bpMenu与pMenu不相等，进入下面的ui显示程序
+		MHead = pMenu;			//Record current settings menu first item
+		MTail = pMenu+6;		//Record current settings menu last item; 4 items per page, 5 total items		What is the +3 offset for??
+		bpMenu = 0;	//bpMenu != pMenu, enter UI display routine below
  
-		ClrScreenFlag = 1;	//写成1，使得第一次进入下面的显示程序时，把菜单列表显示出来，否则选择列表显示不出来
+		ClrScreenFlag = 1;	//Set to 1 so first entry into display routine shows the menu list
 		stgMainMenuSelectedPos = 1;
 		keys = 0xFF;
  
 	}
 	
-	//按键操作菜单 包括翻页操作
+	//Key menu operations including page flip
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY1_CLICK_RELEASE:		//上
+			case KEY1_CLICK_RELEASE:		//Up key
 				
 				if(stgMainMenuSelectedPos ==1)
 				{
@@ -813,34 +813,34 @@ static void stg3Menu_MainMenuCBS(void)
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//取消选中本菜单显示
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//Deselect current menu item display
 					pMenu = pMenu->pLase;
 					stgMainMenuSelectedPos--;
 				}
 			break;
-			case KEY2_CLICK_RELEASE:		//下
-				if(stgMainMenuSelectedPos == 7)///翻页：选中第4个菜单按下键时
+			case KEY2_CLICK_RELEASE:		//Down key
+				if(stgMainMenuSelectedPos == 7)///Page flip: 4th item selected, down key pressed
 				{
 					MHead = MHead->pNext;	
 					pMenu = pMenu->pNext;
 					MTail = pMenu;
-					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos最大是4
+					stgMainMenuSelectedPos = 7;//stgMainMenuSelectedPos max is 4
 					ClrScreenFlag = 1;
 				}else
 				{
-					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//取消选中本菜单显示
-					pMenu = pMenu->pNext;																			//切换下一个选项
+					display_6_8_string(0,1*stgMainMenuSelectedPos," ");		//Deselect current menu item display
+					pMenu = pMenu->pNext;																			//Switch to next option
 					stgMainMenuSelectedPos++;
 				}
 
 			break;
 			
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
 			
-			case KEY4_CLICK_RELEASE:	//右键 确定
+			case KEY4_CLICK_RELEASE:	// Right key Confirm
 				pModeMenu->pChild = pMenu;
 				pModeMenu = pModeMenu->pChild;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;		
@@ -849,27 +849,27 @@ static void stg3Menu_MainMenuCBS(void)
 		}
 	}
 	
-	//以下代码用于UI显示，显示主页面的菜单列表
-	if(bpMenu != pMenu)//如果指向地址不一致，需要更新显示，上面已经强制地址不一致了
+	//UI display: show main page menu list
+	if(bpMenu != pMenu)//If address differs, update display (forced mismatch above)
 	{
-		bpMenu = pMenu;//bpMenu更新为现在菜单状态，若pMenu改变，则bpMenu != pMenu，表示有按键按下，要更新屏幕显示
-		if(ClrScreenFlag)//刷屏标志位，翻页的时候起作用，翻页的时候要清屏
+		bpMenu = pMenu;//bpMenu updated to current state; if pMenu changed, bpMenu != pMenu means key pressed, refresh display
+		if(ClrScreenFlag)// Refresh screen flag, used on page flip to clear screen
 		{
 			
 			ClrScreenFlag = 0;
 			pMenu = MHead;
-			hal_Oled_Clear();		//清屏 清除列表的那块区域
-			for(i=1; i<8; i++)	//这里一定是i<5，因为一页只能显示4个菜单列表
+			hal_Oled_Clear();		// Clear screen (clear the list area)
+			for(i=1; i<8; i++)	//Must be i<5 since only 4 menu items fit per page
 			{
-				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//循环显示菜单列表的名字
-				pMenu = pMenu->pNext;//下一个
+				display_6_8_string(10,1*i,(char*)pMenu->pModeType);//Loop to display menu list names
+				pMenu = pMenu->pNext;//Next
 			} 
-			pMenu = bpMenu;//将pMenu指向&settingModeMenu1[1];指向第一个菜单，前面for循环中pMenu = pMenu->pNext;pMenu一直变化
-			//以下代码为光标显示的位置
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//反色显示
-		}else//不需要清屏，不翻页的时候
+			pMenu = bpMenu;//Restore pMenu to first item; it was modified by pMenu->pNext in loop above
+			//Cursor display position code below
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//Inverse highlight
+		}else//No clear needed when not flipping page
 		{ 
-			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//反色显示
+			display_6_8_string(0,1*stgMainMenuSelectedPos,">");//Inverse highlight
 		}	
 			
 				 
@@ -883,7 +883,7 @@ static void stg1Menu_Para1CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		//hal_Oled_ShowString(20,0,"1. Inductance",12,1);
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
@@ -897,22 +897,22 @@ static void stg1Menu_Para1CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				pos_out_limH+=5;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				pos_out_limH-=5;
 
 			break;			
@@ -930,7 +930,7 @@ static void stg1Menu_Para2CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -943,22 +943,22 @@ static void stg1Menu_Para2CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				pos_out_limL+=5;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				pos_out_limL-=5;
 
 			break;			
@@ -977,7 +977,7 @@ static void stg1Menu_Para3CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -989,23 +989,23 @@ static void stg1Menu_Para3CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				speed_adjust+=1;
 				if(speed_adjust > 50)
 					speed_adjust = 50;
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				speed_adjust-=1;
 				if(speed_adjust < 1)
 					speed_adjust = 1;
@@ -1024,7 +1024,7 @@ static void stg1Menu_Para4CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1037,22 +1037,22 @@ static void stg1Menu_Para4CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				tar_theta_limit+=1;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				tar_theta_limit-=1;
 
 			break;			
@@ -1071,7 +1071,7 @@ static void stg1Menu_Para5CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1084,22 +1084,22 @@ static void stg1Menu_Para5CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				pos_boudary+=1;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				pos_boudary-=1;
 
 			break;			
@@ -1116,7 +1116,7 @@ static void stg1Menu_Para6CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1129,22 +1129,22 @@ static void stg1Menu_Para6CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				turn_kp+=0.2;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				turn_kp-=0.2;
 
 			break;			
@@ -1162,7 +1162,7 @@ static void stg1Menu_Para7CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -1174,22 +1174,22 @@ static void stg1Menu_Para7CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				sleep_time+=5;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				sleep_time-=5;
 
 			break;			
@@ -1207,7 +1207,7 @@ static void stg1Menu_Para8CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -1219,30 +1219,30 @@ static void stg1Menu_Para8CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				yaw_track_kp+=0.01;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				yaw_track_kp-=0.01;
 
 			break;	//
-			case KEY1_LONG_PRESS_CONTINUOUS:		//上键 增大参数值
+			case KEY1_LONG_PRESS_CONTINUOUS:		// Up key, Increase value
 				yaw_track_kp+=0.01;
 	
 			break;			
-			case KEY2_LONG_PRESS_CONTINUOUS:		//下键 减小参数值
+			case KEY2_LONG_PRESS_CONTINUOUS:		// Down key, Decrease value
 				yaw_track_kp-=0.01;
 
 			break;			
@@ -1259,7 +1259,7 @@ static void stg1Menu_Para9CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);				
 		keys = 0xFF;
@@ -1271,30 +1271,30 @@ static void stg1Menu_Para9CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				yaw_track_kd+=0.01;
 	
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				yaw_track_kd-=0.01;
 
 			break;	//
-			case KEY1_LONG_PRESS_CONTINUOUS:		//上键 增大参数值
+			case KEY1_LONG_PRESS_CONTINUOUS:		// Up key, Increase value
 				yaw_track_kd+=0.01;
 	
 			break;			
-			case KEY2_LONG_PRESS_CONTINUOUS:		//下键 减小参数值
+			case KEY2_LONG_PRESS_CONTINUOUS:		// Down key, Decrease value
 				yaw_track_kd-=0.01;
 
 			break;			
@@ -1311,7 +1311,7 @@ static void stg2Menu_Para1CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,2,"TASK1:");
@@ -1322,25 +1322,25 @@ static void stg2Menu_Para1CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				
 			break;
-			case KEY5_CLICK_RELEASE: //中键短按
-//				Time0A_init(5,USER_INT0);   //有正确PWM时候，打开舵机
+			case KEY5_CLICK_RELEASE: //Center key short press
+//				Time0A_init(5,USER_INT0);   //Enable servo when PWM is correct
 //				display_6_8_string(5,4,"Reset Action!");
 
 			break;			
@@ -1355,7 +1355,7 @@ static void stg2Menu_Para2CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,2,"TASK2:");
@@ -1370,24 +1370,24 @@ static void stg2Menu_Para2CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				
 			break;
-			case KEY5_CLICK_RELEASE: //中键短按
+			case KEY5_CLICK_RELEASE: //Center key short press
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;			
@@ -1404,7 +1404,7 @@ static void stg2Menu_Para3CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,2,"stg2Para3:");
@@ -1416,24 +1416,24 @@ static void stg2Menu_Para3CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP2];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 //				kp4++;
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 //				kp4--;
 			break;
-			case KEY5_CLICK_RELEASE: //中键短按
+			case KEY5_CLICK_RELEASE: //Center key short press
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1447,7 +1447,7 @@ static void stg2Menu_Para4CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,0,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,28,"stg2Para4:");
@@ -1456,24 +1456,24 @@ static void stg2Menu_Para4CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-//			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+//			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 //				kp2++;
 //			break;			
-//			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+//			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 //				kp2--;
 //			break;
-			case KEY5_CLICK_RELEASE: //中键短按
+			case KEY5_CLICK_RELEASE: //Center key short press
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1489,7 +1489,7 @@ static void stg2Menu_Para5CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 		//display_6_8_string(0,2,"stg2Para5:");
@@ -1497,7 +1497,7 @@ static void stg2Menu_Para5CBS(void)
 	}	
 	Flag.Start_Car = 0;
 	
-			display_6_8_string(0,2,"A:");			  //厘米/秒   
+			display_6_8_string(0,2,"A:");			  //cm/s   
 			display_6_8_number(40,2,point_A[0]);  //smartcar_imu.left_motor_speed_cmps EncoderA
 			display_6_8_number(80,2,point_A[1]); 		
 
@@ -1537,30 +1537,30 @@ static void stg2Menu_Para5CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				if(key_value < 3)
 				key_value++;
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				if(key_value > 0)
 					key_value--;
 			break;
-//			case KEY4_CLICK_RELEASE:		//下键 减小参数值
+//			case KEY4_CLICK_RELEASE:		// Down key, Decrease value
 //				point_C[0] = point_actual[0];
 //				point_C[1] = point_actual[1];
 //			break;			
-			case KEY5_CLICK_RELEASE:		//中键 减小参数值
+			case KEY5_CLICK_RELEASE:		//Center key / Decrease parameter
 
 			switch(key_value)
 			{
@@ -1619,7 +1619,7 @@ static void stg2Menu_Para6CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,0,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,28,"stg2Para6:");
@@ -1628,24 +1628,24 @@ static void stg2Menu_Para6CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-//			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+//			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 //				kp2++;
 //			break;			
-//			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+//			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 //				kp2--;
 //			break;
-			case KEY5_CLICK_RELEASE: //中键短按
+			case KEY5_CLICK_RELEASE: //Center key short press
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1659,7 +1659,7 @@ static void stg2Menu_Para7CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,0,(char*)pModeMenu->pModeType);
 		display_6_8_string(0,28,"stg2Para6:");
@@ -1668,24 +1668,24 @@ static void stg2Menu_Para7CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP1];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-//			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+//			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 //				kp2++;
 //			break;			
-//			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+//			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 //				kp2--;
 //			break;
-			case KEY5_CLICK_RELEASE: //中键短按
+			case KEY5_CLICK_RELEASE: //Center key short press
 				//display_6_8_string(5,4,"TASK2 Action!");
 
 			break;				
@@ -1704,7 +1704,7 @@ static void stg3Menu_Para1CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				
@@ -1733,31 +1733,31 @@ static void stg3Menu_Para1CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_A[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_A[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
 			break;
-//			case KEY4_CLICK_RELEASE:		//下键 减小参数值
+//			case KEY4_CLICK_RELEASE:		// Down key, Decrease value
 //				point_C[0] = point_actual[0];
 //				point_C[1] = point_actual[1];
 //			break;			
-//			case KEY5_CLICK_RELEASE:		//中键 减小参数值
+//			case KEY5_CLICK_RELEASE:		//Center key / Decrease parameter
 //				point_D[0] = point_actual[0];
 //				point_D[1] = point_actual[1];
 ////				data_test.value = point_actual[0];
@@ -1782,14 +1782,14 @@ static void stg3Menu_Para2CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);		
 		
 		keys = 0xFF;
 		 
 	}	
-//			display_6_8_string(0,2,"A:");			  //厘米/秒   
+//			display_6_8_string(0,2,"A:");			  //cm/s   
 			display_6_8_number(40,2,point_A[1]);  //smartcar_imu.left_motor_speed_cmps EncoderA
 //			display_6_8_number(80,1,point_A[1]); 		
 
@@ -1811,22 +1811,22 @@ static void stg3Menu_Para2CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_A[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_A[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -1844,7 +1844,7 @@ static void stg3Menu_Para3CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);		
 		
@@ -1872,22 +1872,22 @@ static void stg3Menu_Para3CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_B[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_B[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -1905,7 +1905,7 @@ static void stg3Menu_Para4CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 //		display_6_8_string(0,2,"stg3Para4:");
@@ -1932,22 +1932,22 @@ static void stg3Menu_Para4CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_B[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_B[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -1966,7 +1966,7 @@ static void stg3Menu_Para5CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 //		display_6_8_string(0,2,"stg3Para5:");
@@ -1993,22 +1993,22 @@ static void stg3Menu_Para5CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_C[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_C[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2024,7 +2024,7 @@ static void stg3Menu_Para6CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				 
@@ -2050,22 +2050,22 @@ static void stg3Menu_Para6CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_C[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_C[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2081,7 +2081,7 @@ static void stg3Menu_Para7CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 //		display_6_8_string(0,2,"stg3Para5:");
@@ -2108,22 +2108,22 @@ static void stg3Menu_Para7CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_D[0] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_D[0] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2140,7 +2140,7 @@ static void stg3Menu_Para8CBS(void)
 	if(pModeMenu->refreshScreenCmd == SCREEN_CMD_RESET)
 	{
 		pModeMenu->refreshScreenCmd = SCREEN_CMD_NULL;
-		hal_Oled_Clear();	//清屏
+		hal_Oled_Clear();	// Clear screen
 		
 		display_6_8_string(0,1,(char*)pModeMenu->pModeType);
 				 
@@ -2166,22 +2166,22 @@ static void stg3Menu_Para8CBS(void)
 	if(pModeMenu->keyVal != 0xff)
 	{
 		keys = pModeMenu->keyVal;
-		pModeMenu->keyVal = 0xFF;	//恢复菜单按键值
+		pModeMenu->keyVal = 0xFF;	// Reset menu key value
 		switch(keys)
 		{
-			case KEY3_CLICK_RELEASE:	//左键 取消
+			case KEY3_CLICK_RELEASE:	// Left key, Cancel
 				pModeMenu = pModeMenu->pParent;
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY3_LONG_PRESS_RELEASE:		//左键 返回桌面
+			case KEY3_LONG_PRESS_RELEASE:		// Left key, Return to desktop
 				pModeMenu = &generalModeMenu[GNL_MENU_DESKTOP3];
 				pModeMenu->refreshScreenCmd = SCREEN_CMD_RESET;
 			break;
-			case KEY1_CLICK_RELEASE:		//上键 增大参数值
+			case KEY1_CLICK_RELEASE:		// Up key, Increase value
 				point_D[1] += 1;
 //				point_A[1] = point_actual[1];
 			break;			
-			case KEY2_CLICK_RELEASE:		//下键 减小参数值
+			case KEY2_CLICK_RELEASE:		// Down key, Decrease value
 				point_D[1] -= 1;
 //				point_B[0] = point_actual[0];
 //				point_B[1] = point_actual[1];
@@ -2218,15 +2218,15 @@ void AppProc(void)
 			}
 		}
 	}
-	pModeMenu->action();//执行当前菜单的服务函数，不断循环
-	//上行代码在当前菜单的位置等同于gnlMenu_Desktop1CBS();
+	pModeMenu->action();//Execute current menu service function in loop
+	//Equivalent to gnlMenu_Desktop1CBS() in current menu position
 }
-//-----------------驱动层回调处理函数------------------------
+//-----------------Driver layer callback handlers------------------------
 
 
-//按键回调函数
+//Key callback function
 static void KeyEventHandle(KEY_VALUE_TYPEDEF keys)
 {
-	pModeMenu->keyVal = keys;//将键值赋值给当前菜单的键值
+	pModeMenu->keyVal = keys;//Assign key value to current menu
 	
 }

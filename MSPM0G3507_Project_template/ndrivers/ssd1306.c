@@ -178,8 +178,8 @@ void ssd1306_begin(uint8_t vccstate)
   ssd1306_command(SSD1306_DISPLAYALLON_RESUME);           // 0xA4
   ssd1306_command(SSD1306_NORMALDISPLAY);                 // 0xA6
 #endif
-  ssd1306_command(0xa0);//--Set SEG/Column Mapping     0xa0左右反置 0xa1正常
-  ssd1306_command(0xc0);//Set COM/Row Scan Direction   0xc0上下反置 0xc8正常
+  ssd1306_command(0xa0);//--Set SEG/Column Mapping     0xa0: normal, 0xa1: horizontal flip
+  ssd1306_command(0xc0);//Set COM/Row Scan Direction   0xc0: normal, 0xc8: vertical flip
   ssd1306_command(SSD1306_DISPLAYON);//--turn on oled panel
 }
 

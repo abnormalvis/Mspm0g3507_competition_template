@@ -29,10 +29,10 @@ unsigned char (*getKeysState[KEYNUM])() = {  hal_getKey1Sta,hal_getKey2Sta,hal_g
 								
   
 
-unsigned char KeyStep[KEYNUM];								//按键检测流程
-unsigned short KeyScanTime[KEYNUM];							//去抖延时
-unsigned short KeyPressLongTimer[KEYNUM];						//长按延时
-unsigned short KeyContPressTimer[KEYNUM];						//连续长按延时	
+unsigned char KeyStep[KEYNUM];                              // Key scan step state
+unsigned short KeyScanTime[KEYNUM];                         // Debounce counter
+unsigned short KeyPressLongTimer[KEYNUM];                   // Long press counter
+unsigned short KeyContPressTimer[KEYNUM];                   // Continuous press counter
 
 void hal_KeyInit(void)
 {
@@ -62,37 +62,37 @@ unsigned char send_buff1[] ={"hello,world!"};
 void hal_KeyProc(void)
 {
 	unsigned char i,KeyState[KEYNUM];
-	for(i=0; i<KEYNUM; i++)//依次轮询每个按键的状态
+    for(i=0; i<KEYNUM; i++)// Poll each key state
 	{	
 		keys = 0; 
  
 		KeyState[i] = getKeysState[i]();
-		switch(KeyStep[i])//判断每个按键的姿态
+      switch(KeyStep[i])// Determine each key scan state
 		{
-			case KEY_STEP_WAIT:		//等待按键
+        case KEY_STEP_WAIT:    // Wait for press
 				if(KeyState[i])
 				{
 					KeyStep[i] = KEY_STEP_CLICK;	
 				}
 			break;
-			case KEY_STEP_CLICK:				//按键单击按下
+        case KEY_STEP_CLICK:        // Key debounce
 				if(KeyState[i])
 				{
-					if(!(--KeyScanTime[i]))  //消抖
+          if(!(--KeyScanTime[i]))  // Debounce
 					{
 						KeyScanTime[i] = KEY_SCANTIME;
 						KeyStep[i] = KEY_STEP_LONG_PRESS;
-						//keys = i+1;										//记录按键ID号
-						//state = KEY_CLICK;								//按键单击按下
+              //keys = i+1;                    // Record key ID
+              //state = KEY_CLICK;             // Key click event
 						keys = (i*5)+1;		
 					}
 				}else
 				{
 					KeyScanTime[i] = KEY_SCANTIME;
-					KeyStep[i] = KEY_STEP_WAIT;  //又赋值为0  误触或者弹片抖动的情况
+          KeyStep[i] = KEY_STEP_WAIT;  // Reset to avoid false trigger
 				}
 			break;
-			case KEY_STEP_LONG_PRESS:			//按键长按
+        case KEY_STEP_LONG_PRESS:     // Long press detection
 				if(KeyState[i])
 				{	
 					if(!(--KeyPressLongTimer[i]))
@@ -100,14 +100,14 @@ void hal_KeyProc(void)
 						KeyPressLongTimer[i] = KEY_PRESS_LONG_TIME;
 						KeyStep[i] = KEY_STEP_CONTINUOUS_PRESS;
 						
-						keys = (i*5)+3;								//长按确认
+              keys = (i*5)+3;              // Long press confirm
 					 
 					}
 				}else
 				{
 					KeyPressLongTimer[i] = KEY_PRESS_LONG_TIME;
 					KeyStep[i] = KEY_STEP_WAIT;
-					keys = (i*5)+2;										//单击释放
+            keys = (i*5)+2;                // Key release (short click)
 				}
 			break;
 			case KEY_STEP_CONTINUOUS_PRESS:
@@ -116,13 +116,13 @@ void hal_KeyProc(void)
 					if(!(--KeyContPressTimer[i]))
 					{
 						KeyContPressTimer[i] = KEY_PRESS_CONTINUE_TIME;
-						keys = (i*5)+4;					//持续长按
+              keys = (i*5)+4;          // Continuous press
 					}
 				}else
 				{
 					KeyStep[i] = KEY_STEP_WAIT;
 					KeyContPressTimer[i] = KEY_PRESS_CONTINUE_TIME;
-					keys = (i*5)+5;								//长按释放
+              keys = (i*5)+5;              // Key release (long press)
 				}
 				 
 			break;
@@ -138,27 +138,27 @@ void hal_KeyProc(void)
 	}
 		LCD_clear_L(0,0);
 		display_6_8_string(0,0,"Time:");	
-		display_6_8_number_f1(30,0,Num2);//显示计数器值
+      display_6_8_number_f1(30,0,Num2);// Display timer value
 		display_6_8_string(120,0,"s");	//
 		display_6_8_number_f1(100,0,task_num);
-		display_6_8_number_f1(60,0,Param.Send3_Step);//显示计数器值
+      display_6_8_number_f1(60,0,Param.Send3_Step);// Display step value
 			//USART_SendData(USART2, 'h');
 //	auto_track(point_actual,point_B);
 	if(Flag.task_start == 2)
 	{
-		switch (task_num)//通过按键键值选择赛题哪一问
+      switch (task_num)// Select task by key value
 		{
 			case 1:
-						DS2024_duty1();//任务状态机 赛题第一问
+                DS2024_duty1();// Competition state machine - stage 1
 					break;
 			case 2:
-						DS2024_duty2();//任务状态机 赛题第二问
+                DS2024_duty2();// Competition state machine - stage 2
 					break;		
 			case 3:
-						DS2024_duty3();//任务状态机 赛题第三问
+                DS2024_duty3();// Competition state machine - stage 3
 					break;	
 			case 4:
-						DS2024_duty4();//任务状态机 赛题第四问
+                DS2024_duty4();// Competition state machine - stage 4
 					break;			
 			default:
 				break;
@@ -170,8 +170,8 @@ void hal_KeyProc(void)
 //	           printf("IMU660RA acc data: x=%5d, y=%5d, z=%5d\r\n", acc_data.x, acc_data.y, acc_data.z);
 //            printf("IMU660RA gyro data:  x=%5d, y=%5d, z=%5d\r\n", gyro_data.x, gyro_data.y, gyro_data.z);
 		//
-			//DS2024_duty2();//任务状态机
-	//串口发送
+                DS2024_duty2();// Competition state machine - stage 2
+	// Serial send
 		uartwork();
 
 
@@ -203,18 +203,18 @@ static unsigned char hal_getKey5Sta(void)
 	return (!DL_GPIO_readPins(K5_PORT, K5_PIN));		
 }
 
-////自定义延时（不精确）
+//// Custom delay function (not accurate)
 //void delay_ms(unsigned int ms)
 //{
 //    unsigned int i, j;
-//    // 下面的嵌套循环的次数是根据主控频率和编译器生成的指令周期大致计算出来的，
-//    // 需要通过实际测试调整来达到所需的延时。
+//    // Loop count estimated from CPU frequency and instruction cycles
+//    // Requires actual measurement and calibration for correct timing
 //    for (i = 0; i < ms; i++)
 //    {
 //        for (j = 0; j < 8000; j++)
 //        {
-//            // 仅执行一个足够简单以致于可以预测其执行时间的操作
-//            __asm__("nop"); // "nop" 代表“无操作”，在大多数架构中，这会消耗一个或几个时钟周期
+//            // Execute a simple operation with predictable execution time
+//            __asm__("nop"); // "nop" means no operation, consumes 1 or several clock cycles
 //        }
 //    }
 //}

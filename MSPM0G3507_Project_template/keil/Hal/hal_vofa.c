@@ -2,8 +2,8 @@
   * @author     : wangming
   * @wechat     :DeepCoderMing
   * @qq         : 3201935299
-  * @date       : 2025�??????05�??????01�??????
-  * @copyright  : 仅供参考�?�习，�?��?�商业传�??????
+  * @date       : 2025-05-01
+  * @copyright  : For reference and learning only. Redistribution prohibited.
 ********************************************************************************/
 #include "hal_vofa.h"
 #include "hal_uart.h"

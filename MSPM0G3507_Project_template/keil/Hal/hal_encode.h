@@ -27,17 +27,17 @@ typedef struct
 
 typedef struct
 {
-	int32_t left_motor_cnt,right_motor_cnt;//�������������ڵ���������
-	float left_motor_dir,right_motor_dir; //�˶�����
-	float left_motor_speed_rpm,right_motor_speed_rpm;//ת�ٵ�λתÿ����
-	float left_motor_speed_cmps,right_motor_speed_cmps;//ת��c��λΪcm/s
+	int32_t left_motor_cnt,right_motor_cnt;// Pulse count per sampling period (left/right)
+	float left_motor_dir,right_motor_dir; // Motion direction
+	float left_motor_speed_rpm,right_motor_speed_rpm;// Speed in rpm
+	float left_motor_speed_cmps,right_motor_speed_cmps;// Speed in cm/s
 	
 }encoder;
 
-#define pulse_num_per_circle 2114.0f // 2倍频解码: 1057 CPR * 2 = 2114  
+#define pulse_num_per_circle 2114.0f // 2x resolution: 1057 CPR * 2 = 2114  
 
-#define left_motor_period_ms 10.0f //����Ĳ�������
-#define right_motor_period_ms 10.0f //����Ĳ�������
+#define left_motor_period_ms 10.0f // Left motor sampling period (ms)
+#define right_motor_period_ms 10.0f // Right motor sampling period (ms)
 
 extern float wheel_radius_cm;
 

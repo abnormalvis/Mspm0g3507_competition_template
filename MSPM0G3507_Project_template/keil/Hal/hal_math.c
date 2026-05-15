@@ -1,7 +1,7 @@
 #include "hal_math.h"
 
 /*******************
-整型限幅函数
+Integer amplitude limiting function
 ********************/
 int Xianfu_int(int value,int Amplitude)
 {

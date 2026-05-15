@@ -7,9 +7,9 @@
 
 void TIMG0_Init(void)
 {
-	NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);//使能中断
+	NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);//Enable interrupt
 //	NVIC_DisableIRQ(TIMG0_INT_IRQn);
-	DL_TimerG_startCounter(TIMER_0_INST);	//使能定时器
+	DL_TimerG_startCounter(TIMER_0_INST);	//Enable timer
 
 }
 
@@ -17,16 +17,16 @@ void TIMG0_Init(void)
  
 void TIMG6_Init(void)
 {
-	NVIC_EnableIRQ(TIMER_1_INST_INT_IRQN);//使能中断
-	DL_TimerG_startCounter(TIMER_1_INST);	//使能定时器
+	NVIC_EnableIRQ(TIMER_1_INST_INT_IRQN);//Enable interrupt
+	DL_TimerG_startCounter(TIMER_1_INST);	//Enable timer
 
 }
 
 
 void TIMG7_Init(void)
 {
-	NVIC_EnableIRQ(TIMER_2_INST_INT_IRQN);//使能中断
-	DL_TimerG_startCounter(TIMER_2_INST);//使能定时器
+	NVIC_EnableIRQ(TIMER_2_INST_INT_IRQN);//Enable interrupt
+	DL_TimerG_startCounter(TIMER_2_INST);//Enable timer
 
 }
 

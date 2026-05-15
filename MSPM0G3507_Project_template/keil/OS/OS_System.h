@@ -2,15 +2,15 @@
 
 typedef enum
 {
-	CPU_ENTER_CRITICAL,		//CPU进入临界
-	CPU_EXIT_CRITICAL,		//CPU退出临界
+	CPU_ENTER_CRITICAL,		// CPU enter critical section
+	CPU_EXIT_CRITICAL,		// CPU exit critical section
 }CPU_EA_TYPEDEF;
 
-//定义一个CPU中断控制回调函数指针,别名CPUInterrupt_CallBack_t,
+// Define a CPU interrupt control callback function pointer type
 typedef void (*CPUInterrupt_CallBack_t)(CPU_EA_TYPEDEF cmd,unsigned char *pSta);
 
 
-//系统任务ID
+// System task IDs
 typedef enum
 {
 	OS_TASK1,
@@ -23,24 +23,24 @@ typedef enum
 }OS_TaskIDTypeDef;
 
 
-//系统任务运行状态,暂时没用到
+// System task running status (currently unused)
 typedef enum
 {
-	OS_SLEEP,			//任务休眠
-	OS_RUN=!OS_SLEEP	//任务运行
+	OS_SLEEP,			// Task sleep
+	OS_RUN=!OS_SLEEP	// Task run
 }OS_TaskStatusTypeDef;
 
-//系统任务结构体
+// System task struct
 typedef struct
 {
-	void (*task)(void);					//任务函数指针
-	OS_TaskStatusTypeDef RunFlag;		//任务运行状态
-	unsigned short	RunPeriod;			//任务调度频率
-	unsigned short RunTimer;			//任务调度计时器
+	void (*task)(void);					// Task function pointer
+	OS_TaskStatusTypeDef RunFlag;		// Task running status
+	unsigned short	RunPeriod;			// Task run period
+	unsigned short RunTimer;			// Task run timer
 }OS_TaskTypeDef;
 
 
-/*	函数声明 */ 
+/* Function declarations */ 
 /*******************************************************************************/
 void OS_CPUInterruptCBSRegister(CPUInterrupt_CallBack_t pCPUInterruptCtrlCBS);
 void OS_ClockInterruptHandle(void);

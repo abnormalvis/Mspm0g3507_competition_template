@@ -5,161 +5,107 @@
 #include "math.h"
 #include "hal_jy62.h"
 int32_t enc_cnt[2];
+encoder NEncoder;
+sensor smartcar_imu;
+move_filter_struct left_speed_cmps, right_speed_cmps;
 
 void hal_Encoder_Init(void)
 {
-	  NVIC_EnableIRQ(GPIOA_INT_IRQn);	//Ê¹ÄÜÍâ²¿ÖÐ¶Ï
+	  NVIC_EnableIRQ(GPIOA_INT_IRQn);	//Ê¹ï¿½ï¿½ï¿½â²¿ï¿½Ð¶ï¿½
+	  NVIC_EnableIRQ(GPIOB_INT_IRQn);
 }
 
 
 void GROUP1_IRQHandler(void)
 {
-		uint32_t status,flag;
-		status = DL_GPIO_getEnabledInterruptStatus(GPIOA,DL_GPIO_PIN_29 | DL_GPIO_PIN_30 | DL_GPIO_PIN_5 | DL_GPIO_PIN_6);
-	  DL_GPIO_clearInterruptStatus(GPIOA,status);
+		uint32_t status;
 
-//×óÂÖ
-  if(((status & DL_GPIO_PIN_5) == DL_GPIO_PIN_5 )) 
+	/* Left motor encoder: GPIOB pins 5,6 */
+	status = DL_GPIO_getEnabledInterruptStatus(GPIOB, DL_GPIO_PIN_5 | DL_GPIO_PIN_6);
+	DL_GPIO_clearInterruptStatus(GPIOB, status);
+
+	if(((status & DL_GPIO_PIN_5) == DL_GPIO_PIN_5))
 	{
-		if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_5) )	//AÏàÉÏÉýÑØ
+		if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_5))
 		{
-			if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_6) == 0)
-			{
-			
-				 enc_cnt[1] ++;
-			}
+			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_6) == 0)
+				enc_cnt[1] ++;
 			else
-			{
-				 enc_cnt[1] --;
-			}
+				enc_cnt[1] --;
 		}
-		else	//AÏàÏÂ½µÑØ
+		else
 		{
-				if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_6))
-				{
-				
-					 enc_cnt[1] ++;
-				}
-				else
-				{
-				
-					 enc_cnt[1] --;
-				}				
+			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_6))
+				enc_cnt[1] ++;
+			else
+				enc_cnt[1] --;
 		}
 	}
-	else if(((status & DL_GPIO_PIN_6) == DL_GPIO_PIN_6 )) 
+	else if(((status & DL_GPIO_PIN_6) == DL_GPIO_PIN_6))
 	{
-		if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_6) )	//bÏàÉÏÉýÑØ
+		if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_6))
 		{
-			if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_5))
-			{
-			
-				 enc_cnt[1] ++;
-			}
+			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_5))
+				enc_cnt[1] ++;
 			else
-			{
-				 enc_cnt[1] --;
-			}
+				enc_cnt[1] --;
 		}
-		else	//bÏàÏÂ½µÑØ
+		else
 		{
-				if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_5)==0)
-				{
-				
-					 enc_cnt[1] ++;
-				}
-				else
-				{
-				
-					 enc_cnt[1] --;
-				}				
-		}
-	}		
-	
-//	enc_cnt[0] ++;//ÓÒ
-  if(((status & DL_GPIO_PIN_29) == DL_GPIO_PIN_29 )) 
-	{
-		if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_29) )	//AÏàÉÏÉýÑØ
-		{
-			if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_30) == 0)
-			{
-			
-				 enc_cnt[0] ++;
-			}
+			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_5) == 0)
+				enc_cnt[1] ++;
 			else
-			{
-				 enc_cnt[0] --;
-			}
-		}
-		else	//AÏàÏÂ½µÑØ
-		{
-				if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_30))
-				{
-				
-					 enc_cnt[0] ++;
-				}
-				else
-				{
-				
-					 enc_cnt[0] --;
-				}				
-		}
-	}
-	else if(((status & DL_GPIO_PIN_30) == DL_GPIO_PIN_30 )) 
-	{
-		if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_30) )	//bÏàÉÏÉýÑØ
-		{
-			if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_29))
-			{
-			
-				 enc_cnt[0] ++;
-			}
-			else
-			{
-				 enc_cnt[0] --;
-			}
-		}
-		else	//bÏàÏÂ½µÑØ
-		{
-				if(DL_GPIO_readPins(GPIOA,DL_GPIO_PIN_29)==0)
-				{
-				
-					 enc_cnt[0] ++;
-				}
-				else
-				{
-				
-					 enc_cnt[0] --;
-				}				
+				enc_cnt[1] --;
 		}
 	}
 
-	
-	
+	/* Right motor encoder: GPIOA pins 29,30 */
+	status = DL_GPIO_getEnabledInterruptStatus(GPIOA, DL_GPIO_PIN_29 | DL_GPIO_PIN_30);
+	DL_GPIO_clearInterruptStatus(GPIOA, status);
+
+	if(((status & DL_GPIO_PIN_29) == DL_GPIO_PIN_29))
+	{
+		if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_29))
+		{
+			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_30) == 0)
+				enc_cnt[0] ++;
+			else
+				enc_cnt[0] --;
+		}
+		else
+		{
+			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_30))
+				enc_cnt[0] ++;
+			else
+				enc_cnt[0] --;
+		}
+	}
+	else if(((status & DL_GPIO_PIN_30) == DL_GPIO_PIN_30))
+	{
+		if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_30))
+		{
+			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_29))
+				enc_cnt[0] ++;
+			else
+				enc_cnt[0] --;
+		}
+		else
+		{
+			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_29) == 0)
+				enc_cnt[0] ++;
+			else
+				enc_cnt[0] --;
+		}
+	}
 }
 
-
-
-sensor smartcar_imu;  //×óÓÒÂÖËÙ¶È cm/s
-encoder NEncoder;  //¼ÆËã×óÓÒÂÖËÙ¶È cm/s µÄ¹ý³Ì
-
-move_filter_struct left_speed_cmps,right_speed_cmps;
-
-/***************************************
-º¯ÊýÃû:	float get_left_motor_speed(void)
-ËµÃ÷: »ñÈ¡×ó±ßÂÖ×ÓÊµ¼ÊËÙ¶ÈÖµ
-Èë¿Ú:	ÎÞ
-³ö¿Ú:	ÎÞ
-±¸×¢:	½«µ¥Î»Ê±¼äÄÚµÄÂö³åÊý,×ª»¯³Érpm¡¢cm/s
-×÷Õß:	ÎÞÃû´´ÐÂ
-***************************************/
 static float get_left_motor_speed(void)
 {
-	NEncoder.left_motor_cnt = enc_cnt[1];
-	//½«ËÙ¶È×ª»¯³É×ªÃ¿·ÖÖÓ
+	NEncoder.left_motor_cnt = -enc_cnt[1];
+	//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½ï¿½ï¿½×ªÃ¿ï¿½ï¿½ï¿½ï¿½
 	NEncoder.left_motor_speed_rpm = 60.0f*(NEncoder.left_motor_cnt/pulse_num_per_circle) 
 																/(left_motor_period_ms*0.001f);	
-	//½«ËÙ¶È×ª»¯³É×ªÃ¿Ãë
+	//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½ï¿½ï¿½×ªÃ¿ï¿½ï¿½
 	NEncoder.left_motor_speed_cmps=2.0f*3.14f*wheel_radius_cm*(NEncoder.left_motor_speed_rpm/60.0f);	 
 	move_filter_calc(&left_speed_cmps,NEncoder.left_motor_speed_cmps);	
 	
@@ -171,21 +117,21 @@ static float get_left_motor_speed(void)
 
 }
 /***************************************
-º¯ÊýÃû:	void get_right_motor_speed(void)
-ËµÃ÷: »ñÈ¡ÓÒ±ßÂÖ×ÓÊµ¼ÊËÙ¶ÈÖµ
-Èë¿Ú:	ÎÞ
-³ö¿Ú:	ÎÞ
-±¸×¢:	½«µ¥Î»Ê±¼äÄÚµÄÂö³åÊý,×ª»¯³Érpm¡¢cm/s
-×÷Õß:	ÎÞÃû´´ÐÂ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:	void get_right_motor_speed(void)
+Ëµï¿½ï¿½: ï¿½ï¿½È¡ï¿½Ò±ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ù¶ï¿½Öµ
+ï¿½ï¿½ï¿½:	ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½:	ï¿½ï¿½
+ï¿½ï¿½×¢:	ï¿½ï¿½ï¿½ï¿½Î»Ê±ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,×ªï¿½ï¿½ï¿½ï¿½rpmï¿½ï¿½cm/s
+ï¿½ï¿½ï¿½ï¿½:	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ***************************************/
 static float get_right_motor_speed(void)
 {
 	NEncoder.right_motor_cnt = -enc_cnt[0];
 
-	//½«ËÙ¶È×ª»¯³É×ªÃ¿·ÖÖÓ
+	//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½ï¿½ï¿½×ªÃ¿ï¿½ï¿½ï¿½ï¿½
 	NEncoder.right_motor_speed_rpm = 60.0f*(NEncoder.right_motor_cnt/pulse_num_per_circle)
 																/(right_motor_period_ms*0.001f);	
-	//½«ËÙ¶È×ª»¯³É×ªÃ¿Ãë
+	//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½ï¿½ï¿½×ªÃ¿ï¿½ï¿½
 	NEncoder.right_motor_speed_cmps=2.0f*3.14f*wheel_radius_cm*(NEncoder.right_motor_speed_rpm/60.0f);	
 	move_filter_calc(&right_speed_cmps,NEncoder.right_motor_speed_cmps);	
 	enc_cnt[0] = 0;
@@ -204,19 +150,19 @@ void get_wheel_speed(void)
 	smartcar_imu.right_motor_speed_cmps=get_right_motor_speed();	
 	
 	
-	//¼ÆËãÁ½ÂÖÆ½¾ùËÙ¶È
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Ù¶ï¿½
 	smartcar_imu.state_estimation.speed=0.5f*(smartcar_imu.left_motor_speed_cmps+smartcar_imu.right_motor_speed_cmps);
 	
 	point_actual[0] += smartcar_imu.state_estimation.speed*cos(pi/180*imu.yaw)*0.01f;
 	point_actual[1] += smartcar_imu.state_estimation.speed*sin(pi/180*imu.yaw)*0.01f;
 	
-	//Æ½¾ùËÙ¶ÈÖ±½Ó»ý·Ö×Ü¾àÀë
-	smartcar_imu.state_estimation.distance+=(int)(smartcar_imu.state_estimation.speed*5);//ËÙ¶È³ËÉÏ5£¬ÊÇ5ms
+	//Æ½ï¿½ï¿½ï¿½Ù¶ï¿½Ö±ï¿½Ó»ï¿½ï¿½ï¿½ï¿½Ü¾ï¿½ï¿½ï¿½
+	smartcar_imu.state_estimation.distance+=(int)(smartcar_imu.state_estimation.speed*5);//ï¿½Ù¶È³ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½ï¿½5ms
 	//distance_inter = smartcar_imu.state_estimation.distance/1000;
 
-	actual_position_l+=(int)(smartcar_imu.left_motor_speed_cmps*10);//10ÊÇ²ÉÑùÖÜÆÚ10ms
-	actual_position_r+=(int)(smartcar_imu.right_motor_speed_cmps*10);//10ÊÇ²ÉÑùÖÜÆÚ10ms
-	distance_l = actual_position_l/1000;//Ö±½Ó´òÓ¡actual_position_l = actual_position_l/1000;µÄactual_position_l£¬´òÓ¡²»³öÀ´£¬ÒªÓÐÒ»¸öÃ½½é
+	actual_position_l+=(int)(smartcar_imu.left_motor_speed_cmps*10);//10ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½10ms
+	actual_position_r+=(int)(smartcar_imu.right_motor_speed_cmps*10);//10ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½10ms
+	distance_l = actual_position_l/1000;//Ö±ï¿½Ó´ï¿½Ó¡actual_position_l = actual_position_l/1000;ï¿½ï¿½actual_position_lï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ò»ï¿½ï¿½Ã½ï¿½ï¿½
 	distance_r = actual_position_r/1000;	
 
 	

@@ -56,6 +56,7 @@ int main(void)
 	move_filter_init(&left_speed_cmps);	//编码器速度值滤波
 	move_filter_init(&right_speed_cmps);	//编码器速度值滤波
 	hal_uart1_Init();
+	uart1_rx_register(vofa_uart_rx_callback);
 	vofa_param_init();
 
 	AppInit();

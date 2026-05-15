@@ -25,6 +25,7 @@ void UsartProc(void);
 /* UART receive callback type */
 typedef void (*uart_rx_callback_t)(uint8_t byte);
 void uart1_rx_register(uart_rx_callback_t callback);
+void uart1_rx_feed(uint8_t byte);
 
 #endif
 

@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 
-#define speed_expect_default 			80.0f			//自主寻迹时，速度默认设定值
+#define speed_expect_default 			0.0f			//自主寻迹时，速度默认设定值
 
 #define speed_err_max  80.0f				//速度偏差限幅值
 #define speed_integral_max  60.0f	//积分限幅值
@@ -11,8 +11,8 @@
 #define  motor_max_default (85-1)
 
 
-#define speed_kp_default  				0.1f//8.0f	26.0f		//速度控制器比例参数KP  速度环pi控制的参数  50.0f
-#define	speed_ki_default					0.5f//0.6f	 0.85f		//速度控制器积分参数KI  50.0f
+#define speed_kp_default  				0.0f//8.0f	26.0f		//速度控制器比例参数KP  速度环pi控制的参数  50.0f
+#define	speed_ki_default					0.0f//0.6f	 0.85f		//速度控制器积分参数KI  50.0f
 #define	speed_kd_default					0.0f			//速度控制器微分参数KD
 
 //位置PID控制参数

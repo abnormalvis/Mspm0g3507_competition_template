@@ -1,5 +1,6 @@
 #include "seekfree_assistant.h"
 #include "hal_uart.h"
+#include "hal_vofa.h"
 
 
 static fifo_obj_struct  seekfree_assistant_fifo;
@@ -107,8 +108,15 @@ void seekfree_assistant_data_analysis (void)
 		
     if(read_length)
     {
-        // 将读取到的数据写入FIFO
+        // 将读取到的数据写入FIFO（原逐飞协议处理）
         fifo_write_buffer(&seekfree_assistant_fifo, (uint8_t *)temp_buffer, read_length);
+
+        // 同步将原始字节交给 VOFA 解析器处理（在任务上下文，避免在 ISR 中解析浮点）
+        uint8_t *p = (uint8_t *)temp_buffer;
+        for(uint32_t i = 0; i < read_length; i++)
+        {
+            vofa_uart_rx_callback(p[i]);
+        }
     }
 
 		

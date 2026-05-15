@@ -13,11 +13,25 @@
 #include "math.h"
 #include "hal_beep.h"
 #include "app.h"
+#include "hal_vofa.h"
+#include "hal_math.h"
+#include "hal_tb6612.h"
+#include "hal_jy62.h"
+#include "hal_gray.h"
+#include "hal_pid.h"
+#include "hal_uart.h"
+#include "mt_flag.h"
+#include "user_interrupt.h"
+#include "hal_led.h"
+#include "2024DS_Duty.h"
+#include "math.h"
+#include "hal_beep.h"
+#include "app.h"
 
-static float speed_error[2]={0,0},speed_expect[2]={speed_expect_default,speed_expect_default},speed_feedback[2]={0,0};//ËÙ¶ÈÎó²î ÆÚÍûËÙ¶È ·´À¡ËÙ¶È
+static float speed_error[2]={0,0},speed_expect[2]={speed_expect_default,speed_expect_default},speed_feedback[2]={0,0};//ï¿½Ù¶ï¿½ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 static float speed_error_last[2]={0,0};
 //static float position_kp = position_kp_default,position_ki = position_ki_default,position_kd = position_kd_default;
-//À¶É«³µ
+//ï¿½ï¿½É«ï¿½ï¿½
 //float speed_kp_l=0.5f,speed_ki_l=0.12f,speed_kd=speed_kd_default;
 //float speed_kp_r=0.64f,speed_ki_r=0.15f;
 float speed_kp_l=0.9f,speed_ki_l=0.2f,speed_kd=speed_kd_default;
@@ -30,29 +44,29 @@ float position_kd = 0.3;
 float yaw_kp = 0.6;
 float yaw_ki = 0;
 float yaw_kd = 0.5;
-	//ºÚ³µ
+	//ï¿½Ú³ï¿½
 //float speed_kp_l=1.1f,speed_ki_l=0.2f;
 //float speed_kp_r=0.9f,speed_ki_r=0.23f;
 //float speed_kp=speed_kp_default,speed_ki=speed_ki_default,speed_kd=speed_kd_default;
-static float position_error[2]={0,0},position_feedback[2]={0,0},position_output[2]={0,0},yaw_out[2]={0,0};//Î»ÖÃÎó²î Î»ÖÃËÙ¶È ·´À¡Î»ÖÃ
-static float yaw_feedback = 0,yaw_error = 0,yaw = 0,target_yaw = 0;//½Ç¶È»· £¨ºÍËÙ¶ÈÎ»ÖÃ´®¼¶PidÒ»ÖÂ£©
+static float position_error[2]={0,0},position_feedback[2]={0,0},position_output[2]={0,0},yaw_out[2]={0,0};//Î»ï¿½ï¿½ï¿½ï¿½ï¿? Î»ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+static float yaw_feedback = 0,yaw_error = 0,yaw = 0,target_yaw = 0;//ï¿½Ç¶È»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Î»ï¿½Ã´ï¿½ï¿½ï¿½PidÒ»ï¿½Â£ï¿½
 
-float v_target_l=0,v_target_r=0;//µ¥Î»cm/s ³õÊ¼»¯ËÙ¶È»·Ä¿±êËÙ¶È
+float v_target_l=0,v_target_r=0;//ï¿½ï¿½Î»cm/s ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ù¶È»ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½
 float p_target_l=100,p_target_r=100;
 float	speed_integral[2]={0,0},speed_output[2]={0,0};
-float left_pwm,right_pwm;//×óÓÒµç»ú×îÖÕµÄÊä³öÖµ
+float left_pwm,right_pwm;//ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½Öµ
 
-float turn_output=0,turn_output_last=0;//¿ØÖÆÆ÷Êä³öÖµ
-controller seektrack_ctrl[2];		//×ÔÖ÷Ñ°¼£¿ØÖÆÆ÷½á¹¹Ìå,seektrack_ctrl[0]»Ò¶È¹ÜÑ­¼£;seektrack_ctrl[1]OpenMVÑ­¼£
-float turn_ctrl_pwm=0;//×ªÏò¿ØÖÆÊä³ö
-//float	turn_scale=turn_scale_default;//×ªÏò¿ØÖÆ²îËÙÏµÊý  0.15 ×ªÏò¿ØÖÆÆ÷Êä³ö×ª»»µ½ÂÖ×ÓÆÚÍû²îËÙÊ±µÄÁ¿³Ì×ª»»ÏµÊý
-float	turn_scale=0.06;//×ªÏò¿ØÖÆ²îËÙÏµÊý  0.15 ×ªÏò¿ØÖÆÆ÷Êä³ö×ª»»µ½ÂÖ×ÓÆÚÍû²îËÙÊ±µÄÁ¿³Ì×ª»»ÏµÊý
-float speed_setup = 70,speed_adjust = 35;//ËÙ¶ÈÉè¶¨Öµ  ËÙ¶ÈÄ¿±êÖµ±ØÐëÕâ¸öÐÎÊ½²ÅÓÐÓÃ
+float turn_output=0,turn_output_last=0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö?
+controller seektrack_ctrl[2];		//ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½,seektrack_ctrl[0]ï¿½Ò¶È¹ï¿½Ñ­ï¿½ï¿½;seektrack_ctrl[1]OpenMVÑ­ï¿½ï¿½
+float turn_ctrl_pwm=0;//×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//float	turn_scale=turn_scale_default;//×ªï¿½ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½Ïµï¿½ï¿?  0.15 ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ïµï¿½ï¿½
+float	turn_scale=0.06;//×ªï¿½ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½Ïµï¿½ï¿?  0.15 ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ïµï¿½ï¿½
+float speed_setup = 70,speed_adjust = 35;//ï¿½Ù¶ï¿½ï¿½è¶¨Öµ  ï¿½Ù¶ï¿½Ä¿ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
 float yaw_target=0;
-/*ËÙ¶È»· Î»ÖÃ»» ´®¼¶ ½Ç¶È»·*/
+/*ï¿½Ù¶È»ï¿½ Î»ï¿½Ã»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¶È»ï¿½*/
 //void speed_control(void)
 //{
-//	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps;//»ñÈ¡×óÂÖÊµ¼ÊÖµ  
+//	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps;//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Öµ  
 //	speed_error[0]=v_target_l-speed_feedback[0];
 //	speed_error[0]=Xianfu_float(speed_error[0],speed_err_max);
 //	speed_integral[0]+=speed_ki_l*speed_error[0];
@@ -60,14 +74,14 @@ float yaw_target=0;
 //	speed_output[0]=speed_integral[0]+speed_kp_l*speed_error[0];
 //	speed_output[0]=Xianfu_float(speed_output[0],speed_ctrl_output_max);
 //		
-//	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps;//ÓÒÂÖ
-//	speed_error[1]=v_target_r-speed_feedback[1];//ÆÚÍûËÙ¶È¼õÈ¥Êµ¼ÊËÙ¶ÈµÃµ½ËÙ¶ÈÎó²î
+//	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps;//ï¿½ï¿½ï¿½ï¿½
+//	speed_error[1]=v_target_r-speed_feedback[1];//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È¼ï¿½È¥Êµï¿½ï¿½ï¿½Ù¶ÈµÃµï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿?
 //	
-//	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max);//¶ÔËÙ¶ÈÎó²î×öÔ¼Êø
-//	speed_integral[1]+=speed_ki_r*speed_error[1]; //ËÙ¶È»ý·Ö
-//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max);//¶ÔµÃµ½µÄËÙ¶È»ý·Ö×öÔ¼Êø
-//	speed_output[1]=speed_integral[1]+speed_kp_r*speed_error[1];//pidµÃµ½Êä³ö
-//	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max);//¶ÔÊä³ö×öÔ¼Êø
+//	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max);//ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿?
+//	speed_integral[1]+=speed_ki_r*speed_error[1]; //ï¿½Ù¶È»ï¿½ï¿½ï¿½
+//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max);//ï¿½ÔµÃµï¿½ï¿½ï¿½ï¿½Ù¶È»ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½
+//	speed_output[1]=speed_integral[1]+speed_kp_r*speed_error[1];//pidï¿½Ãµï¿½ï¿½ï¿½ï¿?
+//	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿?
 //	
 //}
 float add_limit[2] ={}; 
@@ -76,7 +90,7 @@ void speed_control(void)
 {
 
 	
-	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps;//»ñÈ¡×óÂÖÊµ¼ÊÖµ  
+	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps;//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Öµ  
 	speed_error[0]=v_target_l-speed_feedback[0];
 	speed_error[0]=Xianfu_float(speed_error[0],speed_err_max);
 	speed_integral[0]=speed_ki_l*speed_error[0];
@@ -87,19 +101,53 @@ void speed_control(void)
 	speed_output[0]=Xianfu_float(speed_output[0],speed_ctrl_output_max);
 	speed_error_last[0] = speed_error[0];
 		
-	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps;//ÓÒÂÖ
-	speed_error[1]=v_target_r-speed_feedback[1];//ÆÚÍûËÙ¶È¼õÈ¥Êµ¼ÊËÙ¶ÈµÃµ½ËÙ¶ÈÎó²î
-	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max);//¶ÔËÙ¶ÈÎó²î×öÔ¼Êø
-	speed_integral[1]=speed_ki_r*speed_error[1]; //ËÙ¶È»ý·Ö
-//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max);//¶ÔµÃµ½µÄËÙ¶È»ý·Ö×öÔ¼Êø
+	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps;//ï¿½ï¿½ï¿½ï¿½
+	speed_error[1]=v_target_r-speed_feedback[1];//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È¼ï¿½È¥Êµï¿½ï¿½ï¿½Ù¶ÈµÃµï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿?
+	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max);//ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿?
+	speed_integral[1]=speed_ki_r*speed_error[1]; //ï¿½Ù¶È»ï¿½ï¿½ï¿½
+//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max);//ï¿½ÔµÃµï¿½ï¿½ï¿½ï¿½Ù¶È»ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½
 	add_limit[1] = speed_integral[1]+speed_kp_l*(speed_error[1]- speed_error_last[1]) ;
 	if(ABS(add_limit[1])  > 0.5)
-	speed_output[1]+=add_limit[1];//pidµÃµ½Êä³ö
-	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max);//¶ÔÊä³ö×öÔ¼Êø
+	speed_output[1]+=add_limit[1];//pidï¿½Ãµï¿½ï¿½ï¿½ï¿?
+	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿?
 	speed_error_last[1] = speed_error[1];
+
+	/* Update speed PID from VOFA and send feedback */
+	float kp_temp, ki_temp;
+	{
+		uint8_t pid_mask = vofa_get_speed_pid(&kp_temp, &ki_temp);
+		if(pid_mask & 1) speed_kp_l = kp_temp;
+		if(pid_mask & 2) speed_ki_l = ki_temp;
+	}
+	/* Check for speed target command */
+	float target = vofa_get_speed_target();
+	static float last_target = 0;
+	if(target > 0.1f || target < -0.1f)
+	{
+		last_target = target;
+	}
+	else
+	{
+		/* Keep using last target if no new command */
+		target = last_target;
+	}
+	if(target > 0.1f || target < -0.1f)
+	{
+		v_target_l = target;
+		v_target_r = target;
+	}
+	if(vofa_get_debug_mode() == 1)
+	{
+		/* Auto-enable motor output in debug mode */
+		if(!Flag.Start_Car) Flag.Start_Car = 1;
+		/* Send 5 channels: target, left_speed, right_speed, kp, ki */
+		vofa_send_speed_feedback(v_target_l, smartcar_imu.left_motor_speed_cmps,
+		                         smartcar_imu.right_motor_speed_cmps,
+		                         speed_kp_l, speed_ki_l);
+	}
 }
 
-void position_control(void)//Âö³åËÙ¶ÈÎ»ÖÃ´®¼¶PID 
+void position_control(void)//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Î»ï¿½Ã´ï¿½ï¿½ï¿½PID 
 {
 	static float err_l,err_last_l,err_r,err_last_r,err_sum_l,err_sum_r;
 	
@@ -110,18 +158,18 @@ void position_control(void)//Âö³åËÙ¶ÈÎ»ÖÃ´®¼¶PID
 	{
 		position_output[0] = 0;
 	}
-	else//Î»ÖÃ»·¿ØÖÆ PID 
+	else//Î»ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ PID 
 	{	
 		err_sum_l  += err_l;
-		err_sum_l = Xianfu_float(err_sum_l,60); //»ý·ÖÏÞ·ù
-		position_output[0] = position_kp*err_l + position_ki*err_sum_l + position_kd*(err_l-err_last_l);//Î»ÖÃ»·Êä³ö
+		err_sum_l = Xianfu_float(err_sum_l,60); //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½
+		position_output[0] = position_kp*err_l + position_ki*err_sum_l + position_kd*(err_l-err_last_l);//Î»ï¿½Ã»ï¿½ï¿½ï¿½ï¿?
 		if(ABS(err_r)<4 && ABS(err_r)>0.8)
 		{
 			position_output[0] =  (position_output[0]/ABS(position_output[0]))*10 + position_output[0];
 		}		
 		err_last_l = err_l;
 		
-		position_output[0] = Xianfu_float(position_output[0],30);//50ÊÇÄ¿±êËÙ¶È ¶ÔÎ»ÖÃÊä³ö½øÐÐÏÞ·ù
+		position_output[0] = Xianfu_float(position_output[0],30);//50ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿?
 	}
 		v_target_l = position_output[0];
 
@@ -135,20 +183,20 @@ void position_control(void)//Âö³åËÙ¶ÈÎ»ÖÃ´®¼¶PID
 	else
 	{
 		err_sum_r  += err_r;
-		err_sum_r = Xianfu_float(err_sum_r,60); //»ý·ÖÏÞ·ù
-		position_output[1] = position_kp*err_r + position_ki*err_sum_r + position_kd*(err_r - err_last_r);//Î»ÖÃ»·Êä³ö
+		err_sum_r = Xianfu_float(err_sum_r,60); //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½
+		position_output[1] = position_kp*err_r + position_ki*err_sum_r + position_kd*(err_r - err_last_r);//Î»ï¿½Ã»ï¿½ï¿½ï¿½ï¿?
 		if(ABS(err_r)<4 && ABS(err_r)>0.8)
 		{
 			position_output[1] =  (position_output[1]/ABS(position_output[1]))*10 + position_output[1];
 		}
 		err_last_r = err_r;
-		position_output[1] = Xianfu_float(position_output[1],30);//50ÊÇÄ¿±êËÙ¶È ¶ÔÎ»ÖÃÊä³ö½øÐÐÏÞ·ù
+		position_output[1] = Xianfu_float(position_output[1],30);//50ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½ ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿?
 	}
 		v_target_r = position_output[1];
 
 }
 
-//Æ«º½½Ç½Ç¶È»·  Ê¹ÓÃjy62
+//Æ«ï¿½ï¿½ï¿½Ç½Ç¶È»ï¿½  Ê¹ï¿½ï¿½jy62
 void Yaw_control(float target)
 {
 	static float err,err_last,err_sum;
@@ -186,44 +234,44 @@ void Yaw_control(float target)
 }
 
 
-//»Ò¶ÈÑ­¼£
+//ï¿½Ò¶ï¿½Ñ­ï¿½ï¿½
 void ctrl_params_init(void)
 {
-	pid_control_init(&seektrack_ctrl[0],//´ý³õÊ¼»¯¿ØÖÆÆ÷½á¹¹Ìå£¬»Ò¶È¹ÜÑ­¼£ 
-										turn_kp_default1,//±ÈÀý²ÎÊý
-										turn_ki_default1,//»ý·Ö²ÎÊý
-										turn_kd_default1,//Î¢·Ö²ÎÊý
-										20, //Æ«²îÏÞ·ùÖµ
-										0,  //»ý·ÖÏÞ·ùÖµ
-										500,//¿ØÖÆÆ÷Êä³öÏÞ·ùÖµ
-										1,	//Æ«²îÏÞ·ù±êÖ¾Î»
-										0,0,//»ý·Ö·ÖÀë±êÖ¾Î»ÓëÒýÈë»ý·Ö¿ØÖÆÊ±µÄÏÞ·ùÖµ
-										6); //Î¢·Ö¼ä¸ôÊ±¼ä
+	pid_control_init(&seektrack_ctrl[0],//ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½å£¬ï¿½Ò¶È¹ï¿½Ñ­ï¿½ï¿½ 
+										turn_kp_default1,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+										turn_ki_default1,//ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
+										turn_kd_default1,//Î¢ï¿½Ö²ï¿½ï¿½ï¿½
+										20, //Æ«ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										0,  //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										500,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Ö?
+										1,	//Æ«ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½Ö¾Î»
+										0,0,//ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										6); //Î¢ï¿½Ö¼ï¿½ï¿½Ê±ï¿½ï¿?
 	
 
-//	pid_control_init(&seektrack_ctrl[1],//´ý³õÊ¼»¯¿ØÖÆÆ÷½á¹¹Ìå£¬OpenMVÑ­¼£
-//										turn_kp_default2,//±ÈÀý²ÎÊý
-//										turn_ki_default2,//»ý·Ö²ÎÊý
-//										turn_kd_default2,//Î¢·Ö²ÎÊý
-//										20, //Æ«²îÏÞ·ùÖµ
-//										0,  //»ý·ÖÏÞ·ùÖµ
-//										500,//¿ØÖÆÆ÷Êä³öÏÞ·ùÖµ
-//										1,	//Æ«²îÏÞ·ù±êÖ¾Î»
-//										0,0,//»ý·Ö·ÖÀë±êÖ¾Î»ÓëÒýÈë»ý·Ö¿ØÖÆÊ±µÄÏÞ·ùÖµ
-//										1); //Î¢·Ö¼ä¸ôÊ±¼ä
+//	pid_control_init(&seektrack_ctrl[1],//ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½å£¬OpenMVÑ­ï¿½ï¿½
+//										turn_kp_default2,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//										turn_ki_default2,//ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
+//										turn_kd_default2,//Î¢ï¿½Ö²ï¿½ï¿½ï¿½
+//										20, //Æ«ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+//										0,  //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+//										500,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Ö?
+//										1,	//Æ«ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½Ö¾Î»
+//										0,0,//ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+//										1); //Î¢ï¿½Ö¼ï¿½ï¿½Ê±ï¿½ï¿?
 
 }
-//float turn_kp	=		20.0f ;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷±ÈÀý²ÎÊýKP	 Î»ÖÃ¿ØÖÆÆ÷
-//float turn_ki	=		0.0f	;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷»ý·Ö²ÎÊýKI	
-//float turn_kd	=		110		;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷Î¢·Ö²ÎÊýKD	
-//20ËÙ¶È
-float turn_kp	=	3.9f ;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷±ÈÀý²ÎÊýKP	 Î»ÖÃ¿ØÖÆÆ÷
-float turn_ki	=	0.0f;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷»ý·Ö²ÎÊýKI	
-float turn_kd	=	5.2f;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷Î¢·Ö²ÎÊýKD	
+//float turn_kp	=		20.0f ;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½KP	 Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½
+//float turn_ki	=		0.0f	;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½KI	
+//float turn_kd	=		110		;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Ö²ï¿½ï¿½ï¿½KD	
+//20ï¿½Ù¶ï¿½
+float turn_kp	=	3.9f ;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½KP	 Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½
+float turn_ki	=	0.0f;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½KI	
+float turn_kd	=	5.2f;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Ö²ï¿½ï¿½ï¿½KD	
 
-float turn_kp_L	=	2.f	;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷±ÈÀý²ÎÊýKP	 Î»ÖÃ¿ØÖÆÆ÷
-float turn_ki_L	=	0.0f		;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷»ý·Ö²ÎÊýKI	
-float turn_kd_L	=	0.6f	;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷Î¢·Ö²ÎÊýKD
+float turn_kp_L	=	2.f	;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½KP	 Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½
+float turn_ki_L	=	0.0f		;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½KI	
+float turn_kd_L	=	0.6f	;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Ö²ï¿½ï¿½ï¿½KD
 //turn_ctrl_pwm = output  (-500,500)
 float turn_theta = 0.5f;
 void gray_turn_control_200hz(float *output)//200HZ=5ms
@@ -247,68 +295,68 @@ void gray_turn_control_200hz(float *output)//200HZ=5ms
 		kp *= a;
 
 	
-		pid_control_init(&seektrack_ctrl[0],//´ý³õÊ¼»¯¿ØÖÆÆ÷½á¹¹Ìå£¬»Ò¶È¹ÜÑ­¼£ 
-										kp,//±ÈÀý²ÎÊý
-										0,//»ý·Ö²ÎÊý
-										kd,//Î¢·Ö²ÎÊý
-										10, //Æ«²îÏÞ·ùÖµ
-										0,  //»ý·ÖÏÞ·ùÖµ
-										90,//¿ØÖÆÆ÷Êä³öÏÞ·ùÖµ
-										1,	//Æ«²îÏÞ·ù±êÖ¾Î»
-										0,0,//»ý·Ö·ÖÀë±êÖ¾Î»ÓëÒýÈë»ý·Ö¿ØÖÆÊ±µÄÏÞ·ùÖµ
-										6); //Î¢·Ö¼ä¸ôÊ±¼ä	
-	//±£´æÉÏ´Î¿ØÖÆÆ÷Êä³ö  
+		pid_control_init(&seektrack_ctrl[0],//ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½å£¬ï¿½Ò¶È¹ï¿½Ñ­ï¿½ï¿½ 
+										kp,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+										0,//ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
+										kd,//Î¢ï¿½Ö²ï¿½ï¿½ï¿½
+										10, //Æ«ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										0,  //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										90,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Ö?
+										1,	//Æ«ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½Ö¾Î»
+										0,0,//ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										6); //Î¢ï¿½Ö¼ï¿½ï¿½Ê±ï¿½ï¿?	
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?  
 	turn_output_last=turn_output;
-	//×ªÏòPD¿ØÖÆÊä³ö£¬¶æÏò¿ØÖÆÊµÊ±ÐÔÒªÇó¸ß£¬ÒýÈë»ý·ÖI»áÊ¹¶æÏòÏìÓ¦ÖÍºó
-	seektrack_ctrl[0].expect=0;							//ÆÚÍû   seektrackÊÇÑ­¼£µÄÒâË¼
-	seektrack_ctrl[0].feedback=-gray_status;	//·´À¡ gray_status[0]ÊÇÈüµÀÔªËØ×´Ì¬Öµ-11~11
-	pid_control_run(&seektrack_ctrl[0]);		  //¿ØÖÆÆ÷ÔËËã
+	//×ªï¿½ï¿½PDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÊµÊ±ï¿½ï¿½Òªï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Íºï¿½
+	seektrack_ctrl[0].expect=0;							//ï¿½ï¿½ï¿½ï¿½   seektrackï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¼
+	seektrack_ctrl[0].feedback=-gray_status;	//ï¿½ï¿½ï¿½ï¿½ gray_status[0]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½×´Ì¬Öµ-11~11
+	pid_control_run(&seektrack_ctrl[0]);		  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	turn_output=seektrack_ctrl[0].output;
-	//µþ¼ÓËÀÇø¿ØÖÆ  ÓÐÊä³ö¾Í¼ÓÉÏËÀÇø
-//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone×ªÏòËÀÇø ÖµÎª50
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
+//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ÖµÎª50
 //	if(turn_output<0) turn_output-=steer_deadzone;
-	//Êä³öÏÞ·ù
-	turn_output=Xianfu_float(turn_output,70);//×ªÏò¿ØÖÆturn_ctrl_pwmÊä³öÏÞ·ù
+	//ï¿½ï¿½ï¿½ï¿½Þ·ï¿?
+	turn_output=Xianfu_float(turn_output,70);//×ªï¿½ï¿½ï¿½ï¿½ï¿½turn_ctrl_pwmï¿½ï¿½ï¿½ï¿½Þ·ï¿?
 	
-	*output=0.75f*turn_output+0.25f*turn_output_last;//Êä³öÎªÇ°ºóÁ½´Î¼ÆËãµÄ¾ùÖµ
+	*output=0.75f*turn_output+0.25f*turn_output_last;//ï¿½ï¿½ï¿½Î?Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½Ä¾ï¿½Ö?
 }
-float cam_turn_kp	=		0.f ;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷±ÈÀý²ÎÊýKP	 Î»ÖÃ¿ØÖÆÆ÷
-float cam_turn_ki	=		0.0f	;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷»ý·Ö²ÎÊýKI	
-float cam_turn_kd	=		0.0f;	//»ùÓÚºìÍâ¶Ô¹ÜÊ¶±ð¹ì¼£Ê±,×ÔÖ÷Ñ°¼£µÄÎ»ÖÃ¿ØÖÆÆ÷Î¢·Ö²ÎÊýKD	
+float cam_turn_kp	=		0.f ;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½KP	 Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½
+float cam_turn_ki	=		0.0f	;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½KI	
+float cam_turn_kd	=		0.0f;	//ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ô¹ï¿½Ê¶ï¿½ï¿½ì¼£Ê±,ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½Ö²ï¿½ï¿½ï¿½KD	
 void openmv_openmv_duty_run(float *output)
 {
-	pid_control_init(&seektrack_ctrl[1],//´ý³õÊ¼»¯¿ØÖÆÆ÷½á¹¹Ìå£¬»Ò¶È¹ÜÑ­¼£ 
-										cam_turn_kp,//±ÈÀý²ÎÊý
-										cam_turn_ki,//»ý·Ö²ÎÊý
-										cam_turn_kd,//Î¢·Ö²ÎÊý
-										10, //Æ«²îÏÞ·ùÖµ
-										0,  //»ý·ÖÏÞ·ùÖµ
-										50,//¿ØÖÆÆ÷Êä³öÏÞ·ùÖµ
-										1,	//Æ«²îÏÞ·ù±êÖ¾Î»
-										0,0,//»ý·Ö·ÖÀë±êÖ¾Î»ÓëÒýÈë»ý·Ö¿ØÖÆÊ±µÄÏÞ·ùÖµ
-										6); //Î¢·Ö¼ä¸ôÊ±¼ä
+	pid_control_init(&seektrack_ctrl[1],//ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½å£¬ï¿½Ò¶È¹ï¿½Ñ­ï¿½ï¿½ 
+										cam_turn_kp,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+										cam_turn_ki,//ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
+										cam_turn_kd,//Î¢ï¿½Ö²ï¿½ï¿½ï¿½
+										10, //Æ«ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										0,  //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										50,//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½Ö?
+										1,	//Æ«ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½Ö¾Î»
+										0,0,//ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Þ·ï¿½Öµ
+										6); //Î¢ï¿½Ö¼ï¿½ï¿½Ê±ï¿½ï¿?
 	
-	//±£´æÉÏ´Î¿ØÖÆÆ÷Êä³ö  
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ï´Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?  
 	turn_output_last=turn_output;
-	//×ªÏòPD¿ØÖÆÊä³ö£¬¶æÏò¿ØÖÆÊµÊ±ÐÔÒªÇó¸ß£¬ÒýÈë»ý·ÖI»áÊ¹¶æÏòÏìÓ¦ÖÍºó
-	seektrack_ctrl[1].expect=0;							//ÆÚÍû   seektrackÊÇÑ­¼£µÄÒâË¼
-	seektrack_ctrl[1].feedback=error_openmv;	//·´À¡ gray_status[0]ÊÇÈüµÀÔªËØ×´Ì¬Öµ-11~11
-	pid_control_run(&seektrack_ctrl[1]);		  //¿ØÖÆÆ÷ÔËËã
+	//×ªï¿½ï¿½PDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÊµÊ±ï¿½ï¿½Òªï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Íºï¿½
+	seektrack_ctrl[1].expect=0;							//ï¿½ï¿½ï¿½ï¿½   seektrackï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¼
+	seektrack_ctrl[1].feedback=error_openmv;	//ï¿½ï¿½ï¿½ï¿½ gray_status[0]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½×´Ì¬Öµ-11~11
+	pid_control_run(&seektrack_ctrl[1]);		  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	turn_output=seektrack_ctrl[1].output;
-	//µþ¼ÓËÀÇø¿ØÖÆ  ÓÐÊä³ö¾Í¼ÓÉÏËÀÇø
-//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone×ªÏòËÀÇø ÖµÎª50
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
+//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ÖµÎª50
 //	if(turn_output<0) turn_output-=steer_deadzone;
-	//Êä³öÏÞ·ù
-	turn_output=Xianfu_float(turn_output,50);//×ªÏò¿ØÖÆturn_ctrl_pwmÊä³öÏÞ·ù
+	//ï¿½ï¿½ï¿½ï¿½Þ·ï¿?
+	turn_output=Xianfu_float(turn_output,50);//×ªï¿½ï¿½ï¿½ï¿½ï¿½turn_ctrl_pwmï¿½ï¿½ï¿½ï¿½Þ·ï¿?
 	
-	*output=0.75f*turn_output+0.25f*turn_output_last;//Êä³öÎªÇ°ºóÁ½´Î¼ÆËãµÄ¾ùÖµ	
+	*output=0.75f*turn_output+0.25f*turn_output_last;//ï¿½ï¿½ï¿½Î?Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½ï¿½ï¿½Ä¾ï¿½Ö?	
 }
 void openmv_duty_run(void)
 {
 	openmv_openmv_duty_run(&turn_ctrl_pwm);
-	v_target_l = speed_setup+turn_ctrl_pwm;//*turn_scale;//×ó±ßÂÖ×ÓËÙ¶ÈÆÚÍû  Á½ÕßÏà²îÁ½¸öturn_ctrl_pwm*turn_scale
-	v_target_r = speed_setup-turn_ctrl_pwm;//*turn_scale;//ÓÒ±ßÂÖ×ÓËÙ¶ÈÆÚÍû  ËùÒÔturn_ctrl_pwm*turn_scale¿Ï¶¨ÓëÈüµÀÔªËØÓÐ¹Ø
-	speed_control();//ÕâÀïÃæÓÃµ½²É¼¯µÄÊµ¼ÊÂö³åÊý
+	v_target_l = speed_setup+turn_ctrl_pwm;//*turn_scale;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿?  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½turn_ctrl_pwm*turn_scale
+	v_target_r = speed_setup-turn_ctrl_pwm;//*turn_scale;//ï¿½Ò±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½turn_ctrl_pwm*turn_scaleï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ð¹ï¿½
+	speed_control();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½É¼ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
 void sdk_duty_run(float *a,float *b)
@@ -317,8 +365,8 @@ void sdk_duty_run(float *a,float *b)
 	float detla_x = (x2-x1);
 	float leng = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	
-	//2022Äê7ÔÂ·ÝÊ¡ÈüÐ¡³µ¸úËæÐÐÊ»ÏµÍ³ÈüµÀ,ÄÚÍâÈ¦½»ÌæÑ­¼££¬
-	gray_turn_control_200hz(&turn_ctrl_pwm);//»ùÓÚ»Ò¶È¶Ô¹ÜµÄ×ªÏò¿ØÖÆ£¬gray_turn_control_200hzº¯Êý£¨PID¿ØÖÆÆ÷ÔËËã£©ÔËËã³öÀ´µÄÖµ´«Èëturn_ctrl_pwm
+	//2022ï¿½ï¿½7ï¿½Â·ï¿½Ê¡ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»ÏµÍ³ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½È¦ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½
+	gray_turn_control_200hz(&turn_ctrl_pwm);//ï¿½ï¿½ï¿½Ú»Ò¶È¶Ô¹Üµï¿½×ªï¿½ï¿½ï¿½ï¿½Æ£ï¿½gray_turn_control_200hzï¿½ï¿½ï¿½ï¿½ï¿½ï¿½PIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½turn_ctrl_pwm
 	
 	if(task_num == 4) 
 	{
@@ -328,9 +376,9 @@ void sdk_duty_run(float *a,float *b)
 	else
 		speed_setup = 30;
 	
-	//ÆÚÍûËÙ¶È
-	v_target_l = speed_setup+turn_ctrl_pwm;//*turn_scale;//×ó±ßÂÖ×ÓËÙ¶ÈÆÚÍû  Á½ÕßÏà²îÁ½¸öturn_ctrl_pwm*turn_scale
-	v_target_r = speed_setup-turn_ctrl_pwm;//*turn_scale;//ÓÒ±ßÂÖ×ÓËÙ¶ÈÆÚÍû  ËùÒÔturn_ctrl_pwm*turn_scale¿Ï¶¨ÓëÈüµÀÔªËØÓÐ¹Ø
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+	v_target_l = speed_setup+turn_ctrl_pwm;//*turn_scale;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿?  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½turn_ctrl_pwm*turn_scale
+	v_target_r = speed_setup-turn_ctrl_pwm;//*turn_scale;//ï¿½Ò±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½turn_ctrl_pwm*turn_scaleï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½Ð¹ï¿½
 
 }
 
@@ -340,12 +388,12 @@ void nmotor_output(void)
 	if(Flag.Start_Car == 1)
 	{	
 		if(speed_output[1])
-			right_pwm= 4 * (speed_output[1] / ABS(speed_output[1])) + speed_output[1]; //Á½ÂÖËÙ¶Èµ¥¶À¿ØÖÆ
+			right_pwm= 4 * (speed_output[1] / ABS(speed_output[1])) + speed_output[1]; //ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶Èµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		else
 			right_pwm = 0;
 		
 		if(speed_output[0])
-			left_pwm= 4 * (speed_output[0] / ABS(speed_output[0])) + speed_output[0]; //Á½ÂÖËÙ¶Èµ¥¶À¿ØÖÆ	
+			left_pwm= 4 * (speed_output[0] / ABS(speed_output[0])) + speed_output[0]; //ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶Èµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
 		else
 			left_pwm = 0;	
 		
@@ -390,11 +438,11 @@ float yaw_angle = 0;
 void TIMG0_IRQHandler(void)	//10ms
 {
 	
-	if(Flag.Start_duty_1)	//(1) A -> B 15s  Î»ÖÃ½Ç¶È±Õ»·100cm 
+	if(Flag.Start_duty_1)	//(1) A -> B 15s  Î»ï¿½Ã½Ç¶È±Õ»ï¿½100cm 
 	{
 		Flag.Start_Car  = 1;
 		Flag.Success_duty_1 = 0;		
-		//auto_track(point_actual,point_B);//×Ô¶¯Ñ­¼£
+		//auto_track(point_actual,point_B);//ï¿½Ô¶ï¿½Ñ­ï¿½ï¿½
 		if(gray_state.state)//L < distance||
 		{
 				gray_cnt++;
@@ -414,7 +462,7 @@ void TIMG0_IRQHandler(void)	//10ms
 						v_target_r = 15;						
 				}	
 		}
-	}/*ÒÔÏÂÊÇµÚ¶þÎÊ*/
+	}/*ï¿½ï¿½ï¿½ï¿½ï¿½ÇµÚ¶ï¿½ï¿½ï¿½*/
 	else if(Flag.Start_duty2_1)	//(2) A -> B 30s
 	{	
 	
@@ -441,26 +489,26 @@ void TIMG0_IRQHandler(void)	//10ms
 		}		
 		
 	}
-	else if(Flag.Start_duty2_7 == 1)	//£¨2£© Í£Ö¹
+	else if(Flag.Start_duty2_7 == 1)	//ï¿½ï¿½2ï¿½ï¿½ Í£Ö¹
 	{
 		//Flag.Start_Car  = 1;	
 		Flag.Success_duty2_7 = 0;		
 		v_target_l = 0;
 		v_target_r = 0;		
 		duty3_8_cnt++;
-		if(duty3_8_cnt > sleep_time)//Ê¶±ðµ½ºÚÏß ÏÈÍ£×¡200ms 
+		if(duty3_8_cnt > sleep_time)//Ê¶ï¿½ðµ½ºï¿½ï¿½ï¿½ ï¿½ï¿½Í£×¡200ms 
 		{
 			duty3_8_cnt = 0;
 			Flag.Start_duty2_7 = 0;
 			Flag.Success_duty2_7 = 1;		
 		}
 	}		
-	else if(Flag.Start_duty2_2 == 1)	//(2) B -> C 30s Ñ­¼£
+	else if(Flag.Start_duty2_2 == 1)	//(2) B -> C 30s Ñ­ï¿½ï¿½
 	{
 		//speed_setup = 70; 
 		Flag.Start_Car  = 1;
 		Flag.Success_duty2_2 = 0;
-		sdk_duty_run(point_actual,point_A);//µÃµ½ËÙ¶ÈÄ¿±êÖµ
+		sdk_duty_run(point_actual,point_A);//ï¿½Ãµï¿½ï¿½Ù¶ï¿½Ä¿ï¿½ï¿½Öµ
 		if(((Num2 - Start_duty3_3_cnt) > 1 &&  Flag.gray_worse==1)&&sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0]))<distance)//||sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0]))<distance
 		{
 			Flag.beep_on = 1;
@@ -471,7 +519,7 @@ void TIMG0_IRQHandler(void)	//10ms
 		}
 
 	}
-	else if(Flag.Start_duty2_3) //(2) ÔÚCµãÐ£×¼½Ç¶È
+	else if(Flag.Start_duty2_3) //(2) ï¿½ï¿½Cï¿½ï¿½Ð£×¼ï¿½Ç¶ï¿½
 	{
 		Flag.Start_Car  = 1;
 		Flag.Success_duty2_3 = 0;
@@ -515,26 +563,26 @@ void TIMG0_IRQHandler(void)	//10ms
 				}	
 		}		
 	}	
-	else if(Flag.Start_duty2_6 == 1)	//£¨2£© Í£Ö¹
+	else if(Flag.Start_duty2_6 == 1)	//ï¿½ï¿½2ï¿½ï¿½ Í£Ö¹
 	{
 		//Flag.Start_Car  = 1;	
 		Flag.Success_duty2_6 = 0;		
 		v_target_l = 0;
 		v_target_r = 0;		
 		duty3_8_cnt++;
-		if(duty3_8_cnt > sleep_time)//Ê¶±ðµ½ºÚÏß ÏÈÍ£×¡200ms 
+		if(duty3_8_cnt > sleep_time)//Ê¶ï¿½ðµ½ºï¿½ï¿½ï¿½ ï¿½ï¿½Í£×¡200ms 
 		{
 			duty3_8_cnt = 0;
 			Flag.Start_duty2_6 = 0;
 			Flag.Success_duty2_6 = 1;		
 		}
 	}	
-	else if(Flag.Start_duty2_5)	//£¨2£© D -> A 30s
+	else if(Flag.Start_duty2_5)	//ï¿½ï¿½2ï¿½ï¿½ D -> A 30s
 	{
 		//speed_setup = 70; 
 		Flag.Start_Car  = 1;
 		Flag.Success_duty2_5 = 0;
-		sdk_duty_run(point_actual,point_A);//µÃµ½ËÙ¶ÈÄ¿±êÖµ
+		sdk_duty_run(point_actual,point_A);//ï¿½Ãµï¿½ï¿½Ù¶ï¿½Ä¿ï¿½ï¿½Öµ
 		if(((Num2 - Start_duty3_3_cnt) > 1 &&  Flag.gray_worse==1)&&sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance)//||sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
 		{
 			v_target_l = 0;
@@ -546,7 +594,7 @@ void TIMG0_IRQHandler(void)	//10ms
 			Flag.Start_duty2_5 = 0;
 			Flag.Success_duty2_5 = 1;
 		}		
-	}/*ÒÔÏÂÊÇµÚÈýÎÊ*/
+	}/*ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½*/
 	else if(Flag.Start_duty3_0 == 1)	//(3)   Send3_Step = -1
 	{
 		Flag.Start_Car  = 1;
@@ -564,14 +612,14 @@ void TIMG0_IRQHandler(void)	//10ms
 			Flag.Success_duty3_0 = 1;			
 		}			
 	}	
-	else if(Flag.Start_duty3_1 == 1)	//£¨3£© A -> C 40s  Send3_Step = 0
+	else if(Flag.Start_duty3_1 == 1)	//ï¿½ï¿½3ï¿½ï¿½ A -> C 40s  Send3_Step = 0
 	{
 		Flag.Start_Car  = 1;
 		Flag.Success_duty3_1 = 0;		
 		auto_track(point_actual,point_C);
 //		if(L < distance || ABS(gray_status) <= 10)
 	//	if(L < distance ||Flag.gray_worse == 0)
-		if(gray_state.state && ((Num2 - Start_duty3_3_cnt) > 1))//Ê¶±ðµ½ºÚÏß ÏÈÍ£×¡
+		if(gray_state.state && ((Num2 - Start_duty3_3_cnt) > 1))//Ê¶ï¿½ðµ½ºï¿½ï¿½ï¿½ ï¿½ï¿½Í£×¡
 		{
 			gray_cnt++;
 			if(L < distance&&gray_cnt>2)
@@ -611,7 +659,7 @@ void TIMG0_IRQHandler(void)	//10ms
 				}
 			}
 	}
-	else if(Flag.Start_duty3_5 == 1)	//(3)CµãÑ­¼£Ç°  Send3_Step = 4
+	else if(Flag.Start_duty3_5 == 1)	//(3)Cï¿½ï¿½Ñ­ï¿½ï¿½Ç°  Send3_Step = 4
 	{
 		Flag.Start_Car  = 1;
 		Flag.Success_duty3_5 = 0;		
@@ -631,14 +679,14 @@ void TIMG0_IRQHandler(void)	//10ms
 			Flag.Success_duty3_5 = 1;			
 		}	
 	}
-//µ½´ïCµãÏÈÍ£×¡ 500ms
-	else if(Flag.Start_duty3_8 == 1)	//£¨3£© A -> C 40s  Send3_Step = 7
+//ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½Í£×¡ 500ms
+	else if(Flag.Start_duty3_8 == 1)	//ï¿½ï¿½3ï¿½ï¿½ A -> C 40s  Send3_Step = 7
 	{
 		Flag.Success_duty3_8 = 0;		
 		v_target_l = 0;
 		v_target_r = 0;
 		duty3_8_cnt++;
-		if(duty3_8_cnt > sleep_time)//Ê¶±ðµ½ºÚÏß ÏÈÍ£×¡200ms 
+		if(duty3_8_cnt > sleep_time)//Ê¶ï¿½ðµ½ºï¿½ï¿½ï¿½ ï¿½ï¿½Í£×¡200ms 
 		{
 						gray_cnt = 0;
 
@@ -652,7 +700,7 @@ void TIMG0_IRQHandler(void)	//10ms
 		//speed_setup = 70; 
 		Flag.Start_Car  = 1;
 		Flag.Success_duty3_2 = 0;
-		sdk_duty_run(point_actual,point_B);//µÃµ½ËÙ¶ÈÄ¿±êÖµ
+		sdk_duty_run(point_actual,point_B);//ï¿½Ãµï¿½ï¿½Ù¶ï¿½Ä¿ï¿½ï¿½Öµ
 //		if( distance_inter >= 105 + distance_point)
 		if(((Num2 - Start_duty3_3_cnt) > 1 &&  Flag.gray_worse==1)&&(sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0]))<distance))//||sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0]))<distance
 		{
@@ -671,7 +719,7 @@ void TIMG0_IRQHandler(void)	//10ms
 //				v_target_r = -5;
 //			}
 	}
-	else if(Flag.Start_duty3_7 == 1)	//(3)ÖÇÄÜÑ­¼£Ç° µ÷Õû³µÎ» Send3_Step = 6
+	else if(Flag.Start_duty3_7 == 1)	//(3)ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½Ç° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î» Send3_Step = 6
 	{
 		Flag.Start_Car  = 1;
 		Flag.Success_duty3_7 = 0;		
@@ -695,7 +743,7 @@ void TIMG0_IRQHandler(void)	//10ms
 		Flag.Success_duty3_3 = 0;		
 		auto_track(point_actual,point_D);
 		
-		if((Num2 - Start_duty3_3_cnt) > 1 && gray_state.state)	//µ½D || L <distance(gray_state.state <10 && gray_state.state!= 0)) 
+		if((Num2 - Start_duty3_3_cnt) > 1 && gray_state.state)	//ï¿½ï¿½D || L <distance(gray_state.state <10 && gray_state.state!= 0)) 
 		{
 			gray_cnt++;
 			if(L < distance&&gray_cnt>2)
@@ -738,7 +786,7 @@ void TIMG0_IRQHandler(void)	//10ms
 				}
 			}
 	}	
-	else if(Flag.Start_duty3_6 == 1)	//(3)DµãÑ­¼£Ç° Send3_Step = 2
+	else if(Flag.Start_duty3_6 == 1)	//(3)Dï¿½ï¿½Ñ­ï¿½ï¿½Ç° Send3_Step = 2
 	{
 		Flag.Start_Car  = 1;
 		Flag.Success_duty3_6 = 0;		
@@ -757,13 +805,13 @@ void TIMG0_IRQHandler(void)	//10ms
 			Flag.Success_duty3_6 = 1;			
 		}
 	}
-	else if(Flag.Start_duty3_9 == 1)	//£¨3£© A -> C 40s  Send3_Step = 5
+	else if(Flag.Start_duty3_9 == 1)	//ï¿½ï¿½3ï¿½ï¿½ A -> C 40s  Send3_Step = 5
 	{
 		Flag.Success_duty3_9 = 0;		
 		v_target_l = 0;
 		v_target_r = 0;		
 		duty3_8_cnt++;
-		if(duty3_8_cnt > sleep_time)//Ê¶±ðµ½ºÚÏß ÏÈÍ£×¡200ms 
+		if(duty3_8_cnt > sleep_time)//Ê¶ï¿½ðµ½ºï¿½ï¿½ï¿½ ï¿½ï¿½Í£×¡200ms 
 		{			gray_cnt = 0;
 
 			duty3_8_cnt = 0;
@@ -777,7 +825,7 @@ void TIMG0_IRQHandler(void)	//10ms
 		//speed_setup = 70; 
 		Flag.Start_Car  = 1;
 		Flag.Success_duty3_4 = 0;
-		sdk_duty_run(point_actual,point_A);//µÃµ½ËÙ¶ÈÄ¿±êÖµ
+		sdk_duty_run(point_actual,point_A);//ï¿½Ãµï¿½ï¿½Ù¶ï¿½Ä¿ï¿½ï¿½Öµ
 //		if( distance_inter >= 105 + distance_point)
 		if(((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1))// &&sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
 		{			gray_cnt = 0;
@@ -793,34 +841,34 @@ void TIMG0_IRQHandler(void)	//10ms
 	
 	}	
 
-		get_wheel_speed(); 	//»ñÈ¡ËÙ¶È
-		speed_control();     //ËÙ¶È»·
-		nmotor_output();	//µç»úÊä³ö
+		get_wheel_speed(); 	//ï¿½ï¿½È¡ï¿½Ù¶ï¿½
+		speed_control();     //ï¿½Ù¶È»ï¿½
+		nmotor_output();	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	
-	  /*ËÙ¶È»·*/
+	  /*ï¿½Ù¶È»ï¿½*/
 //	get_wheel_speed();
 //	speed_control();
 //	nmotor_output();
 	
-		/*ËÙ¶ÈÎ»ÖÃ´®¼¶*/
+		/*ï¿½Ù¶ï¿½Î»ï¿½Ã´ï¿½ï¿½ï¿½*/
 //	get_wheel_speed();
-//	position_control();  //µÃµ½ËÙ¶ÈÄ¿±êÖµ
-//	speed_control();     //ËÙ¶È»·
+//	position_control();  //ï¿½Ãµï¿½ï¿½Ù¶ï¿½Ä¿ï¿½ï¿½Öµ
+//	speed_control();     //ï¿½Ù¶È»ï¿½
 //	nmotor_output();	
 	
-		/*½Ç¶È»·*/
+		/*ï¿½Ç¶È»ï¿½*/
 //	Yaw_control(yaw_target);
 //	get_wheel_speed();
 //	speed_control();
 //	nmotor_output();	
 	
-	/*»Ò¶ÈÑ²ÏßÐ¡³µ*/
+	/*ï¿½Ò¶ï¿½Ñ²ï¿½ï¿½Ð¡ï¿½ï¿½*/
 //	  get_wheel_speed(); 
 //		sdk_duty_run();
 //		nmotor_output();	
 
-	/*ÉãÏñÍ·Ñ­¼£Ð¡³µ*/
+	/*ï¿½ï¿½ï¿½ï¿½Í·Ñ­ï¿½ï¿½Ð¡ï¿½ï¿½*/
 //	  get_wheel_speed(); 
 //		//sdk_duty_run();
 //		openmv_duty_run();

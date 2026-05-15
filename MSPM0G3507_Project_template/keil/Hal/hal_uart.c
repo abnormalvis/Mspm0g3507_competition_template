@@ -15,6 +15,14 @@ void uart1_rx_register(uart_rx_callback_t callback)
     uart1_rx_cb = callback;
 }
 
+void uart1_rx_feed(uint8_t byte)
+{
+    if(uart1_rx_cb != NULL)
+    {
+        uart1_rx_cb(byte);
+    }
+}
+
 //PA10 PA11
 void hal_uart1_Init(void)
 {
@@ -58,7 +66,7 @@ void uart0_send_char(char ch)
 //���ڷ��͵����ַ�
 void uart1_send_char(char ch)
 {
-    //������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�
+    //������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
     while( DL_UART_isBusy(UART_1_INST) == true );
     //���͵����ַ�
     DL_UART_Main_transmitData(UART_1_INST, ch);
@@ -66,7 +74,7 @@ void uart1_send_char(char ch)
 //���ڷ��͵����ַ�
 void uart2_send_char(char ch)
 {
-    //������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�
+    //������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
     while( DL_UART_isBusy(UART_2_INST) == true );
     //���͵����ַ�
     DL_UART_Main_transmitData(UART_2_INST, ch);
@@ -86,7 +94,7 @@ void uart2_send_char(char ch)
 //		UART0_send((unsigned char*)buffer,len);
 ////    for (i = 0; i < len; i++) {
 ////			//uart0_send_char(buffer[i]);
-////				//������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�
+////				//������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
 //////				while( DL_UART_isBusy(UART_0_INST) == true );
 //////				//���͵����ַ�
 ////				DL_UART_Main_transmitData(UART_0_INST, buffer[i]);			
@@ -106,7 +114,7 @@ void u1_printf(const char *fmt, ...) {
 
     for (i = 0; i < len; i++) {
 			uart1_send_char(buffer[i]);
-				//������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�
+				//������0æ��ʱ��ȴ�����æ��ʱ���ٷ��ʹ��������ַ�?
 //				while( DL_UART_isBusy(UART_0_INST) == true );
 //				//���͵����ַ�
 //				DL_UART_Main_transmitData(UART_0_INST, buffer[i]);			
@@ -115,9 +123,9 @@ void u1_printf(const char *fmt, ...) {
 }
 
 #if !defined(__MICROLIB)
-//��ʹ��΢��Ļ�����Ҫ��������ĺ���
+//��ʹ��΢��Ļ������?��������ĺ���?
 #if (__ARMCLIB_VERSION <= 6000000)
-//�����������AC5  �Ͷ�����������ṹ��
+//�����������AC5  �Ͷ�����������ṹ��?
 struct __FILE
 {
         int handle;

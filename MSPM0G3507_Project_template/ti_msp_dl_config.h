@@ -286,32 +286,32 @@ extern "C" {
 /* Defines for BLK: GPIOB.26 with pinCMx 57 on package pin 28 */
 #define PORTB_BLK_PIN                                           (DL_GPIO_PIN_26)
 #define PORTB_BLK_IOMUX                                          (IOMUX_PINCM57)
-/* Defines for PIN_29: GPIOA.29 with pinCMx 4 on package pin 36 */
-#define GPIO_EXIT_PIN_29_PORT                                            (GPIOA)
-// pins affected by this interrupt request:["PIN_29","PIN_30"]
+/* Defines for ENCODER2_A: GPIOA.29 with pinCMx 4 on package pin 36 */
+#define GPIO_EXIT_ENCODER2_A_PORT                                        (GPIOA)
+// pins affected by this interrupt request:["ENCODER2_A","ENCODER2_B"]
 #define GPIO_EXIT_GPIOA_INT_IRQN                                (GPIOA_INT_IRQn)
 #define GPIO_EXIT_GPIOA_INT_IIDX                (DL_INTERRUPT_GROUP1_IIDX_GPIOA)
-#define GPIO_EXIT_PIN_29_IIDX                               (DL_GPIO_IIDX_DIO29)
-#define GPIO_EXIT_PIN_29_PIN                                    (DL_GPIO_PIN_29)
-#define GPIO_EXIT_PIN_29_IOMUX                                    (IOMUX_PINCM4)
-/* Defines for PIN_30: GPIOA.30 with pinCMx 5 on package pin 37 */
-#define GPIO_EXIT_PIN_30_PORT                                            (GPIOA)
-#define GPIO_EXIT_PIN_30_IIDX                               (DL_GPIO_IIDX_DIO30)
-#define GPIO_EXIT_PIN_30_PIN                                    (DL_GPIO_PIN_30)
-#define GPIO_EXIT_PIN_30_IOMUX                                    (IOMUX_PINCM5)
-/* Defines for PIN_5: GPIOB.5 with pinCMx 18 on package pin 53 */
-#define GPIO_EXIT_PIN_5_PORT                                             (GPIOB)
-// pins affected by this interrupt request:["PIN_5","PIN_6"]
+#define GPIO_EXIT_ENCODER2_A_IIDX                           (DL_GPIO_IIDX_DIO29)
+#define GPIO_EXIT_ENCODER2_A_PIN                                (DL_GPIO_PIN_29)
+#define GPIO_EXIT_ENCODER2_A_IOMUX                                (IOMUX_PINCM4)
+/* Defines for ENCODER2_B: GPIOA.30 with pinCMx 5 on package pin 37 */
+#define GPIO_EXIT_ENCODER2_B_PORT                                        (GPIOA)
+#define GPIO_EXIT_ENCODER2_B_IIDX                           (DL_GPIO_IIDX_DIO30)
+#define GPIO_EXIT_ENCODER2_B_PIN                                (DL_GPIO_PIN_30)
+#define GPIO_EXIT_ENCODER2_B_IOMUX                                (IOMUX_PINCM5)
+/* Defines for ENCODER1_B: GPIOB.5 with pinCMx 18 on package pin 53 */
+#define GPIO_EXIT_ENCODER1_B_PORT                                        (GPIOB)
+// pins affected by this interrupt request:["ENCODER1_B","ENCODER1_A"]
 #define GPIO_EXIT_GPIOB_INT_IRQN                                (GPIOB_INT_IRQn)
 #define GPIO_EXIT_GPIOB_INT_IIDX                (DL_INTERRUPT_GROUP1_IIDX_GPIOB)
-#define GPIO_EXIT_PIN_5_IIDX                                 (DL_GPIO_IIDX_DIO5)
-#define GPIO_EXIT_PIN_5_PIN                                      (DL_GPIO_PIN_5)
-#define GPIO_EXIT_PIN_5_IOMUX                                    (IOMUX_PINCM18)
-/* Defines for PIN_6: GPIOB.6 with pinCMx 23 on package pin 58 */
-#define GPIO_EXIT_PIN_6_PORT                                             (GPIOB)
-#define GPIO_EXIT_PIN_6_IIDX                                 (DL_GPIO_IIDX_DIO6)
-#define GPIO_EXIT_PIN_6_PIN                                      (DL_GPIO_PIN_6)
-#define GPIO_EXIT_PIN_6_IOMUX                                    (IOMUX_PINCM23)
+#define GPIO_EXIT_ENCODER1_B_IIDX                            (DL_GPIO_IIDX_DIO5)
+#define GPIO_EXIT_ENCODER1_B_PIN                                 (DL_GPIO_PIN_5)
+#define GPIO_EXIT_ENCODER1_B_IOMUX                               (IOMUX_PINCM18)
+/* Defines for ENCODER1_A: GPIOB.6 with pinCMx 23 on package pin 58 */
+#define GPIO_EXIT_ENCODER1_A_PORT                                        (GPIOB)
+#define GPIO_EXIT_ENCODER1_A_IIDX                            (DL_GPIO_IIDX_DIO6)
+#define GPIO_EXIT_ENCODER1_A_PIN                                 (DL_GPIO_PIN_6)
+#define GPIO_EXIT_ENCODER1_A_IOMUX                               (IOMUX_PINCM23)
 /* Defines for IMU_INT1: GPIOB.7 with pinCMx 24 on package pin 59 */
 #define GPIO_EXIT_IMU_INT1_PORT                                          (GPIOB)
 #define GPIO_EXIT_IMU_INT1_PIN                                   (DL_GPIO_PIN_7)

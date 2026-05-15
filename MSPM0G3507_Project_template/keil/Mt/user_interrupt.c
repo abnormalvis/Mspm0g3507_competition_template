@@ -25,13 +25,14 @@ int16_t error_openmv = 0,error_polarity = 0;
 uint8_t  UART1_recevie;
 uint8_t   debug_uart_data;
 
-void UART0_IRQHandler(void) //��ɴ��ڵ�������?
+void UART0_IRQHandler(void)
 {
 	if(DL_UART_Main_getPendingInterrupt(UART0) != 0)
 	{
 		UART1_recevie = DL_UART_Main_receiveData(UART0);
 		fifo_write_buffer(&debug_uart_fifo, &UART1_recevie, 1);               // ���� FIFO	
-		uart1_rx_feed(UART1_recevie);
+		/* VOFA parsing moved to seekfree_assistant_data_analysis() main loop,
+		   to avoid double-feeding static state machine from ISR context */
 
 //            DL_GPIO_togglePins(RGB_GPIO,
 //                RGB_Red_Pin);
@@ -40,7 +41,7 @@ void UART0_IRQHandler(void) //��ɴ��ڵ�������?
 //		//data =  USART_ReceiveData(USART3)&0xff;
 //				if(date_openmv[0]!=0xfe) i=0;              	  //�ж�֡ͷ
 //				if((i==6)&&(date_openmv[5]!=0xff)) i=0;			//�ж�֡β
-//				if(i==6)                            			//����һ�����ݴ������?
+//				if(i==6)                            			//����һ�����ݴ������?
 //				{
 //					 i=0;
 //					 //Usart3_Send_function(10,data0);        //д��Ҫ����������

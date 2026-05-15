@@ -2,11 +2,12 @@
   * @author     : wangming
   * @wechat     :DeepCoderMing
   * @qq         : 3201935299
-  * @date       : 2025�?????05�?????01�?????
-  * @copyright  : 仅供参考�?�习，�?��?�商业传�?????
+  * @date       : 2025�??????05�??????01�??????
+  * @copyright  : 仅供参考�?�习，�?��?�商业传�??????
 ********************************************************************************/
 #include "hal_vofa.h"
 #include "hal_uart.h"
+#include "hal_encode.h"
 
 static uint8_t vofa_buffer[VOFA_FLOAT_NUM*4+4];
 static uint16_t cnt = 0;
@@ -142,6 +143,11 @@ static void vofa_store_received_value(void)
         }
     }
 
+    if(vofa_rx_id == VOFA_PARAM_WHEEL_RADIUS)
+    {
+        wheel_radius_cm = vofa_params[vofa_rx_id];
+    }
+
     if(vofa_rx_id == 99)
     {
         uint8_t mode = (uint8_t)vofa_parse_float(vofa_rx_buffer, vofa_rx_index);
@@ -255,15 +261,12 @@ void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, fl
 {
     if(!vofa_debug_enabled || vofa_send_mode != 1) return;
 
-    /* Protect buffer from preemption by main-loop VOFA send */
-    __disable_irq();
     vofa_add_data(target_l);
     vofa_add_data(actual_l);
     vofa_add_data(actual_r);
     vofa_add_data(kp);
     vofa_add_data(ki);
     vofa_send();
-    __enable_irq();
 }
 
 /* Send angle loop data to VOFA */
@@ -271,11 +274,9 @@ void vofa_send_angle_feedback(float target, float actual)
 {
     if(!vofa_debug_enabled || vofa_send_mode != 2) return;
 
-    __disable_irq();
     vofa_add_data(target);
     vofa_add_data(actual);
     vofa_send();
-    __enable_irq();
 }
 
 /* Send seektrack loop data to VOFA */
@@ -283,11 +284,9 @@ void vofa_send_seek_feedback(float target, float actual)
 {
     if(!vofa_debug_enabled || vofa_send_mode != 3) return;
 
-    __disable_irq();
     vofa_add_data(target);
     vofa_add_data(actual);
     vofa_send();
-    __enable_irq();
 }
 
 /* Get speed PID parameters - returns bitmask: bit0=KP updated, bit1=KI updated, 0=nothing */

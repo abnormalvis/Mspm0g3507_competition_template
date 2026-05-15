@@ -1,5 +1,6 @@
 
 #include "ti/driverlib/dl_gpio.h"
+#include <ti/driverlib/m0p/dl_interrupt.h>
 #include "hal_encode.h"
 #include "imu_filter.h"                  // Device header
 #include "math.h"
@@ -8,6 +9,7 @@ int32_t enc_cnt[2];
 encoder NEncoder;
 sensor smartcar_imu;
 move_filter_struct left_speed_cmps, right_speed_cmps;
+float wheel_radius_cm = 2.3f;
 
 void hal_Encoder_Init(void)
 {
@@ -18,90 +20,46 @@ void hal_Encoder_Init(void)
 
 void GROUP1_IRQHandler(void)
 {
-		uint32_t status;
+    switch (DL_Interrupt_getPendingGroup(DL_INTERRUPT_GROUP_1))
+    {
+    case DL_INTERRUPT_GROUP1_IIDX_GPIOB:
+    {
+        volatile uint32_t mis = GPIOB->CPU_INT.MIS;
+        volatile uint32_t din = GPIOB->DIN31_0;
+        uint32_t a_state = (din >> 5) & 1;
+        uint32_t b_state = (din >> 6) & 1;
 
-	/* Left motor encoder: GPIOB pins 5,6 */
-	status = DL_GPIO_getEnabledInterruptStatus(GPIOB, DL_GPIO_PIN_5 | DL_GPIO_PIN_6);
-	DL_GPIO_clearInterruptStatus(GPIOB, status);
+        if (mis & (1 << 5))
+            enc_cnt[1] += (a_state == b_state) ? -1 : 1;
+        if (mis & (1 << 6))
+            enc_cnt[1] += (b_state == a_state) ? 1 : -1;
 
-	if(((status & DL_GPIO_PIN_5) == DL_GPIO_PIN_5))
-	{
-		if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_5))
-		{
-			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_6) == 0)
-				enc_cnt[1] ++;
-			else
-				enc_cnt[1] --;
-		}
-		else
-		{
-			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_6))
-				enc_cnt[1] ++;
-			else
-				enc_cnt[1] --;
-		}
-	}
-	else if(((status & DL_GPIO_PIN_6) == DL_GPIO_PIN_6))
-	{
-		if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_6))
-		{
-			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_5))
-				enc_cnt[1] ++;
-			else
-				enc_cnt[1] --;
-		}
-		else
-		{
-			if(DL_GPIO_readPins(GPIOB, DL_GPIO_PIN_5) == 0)
-				enc_cnt[1] ++;
-			else
-				enc_cnt[1] --;
-		}
-	}
+        GPIOB->CPU_INT.ICLR = (1 << 5) | (1 << 6);
+    }
+    break;
+    case DL_INTERRUPT_GROUP1_IIDX_GPIOA:
+    {
+        volatile uint32_t mis = GPIOA->CPU_INT.MIS;
+        volatile uint32_t din = GPIOA->DIN31_0;
+        uint32_t a_state = (din >> 29) & 1;
+        uint32_t b_state = (din >> 30) & 1;
 
-	/* Right motor encoder: GPIOA pins 29,30 */
-	status = DL_GPIO_getEnabledInterruptStatus(GPIOA, DL_GPIO_PIN_29 | DL_GPIO_PIN_30);
-	DL_GPIO_clearInterruptStatus(GPIOA, status);
+        if (mis & (1 << 29))
+            enc_cnt[0] += (a_state == b_state) ? -1 : 1;
+        if (mis & (1 << 30))
+            enc_cnt[0] += (b_state == a_state) ? 1 : -1;
 
-	if(((status & DL_GPIO_PIN_29) == DL_GPIO_PIN_29))
-	{
-		if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_29))
-		{
-			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_30) == 0)
-				enc_cnt[0] ++;
-			else
-				enc_cnt[0] --;
-		}
-		else
-		{
-			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_30))
-				enc_cnt[0] ++;
-			else
-				enc_cnt[0] --;
-		}
-	}
-	else if(((status & DL_GPIO_PIN_30) == DL_GPIO_PIN_30))
-	{
-		if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_30))
-		{
-			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_29))
-				enc_cnt[0] ++;
-			else
-				enc_cnt[0] --;
-		}
-		else
-		{
-			if(DL_GPIO_readPins(GPIOA, DL_GPIO_PIN_29) == 0)
-				enc_cnt[0] ++;
-			else
-				enc_cnt[0] --;
-		}
-	}
+        GPIOA->CPU_INT.ICLR = (1 << 29) | (1 << 30);
+    }
+    break;
+    default:
+        break;
+    }
 }
 
 static float get_left_motor_speed(void)
 {
-	NEncoder.left_motor_cnt = -enc_cnt[1];
+	NEncoder.left_motor_cnt = enc_cnt[1];
 	//���ٶ�ת����תÿ����
 	NEncoder.left_motor_speed_rpm = 60.0f*(NEncoder.left_motor_cnt/pulse_num_per_circle) 
 																/(left_motor_period_ms*0.001f);	
@@ -126,7 +84,7 @@ static float get_left_motor_speed(void)
 ***************************************/
 static float get_right_motor_speed(void)
 {
-	NEncoder.right_motor_cnt = -enc_cnt[0];
+	NEncoder.right_motor_cnt = enc_cnt[0];
 
 	//���ٶ�ת����תÿ����
 	NEncoder.right_motor_speed_rpm = 60.0f*(NEncoder.right_motor_cnt/pulse_num_per_circle)

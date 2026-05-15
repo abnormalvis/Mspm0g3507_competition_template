@@ -2201,16 +2201,21 @@ void AppProc(void)
 		if(gray_vofa_send_cnt >= 10)
 		{
 			gray_vofa_send_cnt = 0;
-			vofa_add_data(gray_status);
-			vofa_add_data((float)LQ_Tracking_Value[0]);
-			vofa_add_data((float)LQ_Tracking_Value[1]);
-			vofa_add_data((float)LQ_Tracking_Value[2]);
-			vofa_add_data((float)LQ_Tracking_Value[3]);
-			vofa_add_data((float)LQ_Tracking_Value[4]);
-			vofa_add_data((float)LQ_Tracking_Value[5]);
-			vofa_add_data((float)LQ_Tracking_Value[6]);
-			vofa_add_data((float)LQ_Tracking_Value[7]);
-			vofa_send();
+			/* Skip gray VOFA send when debug mode is active to avoid
+			   buffer race with speed_control() in TIMG0 ISR */
+			if(!vofa_get_debug_mode())
+			{
+				vofa_add_data(gray_status);
+				vofa_add_data((float)LQ_Tracking_Value[0]);
+				vofa_add_data((float)LQ_Tracking_Value[1]);
+				vofa_add_data((float)LQ_Tracking_Value[2]);
+				vofa_add_data((float)LQ_Tracking_Value[3]);
+				vofa_add_data((float)LQ_Tracking_Value[4]);
+				vofa_add_data((float)LQ_Tracking_Value[5]);
+				vofa_add_data((float)LQ_Tracking_Value[6]);
+				vofa_add_data((float)LQ_Tracking_Value[7]);
+				vofa_send();
+			}
 		}
 	}
 	pModeMenu->action();//执行当前菜单的服务函数，不断循环

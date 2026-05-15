@@ -27,19 +27,19 @@ typedef struct
 
 typedef struct
 {
-	int32_t left_motor_cnt,right_motor_cnt;//µ¥¸ö²ÉÑùÖÜÆÚÄÚµÄÂö³åÊıÁ¿
-	float left_motor_dir,right_motor_dir; //ÔË¶¯·½Ïò
-	float left_motor_speed_rpm,right_motor_speed_rpm;//×ªËÙµ¥Î»×ªÃ¿·ÖÖÓ
-	float left_motor_speed_cmps,right_motor_speed_cmps;//×ªËÙcµ¥Î»Îªcm/s
+	int32_t left_motor_cnt,right_motor_cnt;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	float left_motor_dir,right_motor_dir; //ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½
+	float left_motor_speed_rpm,right_motor_speed_rpm;//×ªï¿½Ùµï¿½Î»×ªÃ¿ï¿½ï¿½ï¿½ï¿½
+	float left_motor_speed_cmps,right_motor_speed_cmps;//×ªï¿½ï¿½cï¿½ï¿½Î»Îªcm/s
 	
 }encoder;
 
-#define pulse_num_per_circle 1057.0f //ÂÖ×Ó×ªÒ»È¦µÄÂö³åÊı  
+#define pulse_num_per_circle 2114.0f // 2å€é¢‘è§£ç : 1057 CPR * 2 = 2114  
 
-#define left_motor_period_ms 10.0f //Âö³åµÄ²ÉÑùÖÜÆÚ
-#define right_motor_period_ms 10.0f //Âö³åµÄ²ÉÑùÖÜÆÚ
+#define left_motor_period_ms 10.0f //ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define right_motor_period_ms 10.0f //ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-#define wheel_radius_cm 2.3f //ÂÖÌ¥³¤¶È°ë¾¶
+extern float wheel_radius_cm;
 
 #define pi 3.1415f
 extern encoder NEncoder;

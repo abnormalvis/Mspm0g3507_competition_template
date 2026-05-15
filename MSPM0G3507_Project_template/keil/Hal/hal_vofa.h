@@ -26,6 +26,7 @@
 #define VOFA_PARAM_SEEK_KI      10
 #define VOFA_PARAM_SEEK_KD      11
 #define VOFA_PARAM_SEEK_TARGET   12
+#define VOFA_PARAM_WHEEL_RADIUS  13
 
 void vofa_add_data(float data);
 void vofa_send(void);

@@ -13,7 +13,7 @@
 
 #define speed_kp_default  				0.0f//8.0f	26.0f		// Speed loop P coefficient
 #define	speed_ki_default					0.0f//0.6f	 0.85f		// Speed loop I coefficient
-#define	speed_kd_default					0.0f			// Speed loop D coefficient
+#define	speed_kd_default					0.02f			// Speed loop D coefficient
 
 // Position PID control parameters
 //#define position_kp_default       4.5f

@@ -86,7 +86,37 @@ void move_filter_reduce(move_filter_struct *move_filter,float theta)
     }
 }
 
+//-------------------------------------------------------------------------------------------------------------------
+// Function:    first-order low-pass filter initialization
+// Parameter:   f       filter struct pointer
+// Parameter:   alpha   filter coefficient (0~1], smaller = smoother
+// Usage:       lowpass_filter_init(&lpf, 0.5f);
+//-------------------------------------------------------------------------------------------------------------------
+void lowpass_filter_init(lowpass_filter_struct *f, float alpha)
+{
+    f->alpha = alpha;
+    f->output = 0.0f;
+}
 
+//-------------------------------------------------------------------------------------------------------------------
+// Function:    first-order low-pass filter calculation
+//              y[n] = y[n-1] + alpha * (x[n] - y[n-1])
+// Parameter:   f       filter struct pointer
+// Parameter:   input   latest raw data value
+// Returns:     filtered output
+//-------------------------------------------------------------------------------------------------------------------
+float lowpass_filter_calc(lowpass_filter_struct *f, float input)
+{
+    f->output += f->alpha * (input - f->output);
+    return f->output;
+}
 
-
-
+//-------------------------------------------------------------------------------------------------------------------
+// Function:    update low-pass filter coefficient at runtime
+// Parameter:   f       filter struct pointer
+// Parameter:   alpha   new filter coefficient (0~1]
+//-------------------------------------------------------------------------------------------------------------------
+void lowpass_filter_set_alpha(lowpass_filter_struct *f, float alpha)
+{
+    f->alpha = alpha;
+}

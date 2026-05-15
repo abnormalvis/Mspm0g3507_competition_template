@@ -27,15 +27,19 @@
 #include "math.h"
 #include "hal_beep.h"
 #include "app.h"
+#include "move_filter.h"
 
 static float speed_error[2] = {0, 0}, speed_expect[2] = {speed_expect_default, speed_expect_default}, speed_feedback[2] = {0, 0}; // Speed error, expected speed, feedback speed
 static float speed_error_last[2] = {0, 0};
+static float speed_error_prev[2] = {0, 0};
+static lowpass_filter_struct speed_lpf_l, speed_lpf_r;
+static uint8_t speed_lpf_inited = 0;
 // static float position_kp = position_kp_default,position_ki = position_ki_default,position_kd = position_kd_default;
 	// Gray track
 // float speed_kp_l=0.5f,speed_ki_l=0.12f,speed_kd=speed_kd_default;
 // float speed_kp_r=0.64f,speed_ki_r=0.15f;
-float speed_kp_l = 0.9f, speed_ki_l = 0.2f, speed_kd = speed_kd_default;
-float speed_kp_r = 0.9f, speed_ki_r = 0.2f;
+float speed_kp_l = 0.71f, speed_ki_l = 0.21f, speed_kd = 0.02f;
+float speed_kp_r = 0.71f, speed_ki_r = 0.21f;
 
 float position_kp = 6.0;
 float position_ki = 0;
@@ -88,37 +92,64 @@ float add_limit[2] = {};
 float speed_theta = 0;
 void speed_control(void)
 {
+    /* Init low-pass filters on first call */
+    if (!speed_lpf_inited) {
+        lowpass_filter_init(&speed_lpf_l, 0.5f);
+        lowpass_filter_init(&speed_lpf_r, 0.5f);
+        speed_lpf_inited = 1;
+    }
 
-		speed_feedback[0] = smartcar_imu.left_motor_speed_cmps; // Get left wheel actual speed
+    /* Apply low-pass filter to raw speed feedback */
+    speed_feedback[0] = lowpass_filter_calc(&speed_lpf_l, smartcar_imu.left_motor_speed_cmps);
 	speed_error[0] = v_target_l - speed_feedback[0];
 	speed_error[0] = Xianfu_float(speed_error[0], speed_err_max);
 	speed_integral[0] = speed_ki_l * speed_error[0];
 	//	speed_integral[0]=Xianfu_float(speed_integral[0],speed_integral_max);
-	add_limit[0] = speed_integral[0] + speed_kp_l * (speed_error[0] - speed_error_last[0]);
+	add_limit[0] = speed_integral[0] + speed_kp_l * (speed_error[0] - speed_error_last[0])
+	             + speed_kd * (speed_error[0] - 2 * speed_error_last[0] + speed_error_prev[0]);
 	if (ABS(add_limit[0]) > 0.5)
 		speed_output[0] += add_limit[0];
 	speed_output[0] = Xianfu_float(speed_output[0], speed_ctrl_output_max);
+	speed_error_prev[0] = speed_error_last[0];
 	speed_error_last[0] = speed_error[0];
 
-		speed_feedback[1] = smartcar_imu.right_motor_speed_cmps; // Right wheel
+    speed_feedback[1] = lowpass_filter_calc(&speed_lpf_r, smartcar_imu.right_motor_speed_cmps);
 		speed_error[1] = v_target_r - speed_feedback[1]; // Target minus actual = speed error
 		speed_error[1] = Xianfu_float(speed_error[1], speed_err_max); // Limit speed error
 		speed_integral[1] = speed_ki_r * speed_error[1]; // Speed integral
 	//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max); // Limit integral
-	add_limit[1] = speed_integral[1] + speed_kp_r * (speed_error[1] - speed_error_last[1]);
+	add_limit[1] = speed_integral[1] + speed_kp_r * (speed_error[1] - speed_error_last[1])
+	             + speed_kd * (speed_error[1] - 2 * speed_error_last[1] + speed_error_prev[1]);
 	if (ABS(add_limit[1]) > 0.5)
 			speed_output[1] += add_limit[1]; // PID output
 		speed_output[1] = Xianfu_float(speed_output[1], speed_ctrl_output_max); // Limit output
+	speed_error_prev[1] = speed_error_last[1];
 	speed_error_last[1] = speed_error[1];
 
-	/* Update speed PID from VOFA and send feedback */
-	float kp_temp, ki_temp;
+	/* Update speed PID and filter from VOFA */
+	float kp_temp, ki_temp, kd_temp;
 	{
-		uint8_t pid_mask = vofa_get_speed_pid(&kp_temp, &ki_temp);
-		if (pid_mask & 1)
+		uint8_t pid_mask = vofa_get_speed_pid(&kp_temp, &ki_temp, &kd_temp);
+		if (pid_mask & 1) {
 			speed_kp_l = kp_temp;
-		if (pid_mask & 2)
+			speed_kp_r = kp_temp;
+		}
+		if (pid_mask & 2) {
 			speed_ki_l = ki_temp;
+			speed_ki_r = ki_temp;
+		}
+		if (pid_mask & 4) {
+			speed_kd = kd_temp;
+		}
+	}
+	/* Check for filter alpha update */
+	if (vofa_has_param_update() && vofa_peek_param_id() == VOFA_PARAM_SPEED_FILTER) {
+		float alpha = vofa_get_param_value(VOFA_PARAM_SPEED_FILTER);
+		if (alpha > 0.0f && alpha <= 1.0f) {
+			lowpass_filter_set_alpha(&speed_lpf_l, alpha);
+			lowpass_filter_set_alpha(&speed_lpf_r, alpha);
+		}
+		vofa_get_param_id(); /* consume update flag */
 	}
 	/* Check for speed target command */
 	float target = vofa_get_speed_target();
@@ -143,11 +174,11 @@ void speed_control(void)
 		/* Auto-enable motor output in debug mode */
 		if (!Flag.Start_Car)
 			Flag.Start_Car = 1;
-		/* Send 5 channels: target(rad/s), left(rad/s), right(rad/s), kp, ki */
+		/* Send 6 channels: target(rad/s), filtered_left(rad/s), filtered_right(rad/s), kp, ki, kd */
 		vofa_send_speed_feedback(target,
-								 smartcar_imu.left_motor_speed_cmps / wheel_radius_cm,
-								 smartcar_imu.right_motor_speed_cmps / wheel_radius_cm,
-								 speed_kp_l, speed_ki_l);
+								 speed_feedback[0] / wheel_radius_cm,
+								 speed_feedback[1] / wheel_radius_cm,
+								 speed_kp_l, speed_ki_l, speed_kd);
 	}
 }
 

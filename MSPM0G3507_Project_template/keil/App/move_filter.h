@@ -56,6 +56,15 @@ void move_filter_init(move_filter_struct *move_average);
 void move_filter_calc(move_filter_struct *move_average, float new_data);
 void move_filter_reduce(move_filter_struct *move_filter,float theta);
 
+/* First-order low-pass filter: y[n] = y[n-1] + alpha * (x[n] - y[n-1]) */
+typedef struct
+{
+    float alpha;      /* filter coefficient (0~1], smaller = smoother */
+    float output;     /* filtered output */
+} lowpass_filter_struct;
 
+void lowpass_filter_init(lowpass_filter_struct *f, float alpha);
+float lowpass_filter_calc(lowpass_filter_struct *f, float input);
+void lowpass_filter_set_alpha(lowpass_filter_struct *f, float alpha);
 
 #endif /* CODE_MOVE_FILTER_H_ */

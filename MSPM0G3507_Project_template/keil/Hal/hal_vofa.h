@@ -27,6 +27,7 @@
 #define VOFA_PARAM_SEEK_KD      11
 #define VOFA_PARAM_SEEK_TARGET   12
 #define VOFA_PARAM_WHEEL_RADIUS  13
+#define VOFA_PARAM_SPEED_FILTER  14   /* speed loop low-pass filter alpha (0~1] */
 
 void vofa_add_data(float data);
 void vofa_send(void);
@@ -38,13 +39,13 @@ float vofa_get_param_value(uint8_t id);
 void vofa_uart_rx_callback(uint8_t byte);
 
 /* Send feedback data to VOFA for tuning */
-void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, float kp, float ki);
+void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, float kp, float ki, float kd);
 void vofa_send_angle_feedback(float target, float actual);
 void vofa_send_seek_feedback(float target, float actual);
 void vofa_debug_enable(uint8_t enable);
 void vofa_set_debug_mode(uint8_t mode);
 uint8_t vofa_get_debug_mode(void);
-uint8_t vofa_get_speed_pid(float *kp, float *ki);  /* returns bitmask: 1=KP, 2=KI, 3=both */
+uint8_t vofa_get_speed_pid(float *kp, float *ki, float *kd);  /* returns bitmask: 1=KP, 2=KI, 4=KD */
 float vofa_get_speed_target(void);
 float vofa_peek_speed_target(void);
 

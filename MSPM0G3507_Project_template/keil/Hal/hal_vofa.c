@@ -28,8 +28,10 @@ static uint8_t vofa_send_mode = 0;  /* 0=off, 1=speed, 2=angle, 3=seek */
 /* Pending PID parameters to apply - per-parameter flags to avoid clearing unset values */
 static float vofa_pending_kp = 0.0f;
 static float vofa_pending_ki = 0.0f;
+static float vofa_pending_kd = 0.0f;
 static uint8_t vofa_kp_pending = 0;
 static uint8_t vofa_ki_pending = 0;
+static uint8_t vofa_kd_pending = 0;
 
 /* Set VOFA debug mode:
    mode: 0=off, 1=speed loop, 2=angle loop, 3=seek loop */
@@ -83,8 +85,10 @@ void vofa_param_init(void)
     vofa_send_counter = 0;
     vofa_pending_kp = 0.0f;
     vofa_pending_ki = 0.0f;
+    vofa_pending_kd = 0.0f;
     vofa_kp_pending = 0;
     vofa_ki_pending = 0;
+    vofa_kd_pending = 0;
 }
 
 /* Parse value from receive buffer */
@@ -130,7 +134,7 @@ static void vofa_store_received_value(void)
         vofa_last_param_id = vofa_rx_id;
         vofa_param_update = 1;
 
-        /* Mark pending if KP or KI */
+        /* Mark pending if KP, KI or KD */
         if(vofa_rx_id == VOFA_PARAM_SPEED_KP)
         {
             vofa_pending_kp = vofa_params[vofa_rx_id];
@@ -141,11 +145,22 @@ static void vofa_store_received_value(void)
             vofa_pending_ki = vofa_params[vofa_rx_id];
             vofa_ki_pending = 1;
         }
+        else if(vofa_rx_id == VOFA_PARAM_SPEED_KD)
+        {
+            vofa_pending_kd = vofa_params[vofa_rx_id];
+            vofa_kd_pending = 1;
+        }
+
     }
 
     if(vofa_rx_id == VOFA_PARAM_WHEEL_RADIUS)
     {
         wheel_radius_cm = vofa_params[vofa_rx_id];
+    }
+
+    if(vofa_rx_id == VOFA_PARAM_SPEED_FILTER)
+    {
+        /* Filter alpha stored in vofa_params[14], read by speed_control */
     }
 
     if(vofa_rx_id == 99)
@@ -256,16 +271,21 @@ float vofa_get_param_value(uint8_t id)
     return 0.0f;
 }
 
-/* Send speed loop data to VOFA - 5 channels: target, actual_L, actual_R, kp, ki */
-void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, float kp, float ki)
+/* Send speed loop data to VOFA - 6 channels: target, actual_L, actual_R, kp, ki, kd */
+void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, float kp, float ki, float kd)
 {
     if(!vofa_debug_enabled || vofa_send_mode != 1) return;
+
+    /* Throttle: send every 3rd call (30ms) to avoid blocking ISR too long */
+    if(++vofa_send_counter < 3) return;
+    vofa_send_counter = 0;
 
     vofa_add_data(target_l);
     vofa_add_data(actual_l);
     vofa_add_data(actual_r);
     vofa_add_data(kp);
     vofa_add_data(ki);
+    vofa_add_data(kd);
     vofa_send();
 }
 
@@ -273,6 +293,9 @@ void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, fl
 void vofa_send_angle_feedback(float target, float actual)
 {
     if(!vofa_debug_enabled || vofa_send_mode != 2) return;
+
+    if(++vofa_send_counter < 3) return;
+    vofa_send_counter = 0;
 
     vofa_add_data(target);
     vofa_add_data(actual);
@@ -284,13 +307,16 @@ void vofa_send_seek_feedback(float target, float actual)
 {
     if(!vofa_debug_enabled || vofa_send_mode != 3) return;
 
+    if(++vofa_send_counter < 3) return;
+    vofa_send_counter = 0;
+
     vofa_add_data(target);
     vofa_add_data(actual);
     vofa_send();
 }
 
-/* Get speed PID parameters - returns bitmask: bit0=KP updated, bit1=KI updated, 0=nothing */
-uint8_t vofa_get_speed_pid(float *kp, float *ki)
+/* Get speed PID parameters - returns bitmask: bit0=KP, bit1=KI, bit2=KD, 0=nothing */
+uint8_t vofa_get_speed_pid(float *kp, float *ki, float *kd)
 {
     uint8_t result = 0;
 
@@ -308,6 +334,14 @@ uint8_t vofa_get_speed_pid(float *kp, float *ki)
         vofa_pending_ki = 0.0f;
         vofa_ki_pending = 0;
         result |= 2;
+    }
+
+    if(vofa_kd_pending)
+    {
+        if(kd) *kd = vofa_pending_kd;
+        vofa_pending_kd = 0.0f;
+        vofa_kd_pending = 0;
+        result |= 4;
     }
 
     return result;

@@ -103,9 +103,9 @@ extern "C" {
 #define GPIO_PWM_0_C2_IDX                                    DL_TIMER_CC_2_INDEX
 /* GPIO defines for channel 3 */
 #define GPIO_PWM_0_C3_PORT                                                 GPIOA
-#define GPIO_PWM_0_C3_PIN                                          DL_GPIO_PIN_4
-#define GPIO_PWM_0_C3_IOMUX                                       (IOMUX_PINCM9)
-#define GPIO_PWM_0_C3_IOMUX_FUNC                      IOMUX_PINCM9_PF_TIMA0_CCP3
+#define GPIO_PWM_0_C3_PIN                                         DL_GPIO_PIN_23
+#define GPIO_PWM_0_C3_IOMUX                                      (IOMUX_PINCM53)
+#define GPIO_PWM_0_C3_IOMUX_FUNC                     IOMUX_PINCM53_PF_TIMA0_CCP3
 #define GPIO_PWM_0_C3_IDX                                    DL_TIMER_CC_3_INDEX
 
 

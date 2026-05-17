@@ -35,7 +35,8 @@ extern float turn_kp,turn_ki,turn_kd;
 extern float cam_turn_kp,cam_turn_ki,cam_turn_kd;
 extern uint16_t gray_cnt;
 extern float v_target_l,v_target_r,p_target_l,p_target_r;
-extern float speed_kp_l,speed_ki_l,speed_kp_r,speed_ki_r;
+extern float VKp_l,VKi_l,VKd_l,VKp_r,VKi_r,VKd_r;
+void motor_self_test(void);
 extern float	turn_scale,speed_setup, turn_output,turn_ctrl_pwm,speed_adjust;
 extern  float left_pwm,right_pwm;
 extern float yaw_target;
@@ -45,6 +46,10 @@ extern float turn_kd_L;
 extern float yaw_kp,yaw_ki,yaw_kd;
 extern float position_kp,position_kd;
 void ctrl_params_init(void);
+float velocity_PID_value_l(float measure, float target);
+float velocity_PID_value_r(float measure, float target);
+float I_xianfu(float max, float now);
+void motor_self_test(void);
 extern float tar_theta_limit,sleep_time;
 #endif
 

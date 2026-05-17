@@ -83,6 +83,7 @@ void Flag_Init(void)
 	// Flag.beep_on	= 0;
 	Flag.task_start = 0;
 	Flag.angle_loss = 0;
+	Flag.pid_tuning = 0;
 	Flag.yaw_loss = 0;
 	Flag.yaw_loss_ahead = 0;
 	num_of_turn = 0;

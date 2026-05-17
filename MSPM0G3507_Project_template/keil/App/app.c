@@ -6,6 +6,7 @@
   * @copyright  :  For reference only, commercial use prohibited
 ********************************************************************************/
 #include "ti_msp_dl_config.h"
+#include <ti/driverlib/dl_timera.h>
 #include "OS_System.h"
 #include "hal_led.h"
 #include "hal_key.h"
@@ -2193,6 +2194,23 @@ static void stg3Menu_Para8CBS(void)
 }
 void AppProc(void)
 {
+	/* Toggle PID tuning mode: press KEY1 then KEY2 quickly */
+	if (pModeMenu->keyVal == KEY1_CLICK_RELEASE)
+	{
+		Flag.pid_tuning = 1;
+		Flag.Start_duty_1 = 0;
+		Flag.Start_duty2_1 = 0;
+		Flag.Start_duty2_2 = 0;
+		Flag.Start_duty3_1 = 0;
+		Flag.Start_duty3_2 = 0;
+		Flag.Start_duty3_3 = 0;
+		Flag.Start_duty3_4 = 0;
+	}
+	else if (pModeMenu->keyVal == KEY2_CLICK_RELEASE && Flag.pid_tuning)
+	{
+		Flag.pid_tuning = 0;
+	}
+
 	if(gray_sample_req)
 	{
 		gray_sample_req = 0;

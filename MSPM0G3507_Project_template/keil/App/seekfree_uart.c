@@ -76,26 +76,16 @@ void  uartwork(void)
 	//													Storage_WriteFloatNum(16*4,data_test);
                         break;
                     case 2 :
-                        speed_kp_l = seekfree_assistant_parameter[2];
-	//										position_kp = seekfree_assistant_parameter[2];
-	//										data_test.value = position_kp;
-										//	Storage_WriteFloatNum(8,data_test);
-	//										turn_kp= seekfree_assistant_parameter[2];
-	//														data_test.value = turn_kp;
-	//													Storage_WriteFloatNum(52,data_test);
+                        VKp_l = seekfree_assistant_parameter[2];
                         break;
                     case 3 :
-                        speed_ki_l = seekfree_assistant_parameter[3];
-	//										position_kd = seekfree_assistant_parameter[3];
-	//										data_test.value = position_kd;
-											//Storage_WriteFloatNum(12,data_test);
-	//										turn_kd = seekfree_assistant_parameter[3];
+                        VKi_l = seekfree_assistant_parameter[3];
                         break;
                     case 4 :
-                        speed_kp_r = seekfree_assistant_parameter[4];
+                        VKp_r = seekfree_assistant_parameter[4];
                         break;
                     case 5 :
-                        speed_ki_r = seekfree_assistant_parameter[5];
+                        VKi_r = seekfree_assistant_parameter[5];
                         break;
                     case 6 :
 													Flag.Start_Car = seekfree_assistant_parameter[6];

@@ -8,6 +8,7 @@ void Motor_Foreward_Left(uint16_t PWM_Hight);
 void Motor_Backward_Left(uint16_t PWM_Hight);
 void Motor_Foreward_Right(uint16_t PWM_Hight);
 void Motor_Backward_Right(uint16_t PWM_Hight);
+void Motor_Stop_All(void);
 
 
 

@@ -52,6 +52,7 @@ int main(void)
 	//fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);	// Zigbee UART FIFO
 	TIMG0_Init();	// Timer interrupt, reads sensor values every 5ms
 	TIMG6_Init(); // Timer interrupt, real-time clock 5ms
+	//motor_self_test();	// Motor self-test disabled
 
 	move_filter_init(&left_speed_cmps);	// Left wheel speed filter
 	move_filter_init(&right_speed_cmps);	// Right wheel speed filter

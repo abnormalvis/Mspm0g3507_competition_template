@@ -47,6 +47,7 @@ extern sensor smartcar_imu;
 extern float distance_inter,distance_l,distance_r,distance_point;
 extern move_filter_struct left_speed_cmps,right_speed_cmps;
 extern float point_A[2],point_B[2],point_C[2],point_D[2],point_actual[2];
+extern int32_t enc_cnt[2]; // Raw encoder count for debugging
 void hal_Encoder_Init(void);
 void get_wheel_speed(void);
 //void encoder_read(int32_t *a,int32_t *b);

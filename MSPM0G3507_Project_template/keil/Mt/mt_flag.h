@@ -78,6 +78,7 @@ typedef struct // Flag struct for PID, angle, grayscale, loop, key, encoder, pos
 	uint8_t beep_on;
 	uint8_t task_start;
 	uint8_t angle_loss;
+	uint8_t pid_tuning;  /* PID tuning test mode - bypasses duty state machine */
 } Flag_InitTypeDef;
 
 extern Param_InitTypeDef Param; // Parameter struct for duty tasks

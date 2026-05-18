@@ -32,14 +32,12 @@
 static float speed_error[2] = {0, 0}, speed_expect[2] = {speed_expect_default, speed_expect_default}, speed_feedback[2] = {0, 0}; // Speed error, expected speed, feedback speed
 static float speed_error_last[2] = {0, 0};
 static float speed_error_prev[2] = {0, 0};
-static lowpass_filter_struct speed_lpf_l, speed_lpf_r;
-static uint8_t speed_lpf_inited = 0;
 // static float position_kp = position_kp_default,position_ki = position_ki_default,position_kd = position_kd_default;
 	// Gray track
 // float speed_kp_l=0.5f,speed_ki_l=0.12f,speed_kd=speed_kd_default;
 // float speed_kp_r=0.64f,speed_ki_r=0.15f;
-float VKp_l = 0.71f, VKi_l = 0.21f, VKd_l = 0.02f;
-float VKp_r = 0.71f, VKi_r = 0.21f, VKd_r = 0.02f;
+float VKp_l = 0.0f, VKi_l = 0.0f, VKd_l = 0.0f;
+float VKp_r = 0.0f, VKi_r = 0.0f, VKd_r = 0.0f;
 
 float position_kp = 6.0;
 float position_ki = 0;
@@ -94,10 +92,16 @@ static float velocity_sum_l = 0;
 static float last_velocity_err_l = 0;
 static float velocity_difference_l = 0;
 
+// cm/s
 float velocity_PID_value_l(float measure, float target)
 {
     velocity_err_l = target - measure;
-    velocity_sum_l += velocity_err_l;
+
+    /* Anti-windup: only integrate when target is non-zero or error is small */
+    if (target != 0 || ABS(velocity_err_l) < 50)
+    {
+        velocity_sum_l += velocity_err_l;
+    }
     velocity_difference_l = velocity_err_l - last_velocity_err_l;
     velocity_sum_l = I_xianfu(3000, velocity_sum_l);
     last_velocity_err_l = velocity_err_l;
@@ -113,9 +117,14 @@ static float velocity_difference_r = 0;
 float velocity_PID_value_r(float measure, float target)
 {
     velocity_err_r = target - measure;
-    velocity_sum_r += velocity_err_r;
+
+    /* Anti-windup: only integrate when target is non-zero or error is small */
+    if (target != 0 || ABS(velocity_err_r) < 50)
+    {
+        velocity_sum_r += velocity_err_r;
+    }
     velocity_difference_r = velocity_err_r - last_velocity_err_r;
-    velocity_sum_r = I_xianfu(8000, velocity_sum_r);
+    velocity_sum_r = I_xianfu(3000, velocity_sum_r);
     last_velocity_err_r = velocity_err_r;
     return VKp_r * velocity_err_r + VKi_r * velocity_sum_r + VKd_r * velocity_difference_r;
 }
@@ -130,80 +139,49 @@ float I_xianfu(float max, float now)
 float speed_theta = 0;
 void speed_control(void)
 {
-    /* Init low-pass filters on first call */
-    if (!speed_lpf_inited) {
-        lowpass_filter_init(&speed_lpf_l, 0.5f);
-        lowpass_filter_init(&speed_lpf_r, 0.5f);
-        speed_lpf_inited = 1;
+	/* VOFA speed target fetching removed - user to reimplement */
+	// if (vofa_is_loop_target_pending(VOFA_TUNE_TYPE_SPEED)) {
+	// 	float target = vofa_get_loop_target_pending(VOFA_TUNE_TYPE_SPEED);
+	// 	v_target_l = target;
+	// 	v_target_r = target;
+	// }
+
+    /* Update speed feedback - use raw encoder values */
+    speed_feedback[0] = smartcar_imu.left_motor_speed_cmps;
+    speed_feedback[1] = smartcar_imu.right_motor_speed_cmps;
+    /* Update PID parameters from VOFA - call AFTER target is consumed */
+    // float kp_temp, ki_temp, kd_temp;
+	// uint8_t pid_mask = vofa_get_loop_pid(VOFA_TUNE_TYPE_SPEED, &kp_temp, &ki_temp, &kd_temp);
+    // if (pid_mask & 1) {
+    //     VKp_l = kp_temp;
+    //     VKp_r = kp_temp;
+    // }
+    // if (pid_mask & 2) {
+    //     VKi_l = ki_temp;
+    //     VKi_r = ki_temp;
+    // }
+    // if (pid_mask & 4) {
+    //     VKd_l = kd_temp;
+    //     VKd_r = kd_temp;
+    // }
+
+    /* Compute velocity PID - reference project uses (measure, target) */
+    float pwm_left = velocity_PID_value_l(speed_feedback[0], v_target_l);
+    float pwm_right = velocity_PID_value_r(speed_feedback[1], v_target_r);
+
+    /* Apply integral limit - matching reference project pattern */
+    pwm_left = I_xianfu(speed_ctrl_output_max, pwm_left);
+    pwm_right = I_xianfu(speed_ctrl_output_max, pwm_right);
+
+	/* Direct motor output - drive both left and right motors */
+    if (Flag.Start_Car) {
+		Set_Pwm((int)pwm_left, (int)pwm_right, 0, 0);
     }
 
-    /* Apply low-pass filter to raw speed feedback */
-    speed_feedback[0] = lowpass_filter_calc(&speed_lpf_l, smartcar_imu.left_motor_speed_cmps);
-    speed_feedback[1] = lowpass_filter_calc(&speed_lpf_r, smartcar_imu.right_motor_speed_cmps);
-
-    /* Compute left and right velocity PID using separate functions */
-    speed_output[0] = velocity_PID_value_l(speed_feedback[0], v_target_l);
-    speed_output[1] = velocity_PID_value_r(speed_feedback[1], v_target_r);
-
-    /* Limit output */
-    speed_output[0] = Xianfu_float(speed_output[0], speed_ctrl_output_max);
-    speed_output[1] = Xianfu_float(speed_output[1], speed_ctrl_output_max);
-
-    /* Update speed PID and filter from VOFA */
-    float kp_temp, ki_temp, kd_temp;
-    {
-        uint8_t pid_mask = vofa_get_speed_pid(&kp_temp, &ki_temp, &kd_temp);
-        if (pid_mask & 1) {
-            VKp_l = kp_temp;
-            VKp_r = kp_temp;
-        }
-        if (pid_mask & 2) {
-            VKi_l = ki_temp;
-            VKi_r = ki_temp;
-        }
-        if (pid_mask & 4) {
-            VKd_l = kd_temp;
-            VKd_r = kd_temp;
-        }
-    }
-    /* Check for filter alpha update */
-    if (vofa_has_param_update() && vofa_peek_param_id() == VOFA_PARAM_SPEED_FILTER) {
-        float alpha = vofa_get_param_value(VOFA_PARAM_SPEED_FILTER);
-        if (alpha > 0.0f && alpha <= 1.0f) {
-            lowpass_filter_set_alpha(&speed_lpf_l, alpha);
-            lowpass_filter_set_alpha(&speed_lpf_r, alpha);
-        }
-        vofa_get_param_id();
-    }
-    /* Check for speed target command */
-    float target = vofa_get_speed_target();
-    static float last_target = 0;
-    if (target > 0.1f || target < -0.1f)
-    {
-        last_target = target;
-    }
-    else
-    {
-        /* Keep using last target if no new command */
-        target = last_target;
-    }
-    if (target > 0.1f || target < -0.1f)
-    {
-        /* Use target directly as PWM value (no conversion) */
-        v_target_l = target;
-        v_target_r = target;
-    }
-    if (vofa_get_debug_mode() == 1)
-    {
-        /* Auto-enable motor output in debug mode */
-        if (!Flag.Start_Car)
-            Flag.Start_Car = 1;
-		/* Send 6 channels: target(rad/s), filtered_left(rad/s), filtered_right(rad/s), kp, ki, kd */
-		vofa_send_speed_feedback(target,
-								 speed_feedback[0] / wheel_radius_cm,
-								 speed_feedback[1] / wheel_radius_cm,
-								 VKp_l, VKi_l, VKd_l);
-	}
+	/* VOFA feedback removed - user to reimplement */
+	// if ((vofa_get_mode_flags() & VOFA_MODE_FLAG_FEEDBACK) && vofa_get_tune_type() == VOFA_TUNE_TYPE_SPEED) {
+    //     vofa_send_speed_feedback(v_target_l, speed_feedback[0], speed_feedback[1], VKp_l, VKi_l, VKd_l);	// cm/s
+    // }
 }
 
 void position_control(void) // Cascaded speed-position PID
@@ -431,48 +409,14 @@ void sdk_duty_run(float *a, float *b)
 
 void nmotor_output(void)
 {
-	if (Flag.Start_Car == 1)
-	{
-		if (speed_output[1])
-				right_pwm = speed_output[1] + 4 * (speed_output[1] > 0 ? 1 : -1); // Dead zone compensation
-		else
-			right_pwm = 0;
-
-		if (speed_output[0])
-				left_pwm = speed_output[0] + 4 * (speed_output[0] > 0 ? 1 : -1); // Dead zone compensation
-		else
-			left_pwm = 0;
-
-		left_pwm = Xianfu_float(left_pwm, motor_max_default);
-		right_pwm = Xianfu_float(right_pwm, motor_max_default);
-
-		if (right_pwm >= 0)
-		{
-			Motor_Foreward_Right(right_pwm);
-		}
-		else
-		{
-			Motor_Backward_Right(ABS(right_pwm));
-		}
-
-		if (left_pwm >= 0)
-		{
-			Motor_Foreward_Left(left_pwm);
-		}
-		else
-		{
-			Motor_Backward_Left(ABS(left_pwm));
-		}
-	}
-	else
-	{
-
-		AIN1_OUT(0);
-		AIN2_OUT(0);
-
-		BIN1_OUT(0);
-		BIN2_OUT(0);
-	}
+    /* Motor output now handled directly in speed_control() via Set_Pwm */
+    /* This function kept for backward compatibility with non-debug modes */
+    /* VOFA debug mode check removed - user to reimplement */
+    if (Flag.Start_Car) {
+        Set_Pwm((int)speed_output[0], (int)speed_output[0], (int)speed_output[1], (int)speed_output[1]);
+    } else {
+        Set_Pwm(0, 0, 0, 0);
+    }
 }
 #define distance 25
 uint16_t gray_cnt = 0;
@@ -483,448 +427,441 @@ float yaw_angle = 0;
 void TIMG0_IRQHandler(void) // 10ms
 {
 
-		if (Flag.Start_duty_1) //(1) A -> B 15s, position-angle closed loop 100cm
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty_1 = 0;
-			// auto_track(point_actual,point_B); // Auto tracking
-		if (gray_state.state) // L < distance||
-		{
-			gray_cnt++;
-			if (gray_cnt > 5 && L < distance)
-			{
-				v_target_l = 0;
-				v_target_r = 0;
-				gray_cnt = 0;
-				Flag.beep_on = 1;
-				//	Flag.Start_Car  = 0;
-				Flag.Start_duty_1 = 0;
-				Flag.Success_duty_1 = 1;
-			}
-			else
-			{
-				v_target_l = 15;
-				v_target_r = 15;
-			}
-		}
-		} /* End of stage 1 */
-	else if (Flag.Start_duty2_1) //(2) A -> B 30s
-	{
+	// 	if (Flag.Start_duty_1) //(1) A -> B 15s, position-angle closed loop 100cm
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty_1 = 0;
+	// 		// auto_track(point_actual,point_B); // Auto tracking
+	// 	if (gray_state.state) // L < distance||
+	// 	{
+	// 		gray_cnt++;
+	// 		if (gray_cnt > 5 && L < distance)
+	// 		{
+	// 			v_target_l = 0;
+	// 			v_target_r = 0;
+	// 			gray_cnt = 0;
+	// 			Flag.beep_on = 1;
+	// 			//	Flag.Start_Car  = 0;
+	// 			Flag.Start_duty_1 = 0;
+	// 			Flag.Success_duty_1 = 1;
+	// 		}
+	// 		else
+	// 		{
+	// 			v_target_l = 15;
+	// 			v_target_r = 15;
+	// 		}
+	// 	}
+	// 	} /* End of stage 1 */
+	// else if (Flag.Start_duty2_1) //(2) A -> B 30s
+	// {
 
-		Flag.Start_Car = 1;
-		Flag.Success_duty2_1 = 0;
-		auto_track(point_actual, point_B);
-		if (gray_state.state) // L < distance||
-		{
-			gray_cnt++;
-			if (gray_cnt > 5 && L < distance)
-			{
-				gray_cnt = 0;
-				Start_duty3_3_cnt = Num2;
-				Flag.beep_on = 1;
-				//	Flag.Start_Car  = 0;
-				Flag.Start_duty2_1 = 0;
-				Flag.Success_duty2_1 = 1;
-			}
-			else
-			{
-				v_target_l = 15;
-				v_target_r = 15;
-			}
-		}
-	}
-		else if (Flag.Start_duty2_7 == 1) // Stage 2: Stop
-	{
-		// Flag.Start_Car  = 1;
-		Flag.Success_duty2_7 = 0;
-		v_target_l = 0;
-		v_target_r = 0;
-		duty3_8_cnt++;
-			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
-		{
-			duty3_8_cnt = 0;
-			Flag.Start_duty2_7 = 0;
-			Flag.Success_duty2_7 = 1;
-		}
-	}
-		else if (Flag.Start_duty2_2 == 1) //(2) B -> C 30s tracking
-	{
-		// speed_setup = 70;
-		Flag.Start_Car = 1;
-		Flag.Success_duty2_2 = 0;
-			sdk_duty_run(point_actual, point_A); // Get speed target values
-		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0])) < distance) //||sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0]))<distance
-		{
-			Flag.beep_on = 1;
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty2_1 = 0;
+	// 	auto_track(point_actual, point_B);
+	// 	if (gray_state.state) // L < distance||
+	// 	{
+	// 		gray_cnt++;
+	// 		if (gray_cnt > 5 && L < distance)
+	// 		{
+	// 			gray_cnt = 0;
+	// 			Start_duty3_3_cnt = Num2;
+	// 			Flag.beep_on = 1;
+	// 			//	Flag.Start_Car  = 0;
+	// 			Flag.Start_duty2_1 = 0;
+	// 			Flag.Success_duty2_1 = 1;
+	// 		}
+	// 		else
+	// 		{
+	// 			v_target_l = 15;
+	// 			v_target_r = 15;
+	// 		}
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty2_7 == 1) // Stage 2: Stop
+	// {
+	// 	// Flag.Start_Car  = 1;
+	// 	Flag.Success_duty2_7 = 0;
+	// 	v_target_l = 0;
+	// 	v_target_r = 0;
+	// 	duty3_8_cnt++;
+	// 		if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
+	// 	{
+	// 		duty3_8_cnt = 0;
+	// 		Flag.Start_duty2_7 = 0;
+	// 		Flag.Success_duty2_7 = 1;
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty2_2 == 1) //(2) B -> C 30s tracking
+	// {
+	// 	// speed_setup = 70;
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty2_2 = 0;
+	// 		sdk_duty_run(point_actual, point_A); // Get speed target values
+	// 	if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0])) < distance) //||sqrt((point_C[1] - point_actual[1]) * (point_C[1] - point_actual[1]) + (point_C[0] - point_actual[0]) * (point_C[0] - point_actual[0]))<distance
+	// 	{
+	// 		Flag.beep_on = 1;
 
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty2_2 = 0;
-			Flag.Success_duty2_2 = 1;
-		}
-	}
-		else if (Flag.Start_duty2_3) //(2) Calibrate angle at point C
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty2_3 = 0;
-		// Yaw_control(-180);
-		v_target_l = 5;
-		v_target_r = -5;
-		if (angle.z < -178 || angle.z > 179)
-		{
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty2_2 = 0;
+	// 		Flag.Success_duty2_2 = 1;
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty2_3) //(2) Calibrate angle at point C
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty2_3 = 0;
+	// 	// Yaw_control(-180);
+	// 	v_target_l = 5;
+	// 	v_target_r = -5;
+	// 	if (angle.z < -178 || angle.z > 179)
+	// 	{
 
-			Flag.Start_duty2_3 = 0;
-			Flag.Success_duty2_3 = 1;
-			//	Flag.Start_Car  = 0;
-		}
-	}
-	else if (Flag.Start_duty2_4) //(2)  C -> D 30s
-	{
-		Flag.Start_Car = 1;
+	// 		Flag.Start_duty2_3 = 0;
+	// 		Flag.Success_duty2_3 = 1;
+	// 		//	Flag.Start_Car  = 0;
+	// 	}
+	// }
+	// else if (Flag.Start_duty2_4) //(2)  C -> D 30s
+	// {
+	// 	Flag.Start_Car = 1;
 
-		Flag.Success_duty2_4 = 0;
+	// 	Flag.Success_duty2_4 = 0;
 
-		auto_track(point_actual, point_D);
-		if (gray_state.state) // L < distance||
-		{
-			gray_cnt++;
-			if (gray_cnt > 5 && L < distance)
-			{
-				gray_cnt = 0;
-				Start_duty3_3_cnt = Num2;
-				Flag.beep_on = 1;
+	// 	auto_track(point_actual, point_D);
+	// 	if (gray_state.state) // L < distance||
+	// 	{
+	// 		gray_cnt++;
+	// 		if (gray_cnt > 5 && L < distance)
+	// 		{
+	// 			gray_cnt = 0;
+	// 			Start_duty3_3_cnt = Num2;
+	// 			Flag.beep_on = 1;
 
-				// Flag.Start_Car  = 0;
-				v_target_l = 0;
-				v_target_r = 0;
-				Flag.Start_duty2_4 = 0;
-				Flag.Success_duty2_4 = 1;
-			}
-			else
-			{
-				v_target_l = 15;
-				v_target_r = 15;
-			}
-		}
-	}
-		else if (Flag.Start_duty2_6 == 1) // Stage 2: Stop
-	{
-		// Flag.Start_Car  = 1;
-		Flag.Success_duty2_6 = 0;
-		v_target_l = 0;
-		v_target_r = 0;
-		duty3_8_cnt++;
-			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
-		{
-			duty3_8_cnt = 0;
-			Flag.Start_duty2_6 = 0;
-			Flag.Success_duty2_6 = 1;
-		}
-	}
-		else if (Flag.Start_duty2_5) // Stage 2: D -> A 30s
-	{
-		// speed_setup = 70;
-		Flag.Start_Car = 1;
-		Flag.Success_duty2_5 = 0;
-			sdk_duty_run(point_actual, point_A); // Get speed target values
-		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0])) < distance) //||sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
-		{
-			v_target_l = 0;
-			v_target_r = 0;
-			Flag.gray_worse = 0;
-			Flag.beep_on = 1;
+	// 			// Flag.Start_Car  = 0;
+	// 			v_target_l = 0;
+	// 			v_target_r = 0;
+	// 			Flag.Start_duty2_4 = 0;
+	// 			Flag.Success_duty2_4 = 1;
+	// 		}
+	// 		else
+	// 		{
+	// 			v_target_l = 15;
+	// 			v_target_r = 15;
+	// 		}
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty2_6 == 1) // Stage 2: Stop
+	// {
+	// 	// Flag.Start_Car  = 1;
+	// 	Flag.Success_duty2_6 = 0;
+	// 	v_target_l = 0;
+	// 	v_target_r = 0;
+	// 	duty3_8_cnt++;
+	// 		if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
+	// 	{
+	// 		duty3_8_cnt = 0;
+	// 		Flag.Start_duty2_6 = 0;
+	// 		Flag.Success_duty2_6 = 1;
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty2_5) // Stage 2: D -> A 30s
+	// {
+	// 	// speed_setup = 70;
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty2_5 = 0;
+	// 		sdk_duty_run(point_actual, point_A); // Get speed target values
+	// 	if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0])) < distance) //||sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
+	// 	{
+	// 		v_target_l = 0;
+	// 		v_target_r = 0;
+	// 		Flag.gray_worse = 0;
+	// 		Flag.beep_on = 1;
 
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty2_5 = 0;
-			Flag.Success_duty2_5 = 1;
-		}
-		} /* End of stage 2 */
-		else if (Flag.Start_duty3_0 == 1) //(3) Send3_Step = -1
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_0 = 0;
-		v_target_l = 40;
-		v_target_r = -30;
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty2_5 = 0;
+	// 		Flag.Success_duty2_5 = 1;
+	// 	}
+	// 	} /* End of stage 2 */
+	// 	else if (Flag.Start_duty3_0 == 1) //(3) Send3_Step = -1
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_0 = 0;
+	// 	v_target_l = 40;
+	// 	v_target_r = -30;
 
-		if (ABS(angle.z) > 30)
-		{
-			Start_duty3_3_cnt = Num2;
-			gray_cnt = 0;
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty3_0 = 0;
-			Flag.Success_duty3_0 = 1;
-		}
-	}
-		else if (Flag.Start_duty3_1 == 1) // Stage 3: A -> C 40s, Send3_Step = 0
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_1 = 0;
-		auto_track(point_actual, point_C);
-		//		if(L < distance || ABS(gray_status) <= 10)
-		//	if(L < distance ||Flag.gray_worse == 0)
-			if (gray_state.state && ((Num2 - Start_duty3_3_cnt) > 1)) // Detected horizontal line, stop
-		{
-			gray_cnt++;
-			if (L < distance && gray_cnt > 2)
-			{
-				gray_cnt = 0;
-				Flag.yaw_loss_ahead = 0;
-				//			v_target_l = 0;
-				//			v_target_r = 0;
-				Flag.yaw_loss = 0;
-				Flag.beep_on = 1;
-				Start_duty3_3_cnt = Num2;
-				// Flag.Start_Car  = 0;
-				Flag.Start_duty3_1 = 0;
-				Flag.Success_duty3_1 = 1;
-			}
-		}
-		else if (L < 5.f)
-		{
-			if (Flag.yaw_loss == 0)
-			{
-				Flag.yaw_loss = 1;
-				yaw_angle = angle.z;
-			}
-			if ((yaw_angle - angle.z) < 10 && (yaw_angle - angle.z) > 0)
-			{
-				Flag.yaw_loss_ahead = 1;
-			}
-			if (Flag.yaw_loss_ahead)
-			{
-				v_target_l = 10;
-				v_target_r = 15;
-			}
-			else
-			{
-				v_target_l = -10;
-				v_target_r = 10;
-			}
-		}
-	}
-		else if (Flag.Start_duty3_5 == 1) //(3) Before tracking at point C, Send3_Step = 4
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_5 = 0;
-		v_target_l = -10;
-		v_target_r = 15;
-		//		Flag.beep_on = 1;
-		if (gray_state.state) //(gray_state.state <8 && gray_state.state!= 0)
-		{
-			gray_cnt = 0;
+	// 	if (ABS(angle.z) > 30)
+	// 	{
+	// 		Start_duty3_3_cnt = Num2;
+	// 		gray_cnt = 0;
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty3_0 = 0;
+	// 		Flag.Success_duty3_0 = 1;
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty3_1 == 1) // Stage 3: A -> C 40s, Send3_Step = 0
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_1 = 0;
+	// 	auto_track(point_actual, point_C);
+	// 	//		if(L < distance || ABS(gray_status) <= 10)
+	// 	//	if(L < distance ||Flag.gray_worse == 0)
+	// 		if (gray_state.state && ((Num2 - Start_duty3_3_cnt) > 1)) // Detected horizontal line, stop
+	// 	{
+	// 		gray_cnt++;
+	// 		if (L < distance && gray_cnt > 2)
+	// 		{
+	// 			gray_cnt = 0;
+	// 			Flag.yaw_loss_ahead = 0;
+	// 			//			v_target_l = 0;
+	// 			//			v_target_r = 0;
+	// 			Flag.yaw_loss = 0;
+	// 			Flag.beep_on = 1;
+	// 			Start_duty3_3_cnt = Num2;
+	// 			// Flag.Start_Car  = 0;
+	// 			Flag.Start_duty3_1 = 0;
+	// 			Flag.Success_duty3_1 = 1;
+	// 		}
+	// 	}
+	// 	else if (L < 5.f)
+	// 	{
+	// 		if (Flag.yaw_loss == 0)
+	// 		{
+	// 			Flag.yaw_loss = 1;
+	// 			yaw_angle = angle.z;
+	// 		}
+	// 		if ((yaw_angle - angle.z) < 10 && (yaw_angle - angle.z) > 0)
+	// 		{
+	// 			Flag.yaw_loss_ahead = 1;
+	// 		}
+	// 		if (Flag.yaw_loss_ahead)
+	// 		{
+	// 			v_target_l = 10;
+	// 			v_target_r = 15;
+	// 		}
+	// 		else
+	// 		{
+	// 			v_target_l = -10;
+	// 			v_target_r = 10;
+	// 		}
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty3_5 == 1) //(3) Before tracking at point C, Send3_Step = 4
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_5 = 0;
+	// 	v_target_l = -10;
+	// 	v_target_r = 15;
+	// 	//		Flag.beep_on = 1;
+	// 	if (gray_state.state) //(gray_state.state <8 && gray_state.state!= 0)
+	// 	{
+	// 		gray_cnt = 0;
 
-			//			Flag.beep_on = 1;
-			Start_duty3_3_cnt = Num2;
-			v_target_l = 0;
-			v_target_r = 0;
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty3_5 = 0;
-			Flag.Success_duty3_5 = 1;
-		}
-	}
-		// Stop at point C for 500ms
-		else if (Flag.Start_duty3_8 == 1) // Stage 3: A -> C 40s, Send3_Step = 7
-	{
-		Flag.Success_duty3_8 = 0;
-		v_target_l = 0;
-		v_target_r = 0;
-		duty3_8_cnt++;
-			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
-		{
-			gray_cnt = 0;
+	// 		//			Flag.beep_on = 1;
+	// 		Start_duty3_3_cnt = Num2;
+	// 		v_target_l = 0;
+	// 		v_target_r = 0;
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty3_5 = 0;
+	// 		Flag.Success_duty3_5 = 1;
+	// 	}
+	// }
+	// 	// Stop at point C for 500ms
+	// 	else if (Flag.Start_duty3_8 == 1) // Stage 3: A -> C 40s, Send3_Step = 7
+	// {
+	// 	Flag.Success_duty3_8 = 0;
+	// 	v_target_l = 0;
+	// 	v_target_r = 0;
+	// 	duty3_8_cnt++;
+	// 		if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
+	// 	{
+	// 		gray_cnt = 0;
 
-			duty3_8_cnt = 0;
-			Flag.Start_duty3_8 = 0;
-			Flag.Success_duty3_8 = 1;
-		}
-	}
-	else if (Flag.Start_duty3_2 == 1) //(3) C -> B 40s Send3_Step = 1
-	{
-		// speed_setup = 70;
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_2 = 0;
-			sdk_duty_run(point_actual, point_B); // Get speed target values
-		//		if( distance_inter >= 105 + distance_point)
-		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && (sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0])) < distance)) //||sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0]))<distance
-		{
-			Flag.gray_worse = 0;
-			Flag.beep_on = 1;
-			gray_cnt = 0;
+	// 		duty3_8_cnt = 0;
+	// 		Flag.Start_duty3_8 = 0;
+	// 		Flag.Success_duty3_8 = 1;
+	// 	}
+	// }
+	// else if (Flag.Start_duty3_2 == 1) //(3) C -> B 40s Send3_Step = 1
+	// {
+	// 	// speed_setup = 70;
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_2 = 0;
+	// 		sdk_duty_run(point_actual, point_B); // Get speed target values
+	// 	//		if( distance_inter >= 105 + distance_point)
+	// 	if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1) && (sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0])) < distance)) //||sqrt((point_B[1] - point_actual[1]) * (point_B[1] - point_actual[1]) + (point_B[0] - point_actual[0]) * (point_B[0] - point_actual[0]))<distance
+	// 	{
+	// 		Flag.gray_worse = 0;
+	// 		Flag.beep_on = 1;
+	// 		gray_cnt = 0;
 
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty3_2 = 0;
-			Flag.Success_duty3_2 = 1;
-			Start_duty3_3_cnt = Num2;
-		}
-		//		else if(L < 7.5)
-		//			{
-		//				v_target_l = 5;
-		//				v_target_r = -5;
-		//			}
-	}
-		else if (Flag.Start_duty3_7 == 1) //(3) Before right-angle tracking, align chassis, Send3_Step = 6
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_7 = 0;
-		v_target_l = -30;
-		v_target_r = 40;
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty3_2 = 0;
+	// 		Flag.Success_duty3_2 = 1;
+	// 		Start_duty3_3_cnt = Num2;
+	// 	}
+	// 	//		else if(L < 7.5)
+	// 	//			{
+	// 	//				v_target_l = 5;
+	// 	//				v_target_r = -5;
+	// 	//			}
+	// }
+	// 	else if (Flag.Start_duty3_7 == 1) //(3) Before right-angle tracking, align chassis, Send3_Step = 6
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_7 = 0;
+	// 	v_target_l = -30;
+	// 	v_target_r = 40;
 
-		if (ABS(angle.z) < 150)
-		{
-			Start_duty3_3_cnt = Num2;
-			gray_cnt = 0;
+	// 	if (ABS(angle.z) < 150)
+	// 	{
+	// 		Start_duty3_3_cnt = Num2;
+	// 		gray_cnt = 0;
 
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty3_7 = 0;
-			Flag.Success_duty3_7 = 1;
-		}
-	}
-	else if (Flag.Start_duty3_3 == 1) //(3) B -> D 40s   Send3_Step = 8
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_3 = 0;
-		auto_track(point_actual, point_D);
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty3_7 = 0;
+	// 		Flag.Success_duty3_7 = 1;
+	// 	}
+	// }
+	// else if (Flag.Start_duty3_3 == 1) //(3) B -> D 40s   Send3_Step = 8
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_3 = 0;
+	// 	auto_track(point_actual, point_D);
 
-			if ((Num2 - Start_duty3_3_cnt) > 1 && gray_state.state) // Detected point D or horizontal line
-		{
-			gray_cnt++;
-			if (L < distance && gray_cnt > 2)
-			{
-				Flag.beep_on = 1;
-				gray_cnt = 0;
-				Flag.yaw_loss = 0;
+	// 		if ((Num2 - Start_duty3_3_cnt) > 1 && gray_state.state) // Detected point D or horizontal line
+	// 	{
+	// 		gray_cnt++;
+	// 		if (L < distance && gray_cnt > 2)
+	// 		{
+	// 			Flag.beep_on = 1;
+	// 			gray_cnt = 0;
+	// 			Flag.yaw_loss = 0;
 
-				Flag.Start_duty3_3 = 0;
-				Flag.Success_duty3_3 = 1;
-				Start_duty3_3_cnt = Num2;
-			}
-		}
-		else if (L < 5.f)
-		{
-			if (Flag.yaw_loss == 0)
-			{
-				Flag.yaw_loss = 1;
-				yaw_angle = angle.z;
-			}
-			float err = (yaw_angle - angle.z);
-			if (err > 180)
-			{
-				err -= 360;
-			}
-			if (err < 0 && err > -10)
-			{
-				Flag.yaw_loss_ahead = 1;
-			}
-			if (Flag.yaw_loss_ahead)
-			{
-				v_target_l = 15;
-				v_target_r = 10;
-			}
-			else
-			{
-				v_target_l = 10;
-				v_target_r = -10;
-			}
-		}
-	}
-		else if (Flag.Start_duty3_6 == 1) //(3) Before tracking at point D, Send3_Step = 2
-	{
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_6 = 0;
-		v_target_l = 15;
-		v_target_r = -10;
-		if (gray_state.state) // gray_state.state <8 && gray_state.state!= 0
-		{
-			gray_cnt = 0;
+	// 			Flag.Start_duty3_3 = 0;
+	// 			Flag.Success_duty3_3 = 1;
+	// 			Start_duty3_3_cnt = Num2;
+	// 		}
+	// 	}
+	// 	else if (L < 5.f)
+	// 	{
+	// 		if (Flag.yaw_loss == 0)
+	// 		{
+	// 			Flag.yaw_loss = 1;
+	// 			yaw_angle = angle.z;
+	// 		}
+	// 		float err = (yaw_angle - angle.z);
+	// 		if (err > 180)
+	// 		{
+	// 			err -= 360;
+	// 		}
+	// 		if (err < 0 && err > -10)
+	// 		{
+	// 			Flag.yaw_loss_ahead = 1;
+	// 		}
+	// 		if (Flag.yaw_loss_ahead)
+	// 		{
+	// 			v_target_l = 15;
+	// 			v_target_r = 10;
+	// 		}
+	// 		else
+	// 		{
+	// 			v_target_l = 10;
+	// 			v_target_r = -10;
+	// 		}
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty3_6 == 1) //(3) Before tracking at point D, Send3_Step = 2
+	// {
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_6 = 0;
+	// 	v_target_l = 15;
+	// 	v_target_r = -10;
+	// 	if (gray_state.state) // gray_state.state <8 && gray_state.state!= 0
+	// 	{
+	// 		gray_cnt = 0;
 
-			v_target_l = 0;
-			v_target_r = 0;
-			Start_duty3_3_cnt = Num2;
-			//			Flag.beep_on = 1;
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty3_6 = 0;
-			Flag.Success_duty3_6 = 1;
-		}
-	}
-		else if (Flag.Start_duty3_9 == 1) // Stage 3: A -> C 40s, Send3_Step = 5
-	{
-		Flag.Success_duty3_9 = 0;
-		v_target_l = 0;
-		v_target_r = 0;
-		duty3_8_cnt++;
-			if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
-		{
-			gray_cnt = 0;
+	// 		v_target_l = 0;
+	// 		v_target_r = 0;
+	// 		Start_duty3_3_cnt = Num2;
+	// 		//			Flag.beep_on = 1;
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty3_6 = 0;
+	// 		Flag.Success_duty3_6 = 1;
+	// 	}
+	// }
+	// 	else if (Flag.Start_duty3_9 == 1) // Stage 3: A -> C 40s, Send3_Step = 5
+	// {
+	// 	Flag.Success_duty3_9 = 0;
+	// 	v_target_l = 0;
+	// 	v_target_r = 0;
+	// 	duty3_8_cnt++;
+	// 		if (duty3_8_cnt > sleep_time) // Detected horizontal line, stop for 200ms
+	// 	{
+	// 		gray_cnt = 0;
 
-			duty3_8_cnt = 0;
-			Flag.Start_duty3_9 = 0;
-			Flag.Success_duty3_9 = 1;
-		}
-	}
+	// 		duty3_8_cnt = 0;
+	// 		Flag.Start_duty3_9 = 0;
+	// 		Flag.Success_duty3_9 = 1;
+	// 	}
+	// }
 
-	else if (Flag.Start_duty3_4 == 1) //(3) D -> A 40s Send3_Step = 3
-	{
-		// speed_setup = 70;
-		Flag.Start_Car = 1;
-		Flag.Success_duty3_4 = 0;
-			sdk_duty_run(point_actual, point_A); // Get speed target values
-		//		if( distance_inter >= 105 + distance_point)
-		if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1)) // &&sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
-		{
-			gray_cnt = 0;
+	// else if (Flag.Start_duty3_4 == 1) //(3) D -> A 40s Send3_Step = 3
+	// {
+	// 	// speed_setup = 70;
+	// 	Flag.Start_Car = 1;
+	// 	Flag.Success_duty3_4 = 0;
+	// 		sdk_duty_run(point_actual, point_A); // Get speed target values
+	// 	//		if( distance_inter >= 105 + distance_point)
+	// 	if (((Num2 - Start_duty3_3_cnt) > 1 && Flag.gray_worse == 1)) // &&sqrt((point_A[1] - point_actual[1]) * (point_A[1] - point_actual[1]) + (point_A[0] - point_actual[0]) * (point_A[0] - point_actual[0]))<distance
+	// 	{
+	// 		gray_cnt = 0;
 
-			Flag.gray_worse = 0;
-			Flag.beep_on = 1;
-			v_target_l = 0;
-			v_target_r = 0;
-			// Flag.Start_Car  = 0;
-			Flag.Start_duty3_4 = 0;
-			Flag.Success_duty3_4 = 1;
-		}
-	}
+	// 		Flag.gray_worse = 0;
+	// 		Flag.beep_on = 1;
+	// 		v_target_l = 0;
+	// 		v_target_r = 0;
+	// 		// Flag.Start_Car  = 0;
+	// 		Flag.Start_duty3_4 = 0;
+	// 		Flag.Success_duty3_4 = 1;
+	// 	}
+	// }
 
-	/* PID tuning test mode - bypasses duty state machine */
-	if (Flag.pid_tuning)
-	{
-		Flag.Start_Car = 1;
-		v_target_l = 20;  /* Reduced test speed to avoid surge */
-		v_target_r = 20;
-	}
-	else
-	{
-		Flag.Start_Car = 0;
-		v_target_l = 0;
-		v_target_r = 0;
-	}
+	// /* PID tuning test mode - bypasses duty state machine */
+	// if (Flag.pid_tuning)
+	// {
+	// 	/* Direct PWM output, bypassing PID, for hardware debug */
+	// 	Set_Pwm_Debug(2000, 2000);  /* 200 = ~50% duty at 10kHz, adjust as needed */
+	// }
 
-	get_wheel_speed(); // Get wheel speed
-	speed_control();   // Speed loop
-	nmotor_output();   // Motor output
+	// get_wheel_speed(); // Get wheel speed
+	// speed_control();   // Speed loop
+	// nmotor_output();   // Motor output
 
-		/* Speed loop */
-		get_wheel_speed(); // Get wheel speed
-		//	speed_control();     // Speed loop
-	//	nmotor_output();
+	// 	/* Speed loop */
+	// 	get_wheel_speed(); // Get wheel speed
+	// 	//	speed_control();     // Speed loop
+	// //	nmotor_output();
 
-		/* Cascaded speed-position */
-		get_wheel_speed(); // Get wheel speed
-		//	position_control();  // Get speed target values
-		//	speed_control();     // Speed loop
-	//	nmotor_output();
+	// 	/* Cascaded speed-position */
+	// 	get_wheel_speed(); // Get wheel speed
+	// 	//	position_control();  // Get speed target values
+	// 	//	speed_control();     // Speed loop
+	// //	nmotor_output();
 
-		/* Yaw/angle loop */
-	//	Yaw_control(yaw_target);
-		get_wheel_speed(); // Get wheel speed
-		//	speed_control();     // Speed loop
-	//	nmotor_output();
+	// 	/* Yaw/angle loop */
+	// //	Yaw_control(yaw_target);
+	// 	get_wheel_speed(); // Get wheel speed
+	// 	//	speed_control();     // Speed loop
+	// //	nmotor_output();
 
-		/* Gray sensor tracking car */
-		get_wheel_speed(); // Get wheel speed
-	//		sdk_duty_run();
-	//		nmotor_output();
+	// 	/* Gray sensor tracking car */
+	// 	get_wheel_speed(); // Get wheel speed
+	// //		sdk_duty_run();
+	// //		nmotor_output();
 
-		/* Camera tracking car */
-		get_wheel_speed(); // Get wheel speed
-	//		//sdk_duty_run();
-	//		openmv_duty_run();
-	//		nmotor_output();
+	// 	/* Camera tracking car */
+	// 	get_wheel_speed(); // Get wheel speed
+	// //		//sdk_duty_run();
+	// //		openmv_duty_run();
+	// //		nmotor_output();
 }

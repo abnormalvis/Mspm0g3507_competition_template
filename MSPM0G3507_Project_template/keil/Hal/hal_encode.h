@@ -34,11 +34,12 @@ typedef struct
 	
 }encoder;
 
-#define pulse_num_per_circle 2114.0f // 2x resolution: 1057 CPR * 2 = 2114  
+#define pulse_num_per_circle 28000.0f // 500 lines * 2x factor * 1:28 gear ratio = 28000 pulses/rev  
 
 #define left_motor_period_ms 10.0f // Left motor sampling period (ms)
 #define right_motor_period_ms 10.0f // Right motor sampling period (ms)
-
+#define motor_countint_phases 2
+#define motor_reduction_ratio 28
 extern float wheel_radius_cm;
 
 #define pi 3.1415f
@@ -50,6 +51,7 @@ extern float point_A[2],point_B[2],point_C[2],point_D[2],point_actual[2];
 extern int32_t enc_cnt[2]; // Raw encoder count for debugging
 void hal_Encoder_Init(void);
 void get_wheel_speed(void);
+float convert_current_rpm_to_cms(int Encoder_lines, int Encoder_counts, int Phases, int Reduction_ratio, float wheel_radius_cms);
 //void encoder_read(int32_t *a,int32_t *b);
 //void encoder_read_l(int32_t *l);
 //void encoder_read_r(int32_t *r);

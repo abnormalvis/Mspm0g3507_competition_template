@@ -7,8 +7,7 @@
 
 #include "stdint.h"
 
-#define VOFA_FLOAT_NUM   10
-#define VOFA_PARAM_MAX  16
+#define VOFA_PARAM_MAX  20
 
 /* VOFA parameter ID definitions */
 /* Speed loop PID */
@@ -28,25 +27,23 @@
 #define VOFA_PARAM_SEEK_TARGET   12
 #define VOFA_PARAM_WHEEL_RADIUS  13
 #define VOFA_PARAM_SPEED_FILTER  14   /* speed loop low-pass filter alpha (0~1] */
+/* Position loop PID */
+#define VOFA_PARAM_POSITION_KP   15
+#define VOFA_PARAM_POSITION_KI   16
+#define VOFA_PARAM_POSITION_KD   17
+#define VOFA_PARAM_POSITION_TARGET 18
+/* VOFA runtime control */
+#define VOFA_PARAM_MODE_FLAGS    19
+#define VOFA_PARAM_TUNE_TYPE     20
 
-void vofa_add_data(float data);
-void vofa_send(void);
+typedef void (*vofa_param_callback_t)(uint16_t id, float value, void *user);
+
 void vofa_param_init(void);
+void vofa_register_param_callback(vofa_param_callback_t callback, void *user);
 uint8_t vofa_get_param_id(void);
 uint8_t vofa_peek_param_id(void);
 uint8_t vofa_has_param_update(void);
 float vofa_get_param_value(uint8_t id);
 void vofa_uart_rx_callback(uint8_t byte);
-
-/* Send feedback data to VOFA for tuning */
-void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, float kp, float ki, float kd);
-void vofa_send_angle_feedback(float target, float actual);
-void vofa_send_seek_feedback(float target, float actual);
-void vofa_debug_enable(uint8_t enable);
-void vofa_set_debug_mode(uint8_t mode);
-uint8_t vofa_get_debug_mode(void);
-uint8_t vofa_get_speed_pid(float *kp, float *ki, float *kd);  /* returns bitmask: 1=KP, 2=KI, 4=KD */
-float vofa_get_speed_target(void);
-float vofa_peek_speed_target(void);
 
 #endif //VOFA_H

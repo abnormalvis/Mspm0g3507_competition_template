@@ -9,9 +9,6 @@
 #include "hal_uart.h"
 #include "hal_encode.h"
 
-static uint8_t vofa_buffer[VOFA_FLOAT_NUM*4+4];
-static uint16_t cnt = 0;
-
 /* VOFA parameter receive related */
 static uint8_t vofa_rx_buffer[32];
 static uint8_t vofa_rx_index = 0;
@@ -20,75 +17,18 @@ static uint8_t vofa_last_param_id = 0;
 static uint8_t vofa_param_update = 0;
 static float vofa_params[VOFA_PARAM_MAX + 1] = {0};
 
-/* Debug mode: only send feedback when enabled */
-static uint8_t vofa_debug_enabled = 0;
-static uint8_t vofa_send_counter = 0;
-static uint8_t vofa_send_mode = 0;  /* 0=off, 1=speed, 2=angle, 3=seek */
-
-/* Pending PID parameters to apply - per-parameter flags to avoid clearing unset values */
-static float vofa_pending_kp = 0.0f;
-static float vofa_pending_ki = 0.0f;
-static float vofa_pending_kd = 0.0f;
-static uint8_t vofa_kp_pending = 0;
-static uint8_t vofa_ki_pending = 0;
-static uint8_t vofa_kd_pending = 0;
-
-/* Set VOFA debug mode:
-   mode: 0=off, 1=speed loop, 2=angle loop, 3=seek loop */
-void vofa_set_debug_mode(uint8_t mode)
-{
-    vofa_send_mode = mode;
-    vofa_debug_enabled = (mode > 0) ? 1 : 0;
-    vofa_send_counter = 0;
-}
-
-/* Get current debug mode */
-uint8_t vofa_get_debug_mode(void)
-{
-    return vofa_send_mode;
-}
-
-/* Enable/disable VOFA debug output */
-void vofa_debug_enable(uint8_t enable)
-{
-    vofa_debug_enabled = enable;
-    vofa_send_counter = 0;
-}
-
-void vofa_add_data(float data)
-{
-    vofa_buffer[cnt ++] = *((uint8_t *)(&data));
-    vofa_buffer[cnt ++] = *((uint8_t *)(&data)+1);
-    vofa_buffer[cnt ++] = *((uint8_t *)(&data)+2);
-    vofa_buffer[cnt ++] = *((uint8_t *)(&data)+3);
-}
-
-void vofa_send(void)
-{
-    vofa_buffer[cnt ++] = 0x00;
-    vofa_buffer[cnt ++] = 0x00;
-    vofa_buffer[cnt ++] = 0x80;
-    vofa_buffer[cnt ++] = 0x7f;
-
-    UART1_send(vofa_buffer, cnt);
-    cnt = 0;
-}
-
 void vofa_param_init(void)
 {
     vofa_rx_index = 0;
     vofa_rx_id = 0;
     vofa_last_param_id = 0;
     vofa_param_update = 0;
-    vofa_debug_enabled = 0;  /* Disabled by default */
-    vofa_send_mode = 0;
-    vofa_send_counter = 0;
-    vofa_pending_kp = 0.0f;
-    vofa_pending_ki = 0.0f;
-    vofa_pending_kd = 0.0f;
-    vofa_kp_pending = 0;
-    vofa_ki_pending = 0;
-    vofa_kd_pending = 0;
+}
+
+void vofa_register_param_callback(vofa_param_callback_t callback, void *user)
+{
+    (void)callback;
+    (void)user;
 }
 
 /* Parse value from receive buffer */
@@ -128,47 +68,25 @@ static float vofa_parse_float(uint8_t *buf, uint8_t len)
 
 static void vofa_store_received_value(void)
 {
-    if(vofa_rx_id > 0 && vofa_rx_id <= VOFA_PARAM_MAX)
+    float value = 0.0f;
+
+    if(vofa_rx_id == 99)
     {
-        vofa_params[vofa_rx_id] = vofa_parse_float(vofa_rx_buffer, vofa_rx_index);
+        /* Debug mode command - value parsed but not used (debug mode functions removed) */
         vofa_last_param_id = vofa_rx_id;
         vofa_param_update = 1;
-
-        /* Mark pending if KP, KI or KD */
-        if(vofa_rx_id == VOFA_PARAM_SPEED_KP)
-        {
-            vofa_pending_kp = vofa_params[vofa_rx_id];
-            vofa_kp_pending = 1;
-        }
-        else if(vofa_rx_id == VOFA_PARAM_SPEED_KI)
-        {
-            vofa_pending_ki = vofa_params[vofa_rx_id];
-            vofa_ki_pending = 1;
-        }
-        else if(vofa_rx_id == VOFA_PARAM_SPEED_KD)
-        {
-            vofa_pending_kd = vofa_params[vofa_rx_id];
-            vofa_kd_pending = 1;
-        }
-
+    }
+    else if(vofa_rx_id > 0 && vofa_rx_id <= VOFA_PARAM_MAX)
+    {
+        value = vofa_parse_float(vofa_rx_buffer, vofa_rx_index);
+        vofa_params[vofa_rx_id] = value;
+        vofa_last_param_id = vofa_rx_id;
+        vofa_param_update = 1;
     }
 
     if(vofa_rx_id == VOFA_PARAM_WHEEL_RADIUS)
     {
         wheel_radius_cm = vofa_params[vofa_rx_id];
-    }
-
-    if(vofa_rx_id == VOFA_PARAM_SPEED_FILTER)
-    {
-        /* Filter alpha stored in vofa_params[14], read by speed_control */
-    }
-
-    if(vofa_rx_id == 99)
-    {
-        uint8_t mode = (uint8_t)vofa_parse_float(vofa_rx_buffer, vofa_rx_index);
-        vofa_set_debug_mode(mode);
-        vofa_last_param_id = vofa_rx_id;
-        vofa_param_update = 1;
     }
 
     vofa_rx_index = 0;
@@ -267,104 +185,6 @@ float vofa_get_param_value(uint8_t id)
     if(id >= 1 && id <= VOFA_PARAM_MAX)
     {
         return vofa_params[id];
-    }
-    return 0.0f;
-}
-
-/* Send speed loop data to VOFA - 6 channels: target, actual_L, actual_R, kp, ki, kd */
-void vofa_send_speed_feedback(float target_l, float actual_l, float actual_r, float kp, float ki, float kd)
-{
-    if(!vofa_debug_enabled || vofa_send_mode != 1) return;
-
-    /* Throttle: send every 3rd call (30ms) to avoid blocking ISR too long */
-    if(++vofa_send_counter < 3) return;
-    vofa_send_counter = 0;
-
-    vofa_add_data(target_l);
-    vofa_add_data(actual_l);
-    vofa_add_data(actual_r);
-    vofa_add_data(kp);
-    vofa_add_data(ki);
-    vofa_add_data(kd);
-    vofa_send();
-}
-
-/* Send angle loop data to VOFA */
-void vofa_send_angle_feedback(float target, float actual)
-{
-    if(!vofa_debug_enabled || vofa_send_mode != 2) return;
-
-    if(++vofa_send_counter < 3) return;
-    vofa_send_counter = 0;
-
-    vofa_add_data(target);
-    vofa_add_data(actual);
-    vofa_send();
-}
-
-/* Send seektrack loop data to VOFA */
-void vofa_send_seek_feedback(float target, float actual)
-{
-    if(!vofa_debug_enabled || vofa_send_mode != 3) return;
-
-    if(++vofa_send_counter < 3) return;
-    vofa_send_counter = 0;
-
-    vofa_add_data(target);
-    vofa_add_data(actual);
-    vofa_send();
-}
-
-/* Get speed PID parameters - returns bitmask: bit0=KP, bit1=KI, bit2=KD, 0=nothing */
-uint8_t vofa_get_speed_pid(float *kp, float *ki, float *kd)
-{
-    uint8_t result = 0;
-
-    if(vofa_kp_pending)
-    {
-        if(kp) *kp = vofa_pending_kp;
-        vofa_pending_kp = 0.0f;
-        vofa_kp_pending = 0;
-        result |= 1;
-    }
-
-    if(vofa_ki_pending)
-    {
-        if(ki) *ki = vofa_pending_ki;
-        vofa_pending_ki = 0.0f;
-        vofa_ki_pending = 0;
-        result |= 2;
-    }
-
-    if(vofa_kd_pending)
-    {
-        if(kd) *kd = vofa_pending_kd;
-        vofa_pending_kd = 0.0f;
-        vofa_kd_pending = 0;
-        result |= 4;
-    }
-
-    return result;
-}
-
-/* Check if new speed target received */
-float vofa_get_speed_target(void)
-{
-    if(vofa_param_update && vofa_last_param_id == VOFA_PARAM_SPEED_TARGET)
-    {
-        float target = vofa_params[VOFA_PARAM_SPEED_TARGET];
-        vofa_param_update = 0;  /* Clear flag after reading */
-        return target;
-    }
-    return 0.0f;
-}
-
-/* Get latest speed target without clearing - for continuous display */
-float vofa_peek_speed_target(void)
-{
-    if(vofa_last_param_id == VOFA_PARAM_SPEED_TARGET)
-    {
-        return vofa_params[VOFA_PARAM_SPEED_TARGET];
     }
     return 0.0f;
 }

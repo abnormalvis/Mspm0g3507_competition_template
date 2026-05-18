@@ -237,7 +237,6 @@ static void menuInit(void)
 int key_count;    //Key value
 int task_num = 0;
 char stop_task = 0;
-static uint16_t gray_vofa_send_cnt = 0;
 
 float pwm_x0 = 1950,pwm_y0 = 1050;	//Reset position PWM
 float pwm_x1 = 1950,pwm_y1 = 1050;	//Perimeter top-left corner PWM
@@ -2194,47 +2193,11 @@ static void stg3Menu_Para8CBS(void)
 }
 void AppProc(void)
 {
-	/* Toggle PID tuning mode: press KEY1 then KEY2 quickly */
-	if (pModeMenu->keyVal == KEY1_CLICK_RELEASE)
-	{
-		Flag.pid_tuning = 1;
-		Flag.Start_duty_1 = 0;
-		Flag.Start_duty2_1 = 0;
-		Flag.Start_duty2_2 = 0;
-		Flag.Start_duty3_1 = 0;
-		Flag.Start_duty3_2 = 0;
-		Flag.Start_duty3_3 = 0;
-		Flag.Start_duty3_4 = 0;
-	}
-	else if (pModeMenu->keyVal == KEY2_CLICK_RELEASE && Flag.pid_tuning)
-	{
-		Flag.pid_tuning = 0;
-	}
-
-	if(gray_sample_req)
+	if (gray_sample_req)
 	{
 		gray_sample_req = 0;
 		gray_8data_read();
-		gray_vofa_send_cnt++;
-		if(gray_vofa_send_cnt >= 10)
-		{
-			gray_vofa_send_cnt = 0;
-			/* Skip gray VOFA send when debug mode is active to avoid
-			   buffer race with speed_control() in TIMG0 ISR */
-			if(!vofa_get_debug_mode())
-			{
-				vofa_add_data(gray_status);
-				vofa_add_data((float)LQ_Tracking_Value[0]);
-				vofa_add_data((float)LQ_Tracking_Value[1]);
-				vofa_add_data((float)LQ_Tracking_Value[2]);
-				vofa_add_data((float)LQ_Tracking_Value[3]);
-				vofa_add_data((float)LQ_Tracking_Value[4]);
-				vofa_add_data((float)LQ_Tracking_Value[5]);
-				vofa_add_data((float)LQ_Tracking_Value[6]);
-				vofa_add_data((float)LQ_Tracking_Value[7]);
-				vofa_send();
-			}
-		}
+		/* Gray VOFA send removed - to be reimplemented by user */
 	}
 	pModeMenu->action();//Execute current menu service function in loop
 	//Equivalent to gnlMenu_Desktop1CBS() in current menu position

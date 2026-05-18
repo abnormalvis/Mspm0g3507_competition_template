@@ -9,6 +9,10 @@ void Motor_Backward_Left(uint16_t PWM_Hight);
 void Motor_Foreward_Right(uint16_t PWM_Hight);
 void Motor_Backward_Right(uint16_t PWM_Hight);
 void Motor_Stop_All(void);
+void Set_Pwm(int a, int b, int c, int d);
+
+/* Debug: force direct PWM output, bypass PID */
+void Set_Pwm_Debug(int left_duty, int right_duty);
 
 
 

@@ -172,7 +172,7 @@ void hal_KeyProc(void)
 		//
                 DS2024_duty2();// Competition state machine - stage 2
 	// Serial send
-		uartwork();
+		vofa_uart_poll(); // lightweight VOFA-only poll, bypasses seekfree assistant
 
 
 }

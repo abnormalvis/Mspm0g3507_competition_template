@@ -60,8 +60,9 @@ int main(void)
 	uart1_rx_register(vofa_uart_rx_callback);
 	fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);
 	vofa_param_init();
+	motor_init();
 
-	seekfree_assistant_init(); // Initialize seekfree assistant FIFO
+	// seekfree_assistant_init(); // Initialize seekfree assistant FIFO
 
 	AppInit();
 	Flag_Init();
@@ -69,6 +70,8 @@ int main(void)
 	OS_CreatTask(OS_TASK1,hal_KeyProc,1,OS_RUN);  // Task 1: periodic key scan
 
 	OS_CreatTask(OS_TASK2,AppProc,1,OS_RUN); // Task 2: multi-level menu
+
+	OS_CreatTask(OS_TASK3, vofa_task_10ms, 1, OS_RUN); // Task 3: VOFA parameter processing (10ms)
 
 	OS_Start(); // Main loop starts; everything above is initialization	
 }

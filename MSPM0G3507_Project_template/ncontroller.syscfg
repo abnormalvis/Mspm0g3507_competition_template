@@ -45,8 +45,14 @@ const ProjectConfig = scripting.addModule("/ti/project_config/ProjectConfig");
 /**
  * Write custom configuration values to the imported modules.
  */
+const divider5       = system.clockTree["PLL_CLK1_DIV"];
+divider5.divideValue = 4;
+
+const divider6       = system.clockTree["PLL_CLK2X_DIV"];
+divider6.divideValue = 4;
+
 const divider7       = system.clockTree["PLL_PDIV"];
-divider7.divideValue = 4;
+divider7.divideValue = 2;
 
 const divider9       = system.clockTree["UDIV"];
 divider9.divideValue = 2;
@@ -54,11 +60,17 @@ divider9.divideValue = 2;
 const gate7  = system.clockTree["MFCLKGATE"];
 gate7.enable = true;
 
+const gate8  = system.clockTree["MFPCLKGATE"];
+gate8.enable = true;
+
 const multiplier2         = system.clockTree["PLL_QDIV"];
-multiplier2.multiplyValue = 20;
+multiplier2.multiplyValue = 10;
+
+const mux2       = system.clockTree["CANCLKMUX"];
+mux2.inputSelect = "CANCLKMUX_PLLCLK1_OUT";
 
 const mux8       = system.clockTree["HSCLKMUX"];
-mux8.inputSelect = "HSCLKMUX_SYSPLL0";
+mux8.inputSelect = "HSCLKMUX_SYSPLL2X";
 
 ADC121.$name                      = "ADC12_0";
 ADC121.sampClkDiv                 = "DL_ADC12_CLOCK_DIVIDE_8";
@@ -118,32 +130,32 @@ GPIO6.associatedPins[0].direction        = "INPUT";
 GPIO6.associatedPins[0].assignedPin      = "24";
 GPIO6.associatedPins[0].internalResistor = "PULL_UP";
 
-GPIO7.$name                          = "GPIO_EXIT";
+GPIO7.$name                          = "Encoder";
 GPIO7.associatedPins.create(6);
 GPIO7.associatedPins[0].direction    = "INPUT";
 GPIO7.associatedPins[0].assignedPin  = "29";
 GPIO7.associatedPins[0].interruptEn  = true;
 GPIO7.associatedPins[0].assignedPort = "PORTA";
-GPIO7.associatedPins[0].$name        = "ENCODER2_A";
-GPIO7.associatedPins[0].polarity     = "RISE";
+GPIO7.associatedPins[0].polarity     = "RISE_FALL";
+GPIO7.associatedPins[0].$name        = "E2A";
 GPIO7.associatedPins[1].assignedPin  = "30";
 GPIO7.associatedPins[1].direction    = "INPUT";
 GPIO7.associatedPins[1].interruptEn  = true;
 GPIO7.associatedPins[1].assignedPort = "PORTA";
-GPIO7.associatedPins[1].$name        = "ENCODER2_B";
-GPIO7.associatedPins[1].polarity     = "RISE";
+GPIO7.associatedPins[1].polarity     = "RISE_FALL";
+GPIO7.associatedPins[1].$name        = "E2B";
 GPIO7.associatedPins[2].assignedPin  = "5";
 GPIO7.associatedPins[2].direction    = "INPUT";
 GPIO7.associatedPins[2].interruptEn  = true;
 GPIO7.associatedPins[2].assignedPort = "PORTB";
-GPIO7.associatedPins[2].$name        = "ENCODER1_B";
-GPIO7.associatedPins[2].polarity     = "RISE";
+GPIO7.associatedPins[2].polarity     = "RISE_FALL";
+GPIO7.associatedPins[2].$name        = "E1B";
 GPIO7.associatedPins[3].assignedPin  = "6";
 GPIO7.associatedPins[3].direction    = "INPUT";
 GPIO7.associatedPins[3].interruptEn  = true;
 GPIO7.associatedPins[3].assignedPort = "PORTB";
-GPIO7.associatedPins[3].$name        = "ENCODER1_A";
-GPIO7.associatedPins[3].polarity     = "RISE";
+GPIO7.associatedPins[3].polarity     = "RISE_FALL";
+GPIO7.associatedPins[3].$name        = "E1A";
 GPIO7.associatedPins[4].$name        = "IMU_INT1";
 GPIO7.associatedPins[4].assignedPort = "PORTB";
 GPIO7.associatedPins[4].assignedPin  = "7";
@@ -151,21 +163,21 @@ GPIO7.associatedPins[5].$name        = "IMU_INT2";
 GPIO7.associatedPins[5].assignedPort = "PORTB";
 GPIO7.associatedPins[5].assignedPin  = "4";
 
-GPIO8.$name                         = "GPIO_TB6612";
 GPIO8.port                          = "PORTA";
+GPIO8.$name                         = "Motor_diection";
 GPIO8.associatedPins.create(4);
-GPIO8.associatedPins[0].$name       = "TB6612_PIN_24";
-GPIO8.associatedPins[0].assignedPin = "24";
-GPIO8.associatedPins[0].pin.$assign = "PA24";
-GPIO8.associatedPins[1].$name       = "TB6612_PIN_25";
-GPIO8.associatedPins[1].assignedPin = "25";
-GPIO8.associatedPins[1].pin.$assign = "PA25";
-GPIO8.associatedPins[2].$name       = "TB6612_PIN_26";
-GPIO8.associatedPins[2].assignedPin = "26";
-GPIO8.associatedPins[2].pin.$assign = "PA26";
-GPIO8.associatedPins[3].$name       = "TB6612_PIN_22";
+GPIO8.associatedPins[0].ioStructure = "SD";
+GPIO8.associatedPins[0].$name       = "BIN1";
+GPIO8.associatedPins[0].assignedPin = "26";
+GPIO8.associatedPins[1].ioStructure = "SD";
+GPIO8.associatedPins[1].$name       = "AIN1";
+GPIO8.associatedPins[1].assignedPin = "24";
+GPIO8.associatedPins[2].ioStructure = "SD";
+GPIO8.associatedPins[2].$name       = "AIN2";
+GPIO8.associatedPins[2].assignedPin = "25";
 GPIO8.associatedPins[3].assignedPin = "22";
-GPIO8.associatedPins[3].pin.$assign = "PA22";
+GPIO8.associatedPins[3].ioStructure = "SD";
+GPIO8.associatedPins[3].$name       = "BIN2";
 
 GPIO9.port                           = "PORTA";
 GPIO9.$name                          = "GPIO";
@@ -300,10 +312,10 @@ TIMER3.interrupts         = ["ZERO"];
 TIMER3.interruptPriority  = "2";
 TIMER3.peripheral.$assign = "TIMG7";
 
-UART1.$name                            = "UART_1";
 UART1.targetBaudRate                   = 115200;
 UART1.interruptPriority                = "2";
 UART1.enabledInterrupts                = ["RX"];
+UART1.$name                            = "UART_1";
 UART1.peripheral.$assign               = "UART0";
 UART1.peripheral.rxPin.$assign         = "PA11";
 UART1.peripheral.txPin.$assign         = "PA10";
@@ -368,6 +380,10 @@ GPIO7.associatedPins[2].pin.$suggestSolution  = "PB5";
 GPIO7.associatedPins[3].pin.$suggestSolution  = "PB6";
 GPIO7.associatedPins[4].pin.$suggestSolution  = "PB7";
 GPIO7.associatedPins[5].pin.$suggestSolution  = "PB4";
+GPIO8.associatedPins[0].pin.$suggestSolution  = "PA26";
+GPIO8.associatedPins[1].pin.$suggestSolution  = "PA24";
+GPIO8.associatedPins[2].pin.$suggestSolution  = "PA25";
+GPIO8.associatedPins[3].pin.$suggestSolution  = "PA22";
 GPIO9.associatedPins[1].pin.$suggestSolution  = "PA1";
 GPIO10.associatedPins[0].pin.$suggestSolution = "PA15";
 GPIO10.associatedPins[1].pin.$suggestSolution = "PA28";

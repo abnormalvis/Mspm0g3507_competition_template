@@ -208,33 +208,33 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(PORTB_BLK_IOMUX);
 
-    DL_GPIO_initDigitalInputFeatures(GPIO_EXIT_ENCODER2_A_IOMUX,
+    DL_GPIO_initDigitalInputFeatures(Encoder_E2A_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
-    DL_GPIO_initDigitalInputFeatures(GPIO_EXIT_ENCODER2_B_IOMUX,
+    DL_GPIO_initDigitalInputFeatures(Encoder_E2B_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
-    DL_GPIO_initDigitalInputFeatures(GPIO_EXIT_ENCODER1_B_IOMUX,
+    DL_GPIO_initDigitalInputFeatures(Encoder_E1B_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
-    DL_GPIO_initDigitalInputFeatures(GPIO_EXIT_ENCODER1_A_IOMUX,
+    DL_GPIO_initDigitalInputFeatures(Encoder_E1A_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
-    DL_GPIO_initDigitalOutput(GPIO_EXIT_IMU_INT1_IOMUX);
+    DL_GPIO_initDigitalOutput(Encoder_IMU_INT1_IOMUX);
 
-    DL_GPIO_initDigitalOutput(GPIO_EXIT_IMU_INT2_IOMUX);
+    DL_GPIO_initDigitalOutput(Encoder_IMU_INT2_IOMUX);
 
-    DL_GPIO_initDigitalOutput(GPIO_TB6612_TB6612_PIN_24_IOMUX);
+    DL_GPIO_initDigitalOutput(Motor_diection_BIN1_IOMUX);
 
-    DL_GPIO_initDigitalOutput(GPIO_TB6612_TB6612_PIN_25_IOMUX);
+    DL_GPIO_initDigitalOutput(Motor_diection_AIN1_IOMUX);
 
-    DL_GPIO_initDigitalOutput(GPIO_TB6612_TB6612_PIN_26_IOMUX);
+    DL_GPIO_initDigitalOutput(Motor_diection_AIN2_IOMUX);
 
-    DL_GPIO_initDigitalOutput(GPIO_TB6612_TB6612_PIN_22_IOMUX);
+    DL_GPIO_initDigitalOutput(Motor_diection_BIN2_IOMUX);
 
     DL_GPIO_initDigitalOutput(GPIO_SCL_IOMUX);
 
@@ -256,37 +256,37 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(LED_LED_B_IOMUX);
 
-    DL_GPIO_clearPins(GPIOA, GPIO_TB6612_TB6612_PIN_24_PIN |
-		GPIO_TB6612_TB6612_PIN_25_PIN |
-		GPIO_TB6612_TB6612_PIN_26_PIN |
-		GPIO_TB6612_TB6612_PIN_22_PIN |
+    DL_GPIO_clearPins(GPIOA, Motor_diection_BIN1_PIN |
+		Motor_diection_AIN1_PIN |
+		Motor_diection_AIN2_PIN |
+		Motor_diection_BIN2_PIN |
 		Tracking_SO_PIN |
 		Tracking_S1_PIN);
     DL_GPIO_setPins(GPIOA, SPI_FOR_IMU_CS_PIN_8_PIN |
 		GPIO_SCL_PIN |
 		GPIO_SDA_PIN);
     DL_GPIO_enableOutput(GPIOA, SPI_FOR_IMU_CS_PIN_8_PIN |
-		GPIO_TB6612_TB6612_PIN_24_PIN |
-		GPIO_TB6612_TB6612_PIN_25_PIN |
-		GPIO_TB6612_TB6612_PIN_26_PIN |
-		GPIO_TB6612_TB6612_PIN_22_PIN |
+		Motor_diection_BIN1_PIN |
+		Motor_diection_AIN1_PIN |
+		Motor_diection_AIN2_PIN |
+		Motor_diection_BIN2_PIN |
 		GPIO_SCL_PIN |
 		GPIO_SDA_PIN |
 		Tracking_SO_PIN |
 		Tracking_S1_PIN);
-    DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_29_EDGE_RISE |
-		DL_GPIO_PIN_30_EDGE_RISE);
-    DL_GPIO_clearInterruptStatus(GPIOA, GPIO_EXIT_ENCODER2_A_PIN |
-		GPIO_EXIT_ENCODER2_B_PIN);
-    DL_GPIO_enableInterrupt(GPIOA, GPIO_EXIT_ENCODER2_A_PIN |
-		GPIO_EXIT_ENCODER2_B_PIN);
+    DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_29_EDGE_RISE_FALL |
+		DL_GPIO_PIN_30_EDGE_RISE_FALL);
+    DL_GPIO_clearInterruptStatus(GPIOA, Encoder_E2A_PIN |
+		Encoder_E2B_PIN);
+    DL_GPIO_enableInterrupt(GPIOA, Encoder_E2A_PIN |
+		Encoder_E2B_PIN);
     DL_GPIO_clearPins(GPIOB, GPIO_BEEP_PIN_0_PIN |
 		PORTB_RST_PIN |
 		PORTB_DC_PIN |
 		PORTB_CS_PIN |
 		PORTB_BLK_PIN |
-		GPIO_EXIT_IMU_INT1_PIN |
-		GPIO_EXIT_IMU_INT2_PIN |
+		Encoder_IMU_INT1_PIN |
+		Encoder_IMU_INT2_PIN |
 		Tracking_S2_PIN |
 		LED_LED_R_PIN |
 		LED_LED_B_PIN);
@@ -295,33 +295,33 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		PORTB_DC_PIN |
 		PORTB_CS_PIN |
 		PORTB_BLK_PIN |
-		GPIO_EXIT_IMU_INT1_PIN |
-		GPIO_EXIT_IMU_INT2_PIN |
+		Encoder_IMU_INT1_PIN |
+		Encoder_IMU_INT2_PIN |
 		Tracking_S2_PIN |
 		LED_LED_R_PIN |
 		LED_LED_B_PIN);
-    DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_5_EDGE_RISE |
-		DL_GPIO_PIN_6_EDGE_RISE);
-    DL_GPIO_clearInterruptStatus(GPIOB, GPIO_EXIT_ENCODER1_B_PIN |
-		GPIO_EXIT_ENCODER1_A_PIN);
-    DL_GPIO_enableInterrupt(GPIOB, GPIO_EXIT_ENCODER1_B_PIN |
-		GPIO_EXIT_ENCODER1_A_PIN);
+    DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_5_EDGE_RISE_FALL |
+		DL_GPIO_PIN_6_EDGE_RISE_FALL);
+    DL_GPIO_clearInterruptStatus(GPIOB, Encoder_E1B_PIN |
+		Encoder_E1A_PIN);
+    DL_GPIO_enableInterrupt(GPIOB, Encoder_E1B_PIN |
+		Encoder_E1A_PIN);
 
 }
 
 
 static const DL_SYSCTL_SYSPLLConfig gSYSPLLConfig = {
-    .inputFreq              = DL_SYSCTL_SYSPLL_INPUT_FREQ_8_16_MHZ,
-	.rDivClk2x              = 1,
-	.rDivClk1               = 0,
+    .inputFreq              = DL_SYSCTL_SYSPLL_INPUT_FREQ_16_32_MHZ,
+	.rDivClk2x              = 3,
+	.rDivClk1               = 1,
 	.rDivClk0               = 0,
-	.enableCLK2x            = DL_SYSCTL_SYSPLL_CLK2X_DISABLE,
-	.enableCLK1             = DL_SYSCTL_SYSPLL_CLK1_DISABLE,
-	.enableCLK0             = DL_SYSCTL_SYSPLL_CLK0_ENABLE,
-	.sysPLLMCLK             = DL_SYSCTL_SYSPLL_MCLK_CLK0,
+	.enableCLK2x            = DL_SYSCTL_SYSPLL_CLK2X_ENABLE,
+	.enableCLK1             = DL_SYSCTL_SYSPLL_CLK1_ENABLE,
+	.enableCLK0             = DL_SYSCTL_SYSPLL_CLK0_DISABLE,
+	.sysPLLMCLK             = DL_SYSCTL_SYSPLL_MCLK_CLK2X,
 	.sysPLLRef              = DL_SYSCTL_SYSPLL_REF_SYSOSC,
-	.qDiv                   = 19,
-	.pDiv                   = DL_SYSCTL_SYSPLL_PDIV_4
+	.qDiv                   = 9,
+	.pDiv                   = DL_SYSCTL_SYSPLL_PDIV_2
 };
 SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_init(void)
 {
@@ -335,6 +335,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_init(void)
     DL_SYSCTL_configSYSPLL((DL_SYSCTL_SYSPLLConfig *) &gSYSPLLConfig);
     DL_SYSCTL_setULPCLKDivider(DL_SYSCTL_ULPCLK_DIV_2);
     DL_SYSCTL_enableMFCLK();
+    DL_SYSCTL_enableMFPCLK();
+	DL_SYSCTL_setMFPCLKSource(DL_SYSCTL_MFPCLK_SOURCE_SYSOSC);
     DL_SYSCTL_setMCLKSource(SYSOSC, HSCLK, DL_SYSCTL_HSCLK_SOURCE_SYSPLL);
 
 }

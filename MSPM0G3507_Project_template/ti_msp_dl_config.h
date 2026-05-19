@@ -274,55 +274,55 @@ extern "C" {
 /* Defines for BLK: GPIOB.26 with pinCMx 57 on package pin 28 */
 #define PORTB_BLK_PIN                                           (DL_GPIO_PIN_26)
 #define PORTB_BLK_IOMUX                                          (IOMUX_PINCM57)
-/* Defines for ENCODER2_A: GPIOA.29 with pinCMx 4 on package pin 36 */
-#define GPIO_EXIT_ENCODER2_A_PORT                                        (GPIOA)
-// pins affected by this interrupt request:["ENCODER2_A","ENCODER2_B"]
-#define GPIO_EXIT_GPIOA_INT_IRQN                                (GPIOA_INT_IRQn)
-#define GPIO_EXIT_GPIOA_INT_IIDX                (DL_INTERRUPT_GROUP1_IIDX_GPIOA)
-#define GPIO_EXIT_ENCODER2_A_IIDX                           (DL_GPIO_IIDX_DIO29)
-#define GPIO_EXIT_ENCODER2_A_PIN                                (DL_GPIO_PIN_29)
-#define GPIO_EXIT_ENCODER2_A_IOMUX                                (IOMUX_PINCM4)
-/* Defines for ENCODER2_B: GPIOA.30 with pinCMx 5 on package pin 37 */
-#define GPIO_EXIT_ENCODER2_B_PORT                                        (GPIOA)
-#define GPIO_EXIT_ENCODER2_B_IIDX                           (DL_GPIO_IIDX_DIO30)
-#define GPIO_EXIT_ENCODER2_B_PIN                                (DL_GPIO_PIN_30)
-#define GPIO_EXIT_ENCODER2_B_IOMUX                                (IOMUX_PINCM5)
-/* Defines for ENCODER1_B: GPIOB.5 with pinCMx 18 on package pin 53 */
-#define GPIO_EXIT_ENCODER1_B_PORT                                        (GPIOB)
-// pins affected by this interrupt request:["ENCODER1_B","ENCODER1_A"]
-#define GPIO_EXIT_GPIOB_INT_IRQN                                (GPIOB_INT_IRQn)
-#define GPIO_EXIT_GPIOB_INT_IIDX                (DL_INTERRUPT_GROUP1_IIDX_GPIOB)
-#define GPIO_EXIT_ENCODER1_B_IIDX                            (DL_GPIO_IIDX_DIO5)
-#define GPIO_EXIT_ENCODER1_B_PIN                                 (DL_GPIO_PIN_5)
-#define GPIO_EXIT_ENCODER1_B_IOMUX                               (IOMUX_PINCM18)
-/* Defines for ENCODER1_A: GPIOB.6 with pinCMx 23 on package pin 58 */
-#define GPIO_EXIT_ENCODER1_A_PORT                                        (GPIOB)
-#define GPIO_EXIT_ENCODER1_A_IIDX                            (DL_GPIO_IIDX_DIO6)
-#define GPIO_EXIT_ENCODER1_A_PIN                                 (DL_GPIO_PIN_6)
-#define GPIO_EXIT_ENCODER1_A_IOMUX                               (IOMUX_PINCM23)
+/* Defines for E2A: GPIOA.29 with pinCMx 4 on package pin 36 */
+#define Encoder_E2A_PORT                                                 (GPIOA)
+// pins affected by this interrupt request:["E2A","E2B"]
+#define Encoder_GPIOA_INT_IRQN                                  (GPIOA_INT_IRQn)
+#define Encoder_GPIOA_INT_IIDX                  (DL_INTERRUPT_GROUP1_IIDX_GPIOA)
+#define Encoder_E2A_IIDX                                    (DL_GPIO_IIDX_DIO29)
+#define Encoder_E2A_PIN                                         (DL_GPIO_PIN_29)
+#define Encoder_E2A_IOMUX                                         (IOMUX_PINCM4)
+/* Defines for E2B: GPIOA.30 with pinCMx 5 on package pin 37 */
+#define Encoder_E2B_PORT                                                 (GPIOA)
+#define Encoder_E2B_IIDX                                    (DL_GPIO_IIDX_DIO30)
+#define Encoder_E2B_PIN                                         (DL_GPIO_PIN_30)
+#define Encoder_E2B_IOMUX                                         (IOMUX_PINCM5)
+/* Defines for E1B: GPIOB.5 with pinCMx 18 on package pin 53 */
+#define Encoder_E1B_PORT                                                 (GPIOB)
+// pins affected by this interrupt request:["E1B","E1A"]
+#define Encoder_GPIOB_INT_IRQN                                  (GPIOB_INT_IRQn)
+#define Encoder_GPIOB_INT_IIDX                  (DL_INTERRUPT_GROUP1_IIDX_GPIOB)
+#define Encoder_E1B_IIDX                                     (DL_GPIO_IIDX_DIO5)
+#define Encoder_E1B_PIN                                          (DL_GPIO_PIN_5)
+#define Encoder_E1B_IOMUX                                        (IOMUX_PINCM18)
+/* Defines for E1A: GPIOB.6 with pinCMx 23 on package pin 58 */
+#define Encoder_E1A_PORT                                                 (GPIOB)
+#define Encoder_E1A_IIDX                                     (DL_GPIO_IIDX_DIO6)
+#define Encoder_E1A_PIN                                          (DL_GPIO_PIN_6)
+#define Encoder_E1A_IOMUX                                        (IOMUX_PINCM23)
 /* Defines for IMU_INT1: GPIOB.7 with pinCMx 24 on package pin 59 */
-#define GPIO_EXIT_IMU_INT1_PORT                                          (GPIOB)
-#define GPIO_EXIT_IMU_INT1_PIN                                   (DL_GPIO_PIN_7)
-#define GPIO_EXIT_IMU_INT1_IOMUX                                 (IOMUX_PINCM24)
+#define Encoder_IMU_INT1_PORT                                            (GPIOB)
+#define Encoder_IMU_INT1_PIN                                     (DL_GPIO_PIN_7)
+#define Encoder_IMU_INT1_IOMUX                                   (IOMUX_PINCM24)
 /* Defines for IMU_INT2: GPIOB.4 with pinCMx 17 on package pin 52 */
-#define GPIO_EXIT_IMU_INT2_PORT                                          (GPIOB)
-#define GPIO_EXIT_IMU_INT2_PIN                                   (DL_GPIO_PIN_4)
-#define GPIO_EXIT_IMU_INT2_IOMUX                                 (IOMUX_PINCM17)
-/* Port definition for Pin Group GPIO_TB6612 */
-#define GPIO_TB6612_PORT                                                 (GPIOA)
+#define Encoder_IMU_INT2_PORT                                            (GPIOB)
+#define Encoder_IMU_INT2_PIN                                     (DL_GPIO_PIN_4)
+#define Encoder_IMU_INT2_IOMUX                                   (IOMUX_PINCM17)
+/* Port definition for Pin Group Motor_diection */
+#define Motor_diection_PORT                                              (GPIOA)
 
-/* Defines for TB6612_PIN_24: GPIOA.24 with pinCMx 54 on package pin 25 */
-#define GPIO_TB6612_TB6612_PIN_24_PIN                           (DL_GPIO_PIN_24)
-#define GPIO_TB6612_TB6612_PIN_24_IOMUX                          (IOMUX_PINCM54)
-/* Defines for TB6612_PIN_25: GPIOA.25 with pinCMx 55 on package pin 26 */
-#define GPIO_TB6612_TB6612_PIN_25_PIN                           (DL_GPIO_PIN_25)
-#define GPIO_TB6612_TB6612_PIN_25_IOMUX                          (IOMUX_PINCM55)
-/* Defines for TB6612_PIN_26: GPIOA.26 with pinCMx 59 on package pin 30 */
-#define GPIO_TB6612_TB6612_PIN_26_PIN                           (DL_GPIO_PIN_26)
-#define GPIO_TB6612_TB6612_PIN_26_IOMUX                          (IOMUX_PINCM59)
-/* Defines for TB6612_PIN_22: GPIOA.22 with pinCMx 47 on package pin 18 */
-#define GPIO_TB6612_TB6612_PIN_22_PIN                           (DL_GPIO_PIN_22)
-#define GPIO_TB6612_TB6612_PIN_22_IOMUX                          (IOMUX_PINCM47)
+/* Defines for BIN1: GPIOA.26 with pinCMx 59 on package pin 30 */
+#define Motor_diection_BIN1_PIN                                 (DL_GPIO_PIN_26)
+#define Motor_diection_BIN1_IOMUX                                (IOMUX_PINCM59)
+/* Defines for AIN1: GPIOA.24 with pinCMx 54 on package pin 25 */
+#define Motor_diection_AIN1_PIN                                 (DL_GPIO_PIN_24)
+#define Motor_diection_AIN1_IOMUX                                (IOMUX_PINCM54)
+/* Defines for AIN2: GPIOA.25 with pinCMx 55 on package pin 26 */
+#define Motor_diection_AIN2_PIN                                 (DL_GPIO_PIN_25)
+#define Motor_diection_AIN2_IOMUX                                (IOMUX_PINCM55)
+/* Defines for BIN2: GPIOA.22 with pinCMx 47 on package pin 18 */
+#define Motor_diection_BIN2_PIN                                 (DL_GPIO_PIN_22)
+#define Motor_diection_BIN2_IOMUX                                (IOMUX_PINCM47)
 /* Port definition for Pin Group GPIO */
 #define GPIO_PORT                                                        (GPIOA)
 

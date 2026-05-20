@@ -6,16 +6,16 @@
 #define VOFA_H
 
 #include "stdint.h"
-#include "hal_motor.h"
+#include "hal_pid.h"
 
 #define VOFA_PARAM_MAX  20
 
 /* VOFA parameter ID definitions - can be freely mapped to any variable */
-/* Speed loop PID - shared for both motors */
+/* Speed loop PID - shared for both motors. Target unit: wheel RPM (after 1:28 gearbox). */
 #define VOFA_PARAM_SPEED_KP      1
 #define VOFA_PARAM_SPEED_KI     2
 #define VOFA_PARAM_SPEED_KD     3
-#define VOFA_PARAM_SPEED_TARGET 4
+#define VOFA_PARAM_SPEED_TARGET 4   /* wheel RPM */
 /* Angle loop PID */
 #define VOFA_PARAM_ANGLE_KP     5
 #define VOFA_PARAM_ANGLE_KI     6
@@ -27,6 +27,7 @@
 #define VOFA_PARAM_SEEK_KD      11
 #define VOFA_PARAM_SEEK_TARGET  12
 #define VOFA_PARAM_WHEEL_RADIUS 13
+#define VOFA_PARAM_START_CAR     14    /* 控制Start_Car标志 */
 /* Position loop PID */
 #define VOFA_PARAM_POSITION_KP   15
 #define VOFA_PARAM_POSITION_KI   16
@@ -40,15 +41,14 @@
  * Note: Same parameter can map to multiple variables (e.g., both motors)
  */
 #define VOFA_PARAM_MAP(XX) \
-    XX(VOFA_PARAM_SPEED_KP,      &motor_left.speed_ctrl.kp)   \
-    XX(VOFA_PARAM_SPEED_KP,      &motor_right.speed_ctrl.kp)  \
-    XX(VOFA_PARAM_SPEED_KI,      &motor_left.speed_ctrl.ki)   \
-    XX(VOFA_PARAM_SPEED_KI,      &motor_right.speed_ctrl.ki)  \
-    XX(VOFA_PARAM_SPEED_KD,      &motor_left.speed_ctrl.kd)   \
-    XX(VOFA_PARAM_SPEED_KD,      &motor_right.speed_ctrl.kd)  \
-    XX(VOFA_PARAM_SPEED_TARGET,  &motor_left.target)         \
-    XX(VOFA_PARAM_SPEED_TARGET,  &motor_right.target)        \
-    XX(VOFA_PARAM_WHEEL_RADIUS,  &wheel_radius_cm)
+    XX(VOFA_PARAM_SPEED_KP,      &motorL.p)   \
+    XX(VOFA_PARAM_SPEED_KP,      &motorR.p)  \
+    XX(VOFA_PARAM_SPEED_KI,      &motorL.i)   \
+    XX(VOFA_PARAM_SPEED_KI,      &motorR.i)  \
+    XX(VOFA_PARAM_SPEED_KD,      &motorL.d)   \
+    XX(VOFA_PARAM_SPEED_KD,      &motorR.d)  \
+    XX(VOFA_PARAM_SPEED_TARGET,  &motorL.target)         \
+    XX(VOFA_PARAM_SPEED_TARGET,  &motorR.target)
 
 /* Parameter update notification callback */
 typedef void (*vofa_param_callback_t)(uint8_t id, float value);

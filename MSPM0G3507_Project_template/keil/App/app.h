@@ -32,6 +32,7 @@ typedef enum
 	GNL_MENU_DESKTOP1,		// Desktop 1
 	GNL_MENU_DESKTOP2,		// Desktop 2
 	GNL_MENU_DESKTOP3,		// Desktop 3
+	GNL_MENU_DESKTOP4,		// Desktop 4 - VOFA debug
 	GNL_MENU_SUM,
 }GENERAL_MENU_LIST;			// General menu list
 

@@ -8,6 +8,7 @@
 #include "seekfree_uart.h"
 #include "seekfree_assistant.h"
 #include "mt_test.h"
+#include "hal_pid.h"
 #include "hal_encode.h"
 #include "hal_at24c02.h"
 #include "hal_gray.h"
@@ -18,6 +19,8 @@
 #include "imu_filter.h"                  // Device header
 #include "mt_test.h"
 #include "2024DS_Duty.h"
+
+#define pi 3.1415f
 void  uartint(void)
 {
     seekfree_assistant_init();
@@ -76,16 +79,16 @@ void  uartwork(void)
 	//													Storage_WriteFloatNum(16*4,data_test);
                         break;
                     case 2 :
-                        VKp_l = seekfree_assistant_parameter[2];
+                        motorL.p = seekfree_assistant_parameter[2];
                         break;
                     case 3 :
-                        VKi_l = seekfree_assistant_parameter[3];
+                        motorL.i = seekfree_assistant_parameter[3];
                         break;
                     case 4 :
-                        VKp_r = seekfree_assistant_parameter[4];
+                        motorR.p = seekfree_assistant_parameter[4];
                         break;
                     case 5 :
-                        VKi_r = seekfree_assistant_parameter[5];
+                        motorR.i = seekfree_assistant_parameter[5];
                         break;
                     case 6 :
 													Flag.Start_Car = seekfree_assistant_parameter[6];
@@ -118,9 +121,9 @@ void  uartwork(void)
 			seekfree_assistant_oscilloscope_data.data[0] = imu.yaw;     //0
 	    seekfree_assistant_oscilloscope_data.data[1] = target_theta;
 	    seekfree_assistant_oscilloscope_data.data[2] = position_output;     //0
-	    seekfree_assistant_oscilloscope_data.data[3] = smartcar_imu.state_estimation.speed;	//
-			seekfree_assistant_oscilloscope_data.data[4] = smartcar_imu.left_motor_speed_cmps;
-			seekfree_assistant_oscilloscope_data.data[5] = smartcar_imu.right_motor_speed_cmps;
+	    seekfree_assistant_oscilloscope_data.data[3] = 0.5f * ((float)Get_Encoder_Count(&motor_left_encoder) + (float)Get_Encoder_Count(&motor_right_encoder));
+			seekfree_assistant_oscilloscope_data.data[4] = (float)Get_Encoder_Count(&motor_left_encoder);
+			seekfree_assistant_oscilloscope_data.data[5] = (float)Get_Encoder_Count(&motor_right_encoder);
 			seekfree_assistant_oscilloscope_data.data[6] =	speed_setup;
 			seekfree_assistant_oscilloscope_data.data[7] =	v_target_r;
 

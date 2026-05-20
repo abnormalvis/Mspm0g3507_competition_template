@@ -16,12 +16,12 @@
 #include "hal_tb6612.h"
 #include "hal_uart.h"
 #include "hal_vofa.h"
+#include "hal_pid.h"
 #include "string.h"
 #include "CPU.h"
 #include "OS_System.h"
 #include "App.h"
 #include "hal_delay.h"
-#include "hal_tb6612.h"
 #include "mt_test.h"
 #include "seekfree_uart.h"
 #include "seekfree_assistant.h"
@@ -46,7 +46,7 @@ int main(void)
 	LCD_Init();	// LCD init (replaces OLED)
 	OLED_CLS();	// LCD full-screen clear to remove artifacts
 	hal_KeyInit();	// Key state machine init
-	ctrl_params_init();// Seek/speed loop PID controller params init
+	pid_params_init();// Seek track PID params init
 	hal_Encoder_Init();	// External interrupt encoder pulse acquisition
 	//hal_uart1_Init();	// UART1 init PA10 PA11 for Zigbee
 	//fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);	// Zigbee UART FIFO
@@ -54,13 +54,10 @@ int main(void)
 	TIMG6_Init(); // Timer interrupt, real-time clock 5ms
 	//motor_self_test();	// Motor self-test disabled
 
-	move_filter_init(&left_speed_cmps);	// Left wheel speed filter
-	move_filter_init(&right_speed_cmps);	// Right wheel speed filter
 	hal_uart1_Init();
 	uart1_rx_register(vofa_uart_rx_callback);
 	fifo_init(&debug_uart_fifo, FIFO_DATA_8BIT, debug_uart_buffer, 64);
 	vofa_param_init();
-	motor_init();
 
 	// seekfree_assistant_init(); // Initialize seekfree assistant FIFO
 

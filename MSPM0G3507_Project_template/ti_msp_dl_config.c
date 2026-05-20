@@ -274,8 +274,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		GPIO_SDA_PIN |
 		Tracking_SO_PIN |
 		Tracking_S1_PIN);
-    DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_29_EDGE_RISE_FALL |
-		DL_GPIO_PIN_30_EDGE_RISE_FALL);
+    DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_29_EDGE_RISE |
+		DL_GPIO_PIN_30_EDGE_RISE);
     DL_GPIO_clearInterruptStatus(GPIOA, Encoder_E2A_PIN |
 		Encoder_E2B_PIN);
     DL_GPIO_enableInterrupt(GPIOA, Encoder_E2A_PIN |
@@ -300,8 +300,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		Tracking_S2_PIN |
 		LED_LED_R_PIN |
 		LED_LED_B_PIN);
-    DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_5_EDGE_RISE_FALL |
-		DL_GPIO_PIN_6_EDGE_RISE_FALL);
+    DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_5_EDGE_RISE |
+		DL_GPIO_PIN_6_EDGE_RISE);
     DL_GPIO_clearInterruptStatus(GPIOB, Encoder_E1B_PIN |
 		Encoder_E1A_PIN);
     DL_GPIO_enableInterrupt(GPIOB, Encoder_E1B_PIN |
@@ -343,19 +343,19 @@ SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_init(void)
 
 
 /*
- * Timer clock configuration to be sourced by  / 1 (80000000 Hz)
+ * Timer clock configuration to be sourced by  / 2 (40000000 Hz)
  * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
- *   80000000 Hz = 80000000 Hz / (1 * (0 + 1))
+ *   2000000 Hz = 40000000 Hz / (2 * (19 + 1))
  */
 static const DL_TimerA_ClockConfig gPWM_0ClockConfig = {
     .clockSel = DL_TIMER_CLOCK_BUSCLK,
-    .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
-    .prescale = 0U
+    .divideRatio = DL_TIMER_CLOCK_DIVIDE_2,
+    .prescale = 19U
 };
 
 static const DL_TimerA_PWMConfig gPWM_0Config = {
     .pwmMode = DL_TIMER_PWM_MODE_EDGE_ALIGN_UP,
-    .period = 4000,
+    .period = 100,
     .isTimerWithFourCC = true,
     .startTimer = DL_TIMER_START,
 };

@@ -6,7 +6,9 @@
 #include "hal_vofa.h"
 #include "hal_uart.h"
 #include "hal_encode.h"
+#include "hal_motor.h"
 #include "seekfree_assistant.h"
+#include "mt_flag.h"
 
 /* VOFA parameter receive related */
 static uint8_t vofa_rx_buffer[32];
@@ -217,11 +219,21 @@ void vofa_apply_param(uint8_t id, float value)
             *(vofa_param_table[i].target) = value;
         }
     }
+    /* Special case: Start_Car flag */
+    if(id == VOFA_PARAM_START_CAR)
+    {
+        extern Flag_InitTypeDef Flag;
+        Flag.Start_Car = (value > 0.5f) ? 1 : 0;
+    }
 }
 
 /* VOFA 10ms task - process received parameters */
 void vofa_task_10ms(void)
 {
+    /* Sample encoders first so Pid_Motor_Control() sees fresh feedback */
+    Encoder_Update(&motor_left_encoder);
+    Encoder_Update(&motor_right_encoder);
+
     /* Process all pending parameter updates */
     while(vofa_has_param_update())
     {
@@ -238,9 +250,8 @@ void vofa_task_10ms(void)
         }
     }
 
-    /* Call speed_control to run PID loop and drive motors */
-    extern void speed_control(void);
-    speed_control();
+    /* Call Pid_Motor_Control to run PID loop and drive motors */
+    Pid_Motor_Control();
 
     /* Send feedback data to VOFA upper computer - JustFloat protocol */
     /* Every ~100ms: target speed, actual speed, PID params */
@@ -249,17 +260,19 @@ void vofa_task_10ms(void)
     {
         vofa_send_counter = 0;
         uint8_t i;
-        float vofa_buf[5];
+        float vofa_buf[7];
 
-        vofa_buf[0] = motor_left.target;           // Target speed
-        vofa_buf[1] = motor_get_left_speed();      // Actual left speed
-        vofa_buf[2] = motor_left.speed_ctrl.kp;    // KP
-        vofa_buf[3] = motor_left.speed_ctrl.ki;    // KI
-        vofa_buf[4] = motor_left.speed_ctrl.kd;    // KD
+        vofa_buf[0] = motorL.target;                    // Target speed
+        vofa_buf[1] = (float)Get_Encoder_Count(&motor_left_encoder); // Actual left speed
+        vofa_buf[2] = motorL.p;                       // KP
+        vofa_buf[3] = motorL.i;                       // KI
+        vofa_buf[4] = motorL.d;                       // KD
+        vofa_buf[5] = (float)Flag.Start_Car;       // Start_Car flag status
+        vofa_buf[6] = (float)encoder_val_left;     // Raw left encoder count
 
         /* JustFloat format: 4 bytes per float + 0x00 0x00 0x80 0x7F footer */
         // uart1_send_char(0x00);
-        for(i = 0; i < 5; i++)
+        for(i = 0; i < 7; i++)
         {
             uart1_send_char(((uint8_t*)&vofa_buf[i])[0]);
             uart1_send_char(((uint8_t*)&vofa_buf[i])[1]);

@@ -14,30 +14,8 @@
 #include "hal_beep.h"
 #include "app.h"
 #include "hal_vofa.h"
-#include "hal_math.h"
-#include "hal_tb6612.h"
-#include "hal_jy62.h"
-#include "hal_gray.h"
-#include "hal_pid.h"
-#include "hal_uart.h"
-#include "mt_flag.h"
-#include "user_interrupt.h"
-#include "hal_led.h"
-#include "2024DS_Duty.h"
-#include "math.h"
-#include "hal_beep.h"
-#include "app.h"
+#include "hal_motor.h"
 #include "move_filter.h"
-
-static float speed_error[2] = {0, 0}, speed_expect[2] = {speed_expect_default, speed_expect_default}, speed_feedback[2] = {0, 0}; // Speed error, expected speed, feedback speed
-static float speed_error_last[2] = {0, 0};
-static float speed_error_prev[2] = {0, 0};
-// static float position_kp = position_kp_default,position_ki = position_ki_default,position_kd = position_kd_default;
-	// Gray track
-// float speed_kp_l=0.5f,speed_ki_l=0.12f,speed_kd=speed_kd_default;
-// float speed_kp_r=0.64f,speed_ki_r=0.15f;
-float VKp_l = 0.0f, VKi_l = 0.0f, VKd_l = 0.0f;
-float VKp_r = 0.0f, VKi_r = 0.0f, VKd_r = 0.0f;
 
 float position_kp = 6.0;
 float position_ki = 0;
@@ -46,143 +24,20 @@ float position_kd = 0.3;
 float yaw_kp = 0.6;
 float yaw_ki = 0;
 float yaw_kd = 0.5;
-	// Black car
-// float speed_kp_l=1.1f,speed_ki_l=0.2f;
-// float speed_kp_r=0.9f,speed_ki_r=0.23f;
-// float speed_kp=speed_kp_default,speed_ki=speed_ki_default,speed_kd=speed_kd_default;
-static float position_error[2] = {0, 0}, position_feedback[2] = {0, 0}, position_output[2] = {0, 0}, yaw_out[2] = {0, 0}; // Position error, position feedback, position output
-static float yaw_feedback = 0, yaw_error = 0, yaw = 0, target_yaw = 0; // Yaw feedback, yaw error (same as position PID structure)
 
-float v_target_l = 0, v_target_r = 0; // cm/s, initial speed loop target
+static float position_error[2] = {0, 0}, position_feedback[2] = {0, 0}, position_output[2] = {0, 0}, yaw_out[2] = {0, 0};
+static float yaw_feedback = 0, yaw_error = 0, yaw = 0, target_yaw = 0;
+
+float v_target_l = 0, v_target_r = 0;
 float p_target_l = 100, p_target_r = 100;
-float speed_integral[2] = {0, 0}, speed_output[2] = {0, 0};
-float left_pwm, right_pwm; // Left/right motor final output PWM
+float left_pwm, right_pwm;
 
-float turn_output = 0, turn_output_last = 0; // Turn control output
-controller seektrack_ctrl[2]; // Dual seektrack controllers: [0]=gray sensor, [1]=OpenMV
-float turn_ctrl_pwm = 0; // Turn control PWM
-	// float turn_scale=turn_scale_default; // Turn control scale factor 0.15, amplifies turn amount for speed difference
-float turn_scale = 0.06; // Turn control scale factor, multiplied by turn amount for final speed difference
-float speed_setup = 70, speed_adjust = 35; // Base speed and adjustable speed target
+float turn_output = 0, turn_output_last = 0;
+pid_t seektrack_pid[2];
+float turn_ctrl_pwm = 0;
+float turn_scale = 0.06;
+float speed_setup = 70, speed_adjust = 35;
 float yaw_target = 0;
-/* Speed loop, Position loop, Tracking, Yaw loop */
-// void speed_control(void)
-//{
-	//	speed_feedback[0]=smartcar_imu.left_motor_speed_cmps; // Get left wheel actual speed
-//	speed_error[0]=v_target_l-speed_feedback[0];
-//	speed_error[0]=Xianfu_float(speed_error[0],speed_err_max);
-//	speed_integral[0]+=speed_ki_l*speed_error[0];
-//	speed_integral[0]=Xianfu_float(speed_integral[0],speed_integral_max);
-//	speed_output[0]=speed_integral[0]+speed_kp_l*speed_error[0];
-//	speed_output[0]=Xianfu_float(speed_output[0],speed_ctrl_output_max);
-//
-	//	speed_feedback[1]=smartcar_imu.right_motor_speed_cmps; // Get right wheel actual speed
-	//	speed_error[1]=v_target_r-speed_feedback[1]; // Target minus actual = speed error
-//
-	//	speed_error[1]=Xianfu_float(speed_error[1],speed_err_max); // Limit speed error
-	//	speed_integral[1]+=speed_ki_r*speed_error[1]; // Speed integral
-	//	speed_integral[1]=Xianfu_float(speed_integral[1],speed_integral_max); // Limit integral
-	//	speed_output[1]=speed_integral[1]+speed_kp_r*speed_error[1]; // PID output
-	//	speed_output[1]=Xianfu_float(speed_output[1],speed_ctrl_output_max); // Limit output
-//
-// }
-/* Velocity PID - left wheel (aligned with MSPM0G3507_Project_speed_pid) */
-static float velocity_err_l = 0;
-static float velocity_sum_l = 0;
-static float last_velocity_err_l = 0;
-static float velocity_difference_l = 0;
-
-// cm/s
-float velocity_PID_value_l(float measure, float target)
-{
-    velocity_err_l = target - measure;
-
-    /* Anti-windup: only integrate when target is non-zero or error is small */
-    if (target != 0 || ABS(velocity_err_l) < 50)
-    {
-        velocity_sum_l += velocity_err_l;
-    }
-    velocity_difference_l = velocity_err_l - last_velocity_err_l;
-    velocity_sum_l = I_xianfu(3000, velocity_sum_l);
-    last_velocity_err_l = velocity_err_l;
-    return VKp_l * velocity_err_l + VKi_l * velocity_sum_l + VKd_l * velocity_difference_l;
-}
-
-/* Velocity PID - right wheel */
-static float velocity_err_r = 0;
-static float velocity_sum_r = 0;
-static float last_velocity_err_r = 0;
-static float velocity_difference_r = 0;
-
-float velocity_PID_value_r(float measure, float target)
-{
-    velocity_err_r = target - measure;
-
-    /* Anti-windup: only integrate when target is non-zero or error is small */
-    if (target != 0 || ABS(velocity_err_r) < 50)
-    {
-        velocity_sum_r += velocity_err_r;
-    }
-    velocity_difference_r = velocity_err_r - last_velocity_err_r;
-    velocity_sum_r = I_xianfu(3000, velocity_sum_r);
-    last_velocity_err_r = velocity_err_r;
-    return VKp_r * velocity_err_r + VKi_r * velocity_sum_r + VKd_r * velocity_difference_r;
-}
-
-/* Integral limit function (from reference) */
-float I_xianfu(float max, float now)
-{
-    if (now > max) return max;
-    if (now < -max) return -max;
-    return now;
-}
-float speed_theta = 0;
-void speed_control(void)
-{
-	/* VOFA speed target fetching removed - user to reimplement */
-	// if (vofa_is_loop_target_pending(VOFA_TUNE_TYPE_SPEED)) {
-	// 	float target = vofa_get_loop_target_pending(VOFA_TUNE_TYPE_SPEED);
-	// 	v_target_l = target;
-	// 	v_target_r = target;
-	// }
-
-    /* Update speed feedback - use raw encoder values */
-    speed_feedback[0] = smartcar_imu.left_motor_speed_cmps;
-    speed_feedback[1] = smartcar_imu.right_motor_speed_cmps;
-    /* Update PID parameters from VOFA - call AFTER target is consumed */
-    // float kp_temp, ki_temp, kd_temp;
-	// uint8_t pid_mask = vofa_get_loop_pid(VOFA_TUNE_TYPE_SPEED, &kp_temp, &ki_temp, &kd_temp);
-    // if (pid_mask & 1) {
-    //     VKp_l = kp_temp;
-    //     VKp_r = kp_temp;
-    // }
-    // if (pid_mask & 2) {
-    //     VKi_l = ki_temp;
-    //     VKi_r = ki_temp;
-    // }
-    // if (pid_mask & 4) {
-    //     VKd_l = kd_temp;
-    //     VKd_r = kd_temp;
-    // }
-
-    /* Compute velocity PID - reference project uses (measure, target) */
-    float pwm_left = velocity_PID_value_l(speed_feedback[0], v_target_l);
-    float pwm_right = velocity_PID_value_r(speed_feedback[1], v_target_r);
-
-    /* Apply integral limit - matching reference project pattern */
-    pwm_left = I_xianfu(speed_ctrl_output_max, pwm_left);
-    pwm_right = I_xianfu(speed_ctrl_output_max, pwm_right);
-
-	/* Direct motor output - drive both left and right motors */
-    if (Flag.Start_Car) {
-		Set_Pwm((int)pwm_left, (int)pwm_right, 0, 0);
-    }
-
-	/* VOFA feedback removed - user to reimplement */
-	// if ((vofa_get_mode_flags() & VOFA_MODE_FLAG_FEEDBACK) && vofa_get_tune_type() == VOFA_TUNE_TYPE_SPEED) {
-    //     vofa_send_speed_feedback(v_target_l, speed_feedback[0], speed_feedback[1], VKp_l, VKi_l, VKd_l);	// cm/s
-    // }
-}
 
 void position_control(void) // Cascaded speed-position PID
 {
@@ -268,30 +123,11 @@ void Yaw_control(float target)
 	v_target_r = yaw_out[1];
 }
 
-	// Gray sensor tracking
-void ctrl_params_init(void)
+void pid_params_init(void)
 {
-		pid_control_init(&seektrack_ctrl[0], // Initialize PID controller, gray sensor tracking
-						 turn_kp_default1,	 // Proportional gain
-						 turn_ki_default1,	 // Integral gain
-						 turn_kd_default1,	 // Derivative gain
-						 20,				 // Error limit
-					 0,						 // Integral limit
-						 500,				 // Output limit
-					 1,						 // Error limit flag
-						 0, 0,				 // Integral separation flag and error threshold
-						 6);				 // Derivative interval time
-
-		//	pid_control_init(&seektrack_ctrl[1], // Initialize PID controller, OpenMV tracking
-		//							turn_kp_default2, // Proportional gain
-		//							turn_ki_default2, // Integral gain
-		//							turn_kd_default2, // Derivative gain
-		//							20, // Error limit
-		//							0,  // Integral limit
-		//							500, // Output limit
-		//							1,  // Error limit flag
-		//							0,0, // Integral separation flag and error threshold
-		//							1); // Derivative interval
+    Pid_Init(&seektrack_pid[0], POSITION_PID, turn_kp_default1, turn_ki_default1, turn_kd_default1);
+    Pid_Init(&motorL, POSITION_PID, 1.0f, 0.0f, 0.0f);
+    Pid_Init(&motorR, POSITION_PID, 1.0f, 0.0f, 0.0f);
 }
 // float turn_kp	=		20.0f ;
 // float turn_ki	=		0.0f	;
@@ -324,21 +160,14 @@ void gray_turn_control_200hz(float *output) // 200HZ=5ms
 	float a = 1 + turn_theta * ABS(gray_status) / 15;
 	kp *= a;
 
-	pid_control_init(&seektrack_ctrl[0],
-					 kp,
-					 0,
-					 kd,
-					 10,
-					 0,
-					 90,
-					 1,
-					 0, 0,
-					 6);
+	seektrack_pid[0].p = kp;
+	seektrack_pid[0].i = 0;
+	seektrack_pid[0].d = kd;
 	turn_output_last = turn_output;
-	seektrack_ctrl[0].expect = 0;
-	seektrack_ctrl[0].feedback = -gray_status;
-	pid_control_run(&seektrack_ctrl[0]);
-	turn_output = seektrack_ctrl[0].output;
+	seektrack_pid[0].target = 0;
+	seektrack_pid[0].now = -gray_status;
+	Pid_Cal(&seektrack_pid[0]);
+	turn_output = seektrack_pid[0].out;
 
 		//	if(turn_output>0) turn_output+=steer_deadzone; // Dead zone compensation, value=50
 	//	if(turn_output<0) turn_output-=steer_deadzone;
@@ -351,24 +180,14 @@ void gray_turn_control_200hz(float *output) // 200HZ=5ms
 float cam_turn_kd = 0.0f; //
 void openmv_openmv_duty_run(float *output)
 {
-		pid_control_init(&seektrack_ctrl[1], // Initialize PID controller, camera tracking
-						 cam_turn_kp,		 // Proportional gain
-						 cam_turn_ki,		 // Integral gain
-						 cam_turn_kd,		 // Derivative gain
-						 10,				 // Error limit
-						 0,					 // Integral limit
-						 50,				 // Output limit
-						 1,					 // Error limit flag
-						 0, 0,				 // Integral separation flag and error threshold
-						 6);				 // Derivative interval time
-
-		// Save previous control output
+	seektrack_pid[1].p = cam_turn_kp;
+	seektrack_pid[1].i = cam_turn_ki;
+	seektrack_pid[1].d = cam_turn_kd;
 	turn_output_last = turn_output;
-		// Steering PD control, no I term for camera position to avoid response lag
-		seektrack_ctrl[1].expect = 0; // Expected value for seektrack loop
-		seektrack_ctrl[1].feedback = error_openmv; // Feedback: OpenMV error (-11~11 range like gray sensor)
-		pid_control_run(&seektrack_ctrl[1]);  // Run PID controller
-	turn_output = seektrack_ctrl[1].output;
+	seektrack_pid[1].target = 0;
+	seektrack_pid[1].now = error_openmv;
+	Pid_Cal(&seektrack_pid[1]);
+	turn_output = seektrack_pid[1].out;
 		// Turn dead zone compensation to reduce jitter
 	//	if(turn_output>0) turn_output+=steer_deadzone;//steer_deadzone dead zone = 50
 	//	if(turn_output<0) turn_output-=steer_deadzone;
@@ -380,9 +199,11 @@ void openmv_openmv_duty_run(float *output)
 void openmv_duty_run(void)
 {
 	openmv_openmv_duty_run(&turn_ctrl_pwm);
-		v_target_l = speed_setup + turn_ctrl_pwm; //*turn_scale; // Left wheel target speed with turn adjustment
-		v_target_r = speed_setup - turn_ctrl_pwm; //*turn_scale; // Right wheel target speed with turn adjustment
-		speed_control();   // Speed loop
+		v_target_l = speed_setup + turn_ctrl_pwm;
+		v_target_r = speed_setup - turn_ctrl_pwm;
+		motorL.target = v_target_l;
+		motorR.target = v_target_r;
+		Pid_Motor_Control();
 }
 
 void sdk_duty_run(float *a, float *b)
@@ -409,14 +230,7 @@ void sdk_duty_run(float *a, float *b)
 
 void nmotor_output(void)
 {
-    /* Motor output now handled directly in speed_control() via Set_Pwm */
-    /* This function kept for backward compatibility with non-debug modes */
-    /* VOFA debug mode check removed - user to reimplement */
-    if (Flag.Start_Car) {
-        Set_Pwm((int)speed_output[0], (int)speed_output[0], (int)speed_output[1], (int)speed_output[1]);
-    } else {
-        Set_Pwm(0, 0, 0, 0);
-    }
+	
 }
 #define distance 25
 uint16_t gray_cnt = 0;

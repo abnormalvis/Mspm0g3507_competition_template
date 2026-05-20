@@ -7,11 +7,11 @@
  ********************************************************************************/
 #include "mt_flag.h"
 #include "hal_encode.h"
+#include "hal_pid.h"
 #include "mt_test.h"
 #include "2024DS_Duty.h"
 Param_InitTypeDef Param; // Parameter struct for duty tasks
 Flag_InitTypeDef Flag;	 // Flag struct for duty tasks
-extern float speed_integral[2], speed_output[2];
 extern float position_output;
 extern float yaw_out[2];
 void Flag_Init(void)
@@ -88,7 +88,7 @@ void Flag_Init(void)
 	Flag.yaw_loss_ahead = 0;
 	num_of_turn = 0;
 	gray_cnt = 0;
-	speed_output[1] = speed_output[0] = 0;
+	motorL.out = motorR.out = 0;
 	position_output = 0;
 	yaw_out[0] = 0;
 	//		point_actual[0] = point_A[0];

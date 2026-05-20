@@ -4,6 +4,8 @@
 void Motor_Stop(void)
 {
     AIN1_OUT(1); AIN2_OUT(1); BIN1_OUT(1); BIN2_OUT(1);
+    DL_TimerA_setCaptureCompareValue(PWM_0_INST, 0, GPIO_PWM_0_C3_IDX);
+    DL_TimerA_setCaptureCompareValue(PWM_0_INST, 0, GPIO_PWM_0_C1_IDX);
 }
 
 /* Left motor = B channels + PWM C3 (template convention) */

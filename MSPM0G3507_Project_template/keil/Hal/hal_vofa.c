@@ -230,10 +230,6 @@ void vofa_apply_param(uint8_t id, float value)
 /* VOFA 10ms task - process received parameters */
 void vofa_task_10ms(void)
 {
-    /* Sample encoders first so Pid_Motor_Control() sees fresh feedback */
-    Encoder_Update(&motor_left_encoder);
-    Encoder_Update(&motor_right_encoder);
-
     /* Process all pending parameter updates */
     while(vofa_has_param_update())
     {
@@ -251,7 +247,11 @@ void vofa_task_10ms(void)
     }
 
     /* Call Pid_Motor_Control to run PID loop and drive motors */
-    Pid_Motor_Control();
+    if(Flag.Start_Car)
+    {   
+        Pid_Motor_Control();
+    }
+        
 
     /* Send feedback data to VOFA upper computer - JustFloat protocol */
     /* Every ~100ms: target speed, actual speed, PID params */

@@ -10,13 +10,12 @@ void Pid_Motor_Control(void)
 
     if (target_speed >= 0) {
         left_dir = 1; right_dir = 1;
-        motorL.target = target_speed;
-        motorR.target = target_speed;
     } else {
-        left_dir = 1; right_dir = 1;
-        motorL.target = -target_speed;
-        motorR.target = -target_speed;
+        left_dir = 0; right_dir = 0;
+        target_speed = -target_speed;
     }
+    motorL.target = target_speed;
+    motorR.target = target_speed;
 
     motorL.now = (float)(Get_Encoder_Count(&motor_left_encoder) >= 0
         ? Get_Encoder_Count(&motor_left_encoder)

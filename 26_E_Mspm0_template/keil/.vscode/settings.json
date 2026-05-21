@@ -1,0 +1,7 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "bsp.system.h": "c",
+        "adc.h": "c"
+    }
+}

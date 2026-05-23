@@ -29,6 +29,7 @@ const SYSCTL  = scripting.addModule("/ti/driverlib/SYSCTL");
 const SYSTICK = scripting.addModule("/ti/driverlib/SYSTICK");
 const TIMER   = scripting.addModule("/ti/driverlib/TIMER", {}, false);
 const TIMER1  = TIMER.addInstance();
+const TIMER2  = TIMER.addInstance();
 const UART    = scripting.addModule("/ti/driverlib/UART", {}, false);
 const UART1   = UART.addInstance();
 const UART2   = UART.addInstance();
@@ -261,6 +262,14 @@ TIMER1.timerStartTimer  = true;
 TIMER1.interrupts       = ["LOAD"];
 TIMER1.timerPeriod      = "1ms";
 
+TIMER2.$name            = "TIMER_1";
+TIMER2.timerMode        = "PERIODIC_UP";
+TIMER2.timerPeriod      = "10 ms";
+TIMER2.timerClkDiv      = 8;
+TIMER2.timerClkPrescale = 20;
+TIMER2.timerStartTimer  = true;
+TIMER2.interrupts       = ["LOAD"];
+
 UART1.enabledInterrupts                = ["RX"];
 UART1.targetBaudRate                   = 115200;
 UART1.$name                            = "UART_debug";
@@ -277,16 +286,32 @@ UART1.rxPinConfig.onlyInternalResistor = scripting.forceWrite(false);
 UART1.rxPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 UART1.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric1";
 
-UART2.$name                    = "UART_1";
-UART2.peripheral.rxPin.$assign = "PB3";
-UART2.peripheral.txPin.$assign = "PB2";
-UART2.txPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric5";
-UART2.rxPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric6";
+UART2.$name                            = "UART_3";
+UART2.enabledInterrupts                = ["RX"];
+UART2.peripheral.rxPin.$assign         = "PB3";
+UART2.peripheral.txPin.$assign         = "PB2";
+UART2.txPinConfig.direction            = scripting.forceWrite("OUTPUT");
+UART2.txPinConfig.hideOutputInversion  = scripting.forceWrite(false);
+UART2.txPinConfig.onlyInternalResistor = scripting.forceWrite(false);
+UART2.txPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+UART2.txPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric5";
+UART2.rxPinConfig.hideOutputInversion  = scripting.forceWrite(false);
+UART2.rxPinConfig.onlyInternalResistor = scripting.forceWrite(false);
+UART2.rxPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+UART2.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric6";
 
-UART3.$name             = "UART_2";
-UART3.targetBaudRate    = 115200;
-UART3.txPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric15";
-UART3.rxPinConfig.$name = "ti_driverlib_gpio_GPIOPinGeneric16";
+UART3.targetBaudRate                   = 115200;
+UART3.$name                            = "UART_1";
+UART3.enabledInterrupts                = ["RX"];
+UART3.txPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric15";
+UART3.txPinConfig.direction            = scripting.forceWrite("OUTPUT");
+UART3.txPinConfig.hideOutputInversion  = scripting.forceWrite(false);
+UART3.txPinConfig.onlyInternalResistor = scripting.forceWrite(false);
+UART3.txPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+UART3.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric16";
+UART3.rxPinConfig.hideOutputInversion  = scripting.forceWrite(false);
+UART3.rxPinConfig.onlyInternalResistor = scripting.forceWrite(false);
+UART3.rxPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 
 /**
  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
@@ -318,7 +343,8 @@ SPI1.peripheral.sclkPin.$suggestSolution           = "PB16";
 SPI1.peripheral.mosiPin.$suggestSolution           = "PB15";
 SPI2.peripheral.$suggestSolution                   = "SPI0";
 SPI2.peripheral.cs0Pin.$suggestSolution            = "PA2";
-TIMER1.peripheral.$suggestSolution                 = "TIMA1";
+TIMER1.peripheral.$suggestSolution                 = "TIMG0";
+TIMER2.peripheral.$suggestSolution                 = "TIMA1";
 UART2.peripheral.$suggestSolution                  = "UART3";
 UART3.peripheral.$suggestSolution                  = "UART1";
 UART3.peripheral.rxPin.$suggestSolution            = "PA18";

@@ -1,9 +1,9 @@
 #include "Serial.h"
 
 /* UART aliases per syscfg:
- *   UART_debug_INST = UART0 (PA10/11) â€” debug + stepper1
- *   UART_1_INST     = UART3           â€” VOFA
- *   UART_2_INST     = UART1           â€” K230 + stepper2
+ *   UART_debug_INST = UART0 (PA10/11) â€? debug + stepper1
+ *   UART_1_INST     = UART3           â€? VOFA
+ *   UART_2_INST     = UART1           â€? K230 + stepper2
  */
 
 void uart_debug_send_byte(uint8_t data)
@@ -82,7 +82,7 @@ void UART_debug_INST_IRQHandler(void)
 	{
 		case DL_UART_IIDX_RX:
 			RxData = DL_UART_Main_receiveData(UART_debug_INST);
-			(void)RxData;
+			vofa_rx_byte(RxData);   // VOFA protocol parser on debug UART (physical UART0)
 			break;
 		default:
 			break;
@@ -91,12 +91,12 @@ void UART_debug_INST_IRQHandler(void)
 
 void UART_1_INST_IRQHandler(void)
 {
-	uint8_t RxData;
+	// uint8_t RxData;
 	switch( DL_UART_getPendingInterrupt(UART_1_INST) )
 	{
 		case DL_UART_IIDX_RX:
-			RxData = DL_UART_Main_receiveData(UART_1_INST);
-			vofa_rx_byte(RxData);
+			// RxData = DL_UART_Main_receiveData(UART_1_INST);
+			// vofa_rx_byte(RxData);
 			break;
 		default:
 			break;

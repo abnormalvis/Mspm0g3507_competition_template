@@ -8,6 +8,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/* UART_2 is not configured in current syscfg; provide fallback to UART2 hardware */
+#ifndef UART_2_INST
+#define UART_2_INST                UART2
+#define UART_2_INST_IRQHandler     UART2_IRQHandler
+#endif
+
 void uart_debug_send_byte(uint8_t data);
 void uart1_send_char(char ch);
 void uart1_send_byte(uint8_t data);

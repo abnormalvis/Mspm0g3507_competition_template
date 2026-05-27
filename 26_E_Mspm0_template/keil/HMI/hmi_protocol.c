@@ -12,6 +12,7 @@
 #include "zuolan_usart.h"
 #include "zuolan_hmi.h"
 #include "menu_task.h"
+#include "Serial.h"
 
 #define HMI_FRAME_MIN_LEN  5   /* header + pageH + pageL + widget + value */
 
@@ -53,8 +54,22 @@ void hmi_dispatch_event(const hmi_event_t *evt)
 {
     if (evt == NULL) return;
 
-    /* Page 1: task selection buttons */
-    if (evt->page_id == 0 && evt->frame_type == HMI_FRAME_TOUCH)
+    if (evt->frame_type != HMI_FRAME_TOUCH) {
+        uart_debug_send_byte('?');  /* unknown frame type */
+        return;
+    }
+
+    /* debug: log page & widget id */
+    uart_debug_send_byte('D');
+    uart_debug_send_byte(':');
+    uart_debug_send_byte('0' + (uint8_t)evt->page_id);
+    uart_debug_send_byte(' ');
+    uart_debug_send_byte('0' + evt->widget_id);
+    uart_debug_send_byte('\r');
+    uart_debug_send_byte('\n');
+
+    /* Accept touch from page 0 or page 1 (screen may use either) */
+    if (evt->page_id <= 1)
     {
         switch (evt->widget_id)
         {
@@ -91,6 +106,7 @@ void hmi_dispatch_event(const hmi_event_t *evt)
             zuolan_printf("page1.t3.txt=\"执行中\"%s", HMI_END_CMD);
             break;
         default:
+            uart_debug_send_byte('U');  /* unknown widget */
             break;
         }
     }

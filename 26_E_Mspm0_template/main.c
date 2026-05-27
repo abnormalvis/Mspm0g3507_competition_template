@@ -124,12 +124,27 @@ int main(void)
         if (hmi_rx_ready)
         {
             hmi_rx_ready = 0;
+            uint8_t idx = hmi_rx_idx;
+            hmi_rx_idx = 0;  /* reset early so ISR can use fresh buffer */
+
             hmi_event_t evt;
-            if (hmi_parse_frame(hmi_rx_buf, hmi_rx_idx - 1, &evt) == 0)
+            if (hmi_parse_frame(hmi_rx_buf, idx, &evt) == 0)
             {
+                /* debug: dump parsed frame via UART0 */
+                uart_debug_send_byte('F');
+                uart_debug_send_byte(':');
+                uart_debug_send_byte('0' + (uint8_t)(evt.frame_type >> 4));
+                uart_debug_send_byte(' ');
+                uart_debug_send_byte('P');
+                uart_debug_send_byte('0' + (uint8_t)evt.page_id);
+                uart_debug_send_byte(' ');
+                uart_debug_send_byte('W');
+                uart_debug_send_byte('0' + evt.widget_id);
+                uart_debug_send_byte('\r');
+                uart_debug_send_byte('\n');
+
                 hmi_dispatch_event(&evt);
             }
-            hmi_rx_idx = 0;
         }
 
         /* ---- HMI telemetry: every 200ms send debug data to screen ---- */
@@ -137,20 +152,20 @@ int main(void)
         if (sys_tick_ms - last_hmi_telem >= 200)
         {
             last_hmi_telem = sys_tick_ms;
-            zuolan_HMI_Send_Int("debug.speed_l", Motor_speedL);
-            zuolan_HMI_Send_Int("debug.speed_r", Motor_speedR);
-            zuolan_HMI_Send_Float("debug.kp", MotorLSpeedPID.Kp, 2);
-            zuolan_HMI_Send_Float("debug.ki", MotorLSpeedPID.Ki, 2);
+            zuolan_HMI_Send_Int("page2.x1", Motor_speedL);
+            zuolan_HMI_Send_Int("page2.x2", Motor_speedR);
+            zuolan_HMI_Send_Float("page2.x3", MotorLSpeedPID.Kp, 2);
+            zuolan_HMI_Send_Float("page2.x4", MotorLSpeedPID.Ki, 2);
         }
 
-        /* ---- HMI task completion: restore button text ---- */
+        /* ---- HMI task completion: clear execution status text ---- */
         static uint8_t was_task_running = 0;
         if (!task_running && was_task_running)
         {
-            zuolan_printf("b0.txt=\"题目1\"%s", HMI_END_CMD);
-            zuolan_printf("b1.txt=\"题目2\"%s", HMI_END_CMD);
-            zuolan_printf("b2.txt=\"题目3\"%s", HMI_END_CMD);
-            zuolan_printf("b3.txt=\"题目4\"%s", HMI_END_CMD);
+            zuolan_printf("page1.t0.txt=\"\"%s", HMI_END_CMD);
+            zuolan_printf("page1.t1.txt=\"\"%s", HMI_END_CMD);
+            zuolan_printf("page1.t2.txt=\"\"%s", HMI_END_CMD);
+            zuolan_printf("page1.t3.txt=\"\"%s", HMI_END_CMD);
         }
         was_task_running = task_running;
 

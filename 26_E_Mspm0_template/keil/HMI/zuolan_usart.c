@@ -68,14 +68,19 @@ void UART_display_INST_IRQHandler(void)
     case DL_UART_IIDX_RX: {
         uint8_t ch = DL_UART_Main_receiveData(HMI_UART);
 
-        /* \r\n 帧结束检测 */
-        if (ch == 0x0A && hmi_rx_idx > 0 && hmi_rx_buf[hmi_rx_idx - 1] == 0x0D) {
-            hmi_rx_ready = 1;
+        /* Frame terminator: \r\n or standalone \n */
+        if (ch == 0x0A) {
+            if (hmi_rx_idx > 0 && hmi_rx_buf[hmi_rx_idx - 1] == 0x0D) {
+                hmi_rx_idx--;  /* discard trailing \r */
+            }
+            if (hmi_rx_idx > 0) {
+                /* snapshot length before ISR could append more bytes */
+                hmi_rx_ready = 1;
+            }
         } else if (hmi_rx_idx < HMI_RX_BUF_SIZE) {
             hmi_rx_buf[hmi_rx_idx++] = ch;
         } else {
-            /* 溢出: 重置缓冲区 */
-            hmi_rx_idx = 0;
+            hmi_rx_idx = 0;  /* overflow reset */
         }
         break;
     }

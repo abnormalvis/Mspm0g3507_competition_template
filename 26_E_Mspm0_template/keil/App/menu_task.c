@@ -1,10 +1,13 @@
 #include "menu_task.h"
-#include "lcd.h"
 #include "hal_key.h"
 #include "task_manager.h"
 #include "StandardPid.h"
 #include "Encoder.h"
-#include <stdio.h>
+
+/* LCD stubs — LCD replaced by serial screen */
+static void OLED_CLS(void) {}
+static void display_6_8_string(uint16_t col, uint16_t row, const char *ch) { (void)col; (void)row; (void)ch; }
+static void display_6_8_number(uint16_t col, uint16_t row, float number) { (void)col; (void)row; (void)number; }
 
 /* ---- Global state ---- */
 uint8_t  menu_active = 1;
@@ -97,7 +100,6 @@ void menu_key_set(void)
     if (next_idx != func_index)
     {
         func_index = next_idx;
-        OLED_CLS();
         g_key_val = KEY_IDLE_VAL;
     }
 

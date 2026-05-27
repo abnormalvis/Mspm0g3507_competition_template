@@ -1,8 +1,8 @@
 /**
  * @file zuolan_hmi.c
- * @brief HMI人机交互实现文件 (MSPM0G3507适配版)
+ * @brief HMI人机交互实现文件 (MSPM0G3507适配�?)
  *
- * 发送命名控件数据到串口屏. 协议: 控件名.属性=值\xff\xff\xff
+ * 发送命名控件数�?到串口屏. 协�??: 控件�?.属�?=值\xff\xff\xff
  */
 #include "zuolan_hmi.h"
 #include "Delay.h"
@@ -10,8 +10,8 @@
 
 /**
  * @brief 向HMI控件发送字符串
- * @param obj_name  控件名称 (如 "page1.t1")
- * @param show_data 要显示的字符串
+ * @param obj_name  控件名称 (�? "page1.t1")
+ * @param show_data 要显示的字�?�串
  */
 void zuolan_HMI_Send_String(char *obj_name, char *show_data)
 {
@@ -19,9 +19,9 @@ void zuolan_HMI_Send_String(char *obj_name, char *show_data)
 }
 
 /**
- * @brief 向HMI控件发送整数
- * @param obj_name  控件名称 (如 "page1.n0")
- * @param show_data 要显示的整数值
+ * @brief 向HMI控件发送整�?
+ * @param obj_name  控件名称 (�? "page1.n0")
+ * @param show_data 要显示的整数�?
  */
 void zuolan_HMI_Send_Int(char *obj_name, int show_data)
 {
@@ -31,7 +31,7 @@ void zuolan_HMI_Send_Int(char *obj_name, int show_data)
 /**
  * @brief 向HMI控件发送浮点数
  * @param obj_name    控件名称
- * @param show_data   要显示的浮点数
+ * @param show_data   要显示的�?点数
  * @param point_index 小数点后位数
  */
 void zuolan_HMI_Send_Float(char *obj_name, float show_data, int point_index)
@@ -43,7 +43,7 @@ void zuolan_HMI_Send_Float(char *obj_name, float show_data, int point_index)
 /**
  * @brief 清除波形控件指定通道
  * @param obj_name 波形控件名称
- * @param ch       通道号 (0~3)
+ * @param ch       通道�? (0~3)
  */
 void zuolan_HMI_Wave_Clear(char *obj_name, int ch)
 {
@@ -51,10 +51,10 @@ void zuolan_HMI_Wave_Clear(char *obj_name, int ch)
 }
 
 /**
- * @brief 向波形控件逐点添加数据 (低速)
+ * @brief 向波形控件逐点添加数据 (低�?)
  * @param obj_name 波形控件名称
- * @param ch       通道号 (0~3)
- * @param val      数据值 (0~255)
+ * @param ch       通道�? (0~3)
+ * @param val      数据�? (0~255)
  */
 void zuolan_HMI_Write_Wave_Low(char *obj_name, int ch, int val)
 {
@@ -62,11 +62,11 @@ void zuolan_HMI_Write_Wave_Low(char *obj_name, int ch, int val)
 }
 
 /**
- * @brief 向波形控件批量发送数据 (高速)
+ * @brief 向波形控件批量发送数�? (高�?)
  * @param obj_name 波形控件名称
- * @param ch       通道号 (0~3)
- * @param len      数据点数 (最大1024)
- * @param val      数据数组 (每个值0~255)
+ * @param ch       通道�? (0~3)
+ * @param len      数据点数 (最�?1024)
+ * @param val      数据数组 (每个�?0~255)
  */
 void zuolan_HMI_Write_Wave_Fast(char *obj_name, int ch, int len, int *val)
 {

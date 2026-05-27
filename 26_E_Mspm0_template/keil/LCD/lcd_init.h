@@ -19,6 +19,11 @@
 #define LCD_H 240
 #endif
 
+#define LCD_RST_PORT   LCD_PORT
+#define LCD_DC_PORT    LCD_PORT
+#define LCD_LCD_CS_PORT LCD_PORT
+#define LCD_BLK_PORT   LCD_PORT
+
 #define LCD_RES_Clr()  DL_GPIO_clearPins(LCD_RST_PORT,    LCD_RST_PIN)
 #define LCD_RES_Set()  DL_GPIO_setPins  (LCD_RST_PORT,    LCD_RST_PIN)
 
@@ -27,6 +32,9 @@
 
 #define LCD_CS_Clr()   DL_GPIO_clearPins(LCD_LCD_CS_PORT, LCD_LCD_CS_PIN)
 #define LCD_CS_Set()   DL_GPIO_setPins  (LCD_LCD_CS_PORT, LCD_LCD_CS_PIN)
+
+#define LCD_BLK_Clr()  DL_GPIO_clearPins(LCD_BLK_PORT, LCD_BLK_PIN)
+#define LCD_BLK_Set()  DL_GPIO_setPins  (LCD_BLK_PORT, LCD_BLK_PIN)
 
 void LCD_GPIO_Init(void);
 void LCD_Writ_Bus(uint8_t dat);

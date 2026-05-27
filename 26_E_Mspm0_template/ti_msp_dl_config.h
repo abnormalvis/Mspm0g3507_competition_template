@@ -87,12 +87,24 @@ extern "C" {
 #define PWM_Motor_INST_IRQHandler                               TIMA0_IRQHandler
 #define PWM_Motor_INST_INT_IRQN                                 (TIMA0_INT_IRQn)
 #define PWM_Motor_INST_CLK_FREQ                                         80000000
+/* GPIO defines for channel 0 */
+#define GPIO_PWM_Motor_C0_PORT                                             GPIOB
+#define GPIO_PWM_Motor_C0_PIN                                      DL_GPIO_PIN_8
+#define GPIO_PWM_Motor_C0_IOMUX                                  (IOMUX_PINCM25)
+#define GPIO_PWM_Motor_C0_IOMUX_FUNC                 IOMUX_PINCM25_PF_TIMA0_CCP0
+#define GPIO_PWM_Motor_C0_IDX                                DL_TIMER_CC_0_INDEX
 /* GPIO defines for channel 1 */
 #define GPIO_PWM_Motor_C1_PORT                                             GPIOA
 #define GPIO_PWM_Motor_C1_PIN                                      DL_GPIO_PIN_7
 #define GPIO_PWM_Motor_C1_IOMUX                                  (IOMUX_PINCM14)
 #define GPIO_PWM_Motor_C1_IOMUX_FUNC                 IOMUX_PINCM14_PF_TIMA0_CCP1
 #define GPIO_PWM_Motor_C1_IDX                                DL_TIMER_CC_1_INDEX
+/* GPIO defines for channel 2 */
+#define GPIO_PWM_Motor_C2_PORT                                             GPIOA
+#define GPIO_PWM_Motor_C2_PIN                                      DL_GPIO_PIN_3
+#define GPIO_PWM_Motor_C2_IOMUX                                   (IOMUX_PINCM8)
+#define GPIO_PWM_Motor_C2_IOMUX_FUNC                  IOMUX_PINCM8_PF_TIMA0_CCP2
+#define GPIO_PWM_Motor_C2_IDX                                DL_TIMER_CC_2_INDEX
 /* GPIO defines for channel 3 */
 #define GPIO_PWM_Motor_C3_PORT                                             GPIOA
 #define GPIO_PWM_Motor_C3_PIN                                     DL_GPIO_PIN_23
@@ -115,6 +127,21 @@ extern "C" {
 
 
 
+
+/* Defines for I2C_0 */
+#define I2C_0_INST                                                          I2C0
+#define I2C_0_INST_IRQHandler                                    I2C0_IRQHandler
+#define I2C_0_INST_INT_IRQN                                        I2C0_INT_IRQn
+#define GPIO_I2C_0_SDA_PORT                                                GPIOA
+#define GPIO_I2C_0_SDA_PIN                                         DL_GPIO_PIN_0
+#define GPIO_I2C_0_IOMUX_SDA                                      (IOMUX_PINCM1)
+#define GPIO_I2C_0_IOMUX_SDA_FUNC                       IOMUX_PINCM1_PF_I2C0_SDA
+#define GPIO_I2C_0_SCL_PORT                                                GPIOA
+#define GPIO_I2C_0_SCL_PIN                                         DL_GPIO_PIN_1
+#define GPIO_I2C_0_IOMUX_SCL                                      (IOMUX_PINCM2)
+#define GPIO_I2C_0_IOMUX_SCL_FUNC                       IOMUX_PINCM2_PF_I2C0_SCL
+
+
 /* Defines for UART_debug */
 #define UART_debug_INST                                                    UART0
 #define UART_debug_INST_FREQUENCY                                       40000000
@@ -131,55 +158,58 @@ extern "C" {
 #define UART_debug_BAUD_RATE                                            (115200)
 #define UART_debug_IBRD_40_MHZ_115200_BAUD                                  (21)
 #define UART_debug_FBRD_40_MHZ_115200_BAUD                                  (45)
-/* Defines for UART_3 */
-#define UART_3_INST                                                        UART3
-#define UART_3_INST_FREQUENCY                                           80000000
-#define UART_3_INST_IRQHandler                                  UART3_IRQHandler
-#define UART_3_INST_INT_IRQN                                      UART3_INT_IRQn
-#define GPIO_UART_3_RX_PORT                                                GPIOB
-#define GPIO_UART_3_TX_PORT                                                GPIOB
-#define GPIO_UART_3_RX_PIN                                         DL_GPIO_PIN_3
-#define GPIO_UART_3_TX_PIN                                         DL_GPIO_PIN_2
-#define GPIO_UART_3_IOMUX_RX                                     (IOMUX_PINCM16)
-#define GPIO_UART_3_IOMUX_TX                                     (IOMUX_PINCM15)
-#define GPIO_UART_3_IOMUX_RX_FUNC                      IOMUX_PINCM16_PF_UART3_RX
-#define GPIO_UART_3_IOMUX_TX_FUNC                      IOMUX_PINCM15_PF_UART3_TX
-#define UART_3_BAUD_RATE                                                  (9600)
-#define UART_3_IBRD_80_MHZ_9600_BAUD                                       (520)
-#define UART_3_FBRD_80_MHZ_9600_BAUD                                        (53)
-/* Defines for UART_1 */
-#define UART_1_INST                                                        UART1
-#define UART_1_INST_FREQUENCY                                           40000000
-#define UART_1_INST_IRQHandler                                  UART1_IRQHandler
-#define UART_1_INST_INT_IRQN                                      UART1_INT_IRQn
-#define GPIO_UART_1_RX_PORT                                                GPIOA
-#define GPIO_UART_1_TX_PORT                                                GPIOA
-#define GPIO_UART_1_RX_PIN                                        DL_GPIO_PIN_18
-#define GPIO_UART_1_TX_PIN                                        DL_GPIO_PIN_17
-#define GPIO_UART_1_IOMUX_RX                                     (IOMUX_PINCM40)
-#define GPIO_UART_1_IOMUX_TX                                     (IOMUX_PINCM39)
-#define GPIO_UART_1_IOMUX_RX_FUNC                      IOMUX_PINCM40_PF_UART1_RX
-#define GPIO_UART_1_IOMUX_TX_FUNC                      IOMUX_PINCM39_PF_UART1_TX
-#define UART_1_BAUD_RATE                                                (115200)
-#define UART_1_IBRD_40_MHZ_115200_BAUD                                      (21)
-#define UART_1_FBRD_40_MHZ_115200_BAUD                                      (45)
+/* Defines for UART_vision */
+#define UART_vision_INST                                                   UART3
+#define UART_vision_INST_FREQUENCY                                      80000000
+#define UART_vision_INST_IRQHandler                             UART3_IRQHandler
+#define UART_vision_INST_INT_IRQN                                 UART3_INT_IRQn
+#define GPIO_UART_vision_RX_PORT                                           GPIOB
+#define GPIO_UART_vision_TX_PORT                                           GPIOB
+#define GPIO_UART_vision_RX_PIN                                    DL_GPIO_PIN_3
+#define GPIO_UART_vision_TX_PIN                                    DL_GPIO_PIN_2
+#define GPIO_UART_vision_IOMUX_RX                                (IOMUX_PINCM16)
+#define GPIO_UART_vision_IOMUX_TX                                (IOMUX_PINCM15)
+#define GPIO_UART_vision_IOMUX_RX_FUNC                 IOMUX_PINCM16_PF_UART3_RX
+#define GPIO_UART_vision_IOMUX_TX_FUNC                 IOMUX_PINCM15_PF_UART3_TX
+#define UART_vision_BAUD_RATE                                             (9600)
+#define UART_vision_IBRD_80_MHZ_9600_BAUD                                  (520)
+#define UART_vision_FBRD_80_MHZ_9600_BAUD                                   (53)
+/* Defines for UART_display */
+#define UART_display_INST                                                  UART1
+#define UART_display_INST_FREQUENCY                                     40000000
+#define UART_display_INST_IRQHandler                            UART1_IRQHandler
+#define UART_display_INST_INT_IRQN                                UART1_INT_IRQn
+#define GPIO_UART_display_RX_PORT                                          GPIOA
+#define GPIO_UART_display_TX_PORT                                          GPIOA
+#define GPIO_UART_display_RX_PIN                                  DL_GPIO_PIN_18
+#define GPIO_UART_display_TX_PIN                                  DL_GPIO_PIN_17
+#define GPIO_UART_display_IOMUX_RX                               (IOMUX_PINCM40)
+#define GPIO_UART_display_IOMUX_TX                               (IOMUX_PINCM39)
+#define GPIO_UART_display_IOMUX_RX_FUNC                IOMUX_PINCM40_PF_UART1_RX
+#define GPIO_UART_display_IOMUX_TX_FUNC                IOMUX_PINCM39_PF_UART1_TX
+#define UART_display_BAUD_RATE                                          (115200)
+#define UART_display_IBRD_40_MHZ_115200_BAUD                                (21)
+#define UART_display_FBRD_40_MHZ_115200_BAUD                                (45)
+/* Defines for UART_stepmotor */
+#define UART_stepmotor_INST                                                UART2
+#define UART_stepmotor_INST_FREQUENCY                                   40000000
+#define UART_stepmotor_INST_IRQHandler                          UART2_IRQHandler
+#define UART_stepmotor_INST_INT_IRQN                              UART2_INT_IRQn
+#define GPIO_UART_stepmotor_RX_PORT                                        GPIOB
+#define GPIO_UART_stepmotor_TX_PORT                                        GPIOA
+#define GPIO_UART_stepmotor_RX_PIN                                DL_GPIO_PIN_16
+#define GPIO_UART_stepmotor_TX_PIN                                DL_GPIO_PIN_21
+#define GPIO_UART_stepmotor_IOMUX_RX                             (IOMUX_PINCM33)
+#define GPIO_UART_stepmotor_IOMUX_TX                             (IOMUX_PINCM46)
+#define GPIO_UART_stepmotor_IOMUX_RX_FUNC               IOMUX_PINCM33_PF_UART2_RX
+#define GPIO_UART_stepmotor_IOMUX_TX_FUNC               IOMUX_PINCM46_PF_UART2_TX
+#define UART_stepmotor_BAUD_RATE                                        (115200)
+#define UART_stepmotor_IBRD_40_MHZ_115200_BAUD                              (21)
+#define UART_stepmotor_FBRD_40_MHZ_115200_BAUD                              (45)
 
 
 
 
-/* Defines for SPI_LCD */
-#define SPI_LCD_INST                                                       SPI1
-#define SPI_LCD_INST_IRQHandler                                 SPI1_IRQHandler
-#define SPI_LCD_INST_INT_IRQN                                     SPI1_INT_IRQn
-#define GPIO_SPI_LCD_PICO_PORT                                            GPIOB
-#define GPIO_SPI_LCD_PICO_PIN                                    DL_GPIO_PIN_15
-#define GPIO_SPI_LCD_IOMUX_PICO                                 (IOMUX_PINCM32)
-#define GPIO_SPI_LCD_IOMUX_PICO_FUNC                 IOMUX_PINCM32_PF_SPI1_PICO
-/* GPIO configuration for SPI_LCD */
-#define GPIO_SPI_LCD_SCLK_PORT                                            GPIOB
-#define GPIO_SPI_LCD_SCLK_PIN                                    DL_GPIO_PIN_16
-#define GPIO_SPI_LCD_IOMUX_SCLK                                 (IOMUX_PINCM33)
-#define GPIO_SPI_LCD_IOMUX_SCLK_FUNC                 IOMUX_PINCM33_PF_SPI1_SCLK
 /* Defines for SPI_IMU */
 #define SPI_IMU_INST                                                       SPI0
 #define SPI_IMU_INST_IRQHandler                                 SPI0_IRQHandler
@@ -222,33 +252,6 @@ extern "C" {
 /* Defines for buzzer: GPIOB.12 with pinCMx 29 on package pin 64 */
 #define Beep_buzzer_PIN                                         (DL_GPIO_PIN_12)
 #define Beep_buzzer_IOMUX                                        (IOMUX_PINCM29)
-/* Port definition for Pin Group KEY */
-#define KEY_PORT                                                         (GPIOB)
-
-/* Defines for KEY_UP: GPIOB.13 with pinCMx 30 on package pin 1 */
-// groups represented: ["Encoder","KEY"]
-// pins affected: ["Encoder1_A","Encoder1_B","KEY_UP","KEY_DOWN","KEY_LEFT","KEY_RIGHT","KEY_MID"]
-#define GPIO_MULTIPLE_GPIOB_INT_IRQN                            (GPIOB_INT_IRQn)
-#define GPIO_MULTIPLE_GPIOB_INT_IIDX            (DL_INTERRUPT_GROUP1_IIDX_GPIOB)
-#define KEY_KEY_UP_IIDX                                     (DL_GPIO_IIDX_DIO13)
-#define KEY_KEY_UP_PIN                                          (DL_GPIO_PIN_13)
-#define KEY_KEY_UP_IOMUX                                         (IOMUX_PINCM30)
-/* Defines for KEY_DOWN: GPIOB.19 with pinCMx 45 on package pin 16 */
-#define KEY_KEY_DOWN_IIDX                                   (DL_GPIO_IIDX_DIO19)
-#define KEY_KEY_DOWN_PIN                                        (DL_GPIO_PIN_19)
-#define KEY_KEY_DOWN_IOMUX                                       (IOMUX_PINCM45)
-/* Defines for KEY_LEFT: GPIOB.23 with pinCMx 51 on package pin 22 */
-#define KEY_KEY_LEFT_IIDX                                   (DL_GPIO_IIDX_DIO23)
-#define KEY_KEY_LEFT_PIN                                        (DL_GPIO_PIN_23)
-#define KEY_KEY_LEFT_IOMUX                                       (IOMUX_PINCM51)
-/* Defines for KEY_RIGHT: GPIOB.18 with pinCMx 44 on package pin 15 */
-#define KEY_KEY_RIGHT_IIDX                                  (DL_GPIO_IIDX_DIO18)
-#define KEY_KEY_RIGHT_PIN                                       (DL_GPIO_PIN_18)
-#define KEY_KEY_RIGHT_IOMUX                                      (IOMUX_PINCM44)
-/* Defines for KEY_MID: GPIOB.24 with pinCMx 52 on package pin 23 */
-#define KEY_KEY_MID_IIDX                                    (DL_GPIO_IIDX_DIO24)
-#define KEY_KEY_MID_PIN                                         (DL_GPIO_PIN_24)
-#define KEY_KEY_MID_IOMUX                                        (IOMUX_PINCM52)
 /* Port definition for Pin Group MOTOR_DIR */
 #define MOTOR_DIR_PORT                                                   (GPIOA)
 
@@ -264,29 +267,23 @@ extern "C" {
 /* Defines for Right_B: GPIOA.22 with pinCMx 47 on package pin 18 */
 #define MOTOR_DIR_Right_B_PIN                                   (DL_GPIO_PIN_22)
 #define MOTOR_DIR_Right_B_IOMUX                                  (IOMUX_PINCM47)
-/* Port definition for Pin Group OLED */
-#define OLED_PORT                                                        (GPIOB)
-
-/* Defines for SCL: GPIOB.9 with pinCMx 26 on package pin 61 */
-#define OLED_SCL_PIN                                             (DL_GPIO_PIN_9)
-#define OLED_SCL_IOMUX                                           (IOMUX_PINCM26)
-/* Defines for SDA: GPIOB.8 with pinCMx 25 on package pin 60 */
-#define OLED_SDA_PIN                                             (DL_GPIO_PIN_8)
-#define OLED_SDA_IOMUX                                           (IOMUX_PINCM25)
-/* Defines for S1: GPIOB.14 with pinCMx 31 on package pin 2 */
-#define TRACK_S1_PORT                                                    (GPIOB)
-#define TRACK_S1_PIN                                            (DL_GPIO_PIN_14)
-#define TRACK_S1_IOMUX                                           (IOMUX_PINCM31)
-/* Defines for S2: GPIOA.14 with pinCMx 36 on package pin 7 */
+/* Defines for S1: GPIOA.15 with pinCMx 37 on package pin 8 */
+#define TRACK_S1_PORT                                                    (GPIOA)
+#define TRACK_S1_PIN                                            (DL_GPIO_PIN_15)
+#define TRACK_S1_IOMUX                                           (IOMUX_PINCM37)
+/* Defines for S2: GPIOA.28 with pinCMx 3 on package pin 35 */
 #define TRACK_S2_PORT                                                    (GPIOA)
-#define TRACK_S2_PIN                                            (DL_GPIO_PIN_14)
-#define TRACK_S2_IOMUX                                           (IOMUX_PINCM36)
+#define TRACK_S2_PIN                                            (DL_GPIO_PIN_28)
+#define TRACK_S2_IOMUX                                            (IOMUX_PINCM3)
 /* Defines for S3: GPIOB.21 with pinCMx 49 on package pin 20 */
 #define TRACK_S3_PORT                                                    (GPIOB)
 #define TRACK_S3_PIN                                            (DL_GPIO_PIN_21)
 #define TRACK_S3_IOMUX                                           (IOMUX_PINCM49)
 /* Defines for Encoder1_A: GPIOB.6 with pinCMx 23 on package pin 58 */
 #define Encoder_Encoder1_A_PORT                                          (GPIOB)
+// pins affected by this interrupt request:["Encoder1_A","Encoder1_B"]
+#define Encoder_GPIOB_INT_IRQN                                  (GPIOB_INT_IRQn)
+#define Encoder_GPIOB_INT_IIDX                  (DL_INTERRUPT_GROUP1_IIDX_GPIOB)
 #define Encoder_Encoder1_A_IIDX                              (DL_GPIO_IIDX_DIO6)
 #define Encoder_Encoder1_A_PIN                                   (DL_GPIO_PIN_6)
 #define Encoder_Encoder1_A_IOMUX                                 (IOMUX_PINCM23)
@@ -320,18 +317,21 @@ extern "C" {
 #define IMU_INT2_PORT                                                    (GPIOB)
 #define IMU_INT2_PIN                                             (DL_GPIO_PIN_4)
 #define IMU_INT2_IOMUX                                           (IOMUX_PINCM17)
-/* Defines for LCD_CS: GPIOA.15 with pinCMx 37 on package pin 8 */
-#define LCD_LCD_CS_PORT                                                  (GPIOA)
-#define LCD_LCD_CS_PIN                                          (DL_GPIO_PIN_15)
-#define LCD_LCD_CS_IOMUX                                         (IOMUX_PINCM37)
-/* Defines for RST: GPIOA.16 with pinCMx 38 on package pin 9 */
-#define LCD_RST_PORT                                                     (GPIOA)
-#define LCD_RST_PIN                                             (DL_GPIO_PIN_16)
-#define LCD_RST_IOMUX                                            (IOMUX_PINCM38)
-/* Defines for DC: GPIOB.17 with pinCMx 43 on package pin 14 */
-#define LCD_DC_PORT                                                      (GPIOB)
-#define LCD_DC_PIN                                              (DL_GPIO_PIN_17)
-#define LCD_DC_IOMUX                                             (IOMUX_PINCM43)
+/* Port definition for Pin Group LCD */
+#define LCD_PORT                                                         (GPIOB)
+
+/* Defines for LCD_CS: GPIOB.14 with pinCMx 31 on package pin 2 */
+#define LCD_LCD_CS_PIN                                          (DL_GPIO_PIN_14)
+#define LCD_LCD_CS_IOMUX                                         (IOMUX_PINCM31)
+/* Defines for RST: GPIOB.10 with pinCMx 27 on package pin 62 */
+#define LCD_RST_PIN                                             (DL_GPIO_PIN_10)
+#define LCD_RST_IOMUX                                            (IOMUX_PINCM27)
+/* Defines for DC: GPIOB.11 with pinCMx 28 on package pin 63 */
+#define LCD_DC_PIN                                              (DL_GPIO_PIN_11)
+#define LCD_DC_IOMUX                                             (IOMUX_PINCM28)
+/* Defines for BLK: GPIOB.26 with pinCMx 57 on package pin 28 */
+#define LCD_BLK_PIN                                             (DL_GPIO_PIN_26)
+#define LCD_BLK_IOMUX                                            (IOMUX_PINCM57)
 
 
 
@@ -344,10 +344,11 @@ void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_PWM_Motor_init(void);
 void SYSCFG_DL_TIMER_0_init(void);
 void SYSCFG_DL_TIMER_1_init(void);
+void SYSCFG_DL_I2C_0_init(void);
 void SYSCFG_DL_UART_debug_init(void);
-void SYSCFG_DL_UART_3_init(void);
-void SYSCFG_DL_UART_1_init(void);
-void SYSCFG_DL_SPI_LCD_init(void);
+void SYSCFG_DL_UART_vision_init(void);
+void SYSCFG_DL_UART_display_init(void);
+void SYSCFG_DL_UART_stepmotor_init(void);
 void SYSCFG_DL_SPI_IMU_init(void);
 void SYSCFG_DL_ADC_track_init(void);
 

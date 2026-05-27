@@ -2,7 +2,6 @@
 #include <ti/devices/msp/msp.h>
 #include <ti/driverlib/driverlib.h>
 #include <ti/driverlib/dl_gpio.h>
-#include <ti/driverlib/dl_spi.h>
 #include <stdint.h>
 #include "lcd.h"
 #include "lcd_init.h"
@@ -15,12 +14,8 @@ void LCD_GPIO_Init(void)
 
 void LCD_Writ_Bus(uint8_t dat)
 {
-    LCD_CS_Clr();
-
-    DL_SPI_transmitData8(SPI_LCD_INST, dat);
-    while(DL_SPI_isBusy(SPI_LCD_INST));
-
-    LCD_CS_Set();
+    (void)dat;
+    /* SPI_LCD removed from sysconfig; LCD display replaced by serial screen */
 }
 
 void LCD_WR_DATA8(uint8_t dat)
@@ -92,6 +87,8 @@ void LCD_Init(void)
     LCD_RES_Clr();
     Delay_ms(100);
     LCD_RES_Set();
+    Delay_ms(100);
+    LCD_BLK_Set();
     Delay_ms(100);
 
     LCD_WR_REG(0x11);

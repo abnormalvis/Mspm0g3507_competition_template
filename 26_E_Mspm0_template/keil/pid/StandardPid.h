@@ -17,21 +17,21 @@ typedef struct
 	float Ki;
 	float Kd;
 
-	float in_a;//输入一阶低通滤波系数
+	float in_a;//输入一阶低通滤波系�?
 
 	float LastActual;
 
-	float Error0;//本次误差
-	float Error1;//上次误差
+	float Error0;//�?次�??�?
+	float Error1;//上�?��??�?
 	
-	float Error2;//上上次误差，用于增量式计算
-	float ErrorInt;//误差积分，用于位置式计算
+	float Error2;//上上次�??�?，用于�?�量式�?�算
+	float ErrorInt;//�?�?�?分，用于位置式�?�算
 	
-	float DeltaOut;//增量输出值
-	float CurrentOut;//当前输出值
+	float DeltaOut;//增量输出�?
+	float CurrentOut;//当前输出�?
 	float OutMin;//输出限幅
 	float OutMax;
-}PidStruct;//PID结构体变量
+}PidStruct;//PID结构体变�?
 
 extern PidStruct MotorLSpeedPID;
 extern PidStruct MotorRSpeedPID;
@@ -43,7 +43,7 @@ extern PidStruct track_pid;
 void InitPidStruct(PidStruct* Handler);
 void SetPidStruct(PidStruct* Handler,float kp,float ki,float kd,float in_a,float min,float max);
 void ComputePos(PidStruct* Handler,float Target,float Actual);
-void ComputInc(PidStruct* Handler,float Target,float Actual);
+void ComputeInc(PidStruct* Handler,float Target,float Actual);
 void SysPidInit();
 void SystemControl();
 

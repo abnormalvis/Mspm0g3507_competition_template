@@ -4,6 +4,16 @@
 #include <stdint.h>
 #include "ti_msp_dl_config.h"
 
+/* Manual KEY pin defines — was in sysconfig KEY GPIO group (now removed) */
+#ifndef KEY_PORT
+#define KEY_PORT            GPIOB
+#define KEY_KEY_UP_PIN      DL_GPIO_PIN_14
+#define KEY_KEY_DOWN_PIN    DL_GPIO_PIN_13
+#define KEY_KEY_LEFT_PIN    DL_GPIO_PIN_17
+#define KEY_KEY_RIGHT_PIN   DL_GPIO_PIN_19
+#define KEY_KEY_MID_PIN     DL_GPIO_PIN_20
+#endif
+
 typedef enum
 {
     KEY_S1,         // Up

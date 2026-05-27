@@ -8,20 +8,14 @@
 #include <stdio.h>
 #include <string.h>
 
-/* UART_2 is not configured in current syscfg; provide fallback to UART2 hardware */
-#ifndef UART_2_INST
-#define UART_2_INST                UART2
-#define UART_2_INST_IRQHandler     UART2_IRQHandler
-#endif
-
 void uart_debug_send_byte(uint8_t data);
 void uart1_send_char(char ch);
 void uart1_send_byte(uint8_t data);
-void uart2_send_byte(uint8_t data);
+void uart3_send_byte(uint8_t data);
 void usart_debug_SendCmd(volatile uint8_t *cmd, uint8_t len);
 void uart1_send_string(char* str);
-void usart2_SendCmd(volatile uint8_t *cmd, uint8_t len);
-void uart2_send_string(char *str);
+void usart3_SendCmd(volatile uint8_t *cmd, uint8_t len);
+void uart3_send_string(char *str);
 int fputc(int ch, FILE *stream);
 int fputs(const char* restrict s,FILE* restrict stream);
 

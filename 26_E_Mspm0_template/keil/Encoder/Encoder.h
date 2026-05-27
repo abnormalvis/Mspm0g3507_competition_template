@@ -8,6 +8,7 @@ extern int32_t Motor_speedL,Motor_speedR,Motor_distanceL,Motor_distanceR;
 
 void Encoder_OnGroupIRQ(uint32_t gpioB);
 void EncoderGetValue(void);
+void EncoderFilterInit(void);
 
 
 #endif

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * @brief  Telemetry display â€” runs when no menu/task is active
+ * @brief  Telemetry display â€? runs when no menu/task is active
  ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "app.h"
@@ -104,9 +104,8 @@ static void telemetry_display(void)
     if (display_state > 4) display_state = 1;
 }
 
-void AppProc(void)
+void SensorProc(void)
 {
-    /* ---- gray sensor reading ---- */
     if (gray_sample_req)
     {
         uint8_t i;
@@ -130,7 +129,6 @@ void AppProc(void)
                 gray_status += (1 << i);
         }
 
-        /* ---- VOFA telemetry: gray 9-ch + PID 6-ch every 10 samples ---- */
         gray_vofa_send_cnt++;
         if (gray_vofa_send_cnt >= 10)
         {
@@ -144,20 +142,11 @@ void AppProc(void)
                     (float)LQ_Tracking_Value[6], (float)LQ_Tracking_Value[7]};
                 vofa_send_floats(ch, 9);
             }
-            {
-                float pid_ch[6] = {
-                    vofa_speed_target,
-                    (float)Motor_speedL,
-                    (float)Motor_speedR,
-                    MotorLSpeedPID.Kp,
-                    MotorLSpeedPID.Ki,
-                    MotorLSpeedPID.Kd
-                };
-                vofa_send_floats(pid_ch, 6);
-            }
         }
     }
+}
 
-    /* ---- telemetry display ---- */
+void AppProc(void)
+{
     telemetry_display();
 }

@@ -3,5 +3,6 @@
 
 void AppInit(void);
 void AppProc(void);
+void SensorProc(void);
 
 #endif

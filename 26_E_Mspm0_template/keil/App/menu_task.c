@@ -76,7 +76,7 @@ void menu_init(void)
     menu_active = 1;
     task_running = 0;
     g_current_task = TASK_NONE;
-    OLED_CLS();
+    //OLED_CLS();
 }
 
 void menu_key_set(void)

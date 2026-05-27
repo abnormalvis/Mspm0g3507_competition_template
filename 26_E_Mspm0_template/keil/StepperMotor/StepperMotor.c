@@ -29,7 +29,7 @@ void Emm_V5_Reset_CurPos_To_Zero(uint8_t addr)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 4);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 4);
+        usart3_SendCmd(cmd, 4);
     }
   
 }
@@ -53,7 +53,7 @@ void Emm_V5_Reset_Clog_Pro(uint8_t addr)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 4);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 4);
+        usart3_SendCmd(cmd, 4);
     }
 }
 
@@ -81,7 +81,7 @@ void Emm_V5_Modify_Ctrl_Mode(uint8_t addr, bool svF, uint8_t ctrl_mode)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 6);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 6);
+        usart3_SendCmd(cmd, 6);
     }
 }
 
@@ -108,7 +108,7 @@ void Emm_V5_En_Control(uint8_t addr, bool state, bool snF)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 6);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 6);
+        usart3_SendCmd(cmd, 6);
     }
 }
 
@@ -139,7 +139,7 @@ void Emm_V5_Vel_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, bo
     if(addr == 1){
         usart_debug_SendCmd(cmd, 8);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 8);
+        usart3_SendCmd(cmd, 8);
     }
 }
 
@@ -177,7 +177,7 @@ void Emm_V5_Pos_Control(uint8_t addr, uint8_t dir, uint16_t vel, uint8_t acc, ui
     if(addr == 1){
         usart_debug_SendCmd(cmd, 13);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 13);
+        usart3_SendCmd(cmd, 13);
     }
 }
 
@@ -202,7 +202,7 @@ void Emm_V5_Stop_Now(uint8_t addr, bool snF)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 5);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 5);
+        usart3_SendCmd(cmd, 5);
     }
 }
 
@@ -225,7 +225,7 @@ void Emm_V5_Synchronous_motion(uint8_t addr)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 4);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 4);
+        usart3_SendCmd(cmd, 4);
     }
 }
 
@@ -250,7 +250,7 @@ void Emm_V5_Origin_Set_O(uint8_t addr, bool svF)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 5);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 5);
+        usart3_SendCmd(cmd, 5);
     }
 }
 
@@ -298,7 +298,7 @@ void Emm_V5_Origin_Modify_Params(uint8_t addr, bool svF, uint8_t o_mode, uint8_t
     if(addr == 1){
         usart_debug_SendCmd(cmd, 20);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 20);
+        usart3_SendCmd(cmd, 20);
     }
 }
 
@@ -324,7 +324,7 @@ void Emm_V5_Origin_Trigger_Return(uint8_t addr, uint8_t o_mode, bool snF)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 5);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 5);
+        usart3_SendCmd(cmd, 5);
     }
 }
 
@@ -347,7 +347,7 @@ void Emm_V5_Origin_Interrupt(uint8_t addr)
     if(addr == 1){
         usart_debug_SendCmd(cmd, 4);
     }else if (addr == 2) {
-        usart2_SendCmd(cmd, 4);
+        usart3_SendCmd(cmd, 4);
     }
 }
 

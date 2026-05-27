@@ -95,7 +95,7 @@ static void TransDataBag(uint8_t ReceiveData, uint8_t *ReceiveFlag, uint8_t *Rec
 
 void K230_SendByte(uint8_t data)
 {
-    uart2_send_byte(data);
+    uart3_send_byte(data);
 }
 
 void K230_ReceiveData(uint8_t RxData)
@@ -127,10 +127,10 @@ void K230_SendDataPkg(float Channel1, float Channel2, float Channel3, float Chan
     }
     snprintf(send_buf + len, sizeof(send_buf) - len, "]\r\n");
 
-    uart2_send_string(send_buf);
+    uart3_send_string(send_buf);
 }
 
 void k230_send_string(char *str)
 {
-    uart2_send_string(str);
+    uart3_send_string(str);
 }

@@ -1,9 +1,10 @@
 #include "Serial.h"
 
 /* UART aliases per syscfg:
- *   UART_debug_INST = UART0 (PA10/11) â€? debug + stepper1
- *   UART_1_INST     = UART3           â€? VOFA
- *   UART_2_INST     = UART1           â€? K230 + stepper2
+ *   UART_debug_INST       = UART0 (PA10/11)   â€” debug + VOFA
+ *   UART_vision_INST      = UART3 (PB2/3)     â€” K230
+ *   UART_display_INST     = UART1 (PA17/18)   â€” HMI serial screen (ISR in zuolan_usart.c)
+ *   UART_stepmotor_INST   = UART2 (PA21/PB16) â€” stepmotor (stub ISR below)
  */
 
 void uart_debug_send_byte(uint8_t data)
@@ -14,20 +15,20 @@ void uart_debug_send_byte(uint8_t data)
 
 void uart1_send_char(char ch)
 {
-	while( (UART_1_INST->STAT & UART_STAT_TXFE_MASK) == 0 );
-	DL_UART_Main_transmitData(UART_1_INST, ch);
+	while ((UART_display_INST->STAT & UART_STAT_TXFE_MASK) == 0);
+	DL_UART_Main_transmitData(UART_display_INST, ch);
 }
 
 void uart1_send_byte(uint8_t data)
 {
-	while( (UART_1_INST->STAT & UART_STAT_TXFE_MASK) == 0 );
-	DL_UART_Main_transmitData(UART_1_INST, data);
+	while ((UART_display_INST->STAT & UART_STAT_TXFE_MASK) == 0);
+	DL_UART_Main_transmitData(UART_display_INST, data);
 }
 
-void uart2_send_byte(uint8_t data)
+void uart3_send_byte(uint8_t data)
 {
-	while( (UART_2_INST->STAT & UART_STAT_TXFE_MASK) == 0 );
-	DL_UART_Main_transmitData(UART_2_INST, data);
+	while( (UART_vision_INST->STAT & UART_STAT_TXFE_MASK) == 0 );
+	DL_UART_Main_transmitData(UART_vision_INST, data);
 }
 
 void usart_debug_SendCmd(volatile uint8_t *cmd, uint8_t len)
@@ -43,23 +44,23 @@ void uart1_send_string(char* str)
 	}
 }
 
-void usart2_SendCmd(volatile uint8_t *cmd, uint8_t len)
+void usart3_SendCmd(volatile uint8_t *cmd, uint8_t len)
 {
-	for(uint8_t i = 0; i < len; i++) { uart2_send_byte(cmd[i]); }
+	for(uint8_t i = 0; i < len; i++) { uart3_send_byte(cmd[i]); }
 }
 
-void uart2_send_string(char *str)
+void uart3_send_string(char *str)
 {
 	while(*str != 0)
 	{
-		uart2_send_byte((uint8_t)(*str++));
+		uart3_send_byte((uint8_t)(*str++));
 	}
 }
 
 int fputc(int ch, FILE *stream)
 {
 	(void)stream;
-	while( DL_UART_isBusy(UART_1_INST) == true );
+	while (DL_UART_isBusy(UART_display_INST) == true);
 	uart1_send_char(ch);
 	return ch;
 }
@@ -89,28 +90,28 @@ void UART_debug_INST_IRQHandler(void)
 	}
 }
 
-void UART_1_INST_IRQHandler(void)
+/* UART1 ISR moved to keil/HMI/zuolan_usart.c (HMI serial screen handler) */
+
+void UART_vision_INST_IRQHandler(void)
 {
-	// uint8_t RxData;
-	switch( DL_UART_getPendingInterrupt(UART_1_INST) )
+	uint8_t RxData;
+	switch( DL_UART_getPendingInterrupt(UART_vision_INST) )
 	{
 		case DL_UART_IIDX_RX:
-			// RxData = DL_UART_Main_receiveData(UART_1_INST);
-			// vofa_rx_byte(RxData);
+			RxData = DL_UART_Main_receiveData(UART_vision_INST);
+			K230_ReceiveData(RxData);
 			break;
 		default:
 			break;
 	}
 }
 
-void UART_2_INST_IRQHandler(void)
+void UART_stepmotor_INST_IRQHandler(void)
 {
-	uint8_t RxData;
-	switch( DL_UART_getPendingInterrupt(UART_2_INST) )
+	switch( DL_UART_getPendingInterrupt(UART_stepmotor_INST) )
 	{
 		case DL_UART_IIDX_RX:
-			RxData = DL_UART_Main_receiveData(UART_2_INST);
-			K230_ReceiveData(RxData);
+			(void)DL_UART_Main_receiveData(UART_stepmotor_INST);
 			break;
 		default:
 			break;

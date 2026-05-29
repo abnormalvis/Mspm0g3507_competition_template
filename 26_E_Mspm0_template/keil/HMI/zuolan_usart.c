@@ -13,8 +13,8 @@
 #include <string.h>
 
 /* ---- 全局接收缓冲区 (ISR写入, 主循环读取) ---- */
-uint8_t  hmi_rx_buf[HMI_RX_BUF_SIZE];
-uint8_t  hmi_rx_idx = 0;
+volatile uint8_t hmi_rx_buf[HMI_RX_BUF_SIZE];
+volatile uint8_t hmi_rx_idx = 0;
 volatile uint8_t hmi_rx_ready = 0;
 
 /* ---- 内部发送函数 ---- */

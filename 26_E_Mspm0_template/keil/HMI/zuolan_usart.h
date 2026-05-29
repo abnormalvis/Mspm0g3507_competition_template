@@ -9,8 +9,8 @@
 #include <stdint.h>
 
 /* 接收缓冲区和状态 (ISR与主循环共享) */
-extern uint8_t  hmi_rx_buf[HMI_RX_BUF_SIZE];
-extern uint8_t  hmi_rx_idx;
+extern volatile uint8_t hmi_rx_buf[HMI_RX_BUF_SIZE];
+extern volatile uint8_t hmi_rx_idx;
 extern volatile uint8_t hmi_rx_ready;
 
 /* 格式化串口发送 */

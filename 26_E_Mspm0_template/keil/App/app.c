@@ -1,5 +1,5 @@
 /*******************************************************************************
- * @brief  Telemetry display â€? runs when no menu/task is active
+ * @brief  Telemetry display ï¿½? runs when no menu/task is active
  ********************************************************************************/
 #include "ti_msp_dl_config.h"
 #include "app.h"
@@ -45,8 +45,6 @@ static float distance_inter = 0.0f;
 
 extern volatile uint8_t gray_sample_req;
 
-static uint16_t gray_vofa_send_cnt = 0;
-
 static void Flag_Init(void)
 {
     Flag.task_start = 0;
@@ -64,7 +62,6 @@ void AppInit(void)
         gray_threshold[i] = 2000;
 
     Flag_Init();
-    gray_vofa_send_cnt = 0;
 }
 
 /* ---- simple desktop display, cycling rows each call ---- */
@@ -129,20 +126,7 @@ void SensorProc(void)
                 gray_status += (1 << i);
         }
 
-        gray_vofa_send_cnt++;
-        if (gray_vofa_send_cnt >= 10)
-        {
-            gray_vofa_send_cnt = 0;
-            {
-                float ch[9] = {
-                    gray_status,
-                    (float)LQ_Tracking_Value[0], (float)LQ_Tracking_Value[1],
-                    (float)LQ_Tracking_Value[2], (float)LQ_Tracking_Value[3],
-                    (float)LQ_Tracking_Value[4], (float)LQ_Tracking_Value[5],
-                    (float)LQ_Tracking_Value[6], (float)LQ_Tracking_Value[7]};
-                vofa_send_floats(ch, 9);
-            }
-        }
+        /* gray sensor data now shown on HMI page2.tk_string; VOFA channel reserved for PID tuning */
     }
 }
 

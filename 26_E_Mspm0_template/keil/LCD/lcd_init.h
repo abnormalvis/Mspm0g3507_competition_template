@@ -19,6 +19,15 @@
 #define LCD_H 240
 #endif
 
+/* LCD GPIO fallback: no longer managed by sysconfig; LCD replaced by serial screen */
+#ifndef LCD_PORT
+#define LCD_PORT            GPIOB
+#define LCD_RST_PIN         DL_GPIO_PIN_14
+#define LCD_DC_PIN          DL_GPIO_PIN_14
+#define LCD_LCD_CS_PIN      DL_GPIO_PIN_14
+#define LCD_BLK_PIN         DL_GPIO_PIN_14
+#endif
+
 #define LCD_RST_PORT   LCD_PORT
 #define LCD_DC_PORT    LCD_PORT
 #define LCD_LCD_CS_PORT LCD_PORT

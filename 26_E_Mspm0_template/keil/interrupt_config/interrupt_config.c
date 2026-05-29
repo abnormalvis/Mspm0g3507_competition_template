@@ -18,8 +18,8 @@ void interrupt_init(void)
     NVIC_SetPriority(UART_display_INST_INT_IRQN, 2);
     NVIC_EnableIRQ  (UART_display_INST_INT_IRQN);
 
-    NVIC_SetPriority(UART_stepmotor_INST_INT_IRQN, 1);
-    NVIC_EnableIRQ  (UART_stepmotor_INST_INT_IRQN);
+    NVIC_SetPriority(UART_wired_INST_INT_IRQN, 1);
+    NVIC_EnableIRQ  (UART_wired_INST_INT_IRQN);
 
     NVIC_SetPriority(TIMER_0_INST_INT_IRQN, 3);
     NVIC_EnableIRQ  (TIMER_0_INST_INT_IRQN);

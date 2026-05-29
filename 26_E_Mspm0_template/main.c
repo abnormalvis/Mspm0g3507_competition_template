@@ -2,12 +2,12 @@
 #include "interrupt_config.h"
 #include "hal_gray.h"
 #include "hal_imu.h"
+#include "imu_filter.h"
 #include "vofa.h"
 #include "StandardPid.h"
 #include "Encoder.h"
 #include "Delay.h"
 #include "zuolan_hmi.h"
-#include "hmi_protocol.h"
 #include "Serial.h"
 #include "app.h"
 #include "menu_task.h"
@@ -105,20 +105,40 @@ int main(void)
     uart_debug_send_byte('\r');
     uart_debug_send_byte('\n');
 
-    /* HMI serial screen startup message */
-    zuolan_printf("page1.g0.txt=\"MSPM0 Ready\"%s", HMI_END_CMD);
-
     while (1)
     {
+        /* ---- UART0 heartbeat: confirm main loop is alive (every 500ms) ---- */
+        static uint32_t last_hb = 0;
+        if (sys_tick_ms - last_hb >= 500)
+        {
+            last_hb = sys_tick_ms;
+            uart_debug_send_byte('.');
+        }
+
+        /* ---- HMI startup message: one-shot inside main loop ---- */
+        static uint8_t hmi_startup_done = 0;
+        if (!hmi_startup_done)
+        {
+            hmi_startup_done = 1;
+            zuolan_printf("page1.g0.txt=\"MSPM0 Ready\"%s", HMI_END_CMD);
+        }
+
         SensorProc();
-        float pid_ch[5] = {
-            vofa_speed_target,
-            (float)Motor_speedL,
-            // (float)Motor_speedR,
-            MotorLSpeedPID.Kp,
-            MotorLSpeedPID.Ki,
-            MotorLSpeedPID.Kd};
-        vofa_send_floats(pid_ch, 5);
+
+        /* ---- VOFA telemetry: 100ms interval to avoid flooding UART0 ---- */
+        static uint32_t last_vofa_telem = 0;
+        if (sys_tick_ms - last_vofa_telem >= 100)
+        {
+            last_vofa_telem = sys_tick_ms;
+            float pid_ch[5] = {
+                vofa_speed_target,
+                (float)Motor_speedL,
+                // (float)Motor_speedR,
+                MotorLSpeedPID.Kp,
+                MotorLSpeedPID.Ki,
+                MotorLSpeedPID.Kd};
+            vofa_send_floats(pid_ch, 5);
+        }
 
         /* ---- HMI serial screen event polling ---- */
         if (hmi_rx_ready)
@@ -127,23 +147,25 @@ int main(void)
             uint8_t idx = hmi_rx_idx;
             hmi_rx_idx = 0;  /* reset early so ISR can use fresh buffer */
 
-            hmi_event_t evt;
-            if (hmi_parse_frame(hmi_rx_buf, idx, &evt) == 0)
+            /* Inline parse: TJC touch frame = 65 00 pageH pageL widget value */
+            if (idx >= 5 && hmi_rx_buf[0] == 0x65)
             {
-                /* debug: dump parsed frame via UART0 */
-                uart_debug_send_byte('F');
-                uart_debug_send_byte(':');
-                uart_debug_send_byte('0' + (uint8_t)(evt.frame_type >> 4));
-                uart_debug_send_byte(' ');
-                uart_debug_send_byte('P');
-                uart_debug_send_byte('0' + (uint8_t)evt.page_id);
-                uart_debug_send_byte(' ');
-                uart_debug_send_byte('W');
-                uart_debug_send_byte('0' + evt.widget_id);
-                uart_debug_send_byte('\r');
-                uart_debug_send_byte('\n');
+                uint8_t widget = hmi_rx_buf[3];   /* widget ID maps to task number */
+                if (widget >= 1 && widget <= 4)
+                {
+                    g_current_task = (TaskID)widget;  /* TASK_ONE=1, TASK_TWO=2, ... */
+                    menu_active = 0;
+                    task_running = 1;
+                    g_motor_left_out = 0;
+                    g_motor_right_out = 0;
+                    zuolan_printf("page1.t%d.txt=\"\xd6\xb4\xd0\xd0\xd6\xd0\"%s", widget - 1, HMI_END_CMD);
 
-                hmi_dispatch_event(&evt);
+                    /* debug: confirm task dispatch via UART0 */
+                    uart_debug_send_byte('T');
+                    uart_debug_send_byte('0' + widget);
+                    uart_debug_send_byte('\r');
+                    uart_debug_send_byte('\n');
+                }
             }
         }
 
@@ -152,10 +174,29 @@ int main(void)
         if (sys_tick_ms - last_hmi_telem >= 200)
         {
             last_hmi_telem = sys_tick_ms;
+
+            /* motor speed */
             zuolan_HMI_Send_Int("page2.x1", Motor_speedL);
             zuolan_HMI_Send_Int("page2.x2", Motor_speedR);
+
+            /* PID params */
             zuolan_HMI_Send_Float("page2.x3", MotorLSpeedPID.Kp, 2);
             zuolan_HMI_Send_Float("page2.x4", MotorLSpeedPID.Ki, 2);
+
+            /* IMU yaw angle (1 decimal) */
+            zuolan_HMI_Send_Float("page2.x5", imu.yaw, 1);
+
+            /* track sensor 8-bit pattern as fixed-width string "11110000" */
+            {
+                char track_bits[9];
+                uint8_t bits = gray_state.state & 0xFF;
+                int i;
+                for (i = 0; i < 8; i++) {
+                    track_bits[7 - i] = ((bits >> i) & 1) ? '1' : '0';
+                }
+                track_bits[8] = '\0';
+                zuolan_HMI_Send_String("page2.tk_string", track_bits);
+            }
         }
 
         /* ---- HMI task completion: clear execution status text ---- */
@@ -179,14 +220,14 @@ int main(void)
             //OLED_CLS();
         }
 
-        if (menu_active)
-        {
-            menu_key_set();
-        }
-        else
-        {
-            AppProc();
-        }
+        // if (menu_active)
+        // {
+        //     menu_key_set();
+        // }
+        // else
+        // {
+        //     AppProc();
+        // }
     }
 }
 

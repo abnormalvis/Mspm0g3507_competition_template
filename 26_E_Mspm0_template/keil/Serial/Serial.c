@@ -4,7 +4,7 @@
  *   UART_debug_INST       = UART0 (PA10/11)   — debug + VOFA
  *   UART_vision_INST      = UART3 (PB2/3)     — K230
  *   UART_display_INST     = UART1 (PA17/18)   — HMI serial screen (ISR in zuolan_usart.c)
- *   UART_stepmotor_INST   = UART2 (PA21/PB16) — stepmotor (stub ISR below)
+ *   UART_wired_INST       = UART2 (PA21/PB16) — stepmotor (stub ISR below)
  */
 
 void uart_debug_send_byte(uint8_t data)
@@ -106,12 +106,12 @@ void UART_vision_INST_IRQHandler(void)
 	}
 }
 
-void UART_stepmotor_INST_IRQHandler(void)
+void UART_wired_INST_IRQHandler(void)
 {
-	switch( DL_UART_getPendingInterrupt(UART_stepmotor_INST) )
+	switch( DL_UART_getPendingInterrupt(UART_wired_INST) )
 	{
 		case DL_UART_IIDX_RX:
-			(void)DL_UART_Main_receiveData(UART_stepmotor_INST);
+			(void)DL_UART_Main_receiveData(UART_wired_INST);
 			break;
 		default:
 			break;

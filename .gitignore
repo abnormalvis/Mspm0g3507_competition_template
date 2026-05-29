@@ -58,6 +58,13 @@ MSPM0G3507_Project_speed_pid/
 MSPM0G3507_Project_H/
 MSPM0G3507_Project_xunji_pid/
 TMX_MSPM0G3507_ProjectTemplate/
+串口屏滑块控制LED/
+串口屏工程文件/
+empty/
+24e_2026_4_27/
+2025电赛E题省一源码/
+2025_project/
+2024_old_template/
 docs/
 docs/chinese/
 docs/english/
@@ -75,3 +82,4 @@ vofa*/
 *.txt
 *.exe
 
+串口屏滑块控制LED/

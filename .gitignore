@@ -58,6 +58,11 @@ MSPM0G3507_Project_speed_pid/
 MSPM0G3507_Project_H/
 MSPM0G3507_Project_xunji_pid/
 TMX_MSPM0G3507_ProjectTemplate/
+26_E_Mspm0_template_debug/
+STM32_CAN_stepmotor_pos_control/
+MPSM0_balance_car/
+HMI_projects/
+WHEELTEC_C07A_TB6612/
 串口屏滑块控制LED/
 串口屏工程文件/
 empty/

@@ -1,10 +1,10 @@
 #include "Serial.h"
 
 /* UART aliases per syscfg:
- *   UART_debug_INST       = UART0 (PA10/11)   — debug + VOFA
- *   UART_vision_INST      = UART3 (PB2/3)     — K230
- *   UART_display_INST     = UART1 (PA17/18)   — HMI serial screen (ISR in zuolan_usart.c)
- *   UART_wired_INST       = UART2 (PA21/PB16) — stepmotor (stub ISR below)
+ *   UART_debug_INST       = UART0 (PA10/11)   �? debug + VOFA
+ *   UART_vision_INST      = UART3 (PB2/3)     �? K230
+ *   UART_display_INST     = UART1 (PA17/18)   �? HMI serial screen (ISR in zuolan_usart.c)
+ *   UART_wired_INST       = UART2 (PA21/PB16) �? stepmotor (stub ISR below)
  */
 
 void uart_debug_send_byte(uint8_t data)
@@ -76,6 +76,15 @@ int fputs(const char* restrict s, FILE* restrict stream)
 	return len;
 }
 
+/* ---- VOFA RX FIFO: ISR pushes bytes, main loop parses ---- */
+static uint8_t vofa_rx_fifo_buf[128];
+fifo_obj_struct vofa_rx_fifo;
+
+void vofa_rx_fifo_init(void)
+{
+    fifo_init(&vofa_rx_fifo, FIFO_DATA_8BIT, vofa_rx_fifo_buf, 128);
+}
+
 void UART_debug_INST_IRQHandler(void)
 {
 	uint8_t RxData;
@@ -83,7 +92,7 @@ void UART_debug_INST_IRQHandler(void)
 	{
 		case DL_UART_IIDX_RX:
 			RxData = DL_UART_Main_receiveData(UART_debug_INST);
-			vofa_rx_byte(RxData);   // VOFA protocol parser on debug UART (physical UART0)
+			fifo_write_element(&vofa_rx_fifo, RxData);
 			break;
 		default:
 			break;

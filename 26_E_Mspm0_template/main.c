@@ -93,6 +93,7 @@ int main(void)
 
     vofa_init();
     vofa_set_on_param(on_vofa_param);
+    vofa_rx_fifo_init();
 
     AppInit();
     menu_init();
@@ -107,13 +108,26 @@ int main(void)
 
     while (1)
     {
-        /* ---- UART0 heartbeat: confirm main loop is alive (every 500ms) ---- */
-        static uint32_t last_hb = 0;
-        if (sys_tick_ms - last_hb >= 500)
+        /* ---- VOFA RX: drain FIFO into parser, then apply pending params ---- */
         {
-            last_hb = sys_tick_ms;
-            uart_debug_send_byte('.');
+            uint32_t pending = fifo_used(&vofa_rx_fifo);
+            while (pending > 0) {
+                uint8_t byte;
+                if (fifo_read_element(&vofa_rx_fifo, &byte, FIFO_READ_AND_CLEAN) == FIFO_SUCCESS) {
+                    vofa_rx_byte(byte);
+                }
+                pending--;
+            }
+            vofa_apply_pending();
         }
+
+        /* ---- UART0 heartbeat: confirm main loop is alive (every 500ms) ---- */
+        // static uint32_t last_hb = 0;
+        // if (sys_tick_ms - last_hb >= 500)
+        // {
+        //     last_hb = sys_tick_ms;
+        //     uart_debug_send_byte('.');
+        // }
 
         /* ---- HMI startup message: one-shot inside main loop ---- */
         static uint8_t hmi_startup_done = 0;
@@ -238,7 +252,7 @@ void TIMER_0_INST_IRQHandler(void)
 {
     switch (DL_TimerG_getPendingInterrupt(TIMER_0_INST))
     {
-    case DL_TIMER_IIDX_ZERO:
+    case DL_TIMER_IIDX_LOAD:
         sys_tick_ms++;
         if ((sys_tick_ms % 5) == 0)
             hal_imu_update();

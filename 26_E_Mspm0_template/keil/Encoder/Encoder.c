@@ -1,8 +1,8 @@
 #include "Encoder.h"
 #include "../App/move_filter.h"
 
-static int32_t Count1 = 0;
-static int32_t Count2 = 0;
+int32_t Count1 = 0;
+int32_t Count2 = 0;
 static int32_t LastCount1 = 0;
 static int32_t LastCount2 = 0;
 int32_t Motor_speedL, Motor_speedR, Motor_distanceL, Motor_distanceR;
@@ -21,8 +21,8 @@ void EncoderFilterInit(void)
 }
 
 /**
- * 编码�?? GPIO �??�??处理，由统一�?? GROUP1_IRQHandler 调用
- * 入参 gpioB �?? GPIOB 已使能的�??�??状态位掩码
+ * 编码�?? GPIO �??�??处理，由统一�?? GROUP1_IRQHandler 调用
+ * 入参 gpioB �?? GPIOB 已使能的�??�??状态位掩码
  */
 void Encoder_OnGroupIRQ(uint32_t gpioB)
 {

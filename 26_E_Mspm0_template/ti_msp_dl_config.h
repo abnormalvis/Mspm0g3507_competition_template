@@ -86,7 +86,7 @@ extern "C" {
 #define PWM_Motor_INST                                                     TIMA0
 #define PWM_Motor_INST_IRQHandler                               TIMA0_IRQHandler
 #define PWM_Motor_INST_INT_IRQN                                 (TIMA0_INT_IRQn)
-#define PWM_Motor_INST_CLK_FREQ                                         80000000
+#define PWM_Motor_INST_CLK_FREQ                                          4000000
 /* GPIO defines for channel 0 */
 #define GPIO_PWM_Motor_C0_PORT                                             GPIOB
 #define GPIO_PWM_Motor_C0_PIN                                      DL_GPIO_PIN_8

@@ -1,49 +1,49 @@
 #include "StandardPid.h"
 
-// -------------------------- 左电机PID参数（独立配�???�??? --------------------------
-#define MOTOR_L_SPEED_PID_KP 0.003f
-#define MOTOR_L_SPEED_PID_KI 0.0625f
+// -------------------------- 左电机PID参数（独立配�????�???? --------------------------
+#define MOTOR_L_SPEED_PID_KP 0.015f
+#define MOTOR_L_SPEED_PID_KI 0.635f
 #define MOTOR_L_SPEED_PID_KD 0.01f
 #define MOTOR_L_SPEED_PID_IN_A 0.5f
 #define MOTOR_L_SPEED_PID_OUT_MIN 0.0f
-#define MOTOR_L_SPEED_PID_OUT_MAX 3200.0f
+#define MOTOR_L_SPEED_PID_OUT_MAX 5000.0f
 
 // -------------------------- 右电机PID参数（独立配�� --------------------------
-#define MOTOR_R_SPEED_PID_KP -0.035f // ��?�：宏名改为R（右电机�??
-#define MOTOR_R_SPEED_PID_KI -0.125f // 0.08
-#define MOTOR_R_SPEED_PID_KD 0.0f
+#define MOTOR_R_SPEED_PID_KP 0.015f
+#define MOTOR_R_SPEED_PID_KI 0.635f
+#define MOTOR_R_SPEED_PID_KD 0.01f
 #define MOTOR_R_SPEED_PID_IN_A 0.5f
 #define MOTOR_R_SPEED_PID_OUT_MIN 0.0f
-#define MOTOR_R_SPEED_PID_OUT_MAX 3200.0f
+#define MOTOR_R_SPEED_PID_OUT_MAX 5000.0f
 
-// // -------------------------- 步进电机1 PID参数（独立配�???�??? --------------------------
+// // -------------------------- 步进电机1 PID参数（独立配�????�???? --------------------------
 // #define STEPPER_MOTOR1_PID_KP       -0.006f    // 比例系数
-// #define STEPPER_MOTOR1_PID_KI       -0.000012f    // �???分系�???
-// #define STEPPER_MOTOR1_PID_KD       -0.05f    // �???分系�???
+// #define STEPPER_MOTOR1_PID_KI       -0.000012f    // �????分系�????
+// #define STEPPER_MOTOR1_PID_KD       -0.05f    // �????分系�????
 // #define STEPPER_MOTOR1_PID_IN_A     1.0f    // 输入系数
 // #define STEPPER_MOTOR1_PID_OUT_MIN  -3200.0f// 输出最小�?
 // #define STEPPER_MOTOR1_PID_OUT_MAX   3200.0f// 输出最大�?
 
-// // -------------------------- 步进电机2 PID参数（独立配�???�??? --------------------------
+// // -------------------------- 步进电机2 PID参数（独立配�????�???? --------------------------
 // #define STEPPER_MOTOR2_PID_KP       0.005f    // 比例系数
-// #define STEPPER_MOTOR2_PID_KI       0.000012f    // �???分系�???
-// #define STEPPER_MOTOR2_PID_KD       0.05f    // �???分系�???
+// #define STEPPER_MOTOR2_PID_KI       0.000012f    // �????分系�????
+// #define STEPPER_MOTOR2_PID_KD       0.05f    // �????分系�????
 // #define STEPPER_MOTOR2_PID_IN_A     1.0f    // 输入系数
 // #define STEPPER_MOTOR2_PID_OUT_MIN  -3200.0f// 输出最小�?
 // #define STEPPER_MOTOR2_PID_OUT_MAX   3200.0f// 输出最大�?
 
-// -------------------------- 步进电机1 PID参数（独立配�???�??? --------------------------
+// -------------------------- 步进电机1 PID参数（独立配�????�???? --------------------------
 #define STEPPER_MOTOR1_PID_KP -0.012f		// 比例系数
-#define STEPPER_MOTOR1_PID_KI -0.00006f		// �???分系�???
-#define STEPPER_MOTOR1_PID_KD -0.02f		// �???分系�???
+#define STEPPER_MOTOR1_PID_KI -0.00006f		// �????分系�????
+#define STEPPER_MOTOR1_PID_KD -0.02f		// �????分系�????
 #define STEPPER_MOTOR1_PID_IN_A 1.0f		// 输入系数
 #define STEPPER_MOTOR1_PID_OUT_MIN -3200.0f // 输出最小�?
 #define STEPPER_MOTOR1_PID_OUT_MAX 3200.0f	// 输出最大�?
 
-// -------------------------- 步进电机2 PID参数（独立配�???�??? --------------------------
+// -------------------------- 步进电机2 PID参数（独立配�????�???? --------------------------
 #define STEPPER_MOTOR2_PID_KP 0.008f		// 比例系数
-#define STEPPER_MOTOR2_PID_KI 0.00003f		// �???分系�???
-#define STEPPER_MOTOR2_PID_KD 0.015f		// �???分系�???
+#define STEPPER_MOTOR2_PID_KI 0.00003f		// �????分系�????
+#define STEPPER_MOTOR2_PID_KD 0.015f		// �????分系�????
 #define STEPPER_MOTOR2_PID_IN_A 1.0f		// 输入系数
 #define STEPPER_MOTOR2_PID_OUT_MIN -3200.0f // 输出最小�?
 #define STEPPER_MOTOR2_PID_OUT_MAX 3200.0f	// 输出最大�?
@@ -57,9 +57,9 @@ PidStruct yaw_pid;
 PidStruct track_pid;
 
 /**
- * �???    数：初�?�化PID结构体，将所有值赋0
- * �???    数：PidStruct* Handler：待初�?�化的PID结构体变�???
- * �??? �??? 值：�???
+ * �????    数：初�?�化PID结构体，将所有值赋0
+ * �????    数：PidStruct* Handler：待初�?�化的PID结构体变�????
+ * �???? �???? 值：�????
  */
 void InitPidStruct(PidStruct *Handler)
 {
@@ -78,10 +78,10 @@ void InitPidStruct(PidStruct *Handler)
 }
 
 /**
- * �???    数：赋值PID结构体，调节Kp、Ki、Kd、输出限幅�?
- * �???    数：PidStruct* Handler：待赋值的PID结构体变�???
- * �???    数：float kp,float ki,float kd,float min,float max
- * �??? �??? 值：�???
+ * �????    数：赋值PID结构体，调节Kp、Ki、Kd、输出限幅�?
+ * �????    数：PidStruct* Handler：待赋值的PID结构体变�????
+ * �????    数：float kp,float ki,float kd,float min,float max
+ * �???? �???? 值：�????
  */
 void SetPidStruct(PidStruct *Handler, float kp, float ki, float kd, float in_a, float min, float max)
 {
@@ -94,17 +94,17 @@ void SetPidStruct(PidStruct *Handler, float kp, float ki, float kd, float in_a, 
 }
 
 /**
- * �???    数：计算位置式PID的输出值并赋�?
- * �???    数：PidStruct* Handler：待赋值的PID结构体变�???
- * �???    数：float Target：目标�?
- * �???    数：float Actual：实际值，由传感器读取
- * �??? �??? 值：�???
+ * �????    数：计算位置式PID的输出值并赋�?
+ * �????    数：PidStruct* Handler：待赋值的PID结构体变�????
+ * �????    数：float Target：目标�?
+ * �????    数：float Actual：实际值，由传感器读取
+ * �???? �???? 值：�????
  */
 void ComputePos(PidStruct *Handler, float Target, float Actual)
 {
 	float PosOut;
 	Handler->Error1 = Handler->Error0;
-	// 一阶低通滤�???
+	// 一阶低通滤�????
 	Actual = Handler->in_a * Actual + (1 - Handler->in_a) * Handler->LastActual;
 	Handler->Error0 = Target - Actual;
 	Handler->ErrorInt += Handler->Error0;
@@ -141,18 +141,18 @@ void ComputePos(PidStruct *Handler, float Target, float Actual)
 }
 
 /**
- * �???    数：计算增量式PID的输出值并赋�?
- * �???    数：PidStruct* Handler：待赋值的PID结构体变�???
- * �???    数：float Target：目标�?
- * �???    数：float Actual：实际值，由传感器读取
- * �??? �??? 值：�???
+ * �????    数：计算增量式PID的输出值并赋�?
+ * �????    数：PidStruct* Handler：待赋值的PID结构体变�????
+ * �????    数：float Target：目标�?
+ * �????    数：float Actual：实际值，由传感器读取
+ * �???? �???? 值：�????
  */
 void ComputeInc(PidStruct *Handler, float Target, float Actual)
 {
 	float IncOut;
 	Handler->Error2 = Handler->Error1;
 	Handler->Error1 = Handler->Error0;
-	// 一阶低通滤�???
+	// 一阶低通滤�????
 	Actual = Handler->in_a * Actual + (1 - Handler->in_a) * Handler->LastActual;
 	Handler->Error0 = Target - Actual;
 

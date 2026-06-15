@@ -24,15 +24,15 @@ static void on_vofa_param(uint16_t id, float value)
     {
     case 1:
         MotorLSpeedPID.Kp = value;
-        MotorRSpeedPID.Kp = -value;
+        MotorRSpeedPID.Kp = value;
         break;
     case 2:
         MotorLSpeedPID.Ki = value;
-        MotorRSpeedPID.Ki = -value;
+        MotorRSpeedPID.Ki = value;
         break;
     case 3:
         MotorLSpeedPID.Kd = value;
-        MotorRSpeedPID.Kd = -value;
+        MotorRSpeedPID.Kd = value;
         break;
     case 4:
         vofa_speed_target = value;
@@ -144,14 +144,14 @@ int main(void)
         if (sys_tick_ms - last_vofa_telem >= 100)
         {
             last_vofa_telem = sys_tick_ms;
-            float pid_ch[5] = {
+            float pid_ch[6] = {
                 vofa_speed_target,
+                (float)Motor_speedR,
                 (float)Motor_speedL,
-                // (float)Motor_speedR,
                 MotorLSpeedPID.Kp,
                 MotorLSpeedPID.Ki,
                 MotorLSpeedPID.Kd};
-            vofa_send_floats(pid_ch, 5);
+            vofa_send_floats(pid_ch, 6);
         }
 
         /* ---- HMI serial screen event polling ---- */
@@ -308,7 +308,7 @@ void TIMER_1_INST_IRQHandler(void)
                               : -MotorRSpeedPID.CurrentOut;
         }
 
-        Motor_SetPWML(g_motor_left_out);
+        //Motor_SetPWML(g_motor_left_out);
         Motor_SetPWMR(g_motor_right_out);
         break;
     default:
@@ -317,15 +317,102 @@ void TIMER_1_INST_IRQHandler(void)
 }
 
 /**
- * GROUP1 = GPIOB interrupt aggregation: key falling edge + encoder A-phase edge
+ * GROUP1 = GPIOB + GPIOA interrupt aggregation: encoder quadrature decoding
+ *
+ * Left  motor encoder: PB6=A-phase, PB5=B-phase  �?? Count1
+ * Right motor encoder: PA29=A-phase, PA30=B-phase �?? Count2
+ *
+ * 4x quadrature: both A and B phase edges update the counter.
+ * Reference: hal_encode.c in MSPM0G3507_Project_template
  */
 void GROUP1_IRQHandler(void)
 {
-    uint32_t gpioB = DL_GPIO_getEnabledInterruptStatus(GPIOB,
-                                                       Encoder_Encoder1_A_PIN);
-
-    if (gpioB & Encoder_Encoder1_A_PIN)
+    switch (DL_Interrupt_getPendingGroup(DL_INTERRUPT_GROUP_1))
     {
-        Encoder_OnGroupIRQ(gpioB);
+    case DL_INTERRUPT_GROUP1_IIDX_GPIOB:
+    {
+        volatile uint32_t mis = GPIOB->CPU_INT.MIS;
+        volatile uint32_t din = GPIOB->DIN31_0;
+        uint32_t b_phase = (din >> 5) & 1;   /* PB5 = Encoder1_B */
+        uint32_t a_phase = (din >> 6) & 1;   /* PB6 = Encoder1_A */
+
+        if (mis & (1 << 5))   /* B-phase edge */
+            Count1 += (b_phase == a_phase) ? 1 : -1;
+        if (mis & (1 << 6))   /* A-phase edge */
+            Count1 += (a_phase == b_phase) ? -1 : 1;
+
+        GPIOB->CPU_INT.ICLR = (1 << 5) | (1 << 6);
     }
+    break;
+
+    case DL_INTERRUPT_GROUP1_IIDX_GPIOA:
+    {
+        volatile uint32_t mis = GPIOA->CPU_INT.MIS;
+        volatile uint32_t din = GPIOA->DIN31_0;
+        uint32_t a_phase = (din >> 29) & 1;  /* PA29 = Encoder2_A */
+        uint32_t b_phase = (din >> 30) & 1;  /* PA30 = Encoder2_B */
+
+        if (mis & (1 << 29))  /* A-phase edge */
+            Count2 += (a_phase == b_phase) ? 1 : -1;
+        if (mis & (1 << 30))  /* B-phase edge */
+            Count2 += (b_phase == a_phase) ? -1 : 1;
+
+        GPIOA->CPU_INT.ICLR = (1 << 29) | (1 << 30);
+    }
+    break;
+
+    default:
+        break;
+    }
+}
+
+/**
+ * NMI_Handler: sends "NMI!\r\n" via UART0 so we can distinguish from HardFault
+ */
+void NMI_Handler(void)
+{
+    uart_debug_send_byte('N');
+    uart_debug_send_byte('M');
+    uart_debug_send_byte('I');
+    uart_debug_send_byte('!');
+    uart_debug_send_byte('\r');
+    uart_debug_send_byte('\n');
+    while (1) { }
+}
+
+/**
+ * HardFault_Handler: sends "HFLT!\r\n" + stacked PC via UART0 for diagnosis
+ */
+void HardFault_Handler(void)
+{
+    uint32_t stacked_pc = 0;
+    /* Read stacked PC from exception frame.
+     * Cortex-M0+ pushes R0-R3,R12,LR,PC,xPSR onto the faulting stack.
+     * Check EXC_RETURN in LR to determine which stack was in use. */
+    uint32_t lr;
+    __asm volatile ("mov %0, lr" : "=r" (lr));
+    uint32_t *frame;
+    if (lr & 0x4) {
+        frame = (uint32_t *)__get_PSP();
+    } else {
+        frame = (uint32_t *)__get_MSP();
+    }
+    stacked_pc = frame[6];  /* PC is 7th word (offset 24) in exception frame */
+
+    uart_debug_send_byte('H');
+    uart_debug_send_byte('F');
+    uart_debug_send_byte('L');
+    uart_debug_send_byte('T');
+    uart_debug_send_byte('!');
+    /* send stacked PC as 8 hex digits */
+    {
+        int i;
+        for (i = 28; i >= 0; i -= 4) {
+            uint8_t nib = (stacked_pc >> i) & 0xFu;
+            uart_debug_send_byte(nib < 10 ? '0' + nib : 'A' + nib - 10);
+        }
+    }
+    uart_debug_send_byte('\r');
+    uart_debug_send_byte('\n');
+    while (1) { }
 }

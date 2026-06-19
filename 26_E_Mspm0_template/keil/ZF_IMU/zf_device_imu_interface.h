@@ -52,7 +52,7 @@
 #define IMU_INTERFACE_IIC           ( 2 )                                       // Use hardware IIC mode
 
 #define IMU_SPI_INDEX               ( SPI_IMU_INST )
-#define IMU_CS_PORT                 ( IMU_IMU_CS_PORT )
+#define IMU_CS_PORT                 ( IMU_PORT )
 #define IMU_CS_PIN                  ( IMU_IMU_CS_PIN )
 #define IMU_CS(x)                   ((x) ? (DL_GPIO_setPins(IMU_CS_PORT, IMU_CS_PIN)): (DL_GPIO_clearPins(IMU_CS_PORT, IMU_CS_PIN)))
 

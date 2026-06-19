@@ -59,6 +59,6 @@ void EncoderGetValue(void)
     move_filter_calc(&right_speed_filter, (float)Motor_speedR);
     // Motor_speedL = (int32_t)lowpass_filter_calc(&left_lpf, left_speed_filter.data_average);
     // Motor_speedR = (int32_t)lowpass_filter_calc(&right_lpf, right_speed_filter.data_average);
-    Motor_speedL = left_speed_filter.data_average;
-    Motor_speedR = right_speed_filter.data_average;
+    Motor_speedL = -left_speed_filter.data_average;
+    Motor_speedR = -right_speed_filter.data_average;
 }

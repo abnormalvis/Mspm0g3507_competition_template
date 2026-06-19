@@ -288,6 +288,12 @@ extern "C" {
 
 
 
+/* Port definition for Pin Group IMU */
+#define IMU_PORT                                                         (GPIOA)
+
+/* Defines for IMU_CS: GPIOA.8 with pinCMx 19 on package pin 54 */
+#define IMU_IMU_CS_PIN                                           (DL_GPIO_PIN_8)
+#define IMU_IMU_CS_IOMUX                                         (IOMUX_PINCM19)
 /* Port definition for Pin Group Beep */
 #define Beep_PORT                                                        (GPIOB)
 
@@ -347,18 +353,6 @@ extern "C" {
 #define Encoder_Encoder2_B_IIDX                             (DL_GPIO_IIDX_DIO30)
 #define Encoder_Encoder2_B_PIN                                  (DL_GPIO_PIN_30)
 #define Encoder_Encoder2_B_IOMUX                                  (IOMUX_PINCM5)
-/* Defines for IMU_CS: GPIOA.8 with pinCMx 19 on package pin 54 */
-#define IMU_IMU_CS_PORT                                                  (GPIOA)
-#define IMU_IMU_CS_PIN                                           (DL_GPIO_PIN_8)
-#define IMU_IMU_CS_IOMUX                                         (IOMUX_PINCM19)
-/* Defines for INT1: GPIOB.7 with pinCMx 24 on package pin 59 */
-#define IMU_INT1_PORT                                                    (GPIOB)
-#define IMU_INT1_PIN                                             (DL_GPIO_PIN_7)
-#define IMU_INT1_IOMUX                                           (IOMUX_PINCM24)
-/* Defines for INT2: GPIOB.4 with pinCMx 17 on package pin 52 */
-#define IMU_INT2_PORT                                                    (GPIOB)
-#define IMU_INT2_PIN                                             (DL_GPIO_PIN_4)
-#define IMU_INT2_IOMUX                                           (IOMUX_PINCM17)
 
 
 

@@ -1,15 +1,12 @@
 #include "hal_imu.h"
-#include "zf_device_imu660ra.h"
-#include "imu_filter.h"
+#include "imu_icm42688.h"
 
 void hal_imu_init(void)
 {
-    imu660ra_init();
-    gyroOffsetInit();
-    IIR_imu();
+    IMU_init();
 }
 
 void hal_imu_update(void)
 {
-    _IMU();
+    imu_icm42688_update();
 }

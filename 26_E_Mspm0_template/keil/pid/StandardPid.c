@@ -1,53 +1,5 @@
 #include "StandardPid.h"
 
-// -------------------------- 左电机PID参数（独立配�????�???? --------------------------
-#define MOTOR_L_SPEED_PID_KP 0.015f
-#define MOTOR_L_SPEED_PID_KI 0.635f
-#define MOTOR_L_SPEED_PID_KD 0.01f
-#define MOTOR_L_SPEED_PID_IN_A 0.5f
-#define MOTOR_L_SPEED_PID_OUT_MIN 0.0f
-#define MOTOR_L_SPEED_PID_OUT_MAX 5000.0f
-
-// -------------------------- 右电机PID参数（独立配�� --------------------------
-#define MOTOR_R_SPEED_PID_KP 0.015f
-#define MOTOR_R_SPEED_PID_KI 0.635f
-#define MOTOR_R_SPEED_PID_KD 0.01f
-#define MOTOR_R_SPEED_PID_IN_A 0.5f
-#define MOTOR_R_SPEED_PID_OUT_MIN 0.0f
-#define MOTOR_R_SPEED_PID_OUT_MAX 5000.0f
-
-// // -------------------------- 步进电机1 PID参数（独立配�????�???? --------------------------
-// #define STEPPER_MOTOR1_PID_KP       -0.006f    // 比例系数
-// #define STEPPER_MOTOR1_PID_KI       -0.000012f    // �????分系�????
-// #define STEPPER_MOTOR1_PID_KD       -0.05f    // �????分系�????
-// #define STEPPER_MOTOR1_PID_IN_A     1.0f    // 输入系数
-// #define STEPPER_MOTOR1_PID_OUT_MIN  -3200.0f// 输出最小�?
-// #define STEPPER_MOTOR1_PID_OUT_MAX   3200.0f// 输出最大�?
-
-// // -------------------------- 步进电机2 PID参数（独立配�????�???? --------------------------
-// #define STEPPER_MOTOR2_PID_KP       0.005f    // 比例系数
-// #define STEPPER_MOTOR2_PID_KI       0.000012f    // �????分系�????
-// #define STEPPER_MOTOR2_PID_KD       0.05f    // �????分系�????
-// #define STEPPER_MOTOR2_PID_IN_A     1.0f    // 输入系数
-// #define STEPPER_MOTOR2_PID_OUT_MIN  -3200.0f// 输出最小�?
-// #define STEPPER_MOTOR2_PID_OUT_MAX   3200.0f// 输出最大�?
-
-// -------------------------- 步进电机1 PID参数（独立配�????�???? --------------------------
-#define STEPPER_MOTOR1_PID_KP -0.012f		// 比例系数
-#define STEPPER_MOTOR1_PID_KI -0.00006f		// �????分系�????
-#define STEPPER_MOTOR1_PID_KD -0.02f		// �????分系�????
-#define STEPPER_MOTOR1_PID_IN_A 1.0f		// 输入系数
-#define STEPPER_MOTOR1_PID_OUT_MIN -3200.0f // 输出最小�?
-#define STEPPER_MOTOR1_PID_OUT_MAX 3200.0f	// 输出最大�?
-
-// -------------------------- 步进电机2 PID参数（独立配�????�???? --------------------------
-#define STEPPER_MOTOR2_PID_KP 0.008f		// 比例系数
-#define STEPPER_MOTOR2_PID_KI 0.00003f		// �????分系�????
-#define STEPPER_MOTOR2_PID_KD 0.015f		// �????分系�????
-#define STEPPER_MOTOR2_PID_IN_A 1.0f		// 输入系数
-#define STEPPER_MOTOR2_PID_OUT_MIN -3200.0f // 输出最小�?
-#define STEPPER_MOTOR2_PID_OUT_MAX 3200.0f	// 输出最大�?
-
 uint32_t TimeCount;
 PidStruct MotorLSpeedPID;
 PidStruct MotorRSpeedPID;
@@ -59,7 +11,7 @@ PidStruct track_pid;
 /**
  * �????    数：初�?�化PID结构体，将所有值赋0
  * �????    数：PidStruct* Handler：待初�?�化的PID结构体变�????
- * �???? �???? 值：�????
+ * �????? �????? 值：�?????
  */
 void InitPidStruct(PidStruct *Handler)
 {
@@ -78,10 +30,10 @@ void InitPidStruct(PidStruct *Handler)
 }
 
 /**
- * �????    数：赋值PID结构体，调节Kp、Ki、Kd、输出限幅�?
- * �????    数：PidStruct* Handler：待赋值的PID结构体变�????
- * �????    数：float kp,float ki,float kd,float min,float max
- * �???? �???? 值：�????
+ * �?????    数：赋值PID结构体，调节Kp、Ki、Kd、输出限幅�?
+ * �?????    数：PidStruct* Handler：待赋值的PID结构体变�?????
+ * �?????    数：float kp,float ki,float kd,float min,float max
+ * �????? �????? 值：�?????
  */
 void SetPidStruct(PidStruct *Handler, float kp, float ki, float kd, float in_a, float min, float max)
 {
@@ -94,17 +46,17 @@ void SetPidStruct(PidStruct *Handler, float kp, float ki, float kd, float in_a, 
 }
 
 /**
- * �????    数：计算位置式PID的输出值并赋�?
- * �????    数：PidStruct* Handler：待赋值的PID结构体变�????
- * �????    数：float Target：目标�?
- * �????    数：float Actual：实际值，由传感器读取
- * �???? �???? 值：�????
+ * �?????    数：计算位置式PID的输出值并赋�?
+ * �?????    数：PidStruct* Handler：待赋值的PID结构体变�?????
+ * �?????    数：float Target：目标�?
+ * �?????    数：float Actual：实际值，由传感器读取
+ * �????? �????? 值：�?????
  */
 void ComputePos(PidStruct *Handler, float Target, float Actual)
 {
 	float PosOut;
 	Handler->Error1 = Handler->Error0;
-	// 一阶低通滤�????
+	// 一阶低通滤�?????
 	Actual = Handler->in_a * Actual + (1 - Handler->in_a) * Handler->LastActual;
 	Handler->Error0 = Target - Actual;
 	Handler->ErrorInt += Handler->Error0;
@@ -141,18 +93,18 @@ void ComputePos(PidStruct *Handler, float Target, float Actual)
 }
 
 /**
- * �????    数：计算增量式PID的输出值并赋�?
- * �????    数：PidStruct* Handler：待赋值的PID结构体变�????
- * �????    数：float Target：目标�?
- * �????    数：float Actual：实际值，由传感器读取
- * �???? �???? 值：�????
+ * �?????    数：计算增量式PID的输出值并赋�?
+ * �?????    数：PidStruct* Handler：待赋值的PID结构体变�?????
+ * �?????    数：float Target：目标�?
+ * �?????    数：float Actual：实际值，由传感器读取
+ * �????? �????? 值：�?????
  */
 void ComputeInc(PidStruct *Handler, float Target, float Actual)
 {
 	float IncOut;
 	Handler->Error2 = Handler->Error1;
 	Handler->Error1 = Handler->Error0;
-	// 一阶低通滤�????
+	// 一阶低通滤�?????
 	Actual = Handler->in_a * Actual + (1 - Handler->in_a) * Handler->LastActual;
 	Handler->Error0 = Target - Actual;
 
@@ -172,6 +124,69 @@ void ComputeInc(PidStruct *Handler, float Target, float Actual)
 	Handler->CurrentOut = IncOut;
 	Handler->LastActual = Actual;
 }
+/*
+ * Yaw angle PID - position-form with shortest-angular-distance error wrapping.
+ *
+ * Handles the -180/+180 wrap-around so the PID sees the geometrically
+ * shortest error (e.g. from +170 to -170 gives -20, not +340).
+ *
+ * Features:
+ *   - shortest-angular-distance error wrapping
+ *   - +/-2 degree dead band (resets integral to prevent windup)
+ *   - D-term dead-zone: |derror| < 0.5 -> dout = 0 (gyro noise suppression)
+ *   - integral anti-windup via OutMax / Ki clamp
+ *   - output clamped to [OutMin, OutMax]
+ *
+ * Reference: keil/System/pid.c Pid_Turn_Cal()
+ */
+void ComputeYaw(PidStruct *pid, float Target, float Actual)
+{
+	/* 1. Yaw error with shortest-angular-distance wrapping */
+	float err = Target - Actual;
+	if (err > 180.0f)  err -= 360.0f;
+	if (err < -180.0f) err += 360.0f;
+
+	/* 2. Dead band: +/-2 degrees */
+	if (err < 2.0f && err > -2.0f)
+	{
+		err = 0.0f;
+		pid->ErrorInt = 0.0f;
+	}
+
+	/* 3. Shift error history */
+	pid->Error1 = pid->Error0;
+	pid->Error0 = err;
+
+	/* 4. Proportional term */
+	float pout = pid->Kp * err;
+
+	/* 5. Integral term (accumulate + anti-windup) */
+	pid->ErrorInt += err;
+	if (pid->Ki != 0.0f)
+	{
+		float i_limit = pid->OutMax / pid->Ki;
+		if (i_limit < 0.0f) i_limit = -i_limit;
+		if (pid->ErrorInt > i_limit)  pid->ErrorInt = i_limit;
+		if (pid->ErrorInt < -i_limit) pid->ErrorInt = -i_limit;
+	}
+	float iout = pid->Ki * pid->ErrorInt;
+
+	/* 6. Derivative term with dead-zone */
+	float derr = pid->Error0 - pid->Error1;
+	float dout;
+	if (derr < 0.5f && derr > -0.5f)
+		dout = 0.0f;
+	else
+		dout = pid->Kd * derr;
+
+	/* 7. Sum and clamp */
+	float output = pout + iout + dout;
+	if (output > pid->OutMax)  output = pid->OutMax;
+	if (output < pid->OutMin)  output = pid->OutMin;
+
+	pid->CurrentOut = output;
+}
+
 // pid参数初�?�化
 void SysPidInit()
 {
@@ -194,6 +209,12 @@ void SysPidInit()
 	SetPidStruct(&StepperMotor2PID,
 				 STEPPER_MOTOR2_PID_KP, STEPPER_MOTOR2_PID_KI, STEPPER_MOTOR2_PID_KD,
 				 STEPPER_MOTOR2_PID_IN_A, STEPPER_MOTOR2_PID_OUT_MIN, STEPPER_MOTOR2_PID_OUT_MAX);
+	SetPidStruct(&yaw_pid,
+				 YAW_PID_KP, YAW_PID_KI, YAW_PID_KD,
+				 YAW_PID_IN_A, YAW_PID_OUT_MIN, YAW_PID_OUT_MAX);
+	SetPidStruct(&track_pid,
+				 TRACK_PID_KP, TRACK_PID_KI, TRACK_PID_KD,
+				 TRACK_PID_IN_A, TRACK_PID_OUT_MIN, TRACK_PID_OUT_MAX);
 }
 
 void SystemControl()

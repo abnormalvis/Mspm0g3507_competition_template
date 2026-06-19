@@ -174,7 +174,7 @@ void mahony_update(float gx, float gy, float gz, float ax, float ay, float az)
   // Integrate error into integral term
   exInt = exInt + ex * ki;
   eyInt = eyInt + ey * ki;
-  ezInt = ezInt + ey * ki;
+  ezInt = ezInt + ez * ki;
 
   // Apply attitude error correction to gyroscope data, compensating for gyro drift. Kp and Ki control how fast accelerometer data corrects gyro attitude.
   gx = gx + kp * ex + exInt;
@@ -282,7 +282,7 @@ void _IMU(void)
 	{
 		imu.yaw = imu.yaw + 360;
 	}
-	/* legacy: angle.z = imu.yaw; â€” no `angle` struct in this project */
+	/* legacy: angle.z = imu.yaw; â€? no `angle` struct in this project */
 //  mahony_update(imu.deg_s.x, imu.deg_s.y, imu.deg_s.z, imu.acc_g.x, imu.acc_g.y, imu.acc_g.z);
 //  Matrix_ready();
 }

@@ -214,6 +214,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_SPI_IMU_IOMUX_CS0, GPIO_SPI_IMU_IOMUX_CS0_FUNC);
 
+    DL_GPIO_initDigitalOutput(IMU_IMU_CS_IOMUX);
+
     DL_GPIO_initDigitalOutput(Beep_buzzer_IOMUX);
 
     DL_GPIO_initDigitalOutput(MOTOR_DIR_Left_A_IOMUX);
@@ -246,26 +248,20 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
-    DL_GPIO_initDigitalOutput(IMU_IMU_CS_IOMUX);
-
-    DL_GPIO_initDigitalOutput(IMU_INT1_IOMUX);
-
-    DL_GPIO_initDigitalOutput(IMU_INT2_IOMUX);
-
-    DL_GPIO_setPins(GPIOA, MOTOR_DIR_Left_A_PIN |
+    DL_GPIO_setPins(GPIOA, IMU_IMU_CS_PIN |
+		MOTOR_DIR_Left_A_PIN |
 		MOTOR_DIR_Left_B_PIN |
 		MOTOR_DIR_Right_A_PIN |
 		MOTOR_DIR_Right_B_PIN |
 		TRACK_S1_PIN |
-		TRACK_S2_PIN |
-		IMU_IMU_CS_PIN);
-    DL_GPIO_enableOutput(GPIOA, MOTOR_DIR_Left_A_PIN |
+		TRACK_S2_PIN);
+    DL_GPIO_enableOutput(GPIOA, IMU_IMU_CS_PIN |
+		MOTOR_DIR_Left_A_PIN |
 		MOTOR_DIR_Left_B_PIN |
 		MOTOR_DIR_Right_A_PIN |
 		MOTOR_DIR_Right_B_PIN |
 		TRACK_S1_PIN |
-		TRACK_S2_PIN |
-		IMU_IMU_CS_PIN);
+		TRACK_S2_PIN);
     DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_29_EDGE_RISE |
 		DL_GPIO_PIN_30_EDGE_RISE);
     DL_GPIO_clearInterruptStatus(GPIOA, Encoder_Encoder2_A_PIN |
@@ -273,13 +269,9 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_enableInterrupt(GPIOA, Encoder_Encoder2_A_PIN |
 		Encoder_Encoder2_B_PIN);
     DL_GPIO_clearPins(GPIOB, Beep_buzzer_PIN |
-		TRACK_S3_PIN |
-		IMU_INT1_PIN |
-		IMU_INT2_PIN);
+		TRACK_S3_PIN);
     DL_GPIO_enableOutput(GPIOB, Beep_buzzer_PIN |
-		TRACK_S3_PIN |
-		IMU_INT1_PIN |
-		IMU_INT2_PIN);
+		TRACK_S3_PIN);
     DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_6_EDGE_RISE |
 		DL_GPIO_PIN_5_EDGE_RISE);
     DL_GPIO_clearInterruptStatus(GPIOB, Encoder_Encoder1_A_PIN |

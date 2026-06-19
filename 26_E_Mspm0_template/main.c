@@ -2,6 +2,7 @@
 #include "interrupt_config.h"
 #include "hal_gray.h"
 #include "hal_imu.h"
+#include "zf_device_imu660ra.h"
 #include "imu_filter.h"
 #include "vofa.h"
 #include "StandardPid.h"
@@ -17,6 +18,9 @@ volatile uint8_t gray_sample_req = 0;
 volatile uint32_t sys_tick_ms = 0;
 
 float vofa_speed_target = 0.0f; // speed target set via VOFA #P4=xxx!
+float vofa_yaw_target = 0.0f;   // yaw target set via VOFA #P4=xxx!
+const uint8_t vofa_sent_ch_count = 7;    // number of float channels to send in each VOFA telemetry packet
+uint8_t g_angle_mode = 0;      // 0=speed mode, 1=angle mode (toggled via VOFA #P5)
 
 static void on_vofa_param(uint16_t id, float value)
 {
@@ -35,33 +39,19 @@ static void on_vofa_param(uint16_t id, float value)
         MotorRSpeedPID.Kd = value;
         break;
     case 4:
-        vofa_speed_target = value;
+        //vofa_speed_target = value;
+        vofa_yaw_target = value;
         break;
     case 5:
-        MotorLSpeedPID.Kp = value;
+        g_angle_mode = value;
         break;
     case 6:
-        MotorLSpeedPID.Ki = value;
-        break;
-    case 7:
-        MotorLSpeedPID.Kd = value;
-        break;
-    case 8:
-        MotorRSpeedPID.Kp = value;
-        break;
-    case 9:
-        MotorRSpeedPID.Ki = value;
-        break;
-    case 10:
-        MotorRSpeedPID.Kd = value;
-        break;
-    case 11:
         yaw_pid.Kp = value;
         break;
-    case 12:
+    case 7:
         yaw_pid.Ki = value;
         break;
-    case 13:
+    case 8:
         yaw_pid.Kd = value;
         break;
     case 14:
@@ -72,6 +62,8 @@ static void on_vofa_param(uint16_t id, float value)
         break;
     case 16:
         track_pid.Kd = value;
+    case 17:
+        vofa_speed_target = value;
         break;
     default:
         break;
@@ -144,14 +136,22 @@ int main(void)
         if (sys_tick_ms - last_vofa_telem >= 100)
         {
             last_vofa_telem = sys_tick_ms;
-            float pid_ch[6] = {
-                vofa_speed_target,
-                (float)Motor_speedR,
-                (float)Motor_speedL,
-                MotorLSpeedPID.Kp,
-                MotorLSpeedPID.Ki,
-                MotorLSpeedPID.Kd};
-            vofa_send_floats(pid_ch, 6);
+            float pid_ch[vofa_sent_ch_count] = {
+                /* position pid debug */
+                vofa_speed_target,      /* ch0: target speed */
+                Motor_speedL,
+                vofa_yaw_target,        /* ch0: target yaw */
+                imu.yaw,                /* ch1: actual yaw */
+                // imu.pitch,              /* ch7: pitch deg */
+                // imu.roll,               /* ch8: roll deg */
+                yaw_pid.Kp,             /* ch2: yaw Kp */
+                yaw_pid.Ki,             /* ch3: yaw Ki */
+                yaw_pid.Kd,             /* ch4: yaw Kd */
+                // (float)gyro_data.z,     /* ch5: raw gyro Z (diagnose SPI) */
+                // imu.deg_s.z             /* ch6: filtered gyro Z deg/s */
+                
+            };
+            vofa_send_floats(pid_ch, vofa_sent_ch_count);
         }
 
         /* ---- HMI serial screen event polling ---- */
@@ -278,6 +278,32 @@ void TIMER_1_INST_IRQHandler(void)
         {
             task_manager_run();
         }
+        else if (g_angle_mode)
+        {
+            /* ---- Angle loop: outer yaw PID + inner speed PID ---- */
+            ComputeYaw(&yaw_pid, vofa_yaw_target, imu.yaw);
+
+            float angle_out = yaw_pid.CurrentOut;
+
+            /* Differential steering: positive = right turn, negative = left turn */
+            float target_l = +angle_out;
+            float target_r = -angle_out;
+
+            float abs_target_l = (target_l >= 0.0f) ? target_l : -target_l;
+            float abs_target_r = (target_r >= 0.0f) ? target_r : -target_r;
+            float abs_L = (Motor_speedL >= 0) ? (float)Motor_speedL : -(float)Motor_speedL;
+            float abs_R = (Motor_speedR >= 0) ? (float)Motor_speedR : -(float)Motor_speedR;
+
+            ComputeInc(&MotorLSpeedPID, abs_target_l, abs_L);
+            ComputeInc(&MotorRSpeedPID, abs_target_r, abs_R);
+
+            g_motor_left_out  = (target_l >= 0.0f)
+                              ? MotorLSpeedPID.CurrentOut
+                              : -MotorLSpeedPID.CurrentOut;
+            g_motor_right_out = (target_r >= 0.0f)
+                              ? MotorRSpeedPID.CurrentOut
+                              : -MotorRSpeedPID.CurrentOut;
+        }
         else
         {
             static float target_last = 0.0f;
@@ -308,7 +334,7 @@ void TIMER_1_INST_IRQHandler(void)
                               : -MotorRSpeedPID.CurrentOut;
         }
 
-        //Motor_SetPWML(g_motor_left_out);
+        Motor_SetPWML(g_motor_left_out);
         Motor_SetPWMR(g_motor_right_out);
         break;
     default:
@@ -319,8 +345,8 @@ void TIMER_1_INST_IRQHandler(void)
 /**
  * GROUP1 = GPIOB + GPIOA interrupt aggregation: encoder quadrature decoding
  *
- * Left  motor encoder: PB6=A-phase, PB5=B-phase  ï¿½?? Count1
- * Right motor encoder: PA29=A-phase, PA30=B-phase ï¿½?? Count2
+ * Left  motor encoder: PB6=A-phase, PB5=B-phase  ï¿?????? Count1
+ * Right motor encoder: PA29=A-phase, PA30=B-phase ï¿?????? Count2
  *
  * 4x quadrature: both A and B phase edges update the counter.
  * Reference: hal_encode.c in MSPM0G3507_Project_template

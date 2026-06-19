@@ -1,10 +1,10 @@
 #include "Serial.h"
 
 /* UART aliases per syscfg:
- *   UART_debug_INST       = UART0 (PA10/11)   ï¿½? debug + VOFA
- *   UART_vision_INST      = UART3 (PB2/3)     ï¿½? K230
- *   UART_display_INST     = UART1 (PA17/18)   ï¿½? HMI serial screen (ISR in zuolan_usart.c)
- *   UART_wired_INST       = UART2 (PA21/PB16) ï¿½? stepmotor (stub ISR below)
+ *   UART_debug_INST       = UART0 (PA10/11)   ï¿?? debug + VOFA
+ *   UART_vision_INST      = UART3 (PB2/3)     ï¿?? K230
+ *   UART_display_INST     = UART1 (PA17/18)   ï¿?? HMI serial screen (ISR in zuolan_usart.c)
+ *   UART_wired_INST       = UART2 (PA21/PB16) ï¿?? stepmotor (stub ISR below)
  */
 
 void uart_debug_send_byte(uint8_t data)

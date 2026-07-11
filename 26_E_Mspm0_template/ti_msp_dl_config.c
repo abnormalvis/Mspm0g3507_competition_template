@@ -232,6 +232,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(TRACK_S3_IOMUX);
 
+    DL_GPIO_initDigitalOutput(TRACK_S4_IOMUX);
+
     DL_GPIO_initDigitalInputFeatures(Encoder_Encoder1_A_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_NONE,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
@@ -269,9 +271,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_enableInterrupt(GPIOA, Encoder_Encoder2_A_PIN |
 		Encoder_Encoder2_B_PIN);
     DL_GPIO_clearPins(GPIOB, Beep_buzzer_PIN |
-		TRACK_S3_PIN);
+		TRACK_S3_PIN |
+		TRACK_S4_PIN);
     DL_GPIO_enableOutput(GPIOB, Beep_buzzer_PIN |
-		TRACK_S3_PIN);
+		TRACK_S3_PIN |
+		TRACK_S4_PIN);
     DL_GPIO_setLowerPinsPolarity(GPIOB, DL_GPIO_PIN_6_EDGE_RISE |
 		DL_GPIO_PIN_5_EDGE_RISE);
     DL_GPIO_clearInterruptStatus(GPIOB, Encoder_Encoder1_A_PIN |

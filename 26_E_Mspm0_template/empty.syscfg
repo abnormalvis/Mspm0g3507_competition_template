@@ -96,7 +96,7 @@ GPIO1.associatedPins[3].initialValue = "SET";
 GPIO1.associatedPins[3].pin.$assign  = "PA22";
 
 GPIO2.$name                          = "TRACK";
-GPIO2.associatedPins.create(3);
+GPIO2.associatedPins.create(4);
 GPIO2.associatedPins[0].initialValue = "SET";
 GPIO2.associatedPins[0].$name        = "S1";
 GPIO2.associatedPins[0].pin.$assign  = "PA15";
@@ -105,6 +105,8 @@ GPIO2.associatedPins[1].$name        = "S2";
 GPIO2.associatedPins[1].pin.$assign  = "PA28";
 GPIO2.associatedPins[2].$name        = "S3";
 GPIO2.associatedPins[2].pin.$assign  = "PB21";
+GPIO2.associatedPins[3].$name        = "S4";
+GPIO2.associatedPins[3].pin.$assign  = "PB4";
 
 GPIO3.$name                               = "Encoder";
 GPIO3.associatedPins.create(4);

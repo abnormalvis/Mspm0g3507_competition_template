@@ -9,6 +9,7 @@ void interrupt_init(void)
     NVIC_ClearPendingIRQ(UART_vision_INST_INT_IRQN);
     NVIC_ClearPendingIRQ(TIMER_0_INST_INT_IRQN);
     NVIC_ClearPendingIRQ(TIMER_1_INST_INT_IRQN);
+    NVIC_ClearPendingIRQ(CANFD0_INT_IRQn);
     NVIC_ClearPendingIRQ(Encoder_GPIOB_INT_IRQN);
     NVIC_ClearPendingIRQ(Encoder_GPIOA_INT_IRQN);
 
@@ -32,6 +33,9 @@ void interrupt_init(void)
 
     NVIC_SetPriority(Encoder_GPIOA_INT_IRQN, 2);
     NVIC_EnableIRQ  (Encoder_GPIOA_INT_IRQN);
+
+    NVIC_SetPriority(CANFD0_INT_IRQn, 2);
+    NVIC_EnableIRQ  (CANFD0_INT_IRQn);
 
     __enable_irq();
 }

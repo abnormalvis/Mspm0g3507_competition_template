@@ -58,7 +58,7 @@ void AppInit(void)
     uint8_t i;
 
     /* default gray thresholds */
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < GRAY_CHANNEL_COUNT; i++)
         gray_threshold[i] = 2000;
 
     Flag_Init();
@@ -105,26 +105,9 @@ void SensorProc(void)
 {
     if (gray_sample_req)
     {
-        uint8_t i;
         gray_sample_req = 0;
 
-        gray_8data_read();
-
-        gray_state.gray.bit1 = (LQ_Tracking_Value[0] > gray_threshold[0]);
-        gray_state.gray.bit2 = (LQ_Tracking_Value[1] > gray_threshold[1]);
-        gray_state.gray.bit3 = (LQ_Tracking_Value[2] > gray_threshold[2]);
-        gray_state.gray.bit4 = (LQ_Tracking_Value[3] > gray_threshold[3]);
-        gray_state.gray.bit5 = (LQ_Tracking_Value[4] > gray_threshold[4]);
-        gray_state.gray.bit6 = (LQ_Tracking_Value[5] > gray_threshold[5]);
-        gray_state.gray.bit7 = (LQ_Tracking_Value[6] > gray_threshold[6]);
-        gray_state.gray.bit8 = (LQ_Tracking_Value[7] > gray_threshold[7]);
-
-        gray_status = 0;
-        for (i = 0; i < 8; i++)
-        {
-            if (LQ_Tracking_Value[i] > gray_threshold[i])
-                gray_status += (1 << i);
-        }
+        gray_read();
 
         /* gray sensor data now shown on HMI page2.tk_string; VOFA channel reserved for PID tuning */
     }

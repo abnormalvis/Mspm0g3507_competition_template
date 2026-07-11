@@ -327,6 +327,10 @@ extern "C" {
 #define TRACK_S3_PORT                                                    (GPIOB)
 #define TRACK_S3_PIN                                            (DL_GPIO_PIN_21)
 #define TRACK_S3_IOMUX                                           (IOMUX_PINCM49)
+/* Defines for S4: GPIOB.4 with pinCMx 17 on package pin 52 */
+#define TRACK_S4_PORT                                                    (GPIOB)
+#define TRACK_S4_PIN                                             (DL_GPIO_PIN_4)
+#define TRACK_S4_IOMUX                                           (IOMUX_PINCM17)
 /* Defines for Encoder1_A: GPIOB.6 with pinCMx 23 on package pin 58 */
 #define Encoder_Encoder1_A_PORT                                          (GPIOB)
 // pins affected by this interrupt request:["Encoder1_A","Encoder1_B"]

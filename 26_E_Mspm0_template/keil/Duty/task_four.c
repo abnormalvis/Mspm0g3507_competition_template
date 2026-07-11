@@ -1,12 +1,9 @@
 #include "task_four.h"
 #include "menu_task.h"
-#include "hal_gray.h"
+#include "tracking_loop.h"
 #include "Encoder.h"
 #include "StandardPid.h"
 #include <stdlib.h>
-
-/* ---- gray sensor fault table ---- */
-static const int fault_table[8] = {70, 50, 30, 10, -10, -30, -50, -70};
 
 /* ---- state chain ---- */
 static int s_line_AC    = 1;
@@ -30,10 +27,6 @@ static int s_encL_bd = 0;
 static int s_encR_bd = 0;
 static int s_encL_ac = 0;
 static int s_encR_ac = 0;
-
-/* ---- tracking ---- */
-static int s_fault    = 0;
-static int s_led_many = 0;
 
 /* ---- arc parameters ---- */
 static int s_arcL_enc1 = 3500, s_arcR_enc1 = 2500;
@@ -68,7 +61,6 @@ void task_four_init(void)
     s_stop_2     = 0;
     s_stop_last  = 0;
     s_lap_flag   = 1;
-    s_fault      = 0;
     s_probe_debounce = 0;
     s_probe_timer    = 0;
     s_sg_active = 0;
@@ -78,30 +70,9 @@ void task_four_init(void)
     SetPidStruct(&s_pid_right, 0.5f, 0.0f, 0.0f, 0.0f, -3200.0f, 3200.0f);
 }
 
-static void task_tracking_read(void)
-{
-    uint8_t i;
-    int32_t weighted_sum = 0;
-    int32_t raw_sum = 0;
-
-    s_led_many = 0;
-    gray_8data_read();
-
-    for (i = 0; i < 8; i++)
-    {
-        if (LQ_Tracking_Value[i] > gray_threshold[i])
-        {
-            s_led_many++;
-            weighted_sum += fault_table[i];
-            raw_sum++;
-        }
-    }
-    s_fault = (raw_sum > 0) ? (weighted_sum / raw_sum) : 0;
-}
-
 void task_four_run(void)
 {
-    task_tracking_read();
+    tracking_read();
 
     /* ---- sound/light timer ---- */
     if (s_sg_active && s_sg_timer > 0)
@@ -120,7 +91,7 @@ void task_four_run(void)
     }
 
     /* ---- intersection detect ---- */
-    if ((s_led_many >= 6) && !s_probe_debounce)
+    if ((tracking_result.sensor_count >= GRAY_INTERSECTION_THRESHOLD) && !s_probe_debounce)
     {
         /* lap 1: same as task_three */
         if (s_line_AC && (s_lap_flag == 1))
@@ -262,14 +233,12 @@ void task_four_run(void)
 
         if (s_turn_CB_2)
         {
-            g_motor_left_out  = (float)(task_speed_base - s_fault);
-            g_motor_right_out = (float)(task_speed_base + s_fault);
+            tracking_apply((float)task_speed_base, &g_motor_left_out, &g_motor_right_out);
         }
         if (s_turn_DA_2)
         {
             s_line_AC_2 = 1;
-            g_motor_left_out  = (float)(task_speed_base - s_fault);
-            g_motor_right_out = (float)(task_speed_base + s_fault);
+            tracking_apply((float)task_speed_base, &g_motor_left_out, &g_motor_right_out);
         }
     }
 }

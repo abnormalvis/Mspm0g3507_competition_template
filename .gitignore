@@ -60,6 +60,7 @@ MSPM0G3507_Project_xunji_pid/
 TMX_MSPM0G3507_ProjectTemplate/
 26_E_Mspm0_template_debug/
 STM32_CAN_stepmotor_pos_control/
+24diansai-M0/
 MPSM0_balance_car/
 HMI_projects/
 WHEELTEC_C07A_TB6612/
@@ -78,6 +79,10 @@ examples/
 source/
 tools/
 kernel/
+ICM42688/
+icm42688_spi/
+A16W140H19D8_V2/
+WHEELTEC-AT8236/
 # Reference projects
 vofa*/
 

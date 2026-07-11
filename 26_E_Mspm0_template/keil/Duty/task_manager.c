@@ -3,6 +3,7 @@
 #include "task_two.h"
 #include "task_three.h"
 #include "task_four.h"
+#include "tracking_loop.h"
 
 void task_manager_init(void)
 {
@@ -10,6 +11,7 @@ void task_manager_init(void)
     g_motor_right_out = 0;
     task_running = 0;
     g_current_task = TASK_NONE;
+    tracking_loop_init();
 }
 
 void task_manager_run(void)

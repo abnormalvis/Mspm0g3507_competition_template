@@ -3,8 +3,19 @@
 
 #include <stdint.h>
 
-extern uint16_t LQ_Tracking_Value[8];
-extern uint16_t gray_threshold[8];
+/* ---- Gray sensor type selection ---- */
+// #define GRAY_SENSOR_16CH   // uncomment for 16ch; keep commented for 8ch (default)
+
+#ifdef GRAY_SENSOR_16CH
+#define GRAY_CHANNEL_COUNT          16
+#define GRAY_INTERSECTION_THRESHOLD 12
+#else
+#define GRAY_CHANNEL_COUNT          8
+#define GRAY_INTERSECTION_THRESHOLD 6
+#endif
+
+extern uint16_t LQ_Tracking_Value[GRAY_CHANNEL_COUNT];
+extern uint16_t gray_threshold[GRAY_CHANNEL_COUNT];
 
 typedef struct
 {
@@ -20,6 +31,10 @@ typedef struct
     uint8_t bit10 : 1;
     uint8_t bit11 : 1;
     uint8_t bit12 : 1;
+    uint8_t bit13 : 1;
+    uint8_t bit14 : 1;
+    uint8_t bit15 : 1;
+    uint8_t bit16 : 1;
 } gray_flags;
 
 typedef union
@@ -32,7 +47,10 @@ extern _gray_state gray_state;
 extern float       gray_status;
 extern char        stop_flag;
 
-void    gray_8data_read(void);
+/* ---- uni ed API ---- */
+void    gray_init(void);
+void    gray_read(void);
+void    gray_8data_read(void);     /* backward-compat: calls gray_read() */
 void    gray_set_threshold(uint16_t *threshold);
 uint8_t gray_is_worse(void);
 

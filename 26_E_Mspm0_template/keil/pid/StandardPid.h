@@ -2,6 +2,7 @@
 #define __STANDARDPID_H__
 
 #include "ti_msp_dl_config.h"
+#include "hal_gray.h"
 #include "Motor.h"
 #include "Encoder.h"
 #include "StepperMotor.h"
@@ -68,11 +69,15 @@
 #define YAW_PID_OUT_MAX 1000.0f
 
 // -------------------------- ѭ����PID���� --------------------------
-#define TRACK_PID_KP 0.0f
+#ifdef GRAY_SENSOR_16CH
+#define TRACK_PID_KP 0.3f
+#else
+#define TRACK_PID_KP 0.15f
+#endif
 #define TRACK_PID_KI 0.0f
-#define TRACK_PID_KD 0.0f
+#define TRACK_PID_KD 0.01f
 #define TRACK_PID_IN_A 0.5f
-#define TRACK_PID_OUT_MIN 0.0f
+#define TRACK_PID_OUT_MIN -1000.0f
 #define TRACK_PID_OUT_MAX 1000.0f
 
 typedef struct

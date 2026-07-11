@@ -13,6 +13,8 @@
 #include "app.h"
 #include "menu_task.h"
 #include "task_manager.h"
+#include "hal_qgimbal_can.h"
+#include "gimbal_control.h"
 
 volatile uint8_t gray_sample_req = 0;
 volatile uint32_t sys_tick_ms = 0;
@@ -73,7 +75,9 @@ static void on_vofa_param(uint16_t id, float value)
 int main(void)
 {
     SYSCFG_DL_init();
+    gray_init();
     interrupt_init();
+    Motor_Init();   /* Set motor driver to initial brake state */
 
     // LCD_Init();
     //OLED_CLS();
@@ -90,6 +94,7 @@ int main(void)
     AppInit();
     menu_init();
     task_manager_init();
+    Gimbal_Init();
 
     /* debug: verify code reaches this point via UART0 */
     uart_debug_send_byte('H');
@@ -200,15 +205,15 @@ int main(void)
             /* IMU yaw angle (1 decimal) */
             zuolan_HMI_Send_Float("page2.x5", imu.yaw, 1);
 
-            /* track sensor 8-bit pattern as fixed-width string "11110000" */
+            /* track sensor bit pattern as fixed-width string */
             {
-                char track_bits[9];
-                uint8_t bits = gray_state.state & 0xFF;
+                char track_bits[GRAY_CHANNEL_COUNT + 1];
                 int i;
-                for (i = 0; i < 8; i++) {
-                    track_bits[7 - i] = ((bits >> i) & 1) ? '1' : '0';
+                for (i = 0; i < GRAY_CHANNEL_COUNT; i++) {
+                    track_bits[GRAY_CHANNEL_COUNT - 1 - i] =
+                        ((gray_state.state >> i) & 1) ? '1' : '0';
                 }
-                track_bits[8] = '\0';
+                track_bits[GRAY_CHANNEL_COUNT] = '\0';
                 zuolan_HMI_Send_String("page2.tk_string", track_bits);
             }
         }
@@ -336,6 +341,10 @@ void TIMER_1_INST_IRQHandler(void)
 
         Motor_SetPWML(g_motor_left_out);
         Motor_SetPWMR(g_motor_right_out);
+
+        /* Gimbal stabilizer control (CAN brushless motors) */
+        Gimbal_Run();
+
         break;
     default:
         break;
@@ -343,10 +352,30 @@ void TIMER_1_INST_IRQHandler(void)
 }
 
 /**
+ * CANFD0 interrupt handler: gimbal motor feedback reception
+ */
+void CANFD0_IRQHandler(void)
+{
+    switch (DL_MCAN_getPendingInterrupt(MCAN0_INST)) {
+        case DL_MCAN_IIDX_LINE1: {
+            uint32_t status = DL_MCAN_getIntrStatus(MCAN0_INST);
+            if (status & DL_MCAN_INTR_SRC_RX_FIFO0_NEW_MSG) {
+                QGimbal_ProcessFeedback();
+            }
+            DL_MCAN_clearIntrStatus(MCAN0_INST, status,
+                DL_MCAN_INTR_SRC_MCAN_LINE_1);
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+/**
  * GROUP1 = GPIOB + GPIOA interrupt aggregation: encoder quadrature decoding
  *
- * Left  motor encoder: PB6=A-phase, PB5=B-phase  ï¿?????? Count1
- * Right motor encoder: PA29=A-phase, PA30=B-phase ï¿?????? Count2
+ * Left  motor encoder: PB6=A-phase, PB5=B-phase  ï¿½?????? Count1
+ * Right motor encoder: PA29=A-phase, PA30=B-phase ï¿½?????? Count2
  *
  * 4x quadrature: both A and B phase edges update the counter.
  * Reference: hal_encode.c in MSPM0G3507_Project_template

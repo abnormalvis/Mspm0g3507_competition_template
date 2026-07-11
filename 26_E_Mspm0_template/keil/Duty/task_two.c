@@ -1,12 +1,9 @@
 #include "task_two.h"
 #include "menu_task.h"
-#include "hal_gray.h"
+#include "tracking_loop.h"
 #include "Encoder.h"
 #include "StandardPid.h"
 #include <stdlib.h>
-
-/* ---- gray sensor fault table ---- */
-static const int fault_table[8] = {70, 50, 30, 10, -10, -30, -50, -70};
 
 /* ---- state chain: sequential hand-off flags ---- */
 static int s_line_AC   = 1;
@@ -21,10 +18,6 @@ static int s_stop_2    = 0;
 /* ---- encoder recording for arc start points ---- */
 static int s_encL_bd = 0;
 static int s_encR_bd = 0;
-
-/* ---- tracking ---- */
-static int s_fault   = 0;
-static int s_led_many = 0;
 
 /* ---- arc parameters ---- */
 static int s_arc_left_enc  = 3500;
@@ -46,39 +39,17 @@ void task_two_init(void)
     s_turn_DA   = 0;
     s_stop      = 0;
     s_stop_2    = 0;
-    s_fault     = 0;
 
     SetPidStruct(&s_pid_left,  0.5f, 0.0f, 0.0f, 0.0f, -3200.0f, 3200.0f);
     SetPidStruct(&s_pid_right, 0.5f, 0.0f, 0.0f, 0.0f, -3200.0f, 3200.0f);
 }
 
-static void task_tracking_read(void)
-{
-    uint8_t i;
-    int32_t weighted_sum = 0;
-    int32_t raw_sum = 0;
-
-    s_led_many = 0;
-    gray_8data_read();
-
-    for (i = 0; i < 8; i++)
-    {
-        if (LQ_Tracking_Value[i] > gray_threshold[i])
-        {
-            s_led_many++;
-            weighted_sum += fault_table[i];
-            raw_sum++;
-        }
-    }
-    s_fault = (raw_sum > 0) ? (weighted_sum / raw_sum) : 0;
-}
-
 void task_two_run(void)
 {
-    task_tracking_read();
+    tracking_read();
 
     /* ---- intersection / probe trigger ---- */
-    if (s_led_many >= 6)
+    if (tracking_result.sensor_count >= GRAY_INTERSECTION_THRESHOLD)
     {
         if (s_line_AC)
         {
@@ -152,8 +123,7 @@ void task_two_run(void)
         }
 
         /* line following with fault correction */
-        g_motor_left_out  = (float)(task_speed_base - s_fault);
-        g_motor_right_out = (float)(task_speed_base + s_fault);
+        tracking_apply((float)task_speed_base, &g_motor_left_out, &g_motor_right_out);
 
         /* probe debounce: handled by s_turn_CB once per intersection */
         if (s_turn_CB)

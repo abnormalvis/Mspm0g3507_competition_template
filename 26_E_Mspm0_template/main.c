@@ -13,7 +13,9 @@
 #include "app.h"
 #include "menu_task.h"
 #include "task_manager.h"
+#include "tracking_loop.h"
 #include "hal_qgimbal_can.h"
+
 #include "gimbal_control.h"
 
 volatile uint8_t gray_sample_req = 0;
@@ -21,8 +23,14 @@ volatile uint32_t sys_tick_ms = 0;
 
 float vofa_speed_target = 0.0f; // speed target set via VOFA #P4=xxx!
 float vofa_yaw_target = 0.0f;   // yaw target set via VOFA #P4=xxx!
-const uint8_t vofa_sent_ch_count = 7;    // number of float channels to send in each VOFA telemetry packet
+const uint8_t vofa_sent_ch_count = 4;    // number of float channels to send in each VOFA telemetry packet
 uint8_t g_angle_mode = 0;      // 0=speed mode, 1=angle mode (toggled via VOFA #P5)
+
+/* ==== DEBUG: 1 = silence VOFA + HMI telemetry so HMI RX bytes echo cleanly on UART0 ==== */
+#define HMI_CAPTURE_DEBUG 0
+
+/* ==== 1 = skip HMI, start line-tracking (task 1) automatically on power-up ==== */
+#define AUTO_START_TRACKING 0
 
 static void on_vofa_param(uint16_t id, float value)
 {
@@ -60,10 +68,11 @@ static void on_vofa_param(uint16_t id, float value)
         track_pid.Kp = value;
         break;
     case 15:
-        track_pid.Ki = value;
+        track_pid.in_a = value;
         break;
     case 16:
         track_pid.Kd = value;
+        break;
     case 17:
         vofa_speed_target = value;
         break;
@@ -94,7 +103,19 @@ int main(void)
     AppInit();
     menu_init();
     task_manager_init();
-    Gimbal_Init();
+    //Gimbal_Init();
+
+    /* Let the HMI serial screen finish its own power-on boot (~1-2s) before we
+     * talk to it, and keep motors idle during this fragile window (task not
+     * started yet). Send "Ready" here so it lands after the screen is up. */
+    Delay_ms(2000);
+    zuolan_printf("page1.g0.txt=\"MSPM0 Ready\"%s", HMI_END_CMD);
+    Delay_ms(300);
+
+#if AUTO_START_TRACKING
+    /* skip HMI: run line-tracking (task 1) immediately on power-up */
+    task_manager_start(TASK_ONE);
+#endif
 
     /* debug: verify code reaches this point via UART0 */
     uart_debug_send_byte('H');
@@ -137,27 +158,21 @@ int main(void)
         SensorProc();
 
         /* ---- VOFA telemetry: 100ms interval to avoid flooding UART0 ---- */
+#if !HMI_CAPTURE_DEBUG
         static uint32_t last_vofa_telem = 0;
         if (sys_tick_ms - last_vofa_telem >= 100)
         {
             last_vofa_telem = sys_tick_ms;
-            float pid_ch[vofa_sent_ch_count] = {
-                /* position pid debug */
-                vofa_speed_target,      /* ch0: target speed */
-                Motor_speedL,
-                vofa_yaw_target,        /* ch0: target yaw */
-                imu.yaw,                /* ch1: actual yaw */
-                // imu.pitch,              /* ch7: pitch deg */
-                // imu.roll,               /* ch8: roll deg */
-                yaw_pid.Kp,             /* ch2: yaw Kp */
-                yaw_pid.Ki,             /* ch3: yaw Ki */
-                yaw_pid.Kd,             /* ch4: yaw Kd */
-                // (float)gyro_data.z,     /* ch5: raw gyro Z (diagnose SPI) */
-                // imu.deg_s.z             /* ch6: filtered gyro Z deg/s */
-                
+            /* tracking-loop PID tuning channels (JustFloat order = VOFA ch0..3) */
+            float pid_ch[4] = {
+                (float)tracking_result.position_error,  /* ch0: track position error (PID input, target 0) */
+                tracking_result.pid_correction,         /* ch1: track PID output (differential correction) */
+                (float)Motor_speedL,                    /* ch2: left wheel measured speed */
+                (float)Motor_speedR,                    /* ch3: right wheel measured speed */
             };
             vofa_send_floats(pid_ch, vofa_sent_ch_count);
         }
+#endif
 
         /* ---- HMI serial screen event polling ---- */
         if (hmi_rx_ready)
@@ -166,17 +181,14 @@ int main(void)
             uint8_t idx = hmi_rx_idx;
             hmi_rx_idx = 0;  /* reset early so ISR can use fresh buffer */
 
-            /* Inline parse: TJC touch frame = 65 00 pageH pageL widget value */
-            if (idx >= 5 && hmi_rx_buf[0] == 0x65)
+            /* Inline parse: HMI touch frame = 65 00 01 <id> <id> 0D 0A  (id at buf[3], 1..4 = task) */
+            if (idx >= 4 && hmi_rx_buf[0] == 0x65)
             {
-                uint8_t widget = hmi_rx_buf[3];   /* widget ID maps to task number */
+                uint8_t widget = hmi_rx_buf[3];   /* widget/task ID (buf[3]==buf[4]) */
                 if (widget >= 1 && widget <= 4)
                 {
-                    g_current_task = (TaskID)widget;  /* TASK_ONE=1, TASK_TWO=2, ... */
                     menu_active = 0;
-                    task_running = 1;
-                    g_motor_left_out = 0;
-                    g_motor_right_out = 0;
+                    task_manager_start((TaskID)widget);  /* 复位状态并�???动任�??? */
                     zuolan_printf("page1.t%d.txt=\"\xd6\xb4\xd0\xd0\xd6\xd0\"%s", widget - 1, HMI_END_CMD);
 
                     /* debug: confirm task dispatch via UART0 */
@@ -189,6 +201,7 @@ int main(void)
         }
 
         /* ---- HMI telemetry: every 200ms send debug data to screen ---- */
+#if !HMI_CAPTURE_DEBUG
         static uint32_t last_hmi_telem = 0;
         if (sys_tick_ms - last_hmi_telem >= 200)
         {
@@ -217,6 +230,7 @@ int main(void)
                 zuolan_HMI_Send_String("page2.tk_string", track_bits);
             }
         }
+#endif
 
         /* ---- HMI task completion: clear execution status text ---- */
         static uint8_t was_task_running = 0;
@@ -281,7 +295,27 @@ void TIMER_1_INST_IRQHandler(void)
 
         if (task_running)
         {
+            /* Outer loop: the task (line-tracking) produces LEFT/RIGHT *speed
+             * targets* in g_motor_*_out (base ~= task_speed_base = 280). */
             task_manager_run();
+
+            /* Inner loop: convert those speed targets to PWM duty through the
+             * already-tuned speed PID -- the SAME path that makes a VOFA speed
+             * target actually move the motors. Writing 280 straight to the PWM
+             * register is only ~2.8% duty (max_duty=10000), far too weak to
+             * turn the wheels, which is why tracking looked "dead". */
+            float tgt_l = g_motor_left_out;
+            float tgt_r = g_motor_right_out;
+            float abs_tl = (tgt_l >= 0.0f) ? tgt_l : -tgt_l;
+            float abs_tr = (tgt_r >= 0.0f) ? tgt_r : -tgt_r;
+            float abs_L  = (Motor_speedL >= 0) ? (float)Motor_speedL : -(float)Motor_speedL;
+            float abs_R  = (Motor_speedR >= 0) ? (float)Motor_speedR : -(float)Motor_speedR;
+
+            ComputeInc(&MotorLSpeedPID, abs_tl, abs_L);
+            ComputeInc(&MotorRSpeedPID, abs_tr, abs_R);
+
+            g_motor_left_out  = (tgt_l >= 0.0f) ? MotorLSpeedPID.CurrentOut : -MotorLSpeedPID.CurrentOut;
+            g_motor_right_out = (tgt_r >= 0.0f) ? MotorRSpeedPID.CurrentOut : -MotorRSpeedPID.CurrentOut;
         }
         else if (g_angle_mode)
         {
@@ -374,8 +408,8 @@ void CANFD0_IRQHandler(void)
 /**
  * GROUP1 = GPIOB + GPIOA interrupt aggregation: encoder quadrature decoding
  *
- * Left  motor encoder: PB6=A-phase, PB5=B-phase  �?????? Count1
- * Right motor encoder: PA29=A-phase, PA30=B-phase �?????? Count2
+ * Left  motor encoder: PB6=A-phase, PB5=B-phase  �????????? Count1
+ * Right motor encoder: PA29=A-phase, PA30=B-phase �????????? Count2
  *
  * 4x quadrature: both A and B phase edges update the counter.
  * Reference: hal_encode.c in MSPM0G3507_Project_template

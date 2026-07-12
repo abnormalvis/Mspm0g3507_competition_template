@@ -18,4 +18,11 @@ void tracking_loop_init(void);
 void tracking_read(void);
 void tracking_apply(float base_speed, float *motor_left_out, float *motor_right_out);
 
+/* ---- lap monitor (IMU-yaw based) ----
+ * Counts full 360-degree loops of the car by unwrapping imu.yaw (which is
+ * wrapped to (-180,180]) into a continuous heading. One lap = yaw sweeps a
+ * full turn, e.g. 0 -> -90 -> -180 -> -270 -> 0.  Direction-agnostic. */
+void lap_monitor_reset(void);      /* call at task start (baseline = current yaw) */
+int  lap_monitor_update(void);     /* call once per control tick; returns completed laps */
+
 #endif

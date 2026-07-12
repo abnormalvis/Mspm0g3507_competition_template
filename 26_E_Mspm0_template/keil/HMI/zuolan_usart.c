@@ -58,9 +58,12 @@ int zuolan_printf(const char *format, ...)
 /**
  * @brief UART_display (UART1) 接收中断处理
  *
- * HMI模式: 缓冲字节直到收到 \r\n, 然后设置 hmi_rx_ready 标志.
- * 帧格式: [data...]\r\n
- * 对于触控事件: 65 00 pageH pageL widget value 0D 0A
+ * Frame-synchronized capture (junk-immune):
+ * only start buffering at the 0x65 header, resync on any 0x65, and accept a
+ * frame only when 0x0A arrives after "65 00 01 id id [0D]". Screen return/ack
+ * bytes ("XX FF FF FF", no 0x0A) never contain 0x65 and are dropped, so they
+ * cannot pollute the button frame in hmi_rx_buf.
+ * 帧格式: 65 00 01 <id> <id> 0D 0A  (id = task number, at buf[3])
  */
 void UART_display_INST_IRQHandler(void)
 {
@@ -68,19 +71,17 @@ void UART_display_INST_IRQHandler(void)
     case DL_UART_IIDX_RX: {
         uint8_t ch = DL_UART_Main_receiveData(HMI_UART);
 
-        /* Frame terminator: \r\n or standalone \n */
-        if (ch == 0x0A) {
-            if (hmi_rx_idx > 0 && hmi_rx_buf[hmi_rx_idx - 1] == 0x0D) {
-                hmi_rx_idx--;  /* discard trailing \r */
+        if (ch == 0x0A) {                       /* frame end */
+            if (hmi_rx_idx >= 4 && hmi_rx_buf[0] == 0x65) {
+                hmi_rx_ready = 1;               /* complete button frame */
+            } else {
+                hmi_rx_idx = 0;                 /* not our frame -> drop */
             }
-            if (hmi_rx_idx > 0) {
-                /* snapshot length before ISR could append more bytes */
-                hmi_rx_ready = 1;
-            }
-        } else if (hmi_rx_idx < HMI_RX_BUF_SIZE) {
-            hmi_rx_buf[hmi_rx_idx++] = ch;
-        } else {
-            hmi_rx_idx = 0;  /* overflow reset */
+        } else if (ch == 0x65) {                /* (re)sync to frame header */
+            hmi_rx_buf[0] = 0x65;
+            hmi_rx_idx = 1;
+        } else if (hmi_rx_idx > 0 && hmi_rx_idx < HMI_RX_BUF_SIZE) {
+            hmi_rx_buf[hmi_rx_idx++] = ch;      /* buffer only after synced */
         }
         break;
     }

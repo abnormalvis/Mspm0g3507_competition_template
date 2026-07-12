@@ -12,20 +12,35 @@ static int  s_straight_count = 0;
 static int  s_lap_count = 0;
 static int  s_enc_target = 0;
 
-/* ---- position PID for clearing intersection ---- */
-static PidStruct s_pos_pid;
-
 void task_one_init(void)
 {
     s_turn_flag = 0;
     s_straight_count = 0;
     s_lap_count = 0;
     s_enc_target = 0;
-
-    SetPidStruct(&s_pos_pid, 0.5f, 0.0f, 0.0f, 0.0f, -3200.0f, 3200.0f);
+    lap_monitor_reset();   /* start counting laps from the current heading */
 }
 
 void task_one_run(void)
+{
+    /* Q1: start tracking automatically, stop after task1_max_laps full loops.
+       One lap = imu.yaw sweeps a full turn (0 -> -90 -> -180 -> -270 -> 0). */
+    tracking_read();
+
+    if (lap_monitor_update() >= task1_max_laps)
+    {
+        g_motor_left_out  = 0;
+        g_motor_right_out = 0;
+        task_running = 0;
+        menu_active  = 1;
+        return;
+    }
+
+    tracking_apply((float)task_speed_base, &g_motor_left_out, &g_motor_right_out);
+}
+
+#if 0  /* 完整比赛逻辑：路口识别 + 圈数统计 + 跑满自动停车，调完PID后恢复 */
+void task_one_run_full(void)
 {
     tracking_read();
 
@@ -42,7 +57,7 @@ void task_one_run(void)
     {
         /* clearing intersection: left motor stop, right motor position PID */
         g_motor_left_out = 0;
-        ComputePos(&s_pos_pid, (float)s_enc_target, (float)Motor_distanceR);
+        ComputePos(&track_pid, (float)s_enc_target, (float)Motor_distanceR);
 
         if (abs(s_enc_target - Motor_distanceR) < 30)
         {
@@ -70,3 +85,4 @@ void task_one_run(void)
         s_turn_flag = 1;
     }
 }
+#endif

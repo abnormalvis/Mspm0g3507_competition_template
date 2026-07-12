@@ -5,6 +5,31 @@
 #include "StandardPid.h"
 #include <stdlib.h>
 
+/* Q2: same line tracking as Q1, but stop after 3 consecutive full laps. */
+#define TASK2_LAPS  3
+
+void task_two_init(void)
+{
+    lap_monitor_reset();   /* start counting laps from the current heading */
+}
+
+void task_two_run(void)
+{
+    tracking_read();
+
+    if (lap_monitor_update() >= TASK2_LAPS)
+    {
+        g_motor_left_out  = 0;
+        g_motor_right_out = 0;
+        task_running = 0;
+        menu_active  = 1;
+        return;
+    }
+
+    tracking_apply((float)task_speed_base, &g_motor_left_out, &g_motor_right_out);
+}
+
+#if 0  /* 旧第二问：探测+双段圆弧的复杂逻辑，改用"连续3圈"后暂时封存 */
 /* ---- state chain: sequential hand-off flags ---- */
 static int s_line_AC   = 1;
 static int s_turn_CB   = 0;
@@ -132,3 +157,4 @@ void task_two_run(void)
         }
     }
 }
+#endif /* 旧第二问逻辑封存 */

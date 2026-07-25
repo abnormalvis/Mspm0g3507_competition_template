@@ -4,6 +4,7 @@
 #include "ti_msp_dl_config.h"
 #include "vofa.h"
 #include "K230.h"
+#include "lora.h"
 #include "zf_common_fifo.h"
 #include <math.h>
 #include <stdio.h>

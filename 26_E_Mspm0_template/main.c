@@ -15,6 +15,9 @@
 #include "task_manager.h"
 #include "tracking_loop.h"
 #include "hal_qgimbal_can.h"
+#include "lora.h"
+#include "uart_wired_test.h"
+#include "hal_relay.h"
 
 #include "gimbal_control.h"
 
@@ -25,6 +28,7 @@ float vofa_speed_target = 0.0f; // speed target set via VOFA #P4=xxx!
 float vofa_yaw_target = 0.0f;   // yaw target set via VOFA #P4=xxx!
 const uint8_t vofa_sent_ch_count = 4;    // number of float channels to send in each VOFA telemetry packet
 uint8_t g_angle_mode = 0;      // 0=speed mode, 1=angle mode (toggled via VOFA #P5)
+uint8_t g_imu_telem  = 1;      // 1=send IMU telemetry via VOFA (toggled via VOFA #P18)
 
 /* ==== DEBUG: 1 = silence VOFA + HMI telemetry so HMI RX bytes echo cleanly on UART0 ==== */
 #define HMI_CAPTURE_DEBUG 0
@@ -76,6 +80,9 @@ static void on_vofa_param(uint16_t id, float value)
     case 17:
         vofa_speed_target = value;
         break;
+    case 18:
+        g_imu_telem = (uint8_t)value;
+        break;
     default:
         break;
     }
@@ -99,11 +106,14 @@ int main(void)
     vofa_init();
     vofa_set_on_param(on_vofa_param);
     vofa_rx_fifo_init();
+    lora_init();
+    UART_WiredTest_Init();
 
     AppInit();
     menu_init();
     task_manager_init();
-    //Gimbal_Init();
+    Gimbal_Init();
+    Relay_Init();
 
     /* Let the HMI serial screen finish its own power-on boot (~1-2s) before we
      * talk to it, and keep motors idle during this fragile window (task not
@@ -139,6 +149,12 @@ int main(void)
             vofa_apply_pending();
         }
 
+        /* ---- LoRa RX: drain FIFO into packet parser ---- */
+        lora_rx_drain();
+
+        /* ---- UART_wired test: raw byte echo over wireless link ---- */
+        UART_WiredTest_Run();
+
         /* ---- UART0 heartbeat: confirm main loop is alive (every 500ms) ---- */
         // static uint32_t last_hb = 0;
         // if (sys_tick_ms - last_hb >= 500)
@@ -171,6 +187,19 @@ int main(void)
                 (float)Motor_speedR,                    /* ch3: right wheel measured speed */
             };
             vofa_send_floats(pid_ch, vofa_sent_ch_count);
+        }
+        /* ---- IMU telemetry: 200ms interval (VOFA ch0..3 = yaw/pitch/roll/gyro_z) ---- */
+        static uint32_t last_imu_telem = 0;
+        if (g_imu_telem && (sys_tick_ms - last_imu_telem >= 200))
+        {
+            last_imu_telem = sys_tick_ms;
+            float imu_ch[4] = {
+                imu.yaw,            /* ch0: yaw (deg)         */
+                imu.pitch,          /* ch1: pitch (deg)       */
+                imu.roll,           /* ch2: roll (deg)        */
+                imu.deg_s.z,        /* ch3: gyro Z (deg/s)    */
+            };
+            vofa_send_floats(imu_ch, 4);
         }
 #endif
 

@@ -18,6 +18,7 @@ const GPIO2   = GPIO.addInstance();
 const GPIO3   = GPIO.addInstance();
 const GPIO4   = GPIO.addInstance();
 const GPIO5   = GPIO.addInstance();
+const GPIO6   = GPIO.addInstance();
 const I2C     = scripting.addModule("/ti/driverlib/I2C", {}, false);
 const I2C1    = I2C.addInstance();
 const MCAN    = scripting.addModule("/ti/driverlib/MCAN", {}, false);
@@ -147,6 +148,9 @@ GPIO5.associatedPins[0].$name        = "buzzer";
 GPIO5.associatedPins[0].assignedPort = "PORTB";
 GPIO5.associatedPins[0].assignedPin  = "12";
 
+GPIO6.$name                   = "relay";
+GPIO6.associatedPins[0].$name = "pin_0";
+
 I2C1.$name                     = "I2C_0";
 I2C1.peripheral.$assign        = "I2C0";
 I2C1.peripheral.sdaPin.$assign = "PA0";
@@ -208,9 +212,12 @@ PWM2.ccp1PinConfig.onlyInternalResistor = scripting.forceWrite(false);
 PWM2.ccp1PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 PWM2.ccp1PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric22";
 
-PWM3.$name                              = "PWM_1";
 PWM3.pwmMode                            = "EDGE_ALIGN_UP";
+PWM3.clockDivider                       = 8;
+PWM3.clockSource                        = "MFCLK";
 PWM3.timerCount                         = 10000;
+PWM3.timerStartTimer                    = true;
+PWM3.$name                              = "PWM_Servo";
 PWM3.peripheral.$assign                 = "TIMG12";
 PWM3.peripheral.ccp0Pin.$assign         = "PA14";
 PWM3.peripheral.ccp1Pin.$assign         = "PB24";
@@ -322,7 +329,6 @@ UART3.rxPinConfig.onlyInternalResistor = scripting.forceWrite(false);
 UART3.rxPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 UART3.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric16";
 
-UART4.targetBaudRate                   = 115200;
 UART4.enabledInterrupts                = ["RX"];
 UART4.$name                            = "UART_wired";
 UART4.peripheral.$assign               = "UART2";
@@ -351,6 +357,7 @@ Board.peripheral.$suggestSolution                  = "DEBUGSS";
 Board.peripheral.swclkPin.$suggestSolution         = "PA20";
 Board.peripheral.swdioPin.$suggestSolution         = "PA19";
 GPIO5.associatedPins[0].pin.$suggestSolution       = "PB12";
+GPIO6.associatedPins[0].pin.$suggestSolution       = "PB13";
 SPI1.peripheral.$suggestSolution                   = "SPI0";
 SPI1.peripheral.cs0Pin.$suggestSolution            = "PA2";
 TIMER1.peripheral.$suggestSolution                 = "TIMG0";

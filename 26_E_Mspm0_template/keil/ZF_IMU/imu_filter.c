@@ -2,6 +2,9 @@
 #include "Delay.h"
 #include <math.h>
 #include "zf_device_imu660ra.h"
+#include "hal_imu.h"
+
+#if IMU_USE_IMU660RA
 imu660_data imu = {0};
 
 int16_t AX, AY, AZ, GX, GY, GZ;
@@ -282,7 +285,7 @@ void _IMU(void)
 	{
 		imu.yaw = imu.yaw + 360;
 	}
-	/* legacy: angle.z = imu.yaw; â€? no `angle` struct in this project */
+	/* legacy: angle.z = imu.yaw; ï¿½? no `angle` struct in this project */
 //  mahony_update(imu.deg_s.x, imu.deg_s.y, imu.deg_s.z, imu.acc_g.x, imu.acc_g.y, imu.acc_g.z);
 //  Matrix_ready();
 }
@@ -380,3 +383,4 @@ float angle_calc(float mag_angle_m,float gyro_m)
 //        system_hal_delay_ms(5);  // Delay 5ms
 //    }
 //}
+#endif /* IMU_USE_IMU660RA */

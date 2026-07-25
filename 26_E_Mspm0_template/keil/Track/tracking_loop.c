@@ -4,12 +4,20 @@
 
 TrackingResult tracking_result;
 
+/* ---- corner detection state machine ---- */
+static CornerDetector s_corner;
+
 #ifdef GRAY_SENSOR_16CH
 static const int16_t position_weight[16] = {
     -15, -13, -11, -9, -7, -5, -3, -1,
       1,   3,   5,  7,  9, 11, 13, 15
 };
 #define WEIGHT_MAX  15
+#elif defined(GRAY_SENSOR_12CH)
+static const int16_t position_weight[12] = {
+    -11, -9, -7, -5, -3, -1, 1, 3, 5, 7, 9, 11
+};
+#define WEIGHT_MAX  11
 #else
 static const int16_t position_weight[8] = {
     -7, -5, -3, -1, 1, 3, 5, 7
@@ -39,14 +47,18 @@ static void track_pid_reset_history(void)
 
 void tracking_loop_init(void)
 {
-    tracking_result.position_error = 0;
-    tracking_result.pid_correction = 0.0f;
-    tracking_result.sensor_count   = 0;
-    tracking_result.on_line        = 0;
+    tracking_result.position_error  = 0;
+    tracking_result.pid_correction  = 0.0f;
+    tracking_result.sensor_count    = 0;
+    tracking_result.on_line         = 0;
+    tracking_result.corner_event    = CORNER_EVENT_NONE;
+    tracking_result.corner_direction = 0;
 
     s_last_dir   = -1;
     s_lost_ticks = 0;
     s_was_lost   = 0;
+
+    corner_detect_init(&s_corner);
 }
 
 /* ---- Step 1-3: read sensors, compute weighted centroid, normalize to [-100, 100] ---- */
@@ -93,6 +105,13 @@ void tracking_read(void)
         /* lost-line: hold last known position_error, keep on_line=0 */
         tracking_result.on_line = 0;
     }
+
+    /* Step 4: run corner detection state machine on the raw sensor bitmask.
+     * The result is a one-shot CornerEvent that upper-layer tasks can consume
+     * to adjust turning strategy or count corners. */
+    tracking_result.corner_event = (uint8_t)corner_detect_update(
+        &s_corner, gray_state.state,
+        tracking_result.on_line, tracking_result.sensor_count);
 }
 
 /* ---- Step 4-5: PID correction -> differential motor output ---- */

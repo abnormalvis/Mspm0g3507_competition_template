@@ -2,6 +2,7 @@
 #define __TRACKING_LOOP_H__
 
 #include "hal_gray.h"
+#include "corner_detect.h"
 #include <stdint.h>
 
 /* ---- tracking result struct ---- */
@@ -10,6 +11,8 @@ typedef struct {
     float   pid_correction;    /* PID output correction value */
     uint8_t sensor_count;      /* how many sensors see black line */
     uint8_t on_line;           /* 1 = line detected, 0 = lost line */
+    uint8_t corner_event;      /* CornerEvent: CORNER_EVENT_*_CONFIRMED when corner completes */
+    int8_t  corner_direction;  /* +1=right turn, -1=left turn, 0=none */
 } TrackingResult;
 
 extern TrackingResult tracking_result;

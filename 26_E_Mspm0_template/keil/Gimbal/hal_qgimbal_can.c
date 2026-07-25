@@ -55,8 +55,8 @@ void QGimbal_SendCommand(uint8_t motor_id, QGimbal_Command cmd, int16_t value)
     txMsg.xtd = 0U;   /* 11-bit standard identifier */
     txMsg.esi = 0U;
     txMsg.dlc = 3U;   /* 3 bytes: cmd + value(int16_t) */
-    txMsg.brs = 1U;   /* CAN FD with bit rate switching */
-    txMsg.fdf = 1U;   /* CAN FD format */
+    txMsg.brs = 0U;   /* Classic CAN (QD4310 does not support CAN FD) */
+    txMsg.fdf = 0U;   /* Classic CAN frame format */
     txMsg.efc = 0U;   /* Don't store Tx events */
     txMsg.mm  = 0U;
 

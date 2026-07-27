@@ -159,6 +159,16 @@ I2C1.sdaPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric3";
 I2C1.sclPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric4";
 
 MCAN1.$name                    = "MCAN0";
+MCAN1.desiredNomRate           = 1000;
+MCAN1.fdMode                   = false;
+MCAN1.enableInterrupt          = true;
+MCAN1.emulationEnable          = true;
+MCAN1.autoWkupEnable           = true;
+MCAN1.wkupReqEnable            = true;
+MCAN1.interruptLine            = ["DL_MCAN_INTR_LINE_NUM_1"];
+MCAN1.interruptLine1Flag       = ["DL_MCAN_INTR_MASK_ALL"];
+MCAN1.m0interrupts             = ["DL_MCAN_MSP_INTERRUPT_LINE1"];
+MCAN1.interruptFlags           = ["DL_MCAN_INTERRUPT_DRX","DL_MCAN_INTERRUPT_RF0N","DL_MCAN_INTERRUPT_TC"];
 MCAN1.peripheral.$assign       = "CANFD0";
 MCAN1.peripheral.rxPin.$assign = "PA13";
 MCAN1.peripheral.txPin.$assign = "PA12";

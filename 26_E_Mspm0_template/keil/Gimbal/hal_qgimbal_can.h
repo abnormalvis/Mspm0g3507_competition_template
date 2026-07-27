@@ -3,9 +3,8 @@
 
 #include <stdint.h>
 
-/* Motor ID constants */
-#define QGIMBAL_MOTOR_YAW   0x00
-#define QGIMBAL_MOTOR_PITCH 0x01
+/* Motor count — array-based architecture */
+#define QGIMBAL_MOTOR_COUNT 4
 
 /* Command byte values */
 typedef enum {
@@ -28,8 +27,7 @@ typedef struct {
     uint8_t  feedback_valid;  /* set by ISR, cleared by consumer */
 } QGimbal_MotorState;
 
-extern QGimbal_MotorState g_gimbal_yaw;
-extern QGimbal_MotorState g_gimbal_pitch;
+extern QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT];
 
 /* CAN init: filters, interrupt routing, NVIC enable */
 void QGimbal_CAN_Init(void);
@@ -46,5 +44,11 @@ void QGimbal_SetCurrent(uint8_t motor_id, float current_a);
 
 /* Called from CAN ISR to parse a received feedback frame */
 void QGimbal_ProcessFeedback(void);
+
+/* CAN diagnostics: send TX/RX status via VOFA JustFloat */
+void QGimbal_CAN_Diag(void);
+
+/* Motor status telemetry: send enabled + angle via VOFA JustFloat */
+void QGimbal_CAN_Status(void);
 
 #endif /* __HAL_QGIMBAL_CAN_H */

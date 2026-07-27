@@ -1,9 +1,14 @@
 #include "hal_qgimbal_can.h"
 #include "ti_msp_dl_config.h"
+#include "vofa.h"
 
 /* ---- global motor feedback state ---- */
-QGimbal_MotorState g_gimbal_yaw   = {0, 0.0f, 0.0f, 0.0f, 0};
-QGimbal_MotorState g_gimbal_pitch = {0, 0.0f, 0.0f, 0.0f, 0};
+QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT] = {
+    {0, 0.0f, 0.0f, 0.0f, 0},
+    {0, 0.0f, 0.0f, 0.0f, 0},
+    {0, 0.0f, 0.0f, 0.0f, 0},
+    {0, 0.0f, 0.0f, 0.0f, 0},
+};
 
 /* ---- scaling constants ---- */
 #define QGIMBAL_CURRENT_SCALE  (10.0f)
@@ -12,18 +17,30 @@ QGimbal_MotorState g_gimbal_pitch = {0, 0.0f, 0.0f, 0.0f, 0};
 #define QGIMBAL_INT16_MAX      (32767.0f)
 #define QGIMBAL_UINT16_MAX     (65535.0f)
 
+#define QGIMBAL_CAN_LOOPBACK_TEST  0
+
 void QGimbal_CAN_Init(void)
 {
     DL_MCAN_StdMsgIDFilterElement filter;
 
-    /* Wait for CAN to enter normal operation mode */
-    while (DL_MCAN_OPERATION_MODE_NORMAL != DL_MCAN_getOpMode(MCAN0_INST))
-        ;
+#if QGIMBAL_CAN_LOOPBACK_TEST
+    DL_MCAN_setOpMode(MCAN0_INST, DL_MCAN_OPERATION_MODE_SW_INIT);
+    while (DL_MCAN_OPERATION_MODE_SW_INIT != DL_MCAN_getOpMode(MCAN0_INST));
+    DL_MCAN_lpbkModeEnable(MCAN0_INST, 0U, true);
+    DL_MCAN_setOpMode(MCAN0_INST, DL_MCAN_OPERATION_MODE_NORMAL);
+    while (DL_MCAN_OPERATION_MODE_NORMAL != DL_MCAN_getOpMode(MCAN0_INST));
+#endif
+
+    /* CAN is already in NORMAL mode from SYSCFG_DL_MCAN0_init().
+     * Setup filters and interrupts for receiving motor feedback,
+     * then send ENABLE commands (same pattern as QGimbal reference). */
 
     /* Configure standard ID filter 0:
-     * Accept IDs 0x500-0x501 (yaw/pitch feedback), store in FIFO0 */
-    filter.sfid1 = (uint32_t)(0x500) << 18U;
-    filter.sfid2 = (uint32_t)(0x501) << 18U;
+     * Accept IDs 0x500-0x503 (motor 0-3 feedback), store in FIFO0
+     * NOTE: sfid1/sfid2 are raw 11-bit IDs — the driverlib handles
+     * the register-level shifting internally (sfid1<<16, sfid2<<0). */
+    filter.sfid1 = (uint32_t)(0x500);   /* ID range: 0x500 ~ 0x503 */
+    filter.sfid2 = (uint32_t)(0x503);
     filter.sfec  = 1U; /* Store in Rx FIFO 0 if filter matches */
     filter.sft   = 0U; /* Range filter from SFID1 to SFID2 */
     DL_MCAN_addStdMsgIDFilter(MCAN0_INST, 0U, &filter);
@@ -45,7 +62,29 @@ void QGimbal_CAN_Init(void)
 void QGimbal_SendCommand(uint8_t motor_id, QGimbal_Command cmd, int16_t value)
 {
     DL_MCAN_TxBufElement txMsg;
+    DL_MCAN_ProtocolStatus protStatus;
     uint32_t id;
+    volatile uint32_t timeout;
+
+    DL_MCAN_getProtocolStatus(MCAN0_INST, &protStatus);
+    if ((DL_MCAN_OPERATION_MODE_NORMAL != DL_MCAN_getOpMode(MCAN0_INST))
+        || (1U == protStatus.busOffStatus)) {
+        DL_MCAN_txBufCancellationReq(MCAN0_INST, 0U);
+        DL_MCAN_setOpMode(MCAN0_INST, DL_MCAN_OPERATION_MODE_NORMAL);
+        for (volatile uint32_t d = 0; d < 100; d++) {}
+    }
+
+    timeout = 200000U;
+    while ((DL_MCAN_getTxBufReqPend(MCAN0_INST) & (1U << 0U)) && (timeout > 0U)) {
+        --timeout;
+    }
+
+    /* If TX buffer stuck, cancel and recover — but still send our frame */
+    if (timeout == 0U) {
+        DL_MCAN_txBufCancellationReq(MCAN0_INST, 0U);
+        DL_MCAN_setOpMode(MCAN0_INST, DL_MCAN_OPERATION_MODE_NORMAL);
+        for (volatile uint32_t d = 0; d < 100; d++) {}
+    }
 
     /* Build standard ID: 0x400 + motor_id */
     id = 0x400U + (uint32_t)motor_id;
@@ -126,6 +165,7 @@ void QGimbal_ProcessFeedback(void)
     DL_MCAN_RxBufElement rxMsg;
     DL_MCAN_RxFIFOStatus rxFS;
     uint32_t id;
+    uint8_t motor_idx;
     QGimbal_MotorState *motor;
 
     /* Get FIFO status to know which FIFO and get index */
@@ -146,14 +186,15 @@ void QGimbal_ProcessFeedback(void)
     /* Extract standard ID (bits 28:18) */
     id = (rxMsg.id & 0x1FFC0000U) >> 18U;
 
-    /* Dispatch by motor ID */
-    if (id == 0x500U) {
-        motor = &g_gimbal_yaw;
-    } else if (id == 0x501U) {
-        motor = &g_gimbal_pitch;
-    } else {
-        return;  /* Unknown ID, ignore */
+    /* Dispatch by motor ID (filter accepts 0x500-0x503) */
+    if (id < 0x500U || id > 0x503U) {
+        return;
     }
+    motor_idx = (uint8_t)(id - 0x500U);
+    if (motor_idx >= QGIMBAL_MOTOR_COUNT) {
+        return;
+    }
+    motor = &g_motor_state[motor_idx];
 
     if (rxMsg.dlc < 8U) {
         return;  /* Expected 8-byte feedback frame */
@@ -176,4 +217,53 @@ void QGimbal_ProcessFeedback(void)
         motor->angle_rad = ((float)raw_angle   / QGIMBAL_UINT16_MAX) * QGIMBAL_ANGLE_SCALE;
         motor->feedback_valid = 1U;
     }
+}
+
+/**
+ * @brief  CAN diagnostics: send TX/RX status via VOFA JustFloat
+ * @note   Call from main loop at low rate (e.g. 500ms)
+ *
+ *   ch0: tx_count       — incremented each call (proves function runs)
+ *   ch1: TXBTO[0]       — 1 = last Buffer 0 transmission occurred
+ *   ch2: busOffStatus   — 1 = CAN controller bus-off (dead)
+ *   ch3: TEC            — TX Error Counter
+ */
+void QGimbal_CAN_Diag(void)
+{
+    static uint16_t tx_count = 0;
+    DL_MCAN_ProtocolStatus protStatus;
+    DL_MCAN_ErrCntStatus errCnt;
+    float ch[4];
+
+    tx_count++;
+    DL_MCAN_getProtocolStatus(MCAN0_INST, &protStatus);
+    DL_MCAN_getErrCounters(MCAN0_INST, &errCnt);
+
+    ch[0] = (float)tx_count;
+    ch[1] = (float)((DL_MCAN_getTxBufTransmissionStatus(MCAN0_INST) >> 0U) & 1U);
+    ch[2] = (float)protStatus.busOffStatus;
+    ch[3] = (float)errCnt.transErrLogCnt;
+
+    vofa_send_floats(ch, 4);
+}
+
+/**
+ * @brief  Motor status telemetry via VOFA JustFloat
+ * @note   Call at low rate (e.g. 500ms)
+ *
+ *   ch0: motor[0] enabled (yaw)
+ *   ch1: motor[1] enabled (pitch)
+ *   ch2: motor[0] angle_rad
+ *   ch3: motor[1] angle_rad
+ */
+void QGimbal_CAN_Status(void)
+{
+    float ch[4];
+
+    ch[0] = (float)g_motor_state[0].enabled;
+    ch[1] = (float)g_motor_state[1].enabled;
+    ch[2] = g_motor_state[0].angle_rad;
+    ch[3] = g_motor_state[1].angle_rad;
+
+    vofa_send_floats(ch, 4);
 }

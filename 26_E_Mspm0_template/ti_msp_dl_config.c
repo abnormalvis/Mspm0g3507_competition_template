@@ -817,15 +817,15 @@ static const DL_MCAN_ClockConfig gMCAN0ClockConf = {
 static const DL_MCAN_InitParams gMCAN0InitParams= {
 
 /* Initialize MCAN Init parameters.    */
-    .fdMode            = true,
-    .brsEnable         = true,
+    .fdMode            = false,
+    .brsEnable         = false,
     .txpEnable         = false,
     .efbi              = false,
     .pxhddisable       = false,
     .darEnable         = false,
-    .wkupReqEnable     = false,
-    .autoWkupEnable    = false,
-    .emulationEnable   = false,
+    .wkupReqEnable     = true,
+    .autoWkupEnable    = true,
+    .emulationEnable   = true,
     .tdcEnable         = false,
     .wdcPreload        = 255,
 
@@ -888,21 +888,21 @@ static const DL_MCAN_MsgRAMConfigParams gMCAN0MsgRAMConfigParams ={
 
 static const DL_MCAN_BitTimingParams   gMCAN0BitTimes = {
     /* Arbitration Baud Rate Pre-scaler. */
-    .nomRatePrescalar   = 3,
+    .nomRatePrescalar   = 0,
     /* Arbitration Time segment before sample point. */
-    .nomTimeSeg1        = 33,
+    .nomTimeSeg1        = 68,
     /* Arbitration Time segment after sample point. */
-    .nomTimeSeg2        = 4,
+    .nomTimeSeg2        = 9,
     /* Arbitration (Re)Synchronization Jump Width Range. */
-    .nomSynchJumpWidth  = 4,
+    .nomSynchJumpWidth  = 9,
     /* Data Baud Rate Pre-scaler. */
-    .dataRatePrescalar  = 3,
+    .dataRatePrescalar  = 0,
     /* Data Time segment before sample point. */
-    .dataTimeSeg1       = 16,
+    .dataTimeSeg1       = 0,
     /* Data Time segment after sample point. */
-    .dataTimeSeg2       = 1,
+    .dataTimeSeg2       = 0,
     /* Data (Re)Synchronization Jump Width.   */
-    .dataSynchJumpWidth = 1,
+    .dataSynchJumpWidth = 0,
 };
 
 
@@ -948,6 +948,15 @@ SYSCONFIG_WEAK void SYSCFG_DL_MCAN0_init(void) {
 
     while (DL_MCAN_OPERATION_MODE_NORMAL != DL_MCAN_getOpMode(MCAN0_INST));
 
+    /* Enable MCAN mopdule Interrupts */
+    DL_MCAN_enableIntr(MCAN0_INST, MCAN0_INST_MCAN_INTERRUPTS, 1U);
+
+    DL_MCAN_selectIntrLine(MCAN0_INST, DL_MCAN_INTR_MASK_ALL, DL_MCAN_INTR_LINE_NUM_1);
+    DL_MCAN_enableIntrLine(MCAN0_INST, DL_MCAN_INTR_LINE_NUM_1, 1U);
+
+    /* Enable MSPM0 MCAN interrupt */
+    DL_MCAN_clearInterruptStatus(MCAN0_INST,(DL_MCAN_MSP_INTERRUPT_LINE1));
+    DL_MCAN_enableInterrupt(MCAN0_INST,(DL_MCAN_MSP_INTERRUPT_LINE1));
 
 }
 

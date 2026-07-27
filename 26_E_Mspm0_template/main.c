@@ -20,13 +20,15 @@
 #include "hal_relay.h"
 
 #include "gimbal_control.h"
+#include "StepperMotor_CAN.h"
+#include "stepper_test.h"
 
 volatile uint8_t gray_sample_req = 0;
 volatile uint32_t sys_tick_ms = 0;
 
 float vofa_speed_target = 0.0f; // speed target set via VOFA #P4=xxx!
 float vofa_yaw_target = 0.0f;   // yaw target set via VOFA #P4=xxx!
-const uint8_t vofa_sent_ch_count = 4;    // number of float channels to send in each VOFA telemetry packet
+const uint8_t vofa_sent_ch_count = 3;    // number of float channels to send in each VOFA telemetry packet
 uint8_t g_angle_mode = 0;      // 0=speed mode, 1=angle mode (toggled via VOFA #P5)
 uint8_t g_imu_telem  = 1;      // 1=send IMU telemetry via VOFA (toggled via VOFA #P18)
 
@@ -36,8 +38,68 @@ uint8_t g_imu_telem  = 1;      // 1=send IMU telemetry via VOFA (toggled via VOF
 /* ==== 1 = skip HMI, start line-tracking (task 1) automatically on power-up ==== */
 #define AUTO_START_TRACKING 0
 
+/* ---- QGimbal VOFA command layout (base + motor_idx) ---- */
+#define VOFA_GIMBAL_ENABLE_BASE 29  /* P29-P32: enable motor 0-3 */
+#define VOFA_GIMBAL_SPEED_BASE  33  /* P33-P36: speed target motor 0-3 (rpm) */
+#define VOFA_GIMBAL_ANGLE_BASE  37  /* P37-P40: manual angle motor 0-3 (rad) */
+#define VOFA_GIMBAL_MANUAL_MODE 41  /* P41: manual angle mode toggle */
+
+static uint8_t vofa_handle_gimbal(uint16_t id, float value)
+{
+    uint8_t m;
+
+    /* P28: re-enable all motors */
+    if (id == 28) {
+        for (m = 0; m < GIMBAL_MOTOR_COUNT; m++) {
+            QGimbal_Enable(m);
+            g_gimbal.enable_retry[m] = 0;
+        }
+        g_gimbal.motors_enabled = 1;
+        return 1;
+    }
+
+    /* P29-P32: enable/disable motor 0-3 */
+    if (id >= VOFA_GIMBAL_ENABLE_BASE && id <= VOFA_GIMBAL_ENABLE_BASE + 3) {
+        m = (uint8_t)(id - VOFA_GIMBAL_ENABLE_BASE);
+        if (value != 0.0f) {
+            QGimbal_Enable(m);
+            g_gimbal.motors_enabled = 1;
+            g_gimbal.enable_retry[m] = 0;
+        } else { QGimbal_Disable(m); }
+        return 1;
+    }
+
+    /* P33-P36: speed target motor 0-3 (rpm) */
+    if (id >= VOFA_GIMBAL_SPEED_BASE && id <= VOFA_GIMBAL_SPEED_BASE + 3) {
+        m = (uint8_t)(id - VOFA_GIMBAL_SPEED_BASE);
+        g_gimbal.motor[m].speed_target = value;
+        return 1;
+    }
+
+    /* P37-P40: manual angle motor 0-3 (rad, 0~2pi) — auto-enters manual mode */
+    if (id >= VOFA_GIMBAL_ANGLE_BASE && id <= VOFA_GIMBAL_ANGLE_BASE + 3) {
+        m = (uint8_t)(id - VOFA_GIMBAL_ANGLE_BASE);
+        g_gimbal.motor[m].angle_manual = value;
+        g_gimbal.manual_angle_mode = 1;
+        g_gimbal.motors_enabled = 1;
+        g_gimbal.enable_retry[m] = 0;
+        QGimbal_Enable(m);
+        return 1;
+    }
+
+    /* P41: manual angle mode toggle (1=enter, 0=exit) */
+    if (id == VOFA_GIMBAL_MANUAL_MODE) {
+        g_gimbal.manual_angle_mode = (value != 0.0f) ? 1 : 0;
+        return 1;
+    }
+
+    return 0;
+}
+
 static void on_vofa_param(uint16_t id, float value)
 {
+    if (StepperTest_HandleVofa(id, value)) return;
+    if (vofa_handle_gimbal(id, value)) return;
     switch (id)
     {
     case 1:
@@ -91,14 +153,10 @@ static void on_vofa_param(uint16_t id, float value)
 int main(void)
 {
     SYSCFG_DL_init();
+    //hal_delay_init();   /* Explicit SysTick start �???? must precede any delay call */
     gray_init();
     interrupt_init();
     Motor_Init();   /* Set motor driver to initial brake state */
-
-    // LCD_Init();
-    //OLED_CLS();
-
-    // hal_KeyInit();
     hal_imu_init();
     SysPidInit();
     EncoderFilterInit();
@@ -107,32 +165,27 @@ int main(void)
     vofa_set_on_param(on_vofa_param);
     vofa_rx_fifo_init();
     lora_init();
-    UART_WiredTest_Init();
+    //UART_WiredTest_Init();
 
     AppInit();
     menu_init();
     task_manager_init();
     Gimbal_Init();
+    // StepperMotor_CAN_Init();
+    // StepperTest_Init();
     Relay_Init();
 
     /* Let the HMI serial screen finish its own power-on boot (~1-2s) before we
      * talk to it, and keep motors idle during this fragile window (task not
      * started yet). Send "Ready" here so it lands after the screen is up. */
-    Delay_ms(2000);
-    zuolan_printf("page1.g0.txt=\"MSPM0 Ready\"%s", HMI_END_CMD);
-    Delay_ms(300);
+    // Delay_ms(2000);
+    // zuolan_printf("page1.g0.txt=\"MSPM0 Ready\"%s", HMI_END_CMD);
+    // Delay_ms(300);
 
 #if AUTO_START_TRACKING
     /* skip HMI: run line-tracking (task 1) immediately on power-up */
     task_manager_start(TASK_ONE);
 #endif
-
-    /* debug: verify code reaches this point via UART0 */
-    uart_debug_send_byte('H');
-    uart_debug_send_byte('M');
-    uart_debug_send_byte('I');
-    uart_debug_send_byte('\r');
-    uart_debug_send_byte('\n');
 
     while (1)
     {
@@ -153,15 +206,7 @@ int main(void)
         lora_rx_drain();
 
         /* ---- UART_wired test: raw byte echo over wireless link ---- */
-        UART_WiredTest_Run();
-
-        /* ---- UART0 heartbeat: confirm main loop is alive (every 500ms) ---- */
-        // static uint32_t last_hb = 0;
-        // if (sys_tick_ms - last_hb >= 500)
-        // {
-        //     last_hb = sys_tick_ms;
-        //     uart_debug_send_byte('.');
-        // }
+        //UART_WiredTest_Run();
 
         /* ---- HMI startup message: one-shot inside main loop ---- */
         static uint8_t hmi_startup_done = 0;
@@ -175,32 +220,49 @@ int main(void)
 
         /* ---- VOFA telemetry: 100ms interval to avoid flooding UART0 ---- */
 #if !HMI_CAPTURE_DEBUG
-        static uint32_t last_vofa_telem = 0;
-        if (sys_tick_ms - last_vofa_telem >= 100)
-        {
-            last_vofa_telem = sys_tick_ms;
-            /* tracking-loop PID tuning channels (JustFloat order = VOFA ch0..3) */
-            float pid_ch[4] = {
-                (float)tracking_result.position_error,  /* ch0: track position error (PID input, target 0) */
-                tracking_result.pid_correction,         /* ch1: track PID output (differential correction) */
-                (float)Motor_speedL,                    /* ch2: left wheel measured speed */
-                (float)Motor_speedR,                    /* ch3: right wheel measured speed */
-            };
-            vofa_send_floats(pid_ch, vofa_sent_ch_count);
-        }
+        // static uint32_t last_vofa_telem = 0;
+        // if (sys_tick_ms - last_vofa_telem >= 100)
+        // {
+        //     last_vofa_telem = sys_tick_ms;
+        //     /* tracking-loop PID tuning channels (JustFloat order = VOFA ch0..3) */
+        //     float vofa_send_data[vofa_sent_ch_count] = {
+        //         // (float)tracking_result.position_error,  /* ch0: track position error (PID input, target 0) */
+        //         vofa_speed_target,
+        //         // tracking_result.pid_correction,         /* ch1: track PID output (differential correction) */
+        //         (float)Motor_speedL,                    /* ch2: left wheel measured speed */
+        //         (float)Motor_speedR,                    /* ch3: right wheel measured speed */
+        //     };
+        //     vofa_send_floats(vofa_send_data, vofa_sent_ch_count);
+        // }
+
         /* ---- IMU telemetry: 200ms interval (VOFA ch0..3 = yaw/pitch/roll/gyro_z) ---- */
-        static uint32_t last_imu_telem = 0;
-        if (g_imu_telem && (sys_tick_ms - last_imu_telem >= 200))
-        {
-            last_imu_telem = sys_tick_ms;
-            float imu_ch[4] = {
-                imu.yaw,            /* ch0: yaw (deg)         */
-                imu.pitch,          /* ch1: pitch (deg)       */
-                imu.roll,           /* ch2: roll (deg)        */
-                imu.deg_s.z,        /* ch3: gyro Z (deg/s)    */
-            };
-            vofa_send_floats(imu_ch, 4);
-        }
+        // static uint32_t last_imu_telem = 0;
+        // if (g_imu_telem && (sys_tick_ms - last_imu_telem >= 200))
+        // {
+        //     last_imu_telem = sys_tick_ms;
+        //     float imu_ch[4] = {
+        //         imu.yaw,            /* ch0: yaw (deg)         */
+        //         imu.pitch,          /* ch1: pitch (deg)       */
+        //         imu.roll,           /* ch2: roll (deg)        */
+        //         imu.deg_s.z,        /* ch3: gyro Z (deg/s)    */
+        //     };
+        //     vofa_send_floats(imu_ch, 4);
+        // }
+
+        /* ---- Stepper motor test: feedback query + VOFA telemetry (200ms) ---- */
+#if STEPPER_TEST_ENABLE
+        StepperTest_Run();
+#endif
+
+        /* ---- QGimbal CAN diagnostics: TX/RX status via VOFA ch4-7 (500ms) ---- */
+        // {
+        //     static uint32_t last_can_diag = 0;
+        //     if (sys_tick_ms - last_can_diag >= 500) {
+        //         last_can_diag = sys_tick_ms;
+        //         QGimbal_CAN_Diag();
+        //         QGimbal_CAN_Status();
+        //     }
+        // }
 #endif
 
         /* ---- HMI serial screen event polling ---- */
@@ -217,7 +279,7 @@ int main(void)
                 if (widget >= 1 && widget <= 4)
                 {
                     menu_active = 0;
-                    task_manager_start((TaskID)widget);  /* 复位状态并�???动任�??? */
+                    task_manager_start((TaskID)widget);  /* 复位状态并�??????????动任�?????????? */
                     zuolan_printf("page1.t%d.txt=\"\xd6\xb4\xd0\xd0\xd6\xd0\"%s", widget - 1, HMI_END_CMD);
 
                     /* debug: confirm task dispatch via UART0 */
@@ -279,17 +341,7 @@ int main(void)
             menu_active = 1;
             g_motor_left_out = 0;
             g_motor_right_out = 0;
-            //OLED_CLS();
         }
-
-        // if (menu_active)
-        // {
-        //     menu_key_set();
-        // }
-        // else
-        // {
-        //     AppProc();
-        // }
     }
 }
 
@@ -415,7 +467,7 @@ void TIMER_1_INST_IRQHandler(void)
 }
 
 /**
- * CANFD0 interrupt handler: gimbal motor feedback reception
+ * CANFD0 interrupt handler: gimbal + stepper motor feedback reception
  */
 void CANFD0_IRQHandler(void)
 {
@@ -424,6 +476,9 @@ void CANFD0_IRQHandler(void)
             uint32_t status = DL_MCAN_getIntrStatus(MCAN0_INST);
             if (status & DL_MCAN_INTR_SRC_RX_FIFO0_NEW_MSG) {
                 QGimbal_ProcessFeedback();
+            }
+            if (status & DL_MCAN_INTR_SRC_RX_FIFO1_NEW_MSG) {
+                StepperMotor_CAN_ProcessFeedback();
             }
             DL_MCAN_clearIntrStatus(MCAN0_INST, status,
                 DL_MCAN_INTR_SRC_MCAN_LINE_1);
@@ -437,8 +492,8 @@ void CANFD0_IRQHandler(void)
 /**
  * GROUP1 = GPIOB + GPIOA interrupt aggregation: encoder quadrature decoding
  *
- * Left  motor encoder: PB6=A-phase, PB5=B-phase  �????????? Count1
- * Right motor encoder: PA29=A-phase, PA30=B-phase �????????? Count2
+ * Left  motor encoder: PB6=A-phase, PB5=B-phase  �???????????????? Count1
+ * Right motor encoder: PA29=A-phase, PA30=B-phase �???????????????? Count2
  *
  * 4x quadrature: both A and B phase edges update the counter.
  * Reference: hal_encode.c in MSPM0G3507_Project_template

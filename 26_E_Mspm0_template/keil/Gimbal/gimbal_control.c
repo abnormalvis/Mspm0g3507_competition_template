@@ -35,34 +35,48 @@ GimbalController g_gimbal;
 #define PI_F              3.1415926f
 #define TWO_PI_F          (2.0f * PI_F)
 
+/*
+ * PID gain lookup table indexed by motor_id.
+ * Motors 0 (yaw) and 1 (pitch) use tuned gains; motors 2,3 default to yaw gains.
+ */
+static const float g_pid_kp[GIMBAL_MOTOR_COUNT] = { GIMBAL_YAW_KP,  GIMBAL_PITCH_KP,  GIMBAL_YAW_KP, GIMBAL_YAW_KP };
+static const float g_pid_ki[GIMBAL_MOTOR_COUNT] = { GIMBAL_YAW_KI,  GIMBAL_PITCH_KI,  GIMBAL_YAW_KI, GIMBAL_YAW_KI };
+static const float g_pid_kd[GIMBAL_MOTOR_COUNT] = { GIMBAL_YAW_KD,  GIMBAL_PITCH_KD,  GIMBAL_YAW_KD, GIMBAL_YAW_KD };
+
 void Gimbal_Init(void)
 {
+    uint8_t i;
+
     /* Initialize CAN communication */
     QGimbal_CAN_Init();
 
-    /* Initialize yaw PID */
-    InitPidStruct(&g_gimbal.yaw_pid);
-    SetPidStruct(&g_gimbal.yaw_pid,
-        GIMBAL_YAW_KP, GIMBAL_YAW_KI, GIMBAL_YAW_KD,
-        GIMBAL_IN_A, GIMBAL_OUT_MIN, GIMBAL_OUT_MAX);
+    /* Initialize all motor PIDs */
+    for (i = 0; i < GIMBAL_MOTOR_COUNT; i++) {
+        InitPidStruct(&g_gimbal.motor[i].pid);
+        SetPidStruct(&g_gimbal.motor[i].pid,
+            g_pid_kp[i], g_pid_ki[i], g_pid_kd[i],
+            GIMBAL_IN_A, GIMBAL_OUT_MIN, GIMBAL_OUT_MAX);
+    }
 
-    /* Initialize pitch PID */
-    InitPidStruct(&g_gimbal.pitch_pid);
-    SetPidStruct(&g_gimbal.pitch_pid,
-        GIMBAL_PITCH_KP, GIMBAL_PITCH_KI, GIMBAL_PITCH_KD,
-        GIMBAL_IN_A, GIMBAL_OUT_MIN, GIMBAL_OUT_MAX);
-
-    /* Default: speed mode (stability disabled), motors off */
-    g_gimbal.stability_enabled  = 0;
+    /* DEBUG: speed mode — verify CAN communication first, then re-enable stability */
+    g_gimbal.stability_enabled  = 0;    /* 0 = speed mode, skip PID */
     g_gimbal.motors_enabled     = 0;
-    g_gimbal.yaw_speed_target   = 0.0f;
-    g_gimbal.pitch_speed_target = 0.0f;
-    g_gimbal.yaw_angle_target   = 0.0f;
-    g_gimbal.pitch_angle_target = 0.0f;
+    g_gimbal.target_latched     = 0;
+    g_gimbal.manual_angle_mode  = 0;
 
-    /* Enable both motors */
-    QGimbal_Enable(QGIMBAL_MOTOR_YAW);
-    QGimbal_Enable(QGIMBAL_MOTOR_PITCH);
+    for (i = 0; i < GIMBAL_MOTOR_COUNT; i++) {
+        g_gimbal.motor[i].speed_target  = 0.0f;
+        g_gimbal.motor[i].angle_target  = 0.0f;
+        g_gimbal.motor[i].angle_manual  = 0.0f;
+        g_gimbal.enable_retry[i]        = 0;
+    }
+
+    /* Match QGimbal reference: enable each motor, then immediately
+     * set angle to center so the motor has a position target. */
+    for (i = 0; i < GIMBAL_MOTOR_COUNT; i++) {
+        QGimbal_Enable(i);
+        QGimbal_SetAngle(i, 0.0f);
+    }
     g_gimbal.motors_enabled = 1;
 }
 
@@ -90,101 +104,133 @@ static float wrap_2pi(float angle)
 /**
  * Gimbal_Run - Main control loop, called from 10ms TIMER_1 ISR
  *
- * Two modes:
- *   1. Speed mode (stability_enabled = 0):
- *      - Send speed commands directly to motors
- *      - Integrate speed target into angle target (for smooth transition)
- *   2. Stability mode (stability_enabled = 1):
- *      - PID position control using IMU angle feedback
- *      - Output = motor current command
+ * Three modes:
+ *   1. Manual angle mode (manual_angle_mode = 1):
+ *      - Loop all motors, re-send ENABLE if needed
+ *      - Send ANGLE commands with stored manual targets
+ *   2. Speed mode (stability_enabled = 0):
+ *      - Motors 0,1: integrate speed into angle target (IMU-based)
+ *      - Motors 2,3: send speed directly
+ *   3. Stability mode (stability_enabled = 1):
+ *      - Motors 0,1: PID position control using IMU angle feedback
+ *      - Motors 2,3: send speed directly (no IMU stabilization for aux motors)
  */
 void Gimbal_Run(void)
 {
-    float yaw_target, pitch_target;
     float yaw_measured, pitch_measured;
+    float target;
+    uint8_t i;
 
     if (!g_gimbal.motors_enabled) {
         return;
+    }
+
+    /* ---- Manual angle mode: send stored angle targets directly ----
+     * Skips speed/stability loops so VOFA angle commands are not
+     * overwritten by automatic control. ENABLE retry per motor. */
+    if (g_gimbal.manual_angle_mode) {
+        for (i = 0; i < GIMBAL_MOTOR_COUNT; i++) {
+            if (!g_motor_state[i].enabled && g_gimbal.enable_retry[i] < 200) {
+                QGimbal_Enable(i);
+                g_gimbal.enable_retry[i]++;
+            }
+            QGimbal_SetAngle(i, g_gimbal.motor[i].angle_manual);
+        }
+        return;
+    }
+
+    /* ENABLE retry for yaw motor (motor 0) — keep-alive in auto modes */
+    if (!g_motor_state[0].enabled && g_gimbal.enable_retry[0] < 200) {
+        QGimbal_Enable(0);
+        g_gimbal.enable_retry[0]++;
     }
 
     /* Convert IMU angles from degrees to radians */
     yaw_measured   = imu.yaw   * (PI_F / 180.0f);
     pitch_measured = imu.pitch * (PI_F / 180.0f);
 
+    /* ---- Power-on latch: sync target to current IMU angle so motor
+     *     does not jump, then hold position with PID. ---- */
+    if (!g_gimbal.target_latched) {
+        g_gimbal.target_latched              = 1;
+        g_gimbal.motor[0].angle_target       = yaw_measured;
+        g_gimbal.motor[1].angle_target       = pitch_measured;
+    }
+
     if (!g_gimbal.stability_enabled) {
         /* ---- Direct speed mode ----
-         * Integrate speed into angle target for smooth mode transition.
-         * Yaw always integrates; pitch stops at mechanical limit (uses motor
-         * feedback angle from CAN, matching QGimbal reference). */
+         * Motors 0,1 (yaw/pitch): integrate speed into angle target for smooth
+         * transition to stability mode. Pitch stops at mechanical limit.
+         * Motors 2,3 (aux): send speed directly (no IMU integration). */
 
-        /* Yaw: rpm -> rad/tick: rpm * 2pi/60 * dt = rpm * pi/30 * dt */
-        g_gimbal.yaw_angle_target += g_gimbal.yaw_speed_target
-                                     * (PI_F / 30.0f) * GIMBAL_DT;
-        g_gimbal.yaw_angle_target  = wrap_2pi(g_gimbal.yaw_angle_target);
+        /* Yaw (motor 0): rpm -> rad/tick: rpm * 2pi/60 * dt = rpm * pi/30 * dt */
+        g_gimbal.motor[0].angle_target += g_gimbal.motor[0].speed_target
+                                        * (PI_F / 30.0f) * GIMBAL_DT;
+        g_gimbal.motor[0].angle_target  = wrap_2pi(g_gimbal.motor[0].angle_target);
 
-        /* Pitch: conditional integration — when the motor is already at the
-         * mechanical limit, stop accumulating so the target does not drift. */
-        if (!((g_gimbal.pitch_speed_target > 0.0f
-                    && g_gimbal_pitch.angle_rad >  PITCH_LIMIT_RAD) ||
-              (g_gimbal.pitch_speed_target < 0.0f
-                    && g_gimbal_pitch.angle_rad < -PITCH_LIMIT_RAD)))
+        /* Pitch (motor 1): conditional integration — when the motor is already at
+         * the mechanical limit, stop accumulating so the target does not drift. */
+        if (!((g_gimbal.motor[1].speed_target > 0.0f
+                    && g_motor_state[1].angle_rad >  PITCH_LIMIT_RAD) ||
+              (g_gimbal.motor[1].speed_target < 0.0f
+                    && g_motor_state[1].angle_rad < -PITCH_LIMIT_RAD)))
         {
-            g_gimbal.pitch_angle_target += g_gimbal.pitch_speed_target
-                                           * (PI_F / 30.0f) * GIMBAL_DT;
+            g_gimbal.motor[1].angle_target += g_gimbal.motor[1].speed_target
+                                            * (PI_F / 30.0f) * GIMBAL_DT;
         }
-        g_gimbal.pitch_angle_target = wrap_2pi(g_gimbal.pitch_angle_target);
+        g_gimbal.motor[1].angle_target = wrap_2pi(g_gimbal.motor[1].angle_target);
 
-        QGimbal_SetSpeed(QGIMBAL_MOTOR_YAW,   g_gimbal.yaw_speed_target);
-        QGimbal_SetSpeed(QGIMBAL_MOTOR_PITCH, g_gimbal.pitch_speed_target);
+        /* Send speed commands to all 4 motors */
+        for (i = 0; i < GIMBAL_MOTOR_COUNT; i++) {
+            QGimbal_SetSpeed(i, g_gimbal.motor[i].speed_target);
+        }
     } else {
         /* ---- Stability mode (PID position control) ----
-         * Matches QGimbal reference Ctrl_ISR: update PID target from host
-         * speed, unroll the IMU measurement when the shortest angular path
-         * crosses the 0/2*pi wrap-around, feed current to motors. */
+         * Motor 0 (yaw) and motor 1 (pitch) use IMU-based PID.
+         * Motors 2,3 (aux) send speed directly. */
 
-        /* Update yaw target from host speed, wrap to [0, 2pi) */
-        g_gimbal.yaw_angle_target += g_gimbal.yaw_speed_target
-                                     * (PI_F / 30.0f) * GIMBAL_DT;
-        yaw_target = wrap_2pi(g_gimbal.yaw_angle_target);
+        /* Yaw (motor 0): update target from host speed, run PID */
+        g_gimbal.motor[0].angle_target += g_gimbal.motor[0].speed_target
+                                        * (PI_F / 30.0f) * GIMBAL_DT;
+        target = wrap_2pi(g_gimbal.motor[0].angle_target);
 
-        /* Yaw PID: unroll measurement so the PID always sees the shortest
-         * angular path. If target - measurement > +pi, feed measurement+2pi
-         * so the error stays in [-pi,0]; if < -pi, feed measurement-2pi so
-         * the error stays in [0,+pi]. */
-        if (yaw_target - yaw_measured > PI_F) {
-            ComputePos(&g_gimbal.yaw_pid, yaw_target,
+        if (target - yaw_measured > PI_F) {
+            ComputePos(&g_gimbal.motor[0].pid, target,
                        yaw_measured + TWO_PI_F);
-        } else if (yaw_target - yaw_measured < -PI_F) {
-            ComputePos(&g_gimbal.yaw_pid, yaw_target,
+        } else if (target - yaw_measured < -PI_F) {
+            ComputePos(&g_gimbal.motor[0].pid, target,
                        yaw_measured - TWO_PI_F);
         } else {
-            ComputePos(&g_gimbal.yaw_pid, yaw_target, yaw_measured);
+            ComputePos(&g_gimbal.motor[0].pid, target, yaw_measured);
         }
 
-        /* Pitch: conditional target update based on motor feedback angle */
-        if (!((g_gimbal.pitch_speed_target > 0.0f
-                    && g_gimbal_pitch.angle_rad >  PITCH_LIMIT_RAD) ||
-              (g_gimbal.pitch_speed_target < 0.0f
-                    && g_gimbal_pitch.angle_rad < -PITCH_LIMIT_RAD)))
+        /* Pitch (motor 1): conditional target update based on motor feedback */
+        if (!((g_gimbal.motor[1].speed_target > 0.0f
+                    && g_motor_state[1].angle_rad >  PITCH_LIMIT_RAD) ||
+              (g_gimbal.motor[1].speed_target < 0.0f
+                    && g_motor_state[1].angle_rad < -PITCH_LIMIT_RAD)))
         {
-            g_gimbal.pitch_angle_target += g_gimbal.pitch_speed_target
-                                           * (PI_F / 30.0f) * GIMBAL_DT;
+            g_gimbal.motor[1].angle_target += g_gimbal.motor[1].speed_target
+                                            * (PI_F / 30.0f) * GIMBAL_DT;
         }
-        pitch_target = wrap_2pi(g_gimbal.pitch_angle_target);
+        target = wrap_2pi(g_gimbal.motor[1].angle_target);
 
-        /* Pitch PID: same measurement unrolling as yaw */
-        if (pitch_target - pitch_measured > PI_F) {
-            ComputePos(&g_gimbal.pitch_pid, pitch_target,
+        if (target - pitch_measured > PI_F) {
+            ComputePos(&g_gimbal.motor[1].pid, target,
                        pitch_measured + TWO_PI_F);
-        } else if (pitch_target - pitch_measured < -PI_F) {
-            ComputePos(&g_gimbal.pitch_pid, pitch_target,
+        } else if (target - pitch_measured < -PI_F) {
+            ComputePos(&g_gimbal.motor[1].pid, target,
                        pitch_measured - TWO_PI_F);
         } else {
-            ComputePos(&g_gimbal.pitch_pid, pitch_target, pitch_measured);
+            ComputePos(&g_gimbal.motor[1].pid, target, pitch_measured);
         }
 
-        /* Send current commands (PID output = motor current in A) */
-        QGimbal_SetCurrent(QGIMBAL_MOTOR_YAW,   g_gimbal.yaw_pid.CurrentOut);
-        QGimbal_SetCurrent(QGIMBAL_MOTOR_PITCH, g_gimbal.pitch_pid.CurrentOut);
+        /* Send current commands for yaw/pitch (PID output) */
+        QGimbal_SetCurrent(0, g_gimbal.motor[0].pid.CurrentOut);
+        QGimbal_SetCurrent(1, g_gimbal.motor[1].pid.CurrentOut);
+
+        /* Motors 2,3: send speed directly (no IMU stabilization) */
+        QGimbal_SetSpeed(2, g_gimbal.motor[2].speed_target);
+        QGimbal_SetSpeed(3, g_gimbal.motor[3].speed_target);
     }
 }

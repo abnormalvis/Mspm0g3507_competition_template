@@ -377,6 +377,8 @@ extern "C" {
 #define GPIO_MCAN0_CAN_RX_PIN                                     DL_GPIO_PIN_13
 #define GPIO_MCAN0_IOMUX_CAN_RX                                  (IOMUX_PINCM35)
 #define GPIO_MCAN0_IOMUX_CAN_RX_FUNC               IOMUX_PINCM35_PF_CANFD0_CANRX
+#define MCAN0_INST_IRQHandler                                 CANFD0_IRQHandler
+#define MCAN0_INST_INT_IRQN                                     CANFD0_INT_IRQn
 
 
 /* Defines for MCAN0 MCAN RAM configuration */
@@ -395,6 +397,9 @@ extern "C" {
 #define MCAN0_INST_MCAN_FIFO_0_START_ADDR          (172)
 #define MCAN0_INST_MCAN_FIFO_0_NUM                 (3)
 
+#define MCAN0_INST_MCAN_INTERRUPTS (DL_MCAN_INTERRUPT_DRX | \
+						DL_MCAN_INTERRUPT_RF0N | \
+						DL_MCAN_INTERRUPT_TC)
 
 
 

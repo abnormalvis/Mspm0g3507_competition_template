@@ -52,6 +52,10 @@ source/
 *_tmph.map
 
 # Project folders
+BNO080/
+QGimbal/
+Adafruit_BNO08x-master/
+IMU660RX_Product/
 LQ_MSPM0GX_8LIGHT/
 MSPM0G3507_Project_oled/
 MSPM0G3507_Project_speed_pid/
@@ -84,6 +88,7 @@ icm42688_spi/
 A16W140H19D8_V2/
 WHEELTEC-AT8236/
 CH32V307VCT6/
+stepmotor_f103_examples/
 # Reference projects
 vofa*/
 

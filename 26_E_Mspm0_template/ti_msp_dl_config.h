@@ -207,9 +207,9 @@ extern "C" {
 #define GPIO_UART_vision_IOMUX_TX                                (IOMUX_PINCM15)
 #define GPIO_UART_vision_IOMUX_RX_FUNC                 IOMUX_PINCM16_PF_UART3_RX
 #define GPIO_UART_vision_IOMUX_TX_FUNC                 IOMUX_PINCM15_PF_UART3_TX
-#define UART_vision_BAUD_RATE                                             (9600)
-#define UART_vision_IBRD_80_MHZ_9600_BAUD                                  (520)
-#define UART_vision_FBRD_80_MHZ_9600_BAUD                                   (53)
+#define UART_vision_BAUD_RATE                                           (115200)
+#define UART_vision_IBRD_80_MHZ_115200_BAUD                                 (43)
+#define UART_vision_FBRD_80_MHZ_115200_BAUD                                 (26)
 /* Defines for UART_display */
 #define UART_display_INST                                                  UART1
 #define UART_display_INST_FREQUENCY                                     40000000
@@ -239,9 +239,9 @@ extern "C" {
 #define GPIO_UART_wired_IOMUX_TX                                 (IOMUX_PINCM46)
 #define GPIO_UART_wired_IOMUX_RX_FUNC                  IOMUX_PINCM33_PF_UART2_RX
 #define GPIO_UART_wired_IOMUX_TX_FUNC                  IOMUX_PINCM46_PF_UART2_TX
-#define UART_wired_BAUD_RATE                                              (9600)
-#define UART_wired_IBRD_40_MHZ_9600_BAUD                                   (260)
-#define UART_wired_FBRD_40_MHZ_9600_BAUD                                    (27)
+#define UART_wired_BAUD_RATE                                            (115200)
+#define UART_wired_IBRD_40_MHZ_115200_BAUD                                  (21)
+#define UART_wired_FBRD_40_MHZ_115200_BAUD                                  (45)
 
 
 

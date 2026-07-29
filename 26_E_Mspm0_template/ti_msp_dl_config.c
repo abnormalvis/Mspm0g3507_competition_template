@@ -642,11 +642,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_UART_vision_init(void)
     DL_UART_Main_init(UART_vision_INST, (DL_UART_Main_Config *) &gUART_visionConfig);
     /*
      * Configure baud rate by setting oversampling and baud rate divisors.
-     *  Target baud rate: 9600
-     *  Actual baud rate: 9600.1
+     *  Target baud rate: 115200
+     *  Actual baud rate: 115190.78
      */
     DL_UART_Main_setOversampling(UART_vision_INST, DL_UART_OVERSAMPLING_RATE_16X);
-    DL_UART_Main_setBaudRateDivisor(UART_vision_INST, UART_vision_IBRD_80_MHZ_9600_BAUD, UART_vision_FBRD_80_MHZ_9600_BAUD);
+    DL_UART_Main_setBaudRateDivisor(UART_vision_INST, UART_vision_IBRD_80_MHZ_115200_BAUD, UART_vision_FBRD_80_MHZ_115200_BAUD);
 
 
     /* Configure Interrupts */
@@ -714,11 +714,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_UART_wired_init(void)
     DL_UART_Main_init(UART_wired_INST, (DL_UART_Main_Config *) &gUART_wiredConfig);
     /*
      * Configure baud rate by setting oversampling and baud rate divisors.
-     *  Target baud rate: 9600
-     *  Actual baud rate: 9599.81
+     *  Target baud rate: 115200
+     *  Actual baud rate: 115190.78
      */
     DL_UART_Main_setOversampling(UART_wired_INST, DL_UART_OVERSAMPLING_RATE_16X);
-    DL_UART_Main_setBaudRateDivisor(UART_wired_INST, UART_wired_IBRD_40_MHZ_9600_BAUD, UART_wired_FBRD_40_MHZ_9600_BAUD);
+    DL_UART_Main_setBaudRateDivisor(UART_wired_INST, UART_wired_IBRD_40_MHZ_115200_BAUD, UART_wired_FBRD_40_MHZ_115200_BAUD);
 
 
     /* Configure Interrupts */
@@ -896,13 +896,13 @@ static const DL_MCAN_BitTimingParams   gMCAN0BitTimes = {
     /* Arbitration (Re)Synchronization Jump Width Range. */
     .nomSynchJumpWidth  = 9,
     /* Data Baud Rate Pre-scaler. */
-    .dataRatePrescalar  = 0,
+    .dataRatePrescalar  = 7,
     /* Data Time segment before sample point. */
-    .dataTimeSeg1       = 0,
+    .dataTimeSeg1       = 7,
     /* Data Time segment after sample point. */
-    .dataTimeSeg2       = 0,
+    .dataTimeSeg2       = 2,
     /* Data (Re)Synchronization Jump Width.   */
-    .dataSynchJumpWidth = 0,
+    .dataSynchJumpWidth = 2,
 };
 
 

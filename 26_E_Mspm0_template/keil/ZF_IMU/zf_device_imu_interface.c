@@ -112,6 +112,37 @@ ZF_WEAK void spi_transfer_8bit_register (const uint8 *data_out, uint8 *data_in, 
 }
 
 //-------------------------------------------------------------------------------------------------------------------
+// Function Name  : IMU raw SPI transfer
+// Description    : data_out        output data buffer, can be NULL
+// Description    : data_in         input data buffer, can be NULL
+// Description    : data_len        data length
+// Return Value   : void
+// Usage Example  : imu_spi_transfer(tx, rx, len);
+// Note           : Keeps chip-select control and SPI details inside the platform layer
+//-------------------------------------------------------------------------------------------------------------------
+ZF_WEAK void imu_spi_transfer (const uint8 *data_out, uint8 *data_in, uint32 data_len)
+{
+    IMU_CS(0);
+
+    while(data_len --)
+    {
+        DL_SPI_transmitData8(IMU_SPI_INDEX, (NULL != data_out) ? *data_out ++ : 0xFF);
+        while(DL_SPI_isBusy(IMU_SPI_INDEX));
+        if(NULL != data_in)
+        {
+            *data_in ++ = DL_SPI_receiveData8(IMU_SPI_INDEX);
+        }
+        else
+        {
+            (void)DL_SPI_receiveData8(IMU_SPI_INDEX);
+        }
+        while(DL_SPI_isBusy(IMU_SPI_INDEX));
+    }
+
+    IMU_CS(1);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
 // Function Name  : IMU write register 8bit
 // Description    : addr            IIC device address, write 0 for SPI mode
 // Description    : reg             register address

@@ -1,7 +1,7 @@
 Dependencies for Project 'empty_LP_MSPM0G3507_nortos_keil', Target 'empty_LP_MSPM0G3507_nortos_keil': (DO NOT MODIFY !)
 CompilerVersion: 6230000::V6.23::ARMCLANG
-F (../main.c)(0x6A19942A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/main.o -MMD)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (../main.c)(0x6A69AC8A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/main.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -76,32 +76,45 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (interrupt_config\interrupt_config.h)(0x6A15A618)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (Hal\hal_imu.h)(0x6A0F2A88)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Hal\hal_imu.h)(0x6A68C847)
+I (ZF_IMU\zf_device_imu660ra.h)(0x6A070713)
+I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
 I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
-I (vofa\vofa.h)(0x6A10145C)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
+I (vofa\vofa.h)(0x6A2831AC)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
+I (Hal\hal_delay.h)(0x6A65874E)
 I (HMI\zuolan_hmi.h)(0x6A14684D)
 I (HMI\zuolan_usart.h)(0x6A1993D4)
 I (HMI\hmi_config.h)(0x6A147240)
 I (App\app.h)(0x6A1151B4)
 I (App\menu_task.h)(0x6A105045)
-I (Duty\task_manager.h)(0x6A102998)
-F (../empty.syscfg)(0x6A199D29)()
-F (startup_mspm0g350x_uvision.s)(0x68822E94)(--target=arm-arm-none-eabi -mcpu=cortex-m0plus -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4-Wa,armasm,--pd,"__UVISION_VERSION SETA 542" -Wa,armasm,--pd,"__MSPM0G3507__ SETA 1"-o ./objects/startup_mspm0g350x_uvision.o)
-F (../ti_msp_dl_config.h)(0x6A199D50)()
-F (../ti_msp_dl_config.c)(0x6A199D50)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ti_msp_dl_config.o -MMD)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (Duty\task_manager.h)(0x6A520C40)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (Gimbal\hal_qgimbal_can.h)(0x6A6715FF)
+I (Test\uart_wired_test.h)(0x6A698486)
+I (Hal\hal_relay.h)(0x6A61D783)
+I (Gimbal\gimbal_control.h)(0x6A671620)
+I (Arm\arm_control.h)(0x6A69AB1D)
+I (StepperMotor\StepperMotor_CAN.h)(0x6A6560B6)
+I (Test\stepper_test.h)(0x6A689E58)
+F (../empty.syscfg)(0x6A69A3F8)()
+F (startup_mspm0g350x_uvision.s)(0x6A295734)(--target=arm-arm-none-eabi -mcpu=cortex-m0plus -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4-Wa,armasm,--pd,"__UVISION_VERSION SETA 542" -Wa,armasm,--pd,"__MSPM0G3507__ SETA 1"-o ./objects/startup_mspm0g350x_uvision.o)
+F (../ti_msp_dl_config.h)(0x6A69A3F4)()
+F (../ti_msp_dl_config.c)(0x6A69A3F4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ti_msp_dl_config.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -175,9 +188,11 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-F (.\Motor\Motor.h)(0x69EF55C0)()
-F (.\Motor\Motor.c)(0x6A114B7A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/motor.o -MMD)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\BNO080\bno080.c)(0x6A68C78E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bno080.o -MMD)
+I (BNO080\bno080.h)(0x6A68C3CA)
+I (Hal\hal_imu.h)(0x6A68C847)
+I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -251,9 +266,14 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-F (.\Encoder\Encoder.c)(0x6A129DA2)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/encoder.o -MMD)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (ZF_IMU\zf_device_imu_interface.h)(0x6A68BE26)
+I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
+I (Delay\Delay.h)(0x6A112877)
+I (Hal\hal_delay.h)(0x6A65874E)
+F (.\BNO080\bno080.h)(0x6A68C3CA)()
+F (.\Motor\Motor.h)(0x6A64894C)()
+F (.\Motor\Motor.c)(0x6A64F11B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/motor.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -327,11 +347,10 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Encoder\..\App\move_filter.h)(0x6A12A12B)
-F (.\Encoder\Encoder.h)(0x6A115E76)()
-F (.\pid\StandardPid.c)(0x6A12A530)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/standardpid.o -MMD)
-I (pid\StandardPid.h)(0x6A119B61)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (Motor\Motor.h)(0x6A64894C)
+F (.\Encoder\Encoder.c)(0x6A64F10A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/encoder.o -MMD)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -405,19 +424,100 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Motor\Motor.h)(0x69EF55C0)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Encoder\..\App\move_filter.h)(0x6A295734)
+F (.\Encoder\Encoder.h)(0x6A2E6D7B)()
+F (.\pid\StandardPid.c)(0x6A311155)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/standardpid.o -MMD)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
-F (.\pid\StandardPid.h)(0x6A119B61)()
-F (.\Serial\Serial.c)(0x6A185147)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/serial.o -MMD)
-I (Serial\Serial.h)(0x6A115262)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\pid\StandardPid.h)(0x6A64EC50)()
+F (.\Serial\Serial.c)(0x6A698480)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/serial.o -MMD)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -491,12 +591,15 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (vofa\vofa.h)(0x6A10145C)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
-F (.\Serial\Serial.h)(0x6A115262)()
-F (.\Solve\Solve.c)(0x6A0F358E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/solve.o -MMD)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+I (Test\uart_wired_test.h)(0x6A698486)
+F (.\Serial\Serial.h)(0x6A55E5D9)()
+F (.\Solve\Solve.c)(0x6A0F358E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/solve.o -MMD)
 I (Solve\Solve.h)(0x69F4E994)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -570,13 +673,15 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (vofa\vofa.h)(0x6A10145C)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
-I (Serial\Serial.h)(0x6A115262)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 F (.\Solve\Solve.h)(0x69F4E994)()
-F (.\Track\Track.c)(0x6A0F3301)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/track.o -MMD)
+F (.\Track\Track.c)(0x6A0F3301)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/track.o -MMD)
 I (Track\Track.h)(0x69EF55C0)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -651,9 +756,9 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 F (.\Track\Track.h)(0x69EF55C0)()
-F (.\Track\track_position_ctrl.c)(0x6A071120)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/track_position_ctrl.o -MMD)
+F (.\Track\track_position_ctrl.c)(0x6A071120)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/track_position_ctrl.o -MMD)
 I (Track\track_position_ctrl.h)(0x6A070036)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -727,19 +832,287 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
-I (Servo\Servo.h)(0x69F49C7F)
+I (Hal\hal_delay.h)(0x6A65874E)
+I (Servo\Servo.h)(0x6A61D9A8)
 I (Laser\Laser.h)(0x6A05DE4C)
 F (.\Track\track_position_ctrl.h)(0x6A070036)()
-F (.\vofa\vofa.c)(0x6A115369)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/vofa.o -MMD)
-I (vofa\vofa.h)(0x6A10145C)
-I (Serial\Serial.h)(0x6A115262)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\Track\tracking_loop.c)(0x6A54AE52)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/tracking_loop.o -MMD)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+I (Laser\Laser.h)(0x6A05DE4C)
+I (Track\Track.h)(0x69EF55C0)
+I (Solve\Solve.h)(0x69F4E994)
+I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
+F (.\Track\tracking_loop.h)(0x6A61D356)()
+F (.\Track\corner_detect.c)(0x6A54ADC6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/corner_detect.o -MMD)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (Hal\hal_gray.h)(0x6A62B02B)
+F (.\Track\corner_detect.h)(0x6A54AD64)()
+F (.\Gimbal\hal_qgimbal_can.c)(0x6A698CB9)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_qgimbal_can.o -MMD)
+I (Gimbal\hal_qgimbal_can.h)(0x6A6715FF)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (vofa\vofa.h)(0x6A2831AC)
+F (.\Gimbal\hal_qgimbal_can.h)(0x6A6715FF)()
+F (.\Gimbal\gimbal_control.c)(0x6A671643)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/gimbal_control.o -MMD)
+I (Gimbal\gimbal_control.h)(0x6A671620)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+I (Laser\Laser.h)(0x6A05DE4C)
+I (Track\Track.h)(0x69EF55C0)
+I (Solve\Solve.h)(0x69F4E994)
+I (Gimbal\hal_qgimbal_can.h)(0x6A6715FF)
+I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
+F (.\Gimbal\gimbal_control.h)(0x6A671620)()
+F (.\vofa\vofa.c)(0x6A66FC56)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/vofa.o -MMD)
+I (vofa\vofa.h)(0x6A2831AC)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -814,11 +1187,13 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (K230\K230.h)(0x6A0F2B4C)
-F (.\vofa\vofa.h)(0x6A10145C)()
-F (.\Navigation\Navigation.c)(0x6A0F3430)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/navigation.o -MMD)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+F (.\vofa\vofa.h)(0x6A2831AC)()
+F (.\Navigation\Navigation.c)(0x6A0F3430)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/navigation.o -MMD)
 I (Navigation\Navigation.h)(0x69EF55C0)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -892,20 +1267,23 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Motor\Motor.h)(0x6A64894C)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
 F (.\Navigation\Navigation.h)(0x69EF55C0)()
-F (.\LCD\lcd.c)(0x6A11164D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/lcd.o -MMD)
+F (.\LCD\lcd.c)(0x6A11164D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/lcd.o -MMD)
 I (LCD\lcd.h)(0x6A0F28C7)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -982,8 +1360,8 @@ I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (LCD\lcd_init.h)(0x6A185149)
 I (LCD\lcdfont.h)(0x6A047153)
 F (.\LCD\lcd.h)(0x6A0F28C7)()
-F (.\LCD\lcd_init.c)(0x6A15A602)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/lcd_init.o -MMD)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\LCD\lcd_init.c)(0x6A15A602)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/lcd_init.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1060,95 +1438,15 @@ I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (LCD\lcd.h)(0x6A0F28C7)
 I (LCD\lcd_init.h)(0x6A185149)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
+I (Hal\hal_delay.h)(0x6A65874E)
 F (.\LCD\lcd_init.h)(0x6A185149)()
 F (.\LCD\lcdfont.h)(0x6A047153)()
 F (.\LCD\pic.h)(0x6A046E85)()
-F (.\ZF_IMU\imu_filter.c)(0x6A0F3487)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/imu_filter.o -MMD)
-I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
-I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
-I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
-I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
-I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
-I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
-I (ZF_IMU\zf_device_imu660ra.h)(0x6A070713)
-I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
 F (.\ZF_IMU\imu_filter.h)(0x6A06FFFC)()
-F (.\ZF_IMU\zf_common_debug.c)(0x6A0703FE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_common_debug.o -MMD)
+F (.\ZF_IMU\zf_common_debug.c)(0x6A0703FE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_common_debug.o -MMD)
 I (ZF_IMU\zf_common_debug.h)(0x6A07064F)
 I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1223,20 +1521,21 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 F (.\ZF_IMU\zf_common_debug.h)(0x6A07064F)()
-F (.\ZF_IMU\zf_common_fifo.c)(0x6A0704E0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_common_fifo.o -MMD)
+F (.\ZF_IMU\zf_common_fifo.c)(0x6A0704E0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_common_fifo.o -MMD)
 I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 F (.\ZF_IMU\zf_common_fifo.h)(0x6A0704E2)()
-F (.\ZF_IMU\zf_common_function.c)(0x6A070E56)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_common_function.o -MMD)
+F (.\ZF_IMU\zf_common_function.c)(0x6A070E56)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_common_function.o -MMD)
 I (ZF_IMU\zf_common_debug.h)(0x6A07064F)
 I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
 I (ZF_IMU\zf_common_function.h)(0x6A070BC6)
 F (.\ZF_IMU\zf_common_function.h)(0x6A070BC6)()
 F (.\ZF_IMU\zf_common_typedef.h)(0x6A070BC6)()
-F (.\ZF_IMU\zf_device_imu_interface.c)(0x6A0F356D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_device_imu_interface.o -MMD)
+F (.\ZF_IMU\zf_device_imu_interface.h)(0x6A68BE26)()
+F (.\ZF_IMU\zf_device_imu_interface.c)(0x6A68BE26)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_device_imu_interface.o -MMD)
 I (ZF_IMU\zf_common_debug.h)(0x6A07064F)
 I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
-I (ZF_IMU\zf_device_imu_interface.h)(0x6A0F34A3)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (ZF_IMU\zf_device_imu_interface.h)(0x6A68BE26)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1311,12 +1610,12 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
-F (.\ZF_IMU\zf_device_imu_interface.h)(0x6A0F34A3)()
-F (.\ZF_IMU\zf_device_imu660ra.c)(0x6A070A2E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_device_imu660ra.o -MMD)
-I (ZF_IMU\zf_device_imu_interface.h)(0x6A0F34A3)
+I (Hal\hal_delay.h)(0x6A65874E)
+F (.\ZF_IMU\zf_device_imu660ra.h)(0x6A070713)()
+F (.\ZF_IMU\zf_device_imu660ra.c)(0x6A687BEB)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zf_device_imu660ra.o -MMD)
+I (ZF_IMU\zf_device_imu_interface.h)(0x6A68BE26)
 I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1391,9 +1690,254 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (ZF_IMU\zf_device_imu660ra.h)(0x6A070713)
-F (.\ZF_IMU\zf_device_imu660ra.h)(0x6A070713)()
-F (.\App\app.c)(0x6A199444)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/app.o -MMD)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (Hal\hal_imu.h)(0x6A68C847)
+F (.\ZF_IMU\imu_filter.c)(0x6A687FDC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/imu_filter.o -MMD)
+I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Delay\Delay.h)(0x6A112877)
+I (Hal\hal_delay.h)(0x6A65874E)
+I (ZF_IMU\zf_device_imu660ra.h)(0x6A070713)
+I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
+I (Hal\hal_imu.h)(0x6A68C847)
+F (.\ICM42688\icm42688.h)(0x6A315F6C)()
+F (.\ICM42688\imu_icm42688.h)(0x6A316068)()
+F (.\ICM42688\icm42688.c)(0x6A68C4F9)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/icm42688.o -MMD)
+I (Hal\hal_imu.h)(0x6A68C847)
+I (ICM42688\icm42688.h)(0x6A315F6C)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Delay\Delay.h)(0x6A112877)
+I (Hal\hal_delay.h)(0x6A65874E)
+I (ZF_IMU\zf_device_imu_interface.h)(0x6A68BE26)
+I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
+F (.\ICM42688\imu_icm42688.c)(0x6A68C711)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/imu_icm42688.o -MMD)
+I (ICM42688\imu_icm42688.h)(0x6A316068)
+I (ICM42688\icm42688.h)(0x6A315F6C)
+I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (ZF_IMU\zf_device_imu660ra.h)(0x6A070713)
+I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
+I (Hal\hal_imu.h)(0x6A68C847)
+F (.\App\app.c)(0x6A357AD0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/app.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1470,23 +2014,25 @@ I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (App\app.h)(0x6A1151B4)
 I (LCD\lcd.h)(0x6A0F28C7)
 I (Hal\hal_key.h)(0x6A146E82)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (Hal\hal_imu.h)(0x6A0F2A88)
-I (vofa\vofa.h)(0x6A10145C)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Hal\hal_imu.h)(0x6A68C847)
+I (vofa\vofa.h)(0x6A2831AC)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
 F (.\App\app.h)(0x6A1151B4)()
-F (.\App\menu_task.c)(0x6A16CA4E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/menu_task.o -MMD)
+F (.\App\menu_task.c)(0x6A16CA4E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/menu_task.o -MMD)
 I (App\menu_task.h)(0x6A105045)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1561,24 +2107,27 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (Hal\hal_key.h)(0x6A146E82)
-I (Duty\task_manager.h)(0x6A102998)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Duty\task_manager.h)(0x6A520C40)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 F (.\App\menu_task.h)(0x6A105045)()
-F (.\App\move_filter.c)(0x6A115DFA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/move_filter.o -MMD)
-I (App\move_filter.h)(0x6A12A12B)
-F (.\App\move_filter.h)(0x6A12A12B)()
-F (.\Hal\hal_key.c)(0x6A1471C6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_key.o -MMD)
+F (.\App\move_filter.c)(0x6A115DFA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/move_filter.o -MMD)
+I (App\move_filter.h)(0x6A295734)
+F (.\App\move_filter.h)(0x6A295734)()
+F (.\Hal\hal_key.c)(0x6A1471C6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_key.o -MMD)
 I (Hal\hal_key.h)(0x6A146E82)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1653,9 +2202,9 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 F (.\Hal\hal_key.h)(0x6A146E82)()
-F (.\Hal\hal_gray.c)(0x6A0F29D4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_gray.o -MMD)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\Hal\hal_gray.c)(0x6A54AF4E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_gray.o -MMD)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1729,13 +2278,16 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-F (.\Hal\hal_gray.h)(0x6A0F29B9)()
-F (.\Hal\hal_imu.c)(0x6A0F2A8E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_imu.o -MMD)
-I (Hal\hal_imu.h)(0x6A0F2A88)
-I (ZF_IMU\zf_device_imu660ra.h)(0x6A070713)
-I (ZF_IMU\zf_common_typedef.h)(0x6A070BC6)
-I (ZF_IMU\imu_filter.h)(0x6A06FFFC)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\Hal\hal_gray.h)(0x6A62B02B)()
+F (.\Hal\hal_imu.c)(0x6A68C4BC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_imu.o -MMD)
+I (Hal\hal_imu.h)(0x6A68C847)
+I (ICM42688\imu_icm42688.h)(0x6A316068)
+F (.\Hal\hal_imu.h)(0x6A68C847)()
+F (.\Hal\hal_delay.c)(0x6A65874A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_delay.o -MMD)
+I (Hal\hal_delay.h)(0x6A65874E)
+F (.\Hal\hal_relay.c)(0x6A61CF73)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_relay.o -MMD)
+I (Hal\hal_relay.h)(0x6A61D783)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1809,13 +2361,11 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-F (.\Hal\hal_imu.h)(0x6A0F2A88)()
-F (.\Hal\hal_delay.c)(0x6A112A09)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hal_delay.o -MMD)
-I (Hal\hal_delay.h)(0x6A1127A2)
-F (.\Duty\duty_chess.c)(0x6A0F2D1B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/duty_chess.o -MMD)
+F (.\Hal\hal_relay.h)(0x6A61D783)()
+F (.\Duty\duty_chess.c)(0x6A0F2D1B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/duty_chess.o -MMD)
 I (Duty\duty_chess.h)(0x6A0F2D14)
 I (Hal\hal_key.h)(0x6A146E82)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1891,20 +2441,22 @@ I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (LCD\lcd.h)(0x6A0F28C7)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
+I (Hal\hal_delay.h)(0x6A65874E)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (K230\K230.h)(0x6A0F2B4C)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Solve\Solve.h)(0x69F4E994)
-I (Servo\Servo.h)(0x69F49C7F)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
+I (Servo\Servo.h)(0x6A61D9A8)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
 I (Track\track_position_ctrl.h)(0x6A070036)
 F (.\Duty\duty_chess.h)(0x6A0F2D14)()
-F (.\Duty\task_manager.c)(0x6A104E23)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_manager.o -MMD)
-I (Duty\task_manager.h)(0x6A102998)
+F (.\Duty\task_manager.c)(0x6A520C33)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_manager.o -MMD)
+I (Duty\task_manager.h)(0x6A520C40)
 I (App\menu_task.h)(0x6A105045)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -1982,11 +2534,26 @@ I (Duty\task_one.h)(0x6A104E66)
 I (Duty\task_two.h)(0x6A104EC5)
 I (Duty\task_three.h)(0x6A104FE4)
 I (Duty\task_four.h)(0x6A105001)
-F (.\Duty\task_manager.h)(0x6A102998)()
-F (.\Duty\task_one.c)(0x6A104E6D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_one.o -MMD)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+I (Laser\Laser.h)(0x6A05DE4C)
+I (Track\Track.h)(0x69EF55C0)
+I (Solve\Solve.h)(0x69F4E994)
+F (.\Duty\task_manager.h)(0x6A520C40)()
+F (.\Duty\task_one.c)(0x6A5397FB)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_one.o -MMD)
 I (Duty\task_one.h)(0x6A104E66)
 I (App\menu_task.h)(0x6A105045)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2060,22 +2627,26 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 F (.\Duty\task_one.h)(0x6A104E66)()
-F (.\Duty\task_two.c)(0x6A10519D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_two.o -MMD)
+F (.\Duty\task_two.c)(0x6A5398C1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_two.o -MMD)
 I (Duty\task_two.h)(0x6A104EC5)
 I (App\menu_task.h)(0x6A105045)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2149,22 +2720,26 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 F (.\Duty\task_two.h)(0x6A104EC5)()
-F (.\Duty\task_three.c)(0x6A1051C6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_three.o -MMD)
+F (.\Duty\task_three.c)(0x6A357B7F)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_three.o -MMD)
 I (Duty\task_three.h)(0x6A104FE4)
 I (App\menu_task.h)(0x6A105045)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2238,22 +2813,26 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 F (.\Duty\task_three.h)(0x6A104FE4)()
-F (.\Duty\task_four.c)(0x6A105245)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_four.o -MMD)
+F (.\Duty\task_four.c)(0x6A357B9B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_four.o -MMD)
 I (Duty\task_four.h)(0x6A105001)
 I (App\menu_task.h)(0x6A105045)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2327,21 +2906,25 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Hal\hal_gray.h)(0x6A0F29B9)
-I (Encoder\Encoder.h)(0x6A115E76)
-I (pid\StandardPid.h)(0x6A119B61)
-I (Motor\Motor.h)(0x69EF55C0)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Track\tracking_loop.h)(0x6A61D356)
+I (Hal\hal_gray.h)(0x6A62B02B)
+I (Track\corner_detect.h)(0x6A54AD64)
+I (Encoder\Encoder.h)(0x6A2E6D7B)
+I (pid\StandardPid.h)(0x6A64EC50)
+I (Motor\Motor.h)(0x6A64894C)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 I (Laser\Laser.h)(0x6A05DE4C)
 I (Track\Track.h)(0x69EF55C0)
 I (Solve\Solve.h)(0x69F4E994)
 F (.\Duty\task_four.h)(0x6A105001)()
-F (.\K230\K230.c)(0x6A1152E4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/k230.o -MMD)
+F (.\K230\K230.c)(0x6A1152E4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/k230.o -MMD)
 I (K230\K230.h)(0x6A0F2B4C)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2415,11 +2998,13 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 F (.\K230\K230.h)(0x6A0F2B4C)()
-F (.\Delay\Delay.c)(0x6A112B41)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/delay.o -MMD)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\Delay\Delay.c)(0x6A658A2D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/delay.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2494,11 +3079,11 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
+I (Hal\hal_delay.h)(0x6A65874E)
 F (.\Delay\Delay.h)(0x6A112877)()
-F (.\Buzzer\Buzzer.c)(0x6A0F3287)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/buzzer.o -MMD)
+F (.\Buzzer\Buzzer.c)(0x6A0F3287)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/buzzer.o -MMD)
 I (Buzzer\Buzzer.h)(0x69EF55BF)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2573,11 +3158,11 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
+I (Hal\hal_delay.h)(0x6A65874E)
 F (.\Buzzer\Buzzer.h)(0x69EF55BF)()
-F (.\Laser\Laser.c)(0x6A0F32A6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/laser.o -MMD)
+F (.\Laser\Laser.c)(0x6A0F32A6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/laser.o -MMD)
 I (Laser\Laser.h)(0x6A05DE4C)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2652,9 +3237,10 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 F (.\Laser\Laser.h)(0x6A05DE4C)()
-F (.\Servo\Servo.c)(0x6A0F32BE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/servo.o -MMD)
-I (Servo\Servo.h)(0x69F49C7F)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\LoRa\lora.c)(0x6A65A66B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/lora.o -MMD)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2728,10 +3314,10 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-F (.\Servo\Servo.h)(0x69F49C7F)()
-F (.\StepperMotor\StepperMotor.c)(0x6A1152E4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/steppermotor.o -MMD)
-I (StepperMotor\StepperMotor.h)(0x69EF55C0)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+F (.\LoRa\lora.h)(0x6A55E39F)()
+F (.\Servo\Servo.c)(0x6A61D9E4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/servo.o -MMD)
+I (Servo\Servo.h)(0x6A61D9A8)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2805,13 +3391,10 @@ I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
-I (K230\K230.h)(0x6A0F2B4C)
-F (.\StepperMotor\StepperMotor.h)(0x69EF55C0)()
-F (.\interrupt_config\interrupt_config.c)(0x6A185148)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/interrupt_config.o -MMD)
+F (.\Servo\Servo.h)(0x6A61D9A8)()
+F (.\interrupt_config\interrupt_config.c)(0x6A36C307)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/interrupt_config.o -MMD)
 I (interrupt_config\interrupt_config.h)(0x6A15A618)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2887,10 +3470,10 @@ I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 F (.\interrupt_config\interrupt_config.h)(0x6A15A618)()
 F (.\HMI\hmi_config.h)(0x6A147240)()
-F (.\HMI\hmi_protocol.c)(0x6A168B41)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hmi_protocol.o -MMD)
+F (.\HMI\hmi_protocol.c)(0x6A168B41)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/hmi_protocol.o -MMD)
 I (HMI\hmi_protocol.h)(0x6A146855)
 I (HMI\hmi_config.h)(0x6A147240)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -2967,15 +3550,17 @@ I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (HMI\zuolan_usart.h)(0x6A1993D4)
 I (HMI\zuolan_hmi.h)(0x6A14684D)
 I (App\menu_task.h)(0x6A105045)
-I (Serial\Serial.h)(0x6A115262)
-I (vofa\vofa.h)(0x6A10145C)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
 I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
 F (.\HMI\hmi_protocol.h)(0x6A146855)()
-F (.\HMI\zuolan_hmi.c)(0x6A16D694)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zuolan_hmi.o -MMD)
+F (.\HMI\zuolan_hmi.c)(0x6A16D694)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zuolan_hmi.o -MMD)
 I (HMI\zuolan_hmi.h)(0x6A14684D)
 I (HMI\zuolan_usart.h)(0x6A1993D4)
 I (HMI\hmi_config.h)(0x6A147240)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -3050,12 +3635,12 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 I (Delay\Delay.h)(0x6A112877)
-I (Hal\hal_delay.h)(0x6A1127A2)
+I (Hal\hal_delay.h)(0x6A65874E)
 F (.\HMI\zuolan_hmi.h)(0x6A14684D)()
-F (.\HMI\zuolan_usart.c)(0x6A1993D6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Duty -I ./Encoder -I ./Hal -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zuolan_usart.o -MMD)
+F (.\HMI\zuolan_usart.c)(0x6A538C5B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/zuolan_usart.o -MMD)
 I (HMI\zuolan_usart.h)(0x6A1993D4)
 I (HMI\hmi_config.h)(0x6A147240)
-I (..\ti_msp_dl_config.h)(0x6A199D50)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
 I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
 I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
 I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
@@ -3130,3 +3715,493 @@ I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
 I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
 F (.\HMI\zuolan_usart.h)(0x6A1993D4)()
+F (.\OS\OS_System.c)(0x6A28353E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/os_system.o -MMD)
+I (OS\OS_System.h)(0x6A2835B4)
+F (.\OS\OS_System.h)(0x6A2835B4)()
+F (.\OS\cpu.c)(0x6A2831E1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/cpu.o -MMD)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (OS\OS_System.h)(0x6A2835B4)
+I (OS\cpu.h)(0x6A2831DA)
+F (.\OS\cpu.h)(0x6A2831DA)()
+F (.\StepperMotor\StepperMotor.c)(0x6A295734)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/steppermotor.o -MMD)
+I (StepperMotor\StepperMotor.h)(0x6A295734)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+F (.\StepperMotor\StepperMotor.h)(0x6A295734)()
+F (.\StepperMotor\StepperMotor_CAN.c)(0x6A65A974)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/steppermotor_can.o -MMD)
+I (StepperMotor\StepperMotor_CAN.h)(0x6A6560B6)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+F (.\StepperMotor\StepperMotor_CAN.h)(0x6A6560B6)()
+F (.\Test\uart_wired_test.c)(0x6A621D8E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/uart_wired_test.o -MMD)
+I (Test\uart_wired_test.h)(0x6A698486)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+I (LoRa\lora.h)(0x6A55E39F)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (vofa\vofa.h)(0x6A2831AC)
+I (K230\K230.h)(0x6A0F2B4C)
+F (.\Test\uart_wired_test.h)(0x6A698486)()
+F (.\Test\stepper_test.c)(0x6A671741)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/stepper_test.o -MMD)
+I (Test\stepper_test.h)(0x6A689E58)
+I (StepperMotor\StepperMotor_CAN.h)(0x6A6560B6)
+I (vofa\vofa.h)(0x6A2831AC)
+I (Serial\Serial.h)(0x6A55E5D9)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+I (K230\K230.h)(0x6A0F2B4C)
+I (LoRa\lora.h)(0x6A55E39F)
+I (ZF_IMU\zf_common_fifo.h)(0x6A0704E2)
+F (.\Test\stepper_test.h)(0x6A689E58)()
+F (.\Arm\arm_control.c)(0x6A69AC23)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../ -I ../../source/third_party/CMSIS/Core/Include -I ../../source -I ./App -I ./Buzzer -I ./Delay -I ./Diag -I ./Duty -I ./Encoder -I ./Hal -I ./ICM42688 -I ./K230 -I ./LCD -I ./Laser -I ./Motor -I ./Navigation -I ./OS -I ./Serial -I ./Servo -I ./Solve -I ./StepperMotor -I ./Track -I ./Gimbal -I ./ZF_IMU -I ./interrupt_config -I ./pid -I ./targetConfigs -I ./vofa -I ./HMI -I ./BrushlessMotor -I ./StepperMotor -I ./LoRa -I ./Test -I ./BNO080 -I ./Arm-D__UVISION_VERSION="542" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/arm_control.o -MMD)
+I (Arm\arm_control.h)(0x6A69AB1D)
+I (Arm\arm_protocol.h)(0x6A69AAB6)
+I (Gimbal\hal_qgimbal_can.h)(0x6A6715FF)
+I (vofa\vofa.h)(0x6A2831AC)
+I (..\ti_msp_dl_config.h)(0x6A69A3F4)
+I (..\..\source\ti\devices\msp\msp.h)(0x66D136B8)
+I (..\..\source\ti\devices\DeviceFamily.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x66D136B8)
+I (..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\driverlib.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_adc12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_core.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aes.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_aesadv.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_comp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_crcp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dac12.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_dma.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_flashctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpamp.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_gpio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_i2c.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_iwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lfss.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_keystorectl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_lcd.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mathacl.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_mcan.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_opa.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_common.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_a.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_rtc_b.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_scratchpad.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_spi.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_tamperio.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timera.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timer.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_timerg.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_trng.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_extend.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_uart_main.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_vref.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\dl_wwdt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66D136B8)
+I (..\..\source\ti\driverlib\m0p\dl_systick.h)(0x66D136B8)
+F (.\Arm\arm_control.h)(0x6A69AB1D)()

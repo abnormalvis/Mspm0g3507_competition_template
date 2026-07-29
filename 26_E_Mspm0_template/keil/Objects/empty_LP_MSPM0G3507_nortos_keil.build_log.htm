@@ -22,7 +22,7 @@ Dialog DLL:      TARMCM1.DLL V1.14.6.0
  
 <h2>Project:</h2>
 D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\26_E_Mspm0_template\keil\empty_LP_MSPM0G3507_nortos_keil.uvprojx
-Project File Date:  05/25/2026
+Project File Date:  07/29/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.23', folder: 'D:\Keil_v5\ARM\ARMCLANG\Bin'
@@ -40,6 +40,8 @@ info: MCAN0(/ti/driverlib/MCAN) txStartAddr: TX Buffer Start Address 148 End Add
 info: MCAN0(/ti/driverlib/MCAN) txEventFIFOStartAddr: TX Event FIFO Start Address 164 End Address 168
 info: MCAN0(/ti/driverlib/MCAN) flssa: Standard ID Filter List Start Address 0 End Address 4
 info: MCAN0(/ti/driverlib/MCAN) flesa: Extended ID Filter List Start Address 48 End Address 56
+info: MCAN0(/ti/driverlib/MCAN) brsEnable: Bit Rate Switching is not available in MCAN Classic
+info: MCAN0(/ti/driverlib/MCAN) useCalcDataVal: Calculated values are not available with Bit Rate Switching disabled
 info: /ti/driverlib/DMA associatedChannels[0].channelID: Currently using a Full Channel.
 info: PWM_Motor(/ti/driverlib/PWM): Peripheral does not retain register contents in STOP or STANDBY modes. User should take care to save and restore register configuration in application. See Retention Configuration section for more details.
 info: PWM_0(/ti/driverlib/PWM): Peripheral does not retain register contents in STOP or STANDBY modes. User should take care to save and restore register configuration in application. See Retention Configuration section for more details.
@@ -50,6 +52,11 @@ Generating Code (empty.syscfg)...
 Unchanged D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\26_E_Mspm0_template\ti_msp_dl_config.c...
 Unchanged D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\26_E_Mspm0_template\ti_msp_dl_config.h...
 Unchanged D:\TI\M0_SDK\mspm0_sdk_2_02_00_05\26_E_Mspm0_template\Event.dot...
+compiling arm_control.c...
+compiling main.c...
+linking...
+Program Size: Code=37472 RO-data=2028 RW-data=52 ZI-data=7084  
+FromELF: creating hex file...
 ".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -62,7 +69,7 @@ Package Vendor: TexasInstruments
 <h2>Collection of Component include folders:</h2>
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:06
+Build Time Elapsed:  00:00:09
 </pre>
 </body>
 </html>

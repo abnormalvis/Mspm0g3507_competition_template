@@ -70,7 +70,7 @@ static imu660ra_state_enum imu660ra_expansion_get_acc (imu_interface_obj_struct 
         uint8 data[8];
         if(IMU_INTERFACE_SPI == interface->interface_type)
         {
-            interface->read_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_ACC_ADDRESS | IMU660RA_SPI_R, data, 7);
+            interface->read_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_ACC_ADDRESS | IMU660RA_SPI_R, &data[1], 6);
         }
         else
         {
@@ -106,7 +106,7 @@ static imu660ra_state_enum imu660ra_expansion_get_gyro (imu_interface_obj_struct
         uint8 data[8];
         if(IMU_INTERFACE_SPI == interface->interface_type)
         {
-            interface->read_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_GYRO_ADDRESS | IMU660RA_SPI_R, data, 7);
+            interface->read_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_GYRO_ADDRESS | IMU660RA_SPI_R, &data[1], 6);
         }
         else
         {
@@ -222,7 +222,7 @@ static imu660ra_state_enum imu660ra_expansion_ckeck_id (imu_interface_obj_struct
         }
         if(IMU_INTERFACE_SPI == interface->interface_type)
         {
-            interface->read_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_CHIP_ID | IMU660RA_SPI_R, dat, 2);
+            dat[1] = interface->read_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_CHIP_ID | IMU660RA_SPI_R);
         }
         else
         {
@@ -254,7 +254,7 @@ static imu660ra_state_enum imu660ra_expansion_init (imu_interface_obj_struct *in
         uint8 data[2] = {0, 0};
         if(IMU_INTERFACE_SPI == interface->interface_type)
         {
-            interface->read_8bit_registers(IMU660RA_DEV_ADDR, IMU660RA_INT_STA | IMU660RA_SPI_R, data, 2);
+            data[1] = interface->read_8bit_register(IMU660RA_DEV_ADDR, IMU660RA_INT_STA | IMU660RA_SPI_R);
         }
         else
         {

@@ -73,8 +73,8 @@ float iir_lpf(float in, float out, float lpf_factor)
  * */
 void IIR_imu(void)
 {
-	get_iir_factor(&imu.att_acc_factor, 0.001, 25);
-	get_iir_factor(&imu.att_gryo_factor, 0.001, 30);
+	get_iir_factor(&imu.att_acc_factor, 0.005, 25);
+	get_iir_factor(&imu.att_gryo_factor, 0.005, 30);
 
 }
 
@@ -275,8 +275,10 @@ void _IMU(void)
   imu.deg_s.x = gyro_x / 16.4f;
   imu.deg_s.y = gyro_y / 16.4f;
   imu.deg_s.z = gyro_z / 16.4f;
-  /* Attitude calculation */
-  imu.yaw += imu.deg_s.z * MahonyPERIOD * 0.001f;
+  /* Attitude calculation — Mahony AHRS quaternion fusion */
+  Matrix_ready();
+  mahony_update(imu.deg_s.x, imu.deg_s.y, imu.deg_s.z, imu.acc_g.x, imu.acc_g.y, imu.acc_g.z);
+  Matrix_ready();
 	if(imu.yaw > 180)
 	{
 		imu.yaw = imu.yaw - 360;
@@ -285,9 +287,6 @@ void _IMU(void)
 	{
 		imu.yaw = imu.yaw + 360;
 	}
-	/* legacy: angle.z = imu.yaw; �? no `angle` struct in this project */
-//  mahony_update(imu.deg_s.x, imu.deg_s.y, imu.deg_s.z, imu.acc_g.x, imu.acc_g.y, imu.acc_g.z);
-//  Matrix_ready();
 }
 
 

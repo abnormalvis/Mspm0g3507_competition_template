@@ -151,6 +151,17 @@ uint8 imu_read_8bit_register (uint8 addr, uint8 reg);
 void imu_read_8bit_registers (uint8 addr, uint8 reg, uint8 *data, uint32 len);
 
 //-------------------------------------------------------------------------------------------------------------------
+// Function Name  : IMU raw SPI transfer
+// Description    : data_out        output data buffer, can be NULL
+// Description    : data_in         input data buffer, can be NULL
+// Description    : data_len        data length
+// Return Value   : void
+// Usage Example  : imu_spi_transfer(tx, rx, len);
+// Note           : This helper keeps chip-select handling inside the platform
+//-------------------------------------------------------------------------------------------------------------------
+void imu_spi_transfer (const uint8 *data_out, uint8 *data_in, uint32 data_len);
+
+//-------------------------------------------------------------------------------------------------------------------
 // Function Name  : IMU interface deinit
 // Description    : void
 // Return Value   : uint8           0-success 1-failure

@@ -22,12 +22,12 @@ void UART_WiredTest_Init(void);
 void UART_WiredTest_Run(void);
 
 /* 1 = send "TICK\r\n" every 1s on UART_wired (M0->PC aliveness) */
-#define UART_WIRED_HEARTBEAT 1
+#define UART_WIRED_HEARTBEAT 0
 
 /* 1 = hex-dump received bytes via UART0 (sniff only, no echo on UART_wired) */
 #define UART_WIRED_SNIFFER   0
 
 /* 1 = echo every received byte back on UART_wired (raw loopback test) */
-#define UART_WIRED_ECHO      1
+#define UART_WIRED_ECHO      0
 
 #endif /* __UART_WIRED_TEST_H__ */

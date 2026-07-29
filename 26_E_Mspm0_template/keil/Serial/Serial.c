@@ -117,6 +117,8 @@ void UART_vision_INST_IRQHandler(void)
 	}
 }
 
+/* UART2 ISR disabled — arm_control.c provides UART2_IRQHandler for RK3588 */
+#if 0
 void UART_wired_INST_IRQHandler(void)
 {
 	switch( DL_UART_getPendingInterrupt(UART_wired_INST) )
@@ -132,3 +134,4 @@ void UART_wired_INST_IRQHandler(void)
 			break;
 	}
 }
+#endif

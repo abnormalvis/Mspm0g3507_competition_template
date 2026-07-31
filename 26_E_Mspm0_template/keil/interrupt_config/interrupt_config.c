@@ -34,7 +34,7 @@ void interrupt_init(void)
     NVIC_SetPriority(Encoder_GPIOA_INT_IRQN, 2);
     NVIC_EnableIRQ  (Encoder_GPIOA_INT_IRQN);
 
-    NVIC_SetPriority(CANFD0_INT_IRQn, 2);
+    NVIC_SetPriority(CANFD0_INT_IRQn, 1);  /* prio 1: preempt TIMER_1 (prio 2) so CAN RX not blocked by Arm_Run() */
     NVIC_EnableIRQ  (CANFD0_INT_IRQn);
 
     __enable_irq();

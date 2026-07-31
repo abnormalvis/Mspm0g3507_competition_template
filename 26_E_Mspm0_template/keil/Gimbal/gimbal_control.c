@@ -71,13 +71,8 @@ void Gimbal_Init(void)
         g_gimbal.enable_retry[i]        = 0;
     }
 
-    /* Match QGimbal reference: enable each motor, then immediately
-     * set angle to center so the motor has a position target. */
-    for (i = 0; i < GIMBAL_MOTOR_COUNT; i++) {
-        QGimbal_Enable(i);
-        QGimbal_SetAngle(i, 0.0f);
-    }
-    g_gimbal.motors_enabled = 1;
+    /* Motors are NOT auto-enabled here — enable is controlled via
+     * VOFA commands (P28/P29-P32) or arm task start. */
 }
 
 /**

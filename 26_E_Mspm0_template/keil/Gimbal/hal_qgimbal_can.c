@@ -2,8 +2,8 @@
 #include "ti_msp_dl_config.h"
 #include "vofa.h"
 
-/* ---- global motor feedback state ---- */
-QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT] = {
+/* ---- global motor feedback state (volatile: modified in CAN ISR) ---- */
+volatile QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT] = {
     {0, 0.0f, 0.0f, 0.0f, 0},
     {0, 0.0f, 0.0f, 0.0f, 0},
     {0, 0.0f, 0.0f, 0.0f, 0},
@@ -37,7 +37,7 @@ void QGimbal_CAN_Init(void)
 
     /* Configure standard ID filter 0:
      * Accept IDs 0x500-0x503 (motor 0-3 feedback), store in FIFO0
-     * NOTE: sfid1/sfid2 are raw 11-bit IDs — the driverlib handles
+     * NOTE: sfid1/sfid2 are raw 11-bit IDs �? the driverlib handles
      * the register-level shifting internally (sfid1<<16, sfid2<<0). */
     filter.sfid1 = (uint32_t)(0x500);   /* ID range: 0x500 ~ 0x503 */
     filter.sfid2 = (uint32_t)(0x503);
@@ -79,7 +79,7 @@ void QGimbal_SendCommand(uint8_t motor_id, QGimbal_Command cmd, int16_t value)
         --timeout;
     }
 
-    /* If TX buffer stuck, cancel and recover — but still send our frame */
+    /* If TX buffer stuck, cancel and recover �? but still send our frame */
     if (timeout == 0U) {
         DL_MCAN_txBufCancellationReq(MCAN0_INST, 0U);
         DL_MCAN_setOpMode(MCAN0_INST, DL_MCAN_OPERATION_MODE_NORMAL);
@@ -158,6 +158,19 @@ void QGimbal_SetCurrent(uint8_t motor_id, float current_a)
     QGimbal_SendCommand(motor_id, QGIMBAL_CMD_CURRENT, value);
 }
 
+void QGimbal_SetZero(uint8_t motor_id)
+{
+    QGimbal_SendCommand(motor_id, QGIMBAL_CMD_SET_ZERO, 0);
+}
+
+void QGimbal_RequestFeedback(uint8_t motor_id)
+{
+    /* Send NOP (0x00) to poll for feedback without changing motor state.
+     * Per QD4310 manual: motor replies with feedback on every received command,
+     * so NOP is the softest way to keep angle_rad/speed_rpm current. */
+    QGimbal_SendCommand(motor_id, QGIMBAL_CMD_NOP, 0);
+}
+
 /* ---- feedback parsing (called from CAN RX ISR) ---- */
 
 void QGimbal_ProcessFeedback(void)
@@ -223,10 +236,10 @@ void QGimbal_ProcessFeedback(void)
  * @brief  CAN diagnostics: send TX/RX status via VOFA JustFloat
  * @note   Call from main loop at low rate (e.g. 500ms)
  *
- *   ch0: tx_count       — incremented each call (proves function runs)
- *   ch1: TXBTO[0]       — 1 = last Buffer 0 transmission occurred
- *   ch2: busOffStatus   — 1 = CAN controller bus-off (dead)
- *   ch3: TEC            — TX Error Counter
+ *   ch0: tx_count       �? incremented each call (proves function runs)
+ *   ch1: TXBTO[0]       �? 1 = last Buffer 0 transmission occurred
+ *   ch2: busOffStatus   �? 1 = CAN controller bus-off (dead)
+ *   ch3: TEC            �? TX Error Counter
  */
 void QGimbal_CAN_Diag(void)
 {

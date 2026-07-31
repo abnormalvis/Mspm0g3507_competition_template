@@ -16,6 +16,8 @@ typedef enum {
     QGIMBAL_CMD_ANGLE      = 5,
     QGIMBAL_CMD_LOW_SPEED  = 6,
     QGIMBAL_CMD_STEP_ANGLE = 7,
+    QGIMBAL_CMD_SET_ZERO   = 0xFE,  /* set zero: current position -> 0 rad */
+    QGIMBAL_CMD_REBOOT     = 0xFF,  /* reboot motor */
 } QGimbal_Command;
 
 /* Per-motor feedback state (updated by CAN RX ISR) */
@@ -27,7 +29,7 @@ typedef struct {
     uint8_t  feedback_valid;  /* set by ISR, cleared by consumer */
 } QGimbal_MotorState;
 
-extern QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT];
+extern volatile QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT];
 
 /* CAN init: filters, interrupt routing, NVIC enable */
 void QGimbal_CAN_Init(void);
@@ -41,6 +43,7 @@ void QGimbal_Disable(uint8_t motor_id);
 void QGimbal_SetAngle(uint8_t motor_id, float angle_rad);
 void QGimbal_SetSpeed(uint8_t motor_id, float speed_rpm);
 void QGimbal_SetCurrent(uint8_t motor_id, float current_a);
+void QGimbal_SetZero(uint8_t motor_id);
 
 /* Called from CAN ISR to parse a received feedback frame */
 void QGimbal_ProcessFeedback(void);
@@ -50,5 +53,8 @@ void QGimbal_CAN_Diag(void);
 
 /* Motor status telemetry: send enabled + angle via VOFA JustFloat */
 void QGimbal_CAN_Status(void);
+
+/* Send NOP command to poll for feedback without changing motor state */
+void QGimbal_RequestFeedback(uint8_t motor_id);
 
 #endif /* __HAL_QGIMBAL_CAN_H */

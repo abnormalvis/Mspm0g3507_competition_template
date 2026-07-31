@@ -2,7 +2,9 @@
 #include "interrupt_config.h"
 #include "hal_gray.h"
 #include "hal_imu.h"
+#if !IMU_USE_BNO080
 #include "zf_device_imu660ra.h"
+#endif
 #include "imu_filter.h"
 #include "vofa.h"
 #include "StandardPid.h"
@@ -17,9 +19,17 @@
 #include "hal_qgimbal_can.h"
 #include "lora.h"
 #include "uart_wired_test.h"
+#include "hal_canio.h"
 #include "hal_relay.h"
+#include "Servo.h"
+#include "Buzzer.h"
 
 #include "gimbal_control.h"
+#include "arm_control.h"
+#include "arm_task.h"
+#include "arm_home.h"
+#include "end_effector.h"
+#include "telemetry_proto.h"
 #include "StepperMotor_CAN.h"
 #include "stepper_test.h"
 
@@ -31,6 +41,7 @@ float vofa_yaw_target = 0.0f;   // yaw target set via VOFA #P4=xxx!
 const uint8_t vofa_sent_ch_count = 3;    // number of float channels to send in each VOFA telemetry packet
 uint8_t g_angle_mode = 0;      // 0=speed mode, 1=angle mode (toggled via VOFA #P5)
 uint8_t g_imu_telem  = 1;      // 1=send IMU telemetry via VOFA (toggled via VOFA #P18)
+uint8_t g_track_debug = 1;     // 1=send 16ch tracking telemetry via VOFA (toggled via VOFA #P19)
 
 /* ==== DEBUG: 1 = silence VOFA + HMI telemetry so HMI RX bytes echo cleanly on UART0 ==== */
 #define HMI_CAPTURE_DEBUG 0
@@ -43,6 +54,21 @@ uint8_t g_imu_telem  = 1;      // 1=send IMU telemetry via VOFA (toggled via VOF
 #define VOFA_GIMBAL_SPEED_BASE  33  /* P33-P36: speed target motor 0-3 (rpm) */
 #define VOFA_GIMBAL_ANGLE_BASE  37  /* P37-P40: manual angle motor 0-3 (rad) */
 #define VOFA_GIMBAL_MANUAL_MODE 41  /* P41: manual angle mode toggle */
+
+/* ---- Arm VOFA command layout ---- */
+#define VOFA_ARM_ENABLE_ALL   42  /* P42: enable/disable all 3 motors */
+#define VOFA_ARM_ENABLE_BASE  43  /* P43-P45: enable motor 0-2 */
+#define VOFA_ARM_ANGLE_BASE   46  /* P46-P48: angle motor 0-2 (rad, 0~2*PI) */
+#define VOFA_ARM_SPEED_BASE   49  /* P49-P51: speed motor 0-2 (rpm) */
+#define VOFA_ARM_TASK_START   52  /* P52: start pick-and-place task */
+#define VOFA_ARM_TASK_ABORT   53  /* P53: abort arm task */
+#define VOFA_ARM_TELEM_TOGGLE    54  /* P54: arm VOFA telemetry toggle */
+#define VOFA_ARM_SINE_AMPLITUDE  55  /* P55: sine wave speed amplitude (rpm) */
+#define VOFA_ARM_SINE_PERIOD     56  /* P56: sine wave period N (steps/cycle) */
+#define VOFA_ARM_SINE_MASK       57  /* P57: sine motor bitmask (bit0=m0..bit2=m2) */
+#define VOFA_ARM_SET_ZERO         58  /* P58: manual set-zero (backup) */
+#define VOFA_SERVO_LIFT           59  /* P59: servo lift angle (0-180 deg) */
+#define VOFA_ARM_TRACE_START      60  /* P60: start shape tracing task */
 
 static uint8_t vofa_handle_gimbal(uint16_t id, float value)
 {
@@ -76,7 +102,7 @@ static uint8_t vofa_handle_gimbal(uint16_t id, float value)
         return 1;
     }
 
-    /* P37-P40: manual angle motor 0-3 (rad, 0~2pi) — auto-enters manual mode */
+    /* P37-P40: manual angle motor 0-3 (rad, 0~2pi) �????????? auto-enters manual mode */
     if (id >= VOFA_GIMBAL_ANGLE_BASE && id <= VOFA_GIMBAL_ANGLE_BASE + 3) {
         m = (uint8_t)(id - VOFA_GIMBAL_ANGLE_BASE);
         g_gimbal.motor[m].angle_manual = value;
@@ -100,6 +126,10 @@ static void on_vofa_param(uint16_t id, float value)
 {
     if (StepperTest_HandleVofa(id, value)) return;
     if (vofa_handle_gimbal(id, value)) return;
+    if (ArmTask_HandleVofa(id, value)) return;
+    if (EndEffector_HandleVofa(id, value)) return;
+    if (ArmHome_HandleVofa(id, value)) return;
+    if (Arm_HandleVofa(id, value)) return;
     switch (id)
     {
     case 1:
@@ -145,6 +175,12 @@ static void on_vofa_param(uint16_t id, float value)
     case 18:
         g_imu_telem = (uint8_t)value;
         break;
+    case 19:
+        g_track_debug = (uint8_t)value;
+        break;
+    case 59:
+        Servo_setAngle2(value);
+        break;
     default:
         break;
     }
@@ -153,26 +189,32 @@ static void on_vofa_param(uint16_t id, float value)
 int main(void)
 {
     SYSCFG_DL_init();
-    //hal_delay_init();   /* Explicit SysTick start �???? must precede any delay call */
-    gray_init();
+    //hal_delay_init();   /* Explicit SysTick start �????????????? must precede any delay call */
+    // gray_init();
     interrupt_init();
+    Buzzer_Init();          /* ensure buzzer starts silent before ISR takes over */
+    beep_on_1s_flag = 1;   /* power-on beep: TIMER_0 ISR will catch this */
     Motor_Init();   /* Set motor driver to initial brake state */
-    hal_imu_init();
+    // hal_imu_init();
     SysPidInit();
     EncoderFilterInit();
 
     vofa_init();
     vofa_set_on_param(on_vofa_param);
     vofa_rx_fifo_init();
-    lora_init();
+    //lora_init();   /* disabled �???? UART2 repurposed for RK3588 */
     //UART_WiredTest_Init();
 
     AppInit();
     menu_init();
     task_manager_init();
     Gimbal_Init();
-    // StepperMotor_CAN_Init();
-    // StepperTest_Init();
+    Arm_Init();
+    ArmTask_Init();
+    ArmHome_Init();
+    EndEffector_Init();
+//    StepperMotor_CAN_Init();
+//    StepperTest_Init();
     Relay_Init();
 
     /* Let the HMI serial screen finish its own power-on boot (~1-2s) before we
@@ -189,21 +231,45 @@ int main(void)
 
     while (1)
     {
-        /* ---- VOFA RX: drain FIFO into parser, then apply pending params ---- */
+        /* ---- VOFA RX: drain FIFO, dispatch each command immediately ---- */
+        /* Dispatch inside the drain loop so that back-to-back commands
+         * (e.g. #P42=1!#P68=1!) don't overwrite each other in the
+         * single-entry vofa_pending buffer before apply_pending runs.
+         *
+         * IRQs are kept on during dispatch: CAN TX and sys_tick_ms must
+         * advance for handlers that spin-wait (P66 pick, P68 NOP poll). */
         {
-            uint32_t pending = fifo_used(&vofa_rx_fifo);
+            uint32_t pending;
+            uint8_t  byte;
+
+            /* Snapshot FIFO depth under IRQ lock */
+            __disable_irq();
+            pending = fifo_used(&vofa_rx_fifo);
+            __enable_irq();
+
             while (pending > 0) {
-                uint8_t byte;
-                if (fifo_read_element(&vofa_rx_fifo, &byte, FIFO_READ_AND_CLEAN) == FIFO_SUCCESS) {
+                uint8_t read_ok;
+
+                /* Atomically dequeue one byte */
+                __disable_irq();
+                read_ok = (fifo_read_element(&vofa_rx_fifo, &byte, FIFO_READ_AND_CLEAN) == FIFO_SUCCESS);
+                __enable_irq();
+
+                if (read_ok) {
                     vofa_rx_byte(byte);
                 }
+
+                /* Dispatch immediately when a complete #Pid=value! frame
+                 * is parsed.  vofa_apply_pending() is a no-op when
+                 * vofa_pending==0, so it's cheap to call on every byte. */
+                vofa_apply_pending();
+
                 pending--;
             }
-            vofa_apply_pending();
         }
 
         /* ---- LoRa RX: drain FIFO into packet parser ---- */
-        lora_rx_drain();
+        //lora_rx_drain();   /* disabled �???? UART2 repurposed for RK3588 */
 
         /* ---- UART_wired test: raw byte echo over wireless link ---- */
         //UART_WiredTest_Run();
@@ -216,24 +282,24 @@ int main(void)
             zuolan_printf("page1.g0.txt=\"MSPM0 Ready\"%s", HMI_END_CMD);
         }
 
-        SensorProc();
+        // SensorProc();    // gray sensors
 
         /* ---- VOFA telemetry: 100ms interval to avoid flooding UART0 ---- */
 #if !HMI_CAPTURE_DEBUG
-        // static uint32_t last_vofa_telem = 0;
-        // if (sys_tick_ms - last_vofa_telem >= 100)
-        // {
-        //     last_vofa_telem = sys_tick_ms;
-        //     /* tracking-loop PID tuning channels (JustFloat order = VOFA ch0..3) */
-        //     float vofa_send_data[vofa_sent_ch_count] = {
-        //         // (float)tracking_result.position_error,  /* ch0: track position error (PID input, target 0) */
-        //         vofa_speed_target,
-        //         // tracking_result.pid_correction,         /* ch1: track PID output (differential correction) */
-        //         (float)Motor_speedL,                    /* ch2: left wheel measured speed */
-        //         (float)Motor_speedR,                    /* ch3: right wheel measured speed */
-        //     };
-        //     vofa_send_floats(vofa_send_data, vofa_sent_ch_count);
-        // }
+//        static uint32_t last_vofa_telem = 0;
+//        if (sys_tick_ms - last_vofa_telem >= 100)
+//        {
+//            last_vofa_telem = sys_tick_ms;
+//            /* tracking-loop PID tuning channels (JustFloat order = VOFA ch0..3) */
+//            float vofa_send_data[vofa_sent_ch_count] = {
+//                // (float)tracking_result.position_error,  /* ch0: track position error (PID input, target 0) */
+//                vofa_speed_target,
+//                // tracking_result.pid_correction,         /* ch1: track PID output (differential correction) */
+//                (float)Motor_speedL,                    /* ch2: left wheel measured speed */
+//                (float)Motor_speedR,                    /* ch3: right wheel measured speed */
+//            };
+//            vofa_send_floats(vofa_send_data, vofa_sent_ch_count);
+//        }
 
         /* ---- IMU telemetry: 200ms interval (VOFA ch0..3 = yaw/pitch/roll/gyro_z) ---- */
         // static uint32_t last_imu_telem = 0;
@@ -247,6 +313,21 @@ int main(void)
         //         imu.deg_s.z,        /* ch3: gyro Z (deg/s)    */
         //     };
         //     vofa_send_floats(imu_ch, 4);
+        // }
+
+        /* ---- Tracking debug telemetry: 50ms interval, 16 channels (0-100 scaled ADC) ---- */
+        // {
+        //     static uint32_t last_track_telem = 0;
+        //     if (g_track_debug && (sys_tick_ms - last_track_telem >= 50))
+        //     {
+        //         last_track_telem = sys_tick_ms;
+        //         float track_ch[16];
+        //         int i;
+        //         for (i = 0; i < 16; i++) {
+        //             track_ch[i] = (float)LQ_Tracking_Value[i];
+        //         }
+        //         vofa_send_floats(track_ch, 16);
+        //     }
         // }
 
         /* ---- Stepper motor test: feedback query + VOFA telemetry (200ms) ---- */
@@ -263,7 +344,32 @@ int main(void)
         //         QGimbal_CAN_Status();
         //     }
         // }
+
+        /* ---- Arm VOFA telemetry: 100ms interval (6ch: ang0-2 deg, rpm0-2) ---- */
+        {
+            static uint32_t last_arm_telem = 0;
+            if (g_arm.telemetry_enabled && g_arm.all_enabled && (sys_tick_ms - last_arm_telem >= 100))
+            {
+                last_arm_telem = sys_tick_ms;
+                Arm_SendTelemetry();
+            }
+        }
 #endif
+
+        /* ---- UART2 motor angle telemetry to RK3588 (JustFloat 3ch, 50ms) ---- */
+        {
+            static uint32_t last_uart2_telem = 0;
+            if (!ArmTask_IsActive() && (sys_tick_ms - last_uart2_telem >= 50))
+            {
+                last_uart2_telem = sys_tick_ms;
+                float angles[3] = {
+                    g_motor_state[0].angle_rad,
+                    g_motor_state[1].angle_rad,
+                    g_motor_state[2].angle_rad
+                };
+                arm_uart2_send_floats(angles, 3);
+            }
+        }
 
         /* ---- HMI serial screen event polling ---- */
         if (hmi_rx_ready)
@@ -275,16 +381,28 @@ int main(void)
             /* Inline parse: HMI touch frame = 65 00 01 <id> <id> 0D 0A  (id at buf[3], 1..4 = task) */
             if (idx >= 4 && hmi_rx_buf[0] == 0x65)
             {
-                uint8_t widget = hmi_rx_buf[3];   /* widget/task ID (buf[3]==buf[4]) */
-                if (widget >= 1 && widget <= 4)
+                uint8_t widget = hmi_rx_buf[3];   /* widget/task ID */
+                if (widget == 1)
                 {
+                    /* key1: start arm pick-and-place task */
                     menu_active = 0;
-                    task_manager_start((TaskID)widget);  /* 复位状态并�??????????动任�?????????? */
-                    zuolan_printf("page1.t%d.txt=\"\xd6\xb4\xd0\xd0\xd6\xd0\"%s", widget - 1, HMI_END_CMD);
-
-                    /* debug: confirm task dispatch via UART0 */
-                    uart_debug_send_byte('T');
-                    uart_debug_send_byte('0' + widget);
+                    ArmTask_Start();
+                    zuolan_printf("page1.t0.txt=\"\xd6\xb4\xd0\xd0\xd6\xd0\"%s", HMI_END_CMD);
+                    uart_debug_send_byte('A');
+                    uart_debug_send_byte('R');
+                    uart_debug_send_byte('M');
+                    uart_debug_send_byte('\r');
+                    uart_debug_send_byte('\n');
+                }
+                else if (widget == 2)
+                {
+                    /* key2: start poker card pick-and-place task */
+                    menu_active = 0;
+                    ArmTask_StartPoker();
+                    zuolan_printf("page1.t1.txt=\"\xd6\xb4\xd0\xd0\xd6\xd0\"%s", HMI_END_CMD);
+                    uart_debug_send_byte('P');
+                    uart_debug_send_byte('O');
+                    uart_debug_send_byte('K');
                     uart_debug_send_byte('\r');
                     uart_debug_send_byte('\n');
                 }
@@ -298,6 +416,7 @@ int main(void)
         {
             last_hmi_telem = sys_tick_ms;
 
+#if 0  /* car telemetry deprecated */
             /* motor speed */
             zuolan_HMI_Send_Int("page2.x1", Motor_speedL);
             zuolan_HMI_Send_Int("page2.x2", Motor_speedR);
@@ -308,22 +427,39 @@ int main(void)
 
             /* IMU yaw angle (1 decimal) */
             zuolan_HMI_Send_Float("page2.x5", imu.yaw, 1);
+#endif
+
+            /* Arm task timer -> HMI page1.no.val (seconds) */
+            {
+                static uint8_t was_arm_active = 0;
+                uint8_t is_arm_active = ArmTask_IsActive();
+                if (is_arm_active)
+                {
+                    zuolan_HMI_Send_Int("page1.no", (int)ArmTask_GetElapsedSec());
+                }
+                else if (was_arm_active)
+                {
+                    zuolan_HMI_Send_Int("page1.no", 0);  /* task just finished, clear timer */
+                }
+                was_arm_active = is_arm_active;
+            }
 
             /* track sensor bit pattern as fixed-width string */
-            {
-                char track_bits[GRAY_CHANNEL_COUNT + 1];
-                int i;
-                for (i = 0; i < GRAY_CHANNEL_COUNT; i++) {
-                    track_bits[GRAY_CHANNEL_COUNT - 1 - i] =
-                        ((gray_state.state >> i) & 1) ? '1' : '0';
-                }
-                track_bits[GRAY_CHANNEL_COUNT] = '\0';
-                zuolan_HMI_Send_String("page2.tk_string", track_bits);
-            }
+            // {
+            //     char track_bits[GRAY_CHANNEL_COUNT + 1];
+            //     int i;
+            //     for (i = 0; i < GRAY_CHANNEL_COUNT; i++) {
+            //         track_bits[GRAY_CHANNEL_COUNT - 1 - i] =
+            //             ((gray_state.state >> i) & 1) ? '1' : '0';
+            //     }
+            //     track_bits[GRAY_CHANNEL_COUNT] = '\0';
+            //     zuolan_HMI_Send_String("page2.tk_string", track_bits);
+            // }
         }
 #endif
 
         /* ---- HMI task completion: clear execution status text ---- */
+#if 0  /* tracking tasks deprecated */
         static uint8_t was_task_running = 0;
         if (!task_running && was_task_running)
         {
@@ -333,6 +469,18 @@ int main(void)
             zuolan_printf("page1.t3.txt=\"\"%s", HMI_END_CMD);
         }
         was_task_running = task_running;
+#endif
+
+        /* arm_task completion: clear HMI status text */
+        {
+            static uint8_t was_arm_active2 = 0;
+            if (!ArmTask_IsActive() && was_arm_active2)
+            {
+                zuolan_printf("page1.t0.txt=\"\"%s", HMI_END_CMD);
+                zuolan_printf("page1.t1.txt=\"\"%s", HMI_END_CMD);
+            }
+            was_arm_active2 = ArmTask_IsActive();
+        }
 
         if (g_stop_requested)
         {
@@ -354,10 +502,11 @@ void TIMER_0_INST_IRQHandler(void)
     {
     case DL_TIMER_IIDX_LOAD:
         sys_tick_ms++;
-        if ((sys_tick_ms % 5) == 0)
-            hal_imu_update();
-        if ((sys_tick_ms % 5) == 0)
-            gray_sample_req = 1;
+        Buzzer_on_1s(sys_tick_ms);
+        // if ((sys_tick_ms % 5) == 0)
+        //     hal_imu_update();
+        // if ((sys_tick_ms % 5) == 0)
+        //     gray_sample_req = 1;
         break;
     default:
         break;
@@ -374,17 +523,11 @@ void TIMER_1_INST_IRQHandler(void)
     case DL_TIMERA_IIDX_LOAD:
         EncoderGetValue();
 
+#if 0  /* car speed loop deprecated - chassis motors no longer used */
         if (task_running)
         {
-            /* Outer loop: the task (line-tracking) produces LEFT/RIGHT *speed
-             * targets* in g_motor_*_out (base ~= task_speed_base = 280). */
             task_manager_run();
 
-            /* Inner loop: convert those speed targets to PWM duty through the
-             * already-tuned speed PID -- the SAME path that makes a VOFA speed
-             * target actually move the motors. Writing 280 straight to the PWM
-             * register is only ~2.8% duty (max_duty=10000), far too weak to
-             * turn the wheels, which is why tracking looked "dead". */
             float tgt_l = g_motor_left_out;
             float tgt_r = g_motor_right_out;
             float abs_tl = (tgt_l >= 0.0f) ? tgt_l : -tgt_l;
@@ -400,12 +543,9 @@ void TIMER_1_INST_IRQHandler(void)
         }
         else if (g_angle_mode)
         {
-            /* ---- Angle loop: outer yaw PID + inner speed PID ---- */
             ComputeYaw(&yaw_pid, vofa_yaw_target, imu.yaw);
 
             float angle_out = yaw_pid.CurrentOut;
-
-            /* Differential steering: positive = right turn, negative = left turn */
             float target_l = +angle_out;
             float target_r = -angle_out;
 
@@ -433,7 +573,6 @@ void TIMER_1_INST_IRQHandler(void)
             abs_L     = (Motor_speedL >= 0) ? (float)Motor_speedL : -(float)Motor_speedL;
             abs_R     = (Motor_speedR >= 0) ? (float)Motor_speedR : -(float)Motor_speedR;
 
-            /* reset integrator & output on direction reversal */
             if ((target_last >= 0.0f) != (vofa_speed_target >= 0.0f))
             {
                 MotorLSpeedPID.ErrorInt = 0.0f;
@@ -456,9 +595,11 @@ void TIMER_1_INST_IRQHandler(void)
 
         Motor_SetPWML(g_motor_left_out);
         Motor_SetPWMR(g_motor_right_out);
+#endif
 
-        /* Gimbal stabilizer control (CAN brushless motors) */
-        Gimbal_Run();
+        /* Arm: task state machine + CAN angle sender */
+        ArmTask_Run();   /* pick-and-place state machine (updates g_arm.motor[] targets) */
+        Arm_Run();       /* sends CAN angle commands for all 3 motors */
 
         break;
     default:
@@ -492,8 +633,8 @@ void CANFD0_IRQHandler(void)
 /**
  * GROUP1 = GPIOB + GPIOA interrupt aggregation: encoder quadrature decoding
  *
- * Left  motor encoder: PB6=A-phase, PB5=B-phase  �???????????????? Count1
- * Right motor encoder: PA29=A-phase, PA30=B-phase �???????????????? Count2
+ * Left  motor encoder: PB6=A-phase, PB5=B-phase  �????????????????????????? Count1
+ * Right motor encoder: PA29=A-phase, PA30=B-phase �????????????????????????? Count2
  *
  * 4x quadrature: both A and B phase edges update the counter.
  * Reference: hal_encode.c in MSPM0G3507_Project_template

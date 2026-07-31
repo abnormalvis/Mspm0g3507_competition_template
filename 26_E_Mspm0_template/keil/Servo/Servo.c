@@ -1,59 +1,70 @@
 #include "Servo.h"
 #include <stdint.h>
+#include <ti_msp_dl_config.h>
 
 /*
- * Servo PWM setup (SysConfig required for PWM output):
+ * Servo PWM reuse TIMA0 (PWM_Motor, SYSCFG_DL_PWM_Motor_init):
  *
- * 1. Add a TIMG PWM block named "PWM_Servo" in SysConfig:
- *    - Mode: Edge-aligned up-counting PWM
- *    - Clock prescaler: 1000  (1 tick = 20 us at 50 MHz bus clock)
- *    - Period: 999  (50 Hz = 20 ms cycle)
- *    - CCP0: Servo 1 signal output
- *    - CCP1: Servo 2 signal output
- *    - Assign pins per your hardware (e.g. PA14/PA15)
- * 2. After generating, ti_msp_dl_config.h will define:
- *    PWM_SERVO_INST, PWM_SERVO_C0_IDX, PWM_SERVO_C1_IDX
+ *   TIMA0: BUSCLK / 250 = 320 kHz (1 tick = 3.125 us)
+ *   Period: 6400 -> 50 Hz = 20 ms cycle
  *
- * Until SysConfig is set up, angle clamping works but PWM is a no-op.
+ *   Edge-align-up CCP action (verified in dl_timer.c:441-446):
+ *     ZACT = CCP_HIGH (counter=0 -> output HIGH)
+ *     CUACT = CCP_LOW  (counter=CC -> output LOW)
+ *   -> HIGH pulse = CC ticks
+ *
+ *   CC0: PB8  (Servo 1)    CC1: PA7  (Servo 2)
+ *   CC2: PB0  (unused)     CC3: PA23 (unused)
+ *
+ * PWM duty mapping:
+ *   0.5 ms = 160 ticks -> CC = 160
+ *   2.5 ms = 800 ticks -> CC = 800
  */
 
-/* PWM duty mapping (50 Hz, tick = 20 us):
- *   0.5 ms = 25 ticks (0 degrees)
- *   2.5 ms = 125 ticks (180 degrees) */
-#define SERVO_PWM_COUNT_MIN    25
-#define SERVO_PWM_COUNT_MAX    125
-#define SERVO_PWM_COUNT_RANGE  ((float)(SERVO_PWM_COUNT_MAX - SERVO_PWM_COUNT_MIN))
-#define SERVO_FULL_ANGLE       180.0f
+#define SERVO_PERIOD            6400
+#define SERVO_PULSE_MIN         160
+#define SERVO_PULSE_MAX         800
+#define SERVO_PULSE_RANGE       ((float)(SERVO_PULSE_MAX - SERVO_PULSE_MIN))
+#define SERVO_FULL_ANGLE        180.0f
 
-/*
- * Write angle as PWM duty to a servo channel.
- * When PWM_SERVO_INST is not defined (SysConfig not yet done), this
- * only silences the unused-parameter warning — angle clamping still
- * works so callers do not crash.
- */
 static void servo_write(uint32_t cc_idx, float angle)
 {
-#ifdef PWM_Servo_INST
-    float count = (float)SERVO_PWM_COUNT_MIN
-                + (angle / SERVO_FULL_ANGLE) * SERVO_PWM_COUNT_RANGE;
-    DL_TimerG_setCaptureCompareValue(PWM_Servo_INST,
-        (uint32_t)(count + 0.5f), cc_idx);
-#else
-    (void)cc_idx;
-    (void)angle;
-#endif
+    float pulse, cc;
+    pulse = (float)SERVO_PULSE_MIN
+          + (angle / SERVO_FULL_ANGLE) * SERVO_PULSE_RANGE;
+    cc    = pulse;   /* HIGH pulse = CC ticks (ZACT=HIGH, CUACT=LOW) */
+    DL_TimerA_setCaptureCompareValue(PWM_Motor_INST,
+        (uint32_t)(cc + 0.5f), cc_idx);
 }
 
-void Servo_setAngle1(float Angle)
+void Servo_setAngle1(float Angle)   
 {
     if (Angle >= (float)SERVO1_MAX_ANGLE) { Angle = (float)SERVO1_MAX_ANGLE; }
     else if (Angle <= (float)SERVO1_MIN_ANGLE) { Angle = (float)SERVO1_MIN_ANGLE; }
-    servo_write((uint32_t)PWM_SERVO_C0_IDX, Angle);
+    servo_write((uint32_t)GPIO_PWM_Motor_C0_IDX, Angle);
 }
 
 void Servo_setAngle2(float Angle)
 {
     if (Angle >= (float)SERVO2_MAX_ANGLE) { Angle = (float)SERVO2_MAX_ANGLE; }
     else if (Angle <= (float)SERVO2_MIN_ANGLE) { Angle = (float)SERVO2_MIN_ANGLE; }
-    servo_write((uint32_t)PWM_SERVO_C1_IDX, Angle);
+    servo_write((uint32_t)GPIO_PWM_Motor_C1_IDX, Angle);
+}
+
+/* ---- Raw CC value write (bypasses angle conversion) ---- */
+static void servo_write_raw(uint32_t cc_idx, uint32_t cc_value)
+{
+    DL_TimerA_setCaptureCompareValue(PWM_Motor_INST, cc_value, cc_idx);
+}
+
+/* ---- Lift servo: 500us HIGH pulse = 160 ticks -> raise ---- */
+void Servo_LiftRaise(void)
+{
+    servo_write_raw((uint32_t)GPIO_PWM_Motor_C1_IDX, 160);
+}
+
+/* ---- Lift servo: 1854us HIGH pulse = 593 ticks -> lower ---- */
+void Servo_LiftLower(void)
+{
+    servo_write_raw((uint32_t)GPIO_PWM_Motor_C1_IDX, 500);
 }

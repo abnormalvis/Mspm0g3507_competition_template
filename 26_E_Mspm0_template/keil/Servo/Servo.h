@@ -12,15 +12,11 @@
 #define SERVO2_MAX_ANGLE 180
 #define SERVO2_MIN_ANGLE 0
 
-/* ---- PWM channel indices (auto-detected from SysConfig "PWM_Servo") ---- */
-#ifndef PWM_SERVO_C0_IDX
-#define PWM_SERVO_C0_IDX  GPIO_PWM_Servo_C0_IDX
-#endif
-#ifndef PWM_SERVO_C1_IDX
-#define PWM_SERVO_C1_IDX  GPIO_PWM_Servo_C1_IDX
-#endif
-
 void Servo_setAngle1(float Angle1);
 void Servo_setAngle2(float Angle2);
+
+/* ---- Lift servo (Servo 2, PA7, CC1) ---- */
+void Servo_LiftRaise(void);   /* 500us pulse -> servo up */
+void Servo_LiftLower(void);   /* 1854us pulse -> servo down */
 
 #endif

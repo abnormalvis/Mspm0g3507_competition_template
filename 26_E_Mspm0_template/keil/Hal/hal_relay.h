@@ -1,25 +1,20 @@
 /**
  * @file hal_relay.h
- * @brief GPIO relay driver (GPIO-controlled relay module)
+ * @brief CANIO relay driver (CANIO digital I/O module)
  *
- * Controls a single relay via GPIO push-pull output.
- * Default pin: PB2 (unused in current pin map). Change RELAY_PORT / RELAY_PIN
- * below to match your hardware, or add a "RELAY" GPIO output in SysConfig and
- * uncomment the IOMUX-based init in hal_relay.c.
+ * Controls a single relay (electromagnet) via the CANIO protocol over CANFD0.
+ * The relay hardware is connected to a 众盛科技 ZS-DIO CANIO module on the
+ * CAN bus. This driver wraps the low-level CANIO driver (hal_canio.h) and
+ * exposes the same API as the original GPIO-based relay driver, so all
+ * callers (arm_task, arm_control, main) remain unchanged.
  */
 #ifndef __HAL_RELAY_H__
 #define __HAL_RELAY_H__
 
-#include "ti_msp_dl_config.h"
-#include <stdint.h>
+#include "hal_canio.h"
 
-/* ---- Auto-detected from SysConfig "relay" GPIO output ---- */
-#ifndef RELAY_PORT
-#define RELAY_PORT  relay_PORT        /* GPIOB (PB13, IOMUX_PINCM30) */
-#endif
-#ifndef RELAY_PIN
-#define RELAY_PIN   relay_pin_0_PIN   /* DL_GPIO_PIN_13 */
-#endif
+/* ---- Relay channel on CANIO module (1-based, 1~48) ---- */
+#define CANIO_RELAY_CH  CANIO_RELAY_CHANNEL
 
 void Relay_Init(void);
 void Relay_On(void);

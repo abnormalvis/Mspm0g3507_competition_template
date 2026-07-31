@@ -10,6 +10,13 @@ volatile QGimbal_MotorState g_motor_state[QGIMBAL_MOTOR_COUNT] = {
     {0, 0.0f, 0.0f, 0.0f, 0},
 };
 
+/* ---- CAN RX debug counters (volatile: written in ISR, read by debugger/main-loop) ---- */
+volatile uint32_t qdbg_rx_count     = 0U;   /* total feedback frames received        */
+volatile uint32_t qdbg_rx_discard   = 0U;   /* frames discarded (ID/DLC mismatch)    */
+volatile uint32_t qdbg_rx_fill_lvl  = 0U;   /* last FIFO fill level                  */
+volatile uint16_t qdbg_rx_std_id    = 0U;   /* last received standard CAN ID         */
+volatile uint16_t qdbg_rx_angle_raw[QGIMBAL_MOTOR_COUNT] = {0U}; /* per-motor raw angle */
+
 /* ---- scaling constants ---- */
 #define QGIMBAL_CURRENT_SCALE  (10.0f)
 #define QGIMBAL_SPEED_SCALE    (1000.0f)
@@ -177,58 +184,77 @@ void QGimbal_ProcessFeedback(void)
 {
     DL_MCAN_RxBufElement rxMsg;
     DL_MCAN_RxFIFOStatus rxFS;
-    uint32_t id;
-    uint8_t motor_idx;
-    QGimbal_MotorState *motor;
 
-    /* Get FIFO status to know which FIFO and get index */
-    rxFS.num     = DL_MCAN_RX_FIFO_NUM_0;
-    rxFS.fillLvl = 0;
-    DL_MCAN_getRxFIFOStatus(MCAN0_INST, &rxFS);
+    rxFS.num = DL_MCAN_RX_FIFO_NUM_0;
 
-    if (rxFS.fillLvl == 0) {
-        return;  /* No message available */
-    }
+    /*
+     * Batch-drain all pending messages in one ISR entry.
+     * This avoids FIFO overflow when multiple motors reply
+     * while the ISR was blocked by a same-priority handler.
+     */
+    for (;;) {
+        uint32_t id;
+        uint8_t  motor_idx;
+        QGimbal_MotorState *motor;
 
-    /* Read the oldest message from FIFO0 */
-    DL_MCAN_readMsgRam(MCAN0_INST, DL_MCAN_MEM_TYPE_FIFO, 0U, rxFS.num, &rxMsg);
+        rxFS.fillLvl = 0;
+        DL_MCAN_getRxFIFOStatus(MCAN0_INST, &rxFS);
 
-    /* Acknowledge the message */
-    DL_MCAN_writeRxFIFOAck(MCAN0_INST, rxFS.num, rxFS.getIdx);
+        if (rxFS.fillLvl == 0) {
+            break;  /* FIFO empty — all messages processed */
+        }
 
-    /* Extract standard ID (bits 28:18) */
-    id = (rxMsg.id & 0x1FFC0000U) >> 18U;
+        qdbg_rx_fill_lvl = rxFS.fillLvl;
 
-    /* Dispatch by motor ID (filter accepts 0x500-0x503) */
-    if (id < 0x500U || id > 0x503U) {
-        return;
-    }
-    motor_idx = (uint8_t)(id - 0x500U);
-    if (motor_idx >= QGIMBAL_MOTOR_COUNT) {
-        return;
-    }
-    motor = &g_motor_state[motor_idx];
+        /* Read the oldest message from FIFO0 */
+        DL_MCAN_readMsgRam(MCAN0_INST, DL_MCAN_MEM_TYPE_FIFO, 0U, rxFS.num, &rxMsg);
 
-    if (rxMsg.dlc < 8U) {
-        return;  /* Expected 8-byte feedback frame */
-    }
+        /* Acknowledge the message */
+        DL_MCAN_writeRxFIFOAck(MCAN0_INST, rxFS.num, rxFS.getIdx);
 
-    /* Parse feedback data:
-     *   Data[0]: enabled flag (bit 0)
-     *   Data[1]: reserved
-     *   Data[2-3]: current (int16_t, scaled: A = raw * 10.0 / 32767)
-     *   Data[4-5]: speed   (int16_t, scaled: rpm = raw * 1000.0 / 32767)
-     *   Data[6-7]: angle   (uint16_t, scaled: rad = raw * 2pi / 65535) */
-    {
-        int16_t raw_current = (int16_t)((uint16_t)rxMsg.data[2] | ((uint16_t)rxMsg.data[3] << 8));
-        int16_t raw_speed   = (int16_t)((uint16_t)rxMsg.data[4] | ((uint16_t)rxMsg.data[5] << 8));
-        uint16_t raw_angle  = (uint16_t)((uint16_t)rxMsg.data[6] | ((uint16_t)rxMsg.data[7] << 8));
+        /* Extract standard ID (bits 28:18) */
+        id = (rxMsg.id & 0x1FFC0000U) >> 18U;
+        qdbg_rx_std_id = (uint16_t)id;
 
-        motor->enabled  = (rxMsg.data[0] & 0x01U) ? 1U : 0U;
-        motor->current_a = ((float)raw_current / QGIMBAL_INT16_MAX) * QGIMBAL_CURRENT_SCALE;
-        motor->speed_rpm = ((float)raw_speed   / QGIMBAL_INT16_MAX) * QGIMBAL_SPEED_SCALE;
-        motor->angle_rad = ((float)raw_angle   / QGIMBAL_UINT16_MAX) * QGIMBAL_ANGLE_SCALE;
-        motor->feedback_valid = 1U;
+        /* Dispatch by motor ID (filter accepts 0x500-0x503) */
+        if (id < 0x500U || id > 0x503U) {
+            qdbg_rx_discard++;
+            continue;
+        }
+        motor_idx = (uint8_t)(id - 0x500U);
+        if (motor_idx >= QGIMBAL_MOTOR_COUNT) {
+            qdbg_rx_discard++;
+            continue;
+        }
+        motor = (QGimbal_MotorState *)&g_motor_state[motor_idx];
+
+        if (rxMsg.dlc < 8U) {
+            qdbg_rx_discard++;  /* Expected 8-byte feedback frame */
+            continue;
+        }
+
+        /* Parse feedback data:
+         *   Data[0]: enabled flag (bit 0)
+         *   Data[1]: reserved
+         *   Data[2-3]: current (int16_t, scaled: A = raw * 10.0 / 32767)
+         *   Data[4-5]: speed   (int16_t, scaled: rpm = raw * 1000.0 / 32767)
+         *   Data[6-7]: angle   (uint16_t, scaled: rad = raw * 2pi / 65535) */
+        {
+            int16_t raw_current = (int16_t)((uint16_t)rxMsg.data[2] | ((uint16_t)rxMsg.data[3] << 8));
+            int16_t raw_speed   = (int16_t)((uint16_t)rxMsg.data[4] | ((uint16_t)rxMsg.data[5] << 8));
+            uint16_t raw_angle  = (uint16_t)((uint16_t)rxMsg.data[6] | ((uint16_t)rxMsg.data[7] << 8));
+
+            motor->enabled  = (rxMsg.data[0] & 0x01U) ? 1U : 0U;
+            motor->current_a = ((float)raw_current / QGIMBAL_INT16_MAX) * QGIMBAL_CURRENT_SCALE;
+            motor->speed_rpm = ((float)raw_speed   / QGIMBAL_INT16_MAX) * QGIMBAL_SPEED_SCALE;
+            motor->angle_rad = ((float)raw_angle   / QGIMBAL_UINT16_MAX) * QGIMBAL_ANGLE_SCALE;
+            motor->feedback_valid = 1U;
+
+            /* Debug: capture raw angle for this motor */
+            qdbg_rx_angle_raw[motor_idx] = raw_angle;
+        }
+
+        qdbg_rx_count++;
     }
 }
 

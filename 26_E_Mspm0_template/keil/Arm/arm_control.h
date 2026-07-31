@@ -21,7 +21,7 @@
 typedef struct {
     float    target_angle_rad;      /* current target (VOFA or RK3588 source), radians */
     float    last_sent_angle_rad;   /* debounce: last value sent via CAN, radians */
-    float    target_speed_rpm;      /* target speed (rpm) â€? active when speed_mode=1 */
+    float    target_speed_rpm;      /* target speed (rpm) ï¿½? active when speed_mode=1 */
     float    last_sent_speed_rpm;   /* debounce: last speed value sent via CAN */
     uint8_t  enabled;               /* 1 = motor enabled */
     uint8_t  speed_mode;            /* 1 = send CMD_SPEED, 0 = send CMD_ANGLE */
@@ -33,8 +33,9 @@ typedef struct {
     ArmMotor motor[ARM_MOTOR_COUNT];
     uint8_t  all_enabled;           /* global enable/disable */
     uint8_t  mode;                  /* 0 = angle mode */
-    uint8_t  telemetry_enabled;     /* 1 = send feedback via VOFA JustFloat */
-    uint8_t  rk3588_active;         /* 1 = receiving valid RK3588 frames */
+    uint8_t  telemetry_enabled;        /* 1 = send 6ch feedback via VOFA JustFloat (P54) */
+    uint8_t  telemetry_angles_active;  /* 1 = send 3ch angle telemetry via VOFA JustFloat (P68) */
+    uint8_t  rk3588_active;            /* 1 = receiving valid RK3588 frames */
     float    rk3588_angles[3];      /* latest angles from RK3588 (rad) */
     float    rk3588_speeds[3];      /* latest speeds from RK3588 (rpm) */
 

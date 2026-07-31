@@ -304,8 +304,9 @@ void Arm_Init(void)
 
     g_arm.all_enabled      = 0;   /* motors start DISABLED �?? enable via VOFA P42=1 */
     g_arm.mode             = 0;
-    g_arm.telemetry_enabled = 0;
-    g_arm.rk3588_active    = 0;
+    g_arm.telemetry_enabled       = 0;
+    g_arm.telemetry_angles_active = 0;
+    g_arm.rk3588_active           = 0;
 
     /* ---- sinusoidal speed tracking init ---- */
     g_arm.sine_mode        = 0;
@@ -469,13 +470,13 @@ uint8_t Arm_HandleVofa(uint16_t id, float value)
         return 1;
     }
 
-    /* P46-P48: target angle motor 0-2 (degrees, clamped to [0, 360)) */
+    /* P46-P48: target angle motor 0-2 (radians, wrapped to [0, 2*PI)) */
     if (id >= 46 && id <= 48) {
         m = (uint8_t)(id - 46);
-        /* Wrap to [0, 360) then convert to radians */
-        while (value < 0.0f)   value += 360.0f;
-        while (value >= 360.0f) value -= 360.0f;
-        g_arm.motor[m].target_angle_rad = DEG2RAD(value);
+        /* Wrap to [0, 2*PI) */
+        while (value < 0.0f)      value += TWO_PI_F;
+        while (value >= TWO_PI_F) value -= TWO_PI_F;
+        g_arm.motor[m].target_angle_rad = value;
         g_arm.motor[m].speed_mode       = 0;    /* exit speed mode */
         g_arm.motor[m].last_sent_angle_rad = -1.0f;  /* force immediate send */
 
@@ -563,21 +564,17 @@ uint8_t Arm_HandleVofa(uint16_t id, float value)
         return 1;
     }
 
-    /* P68: send 3 motor angles via custom protocol (UART0 + UART2) */
-    if (id == 68 && value != 0.0f) {
-        if (g_arm.all_enabled) {
+    /* P68: toggle continuous 3ch angle telemetry on UART0 (1=start, 0=stop) */
+    if (id == 68) {
+        g_arm.telemetry_angles_active = (value != 0.0f) ? 1 : 0;
+        /* Send one-shot NOP to refresh angles immediately on enable */
+        if (g_arm.telemetry_angles_active && g_arm.all_enabled) {
             uint8_t m;
-            /* Send NOP to poll feedback from each motor without moving them.
-             * QD4310 uses ACK-based protocol — motors only reply to valid cmds. */
             for (m = 0; m < ARM_MOTOR_COUNT; m++) {
                 QGimbal_SendCommand(m, QGIMBAL_CMD_NOP, 0);
             }
-            /* Wait ~20ms for CAN feedback to arrive */
-            {
-                volatile uint32_t wait_start = sys_tick_ms;
-                while ((sys_tick_ms - wait_start) < 20);
-            }
         }
+        /* Also send one frame now so the user sees immediate response */
         Telemetry_SendAngles();
         return 1;
     }

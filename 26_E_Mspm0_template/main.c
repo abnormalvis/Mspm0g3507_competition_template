@@ -335,15 +335,15 @@ int main(void)
         StepperTest_Run();
 #endif
 
-        /* ---- QGimbal CAN diagnostics: TX/RX status via VOFA ch4-7 (500ms) ---- */
-        // {
-        //     static uint32_t last_can_diag = 0;
-        //     if (sys_tick_ms - last_can_diag >= 500) {
-        //         last_can_diag = sys_tick_ms;
-        //         QGimbal_CAN_Diag();
-        //         QGimbal_CAN_Status();
-        //     }
-        // }
+        /* ---- QGimbal CAN diagnostics: TX/RX status via VOFA (500ms) ---- */
+        {
+            static uint32_t last_can_diag = 0;
+            if (sys_tick_ms - last_can_diag >= 500) {
+                last_can_diag = sys_tick_ms;
+                QGimbal_CAN_Diag();     /* 4ch: tx_count, TXBTO[0], busOffStatus, TEC */
+                QGimbal_CAN_Status();   /* 4ch: motor[0].en, motor[1].en, motor[0].angle_rad, motor[1].angle_rad */
+            }
+        }
 
         /* ---- Arm VOFA telemetry: 100ms interval (6ch: ang0-2 deg, rpm0-2) ---- */
         {
@@ -368,6 +368,21 @@ int main(void)
                     g_motor_state[2].angle_rad
                 };
                 arm_uart2_send_floats(angles, 3);
+            }
+        }
+
+        /* ---- P68 continuous 3ch angle telemetry on UART0 (JustFloat, 50ms) ---- */
+        {
+            static uint32_t last_angles_telem = 0;
+            if (g_arm.telemetry_angles_active && (sys_tick_ms - last_angles_telem >= 50))
+            {
+                last_angles_telem = sys_tick_ms;
+                float angles[3] = {
+                    g_motor_state[0].angle_rad,
+                    g_motor_state[1].angle_rad,
+                    g_motor_state[2].angle_rad
+                };
+                vofa_send_floats(angles, 3);
             }
         }
 

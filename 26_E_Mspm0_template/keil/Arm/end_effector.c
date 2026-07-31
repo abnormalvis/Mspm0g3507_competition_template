@@ -1,11 +1,11 @@
 /**
  * @file end_effector.c
- * @brief End-effector (electromagnet + lift servo) â€” direct blocking control
+ * @brief End-effector (electromagnet + lift servo) â€? direct blocking control
  *
  * P66 pick sequence (runs in main loop context with IRQs enabled):
- *   1. Servo_LiftLower() â€” spin-wait ARMP_LIFT_DELAY_MS
- *   2. Relay_On()        â€” spin-wait ARMP_PICK_DELAY_MS
- *   3. Servo_LiftRaise() â€” spin-wait ARMP_LIFT_DELAY_MS
+ *   1. Servo_LiftLower() â€? spin-wait ARMP_LIFT_DELAY_MS
+ *   2. Relay_On()        â€? spin-wait ARMP_PICK_DELAY_MS
+ *   3. Servo_LiftRaise() â€? spin-wait ARMP_LIFT_DELAY_MS
  *
  * P67 place: Relay_Off() immediately.
  *
@@ -28,7 +28,7 @@ extern volatile uint32_t sys_tick_ms;
 
 void EndEffector_Init(void)
 {
-    /* No state to initialise â€” pick runs inline in HandleVofa. */
+    /* No state to initialise â€? pick runs inline in HandleVofa. */
 }
 
 void EndEffector_Run(void)
@@ -39,7 +39,7 @@ void EndEffector_Run(void)
 
 uint8_t EndEffector_IsBusy(void)
 {
-    return 0;   /* always ready â€” sequence is blocking, never concurrent */
+    return 0;   /* always ready â€? sequence is blocking, never concurrent */
 }
 
 void EndEffector_Abort(void)
@@ -49,7 +49,7 @@ void EndEffector_Abort(void)
 
 uint8_t EndEffector_HandleVofa(uint16_t id, float value)
 {
-    /* P66: pick â€” hard-coded blocking sequence (IRQs enabled) */
+    /* P66: pick â€? hard-coded blocking sequence (IRQs enabled) */
     if (id == 66 && value != 0.0f) {
         volatile uint32_t start;
 
